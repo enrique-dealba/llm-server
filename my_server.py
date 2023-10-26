@@ -10,7 +10,7 @@ app = FastAPI()
 # Initialize engine with a default model
 opt_model = "facebook/opt-125m"
 mistral_model = "mistralai/Mistral-7B-Instruct-v0.1"
-engine = AsyncLLMEngine(model=opt_model)
+engine = AsyncLLMEngine(model=opt_model, worker_use_ray=False, engine_use_ray=False)
 
 @app.post("/custom_generate")
 async def custom_generate(request: Request):
