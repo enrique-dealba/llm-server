@@ -1,15 +1,25 @@
-from vllm import AsyncLLMEngine
-from fastapi import FastAPI
+import json
+
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse, Response
+from vllm.engine.async_llm_engine import AsyncLLMEngine
+from vllm.sampling_params import SamplingParams
 
 app = FastAPI()
 
+# Initialize engine with a default model
+opt_model = "facebook/opt-125m"
+mistral_model = "mistralai/Mistral-7B-Instruct-v0.1"
+engine = AsyncLLMEngine(model=opt_model)
+
 @app.post("/custom_generate")
-async def generate(text: str):
-    print(f"Received text: {text}")  # Debug line
+async def custom_generate(request: Request):
+    request_dict = await request.json()
+    text = request_dict.pop("text", None)
+    sampling_params = SamplingParams(**request_dict)
+
+    results = await engine.generate([text], sampling_params)
     
-    opt_model = "facebook/opt-125m"
-    mistral_model = "mistralai/Mistral-7B-Instruct-v0.1"
-    engine = AsyncLLMEngine(model=opt_model)
-    output = await engine.generate([text])
-    # TODO: Additional custom logic goes here
-    return output
+    text_outputs = [output.text for output in results.outputs]
+    ret = {"text": text_outputs}
+    return JSONResponse(ret)
