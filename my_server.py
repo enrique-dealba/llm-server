@@ -15,6 +15,8 @@ engine = LLMEngine.from_engine_args(engine_args)
 async def custom_generate(request: Request):
     request_dict = await request.json()
     prompt = request_dict.pop("text", None)
+    print(f"Received request: {request_dict}")
+    print(f"Prompt: {prompt}")
     
     # Set your sampling params, customize as needed
     sampling_params = SamplingParams(**request_dict)
@@ -26,14 +28,17 @@ async def custom_generate(request: Request):
                               # max_tokens=256,
                             )
     
-    request_id = 0
-    engine.add_request(str(request_id), prompt, sampling_params)
+    request_id = 123
+    engine.add_request(str(request_id), prompt, params_2)
     
     request_outputs = None
     while not request_outputs:
         request_outputs = engine.step()
+        print(f"Engine step output: {request_outputs}")
     
     for request_output in request_outputs:
+        print(f"Processing request_output: {request_output}")
         if request_output.request_id == request_id and request_output.finished:
             text_outputs = [output.text for output in request_output.outputs]
+            print(f"Generated outputs: {text_outputs}")
             return JSONResponse({"text": text_outputs})
