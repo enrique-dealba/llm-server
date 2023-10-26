@@ -17,11 +17,12 @@ mistral_model = "mistralai/Mistral-7B-Instruct-v0.1"
 parser = argparse.ArgumentParser()
 parser.add_argument("--host", type=str, default=None)
 parser.add_argument("--port", type=int, default=8888)
-parser.add_argument("--model", type=str, default=opt_model)  # Model argument
 parser = AsyncEngineArgs.add_cli_args(parser)
 
 # Parse the CLI arguments into a Namespace object
 args = parser.parse_args()
+# Set model directly
+args.model = "facebook/opt-125m"
 
 engine_args = AsyncEngineArgs.from_cli_args(args)  # Initialize from CLI args
 engine = AsyncLLMEngine.from_engine_args(engine_args)
@@ -65,5 +66,5 @@ async def generate(request: Request):
     text_outputs = [prompt + output.text for output in final_output.outputs]
     ret = {"text": text_outputs}
     print(f"Sending response: {ret}")  # Debugging line
-    
+
     return JSONResponse(ret)
