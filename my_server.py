@@ -17,7 +17,7 @@ mistral_model = "mistralai/Mistral-7B-Instruct-v0.1"
 # Set model directly
 opt_model = os.getenv("MODEL", "mistralai/Mistral-7B-Instruct-v0.1")
 
-engine_args = AsyncEngineArgs(model=opt_model)
+engine_args = AsyncEngineArgs(model=opt_model, gpu_memory_utilization=0.96)
 engine = AsyncLLMEngine.from_engine_args(engine_args)
 print("Engine initialized")  # Debugging line
 
