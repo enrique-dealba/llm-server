@@ -11,7 +11,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy all other files
 COPY . .
 
-# Expose port 8000
+# Make sure start.sh is executable
+RUN chmod +x start.sh
+
+# Expose port 8888
 EXPOSE 8888
 
 # Set start-up script as the entry point
