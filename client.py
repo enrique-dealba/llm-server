@@ -9,7 +9,7 @@ API_URL = os.getenv("API_URL")
 
 def generate_text(prompt):
     payload = {"text": prompt}
-    response = requests.post(f"{API_URL}/custom_generate", json=payload)
+    response = requests.post(f"{API_URL}/generate", json=payload)
     return response.json()
 
 if __name__ == "__main__":
