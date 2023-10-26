@@ -1,24 +1,22 @@
 import json
 
 from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse, Response
-from vllm.engine.async_llm_engine import AsyncLLMEngine
-from vllm.sampling_params import SamplingParams
-from vllm import LLMEngine, EngineArgs
+from fastapi.responses import JSONResponse
+from vllm import LLMEngine, EngineArgs, SamplingParams
 
 app = FastAPI()
 
-# Initialize engine with a default model
 opt_model = "facebook/opt-125m"
 mistral_model = "mistralai/Mistral-7B-Instruct-v0.1"
-engine_args = EngineArgs(model="facebook/opt-125m")
+engine_args = EngineArgs(model=opt_model)
 engine = LLMEngine.from_engine_args(engine_args)
 
 @app.post("/custom_generate")
 async def custom_generate(request: Request):
-    request_id = 0
     request_dict = await request.json()
-    text = request_dict.pop("text", None)
+    prompt = request_dict.pop("text", None)
+    
+    # Set your sampling params, customize as needed
     sampling_params = SamplingParams(**request_dict)
     params_2 = SamplingParams(n=2, # Number of output sequences to return for the given prompt
                               temperature=0.1,
@@ -28,11 +26,14 @@ async def custom_generate(request: Request):
                               # max_tokens=256,
                             )
     
-    # prompt, sampling_params = test_prompts.pop(0)
-    # engine.add_request(str(request_id), prompt, sampling_params)
-
-    results = await engine.generate([text], sampling_params)
+    request_id = 0
+    engine.add_request(str(request_id), prompt, sampling_params)
     
-    text_outputs = [output.text for output in results.outputs]
-    ret = {"text": text_outputs}
-    return JSONResponse(ret)
+    request_outputs = None
+    while not request_outputs:
+        request_outputs = engine.step()
+    
+    for request_output in request_outputs:
+        if request_output.request_id == request_id and request_output.finished:
+            text_outputs = [output.text for output in request_output.outputs]
+            return JSONResponse({"text": text_outputs})
