@@ -1,11 +1,11 @@
 import requests
-import yaml
+from dotenv import load_dotenv
+import os
 
-# Load configurations from config.yaml
-with open("config.yaml", "r") as f:
-    config = yaml.safe_load(f)
+# Load configurations from .env file
+load_dotenv()
 
-API_URL = config["api_url"]
+API_URL = os.getenv("API_URL")
 
 def generate_text(prompt):
     payload = {"text": prompt}
