@@ -15,7 +15,7 @@ opt_model = "facebook/opt-125m"
 mistral_model = "mistralai/Mistral-7B-Instruct-v0.1"
 
 # Set model directly
-opt_model = os.getenv("MODEL", "mistralai/Mistral-7B-Instruct-v0.1")
+opt_model = os.getenv("MODEL", "facebook/opt-125m")
 
 engine_args = AsyncEngineArgs(model=opt_model, gpu_memory_utilization=0.96)
 engine = AsyncLLMEngine.from_engine_args(engine_args)
@@ -35,7 +35,7 @@ async def generate(request: Request):
                               top_p=0.95, # Must be in (0, 1] - set to 1 to consider all tokens
                               #frequency_penalty=0.1, # > 0 leads to new tokens, < 0 leads to repeat tokens
                               #use_beam_search=False, # whether to use beam search instead of sampling
-                              # max_tokens=256,
+                              max_tokens=250,
                             )
     
     request_id = random_uuid()
