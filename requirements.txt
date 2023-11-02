@@ -2,3 +2,4 @@ vllm
 fastapi
 uvicorn
 python-dotenv
+langchain

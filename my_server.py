@@ -15,9 +15,9 @@ opt_model = "facebook/opt-125m" # For testing
 mistral_model = "mistralai/Mistral-7B-Instruct-v0.1"
 
 # Setting model directly
-opt_model = os.getenv("MODEL", "mistralai/Mistral-7B-Instruct-v0.1")
+llm_model = os.getenv("MODEL", "mistralai/Mistral-7B-Instruct-v0.1")
 
-engine_args = AsyncEngineArgs(model=opt_model, gpu_memory_utilization=0.96)
+engine_args = AsyncEngineArgs(model=llm_model, gpu_memory_utilization=0.96)
 engine = AsyncLLMEngine.from_engine_args(engine_args)
 
 @app.post("/generate")
@@ -49,7 +49,9 @@ async def generate(request: Request):
 
     assert final_output is not None
     prompt = final_output.prompt
-    text_outputs = [prompt + output.text for output in final_output.outputs]
+    # text_outputs = [prompt + output.text for output in final_output.outputs]
+    # TODO: Are there multiple outputs because of n>1?
+    text_outputs = [output.text for output in final_output.outputs]
     ret = {"text": text_outputs}
 
     return JSONResponse(ret)

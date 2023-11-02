@@ -12,10 +12,6 @@ def generate_text(prompt):
     return response.json()
 
 def parse_llm(response):
-    print(type(response))
-    return response
-
-def parse_llm(response):
     raw_text = response.get('text', [])
     if not raw_text:
         return "No response from LLM."
@@ -23,7 +19,7 @@ def parse_llm(response):
     raw_text = ' '.join(raw_text)
     lines = raw_text.split('\n')
     parsed_str = "\n".join([line.strip() for line in lines])
-    
+
     return parsed_str.strip()
 
 if __name__ == "__main__":
