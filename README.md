@@ -5,7 +5,7 @@
 This repository contains code for running a FastAPI server capable of text generation using the Mistral-7B-Instruct or any other compatible language models from vLLM.
 
 ## Quick Start
-- Clone the codebase
+Clone the codebase: `git clone https://github.com/enrique-dealba/llm-server.git`
 ### Build Docker Image
 `docker build -t my_llm_server .`
 ### Run Docker Container
