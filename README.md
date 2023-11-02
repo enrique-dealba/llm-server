@@ -10,15 +10,18 @@ Clone the codebase: `git clone https://github.com/enrique-dealba/llm-server.git`
 `docker build -t my_llm_server .`
 ### Run Docker Container
 Run the following command to start the Docker container. Make sure to replace ~/.cache/huggingface with the path to your cached Hugging Face model weights if they are stored in a different location:
+
 `docker run -v ~/.cache/huggingface:/root/.cache/huggingface --gpus all --name llm -p 8888:8888 my_llm_server`
 
 If you don't want to use the cached model weights, you can also run:
+
 `docker run --gpus all --rm -p 8888:8888 my_llm_server`
 
 ## Usage
 
 ### API Endpoint
 The server listens on port 8888. You can interact with it using the `/generate` endpoint:
+
 `curl -X POST -d '{"text": "your_prompt_here"}' http://localhost:8888/generate`
 
 ### Using client.py
