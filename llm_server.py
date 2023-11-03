@@ -15,11 +15,14 @@ mistral_model = "mistralai/Mistral-7B-Instruct-v0.1"
 zephyr_model = "HuggingFaceH4/zephyr-7b-beta" # works with RAG and ReAct
 
 # Setting model directly
-llm_model = os.getenv("MODEL", "mistralai/Mistral-7B-Instruct-v0.1")
+llm_model = os.getenv("MODEL", "facebook/opt-125m")
 
 NUM_GPUS = 1
 llm = VLLM(
     model=llm_model,
+    temperature=0.2,
+    use_beam_search=False,
+    max_new_tokens=512,
     tensor_parallel_size=NUM_GPUS,
     trust_remote_code=True,
 )

@@ -25,5 +25,6 @@ def parse_llm(response):
 if __name__ == "__main__":
     prompt = input("Prompt: ")
     result = generate_text(prompt)
-    result = parse_llm(result)
+    #result = parse_llm(result)
+    result = result['text']
     print(f"LLM Response: {result}")
