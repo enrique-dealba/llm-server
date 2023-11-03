@@ -4,7 +4,6 @@ import os
 
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse, Response, StreamingResponse
-from vllm.utils import random_uuid
 
 from langchain.llms import VLLM
 from langchain.prompts import PromptTemplate
@@ -36,8 +35,7 @@ llm = VLLM(
 
 class LLMAgent:
     """LLM Agent server that performs user tasks."""
-    def __init__(self, llm_id, llm):
-        self.id = llm_id
+    def __init__(self, llm):
         self.llm = llm
         self.output_parser = CustomOutputParser()
 
@@ -149,9 +147,8 @@ class LLMAgent:
 # Answer: Let's think step by step."""
 # prompt = PromptTemplate(template=template, input_variables=["query"])
 
-llm_id = random_uuid()
 # Instantiates LLMAgent at the module level
-llm_agent = LLMAgent(id=llm_id, llm=llm)
+llm_agent = LLMAgent(llm=llm)
 
 @app.post("/generate")
 async def generate(request: Request):
