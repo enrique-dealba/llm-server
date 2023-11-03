@@ -1,10 +1,27 @@
-import requests
-from dotenv import load_dotenv
+import math
 import os
+import requests
+import time
+
+
+from dotenv import load_dotenv
+import tiktoken
 
 load_dotenv()
 
 API_URL = os.getenv("API_URL")
+
+def num_tokens(string: str, encoding_name: str = "cl100k_base") -> int:
+    """Returns the number of tokens in a text string."""
+    encoding = tiktoken.get_encoding(encoding_name)
+    num_tokens = len(encoding.encode(string))
+    return num_tokens
+
+def get_tps(string: str, num_seconds):
+    """Returns token per second (tps) performance for LLM."""
+    tokens = num_tokens(string)
+    tps = tokens / num_seconds
+    return math.floor(tps)
 
 def generate_text(prompt):
     payload = {"text": prompt}
@@ -23,8 +40,23 @@ def parse_llm(response):
     return parsed_str.strip()
 
 if __name__ == "__main__":
-    prompt = input("Prompt: ")
-    result = generate_text(prompt)
-    #result = parse_llm(result)
-    result = result['text']
-    print(f"LLM Response: {result}")
+    while True:
+        prompt = input("Prompt: ")
+        if prompt.lower() in ["quit", "exit"]:
+            print("Exiting the conversation.")
+            break
+        
+        try:
+            start_time = time.time()
+            result = generate_text(prompt)
+            end_time = time.time()
+            elapsed_time = end_time - start_time
+            # result = parse_llm(result)
+            result = result['text']
+            queries = result['queries']
+            print(f"LLM Response: {result}")
+            print(f"LLM Queries: {queries}")
+            print(f"Tokens per second: {get_tps(result, elapsed_time)}")
+
+        except requests.exceptions.RequestException as e:
+            print(f"An error occurred: {e}")
