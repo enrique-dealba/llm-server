@@ -52,11 +52,11 @@ if __name__ == "__main__":
             end_time = time.time()
             elapsed_time = end_time - start_time
             # result = parse_llm(result)
-            result = result['text']
+            response = result['text']
             queries = result['queries']
-            print(f"LLM Response: {result}")
+            print(f"LLM Response: {response}")
             print(f"LLM Queries: {queries}")
-            print(f"Tokens per second: {get_tps(result, elapsed_time)}")
+            print(f"Tokens per second: {get_tps(response, elapsed_time)} t/s")
 
         except requests.exceptions.RequestException as e:
             print(f"An error occurred: {e}")
