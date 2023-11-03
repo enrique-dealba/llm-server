@@ -21,7 +21,7 @@ mistral_model = "mistralai/Mistral-7B-Instruct-v0.1"
 zephyr_model = "HuggingFaceH4/zephyr-7b-beta" # works with RAG and ReAct
 
 # Setting model directly
-llm_model = os.getenv("MODEL", "facebook/opt-125m")
+llm_model = os.getenv("MODEL", "HuggingFaceH4/zephyr-7b-beta")
 
 NUM_GPUS = 1
 llm = VLLM(
