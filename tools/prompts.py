@@ -180,3 +180,58 @@ User question: {input}
 mistral_template_3 = ZEPHYR_SYSTEM_PREFIX + mistral_template_agent + ZEPHYR_SYSTEM_SUFFIX
 
 mistral_template_4 = mistral_template_agent
+
+ZEPHYR_USER = "<|user|>"
+ZEPHYR_SUFFIX = "</s>"
+
+mistral_template_agent2 = PREFIX + """Available Tools: {tools}
+
+Use the following format:
+
+Task: the input task you must solve by outputting a valid response to the user task
+Thought: you should always think about what to do
+Action: the action to take, should be one of [{tool_names}]
+Action Input: the input to the action
+Observation: the result of the action
+... (this Thought/Action/Action Input/Observation can repeat N times)
+When you have or know the answer to the user question use the format:
+Thought: I now know the final answer
+Final Answer: The final answer should answer the user question
+
+Previous conversation history:
+{history}
+
+<|user|>
+User question: {input} </s>
+{agent_scratchpad}"""
+
+mistral_template_5 = mistral_template_agent2
+
+mistral_template_6 = ZEPHYR_SYSTEM_PREFIX + mistral_template_agent2 + ZEPHYR_SYSTEM_SUFFIX
+
+mistral_template_agent3 = PREFIX + """ <|system|>
+Available Tools: {tools}
+
+Use the following format:
+
+Task: the input task you must solve by outputting a valid response to the user task
+Thought: you should always think about what to do
+Action: the action to take, should be one of [{tool_names}]
+Action Input: the input to the action
+Observation: the result of the action
+... (this Thought/Action/Action Input/Observation can repeat N times)
+When you have or know the answer to the user question use the format:
+Thought: I now know the final answer
+Final Answer: The final answer should answer the user question
+</s>
+
+Previous conversation history:
+{history}
+
+<|user|>
+User question: {input} </s>
+{agent_scratchpad}"""
+
+mistral_template_7 = mistral_template_agent3
+
+mistral_template_8 = ZEPHYR_SYSTEM_PREFIX + mistral_template_agent3 + ZEPHYR_SYSTEM_SUFFIX

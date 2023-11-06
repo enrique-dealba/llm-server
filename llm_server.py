@@ -12,7 +12,8 @@ from langchain.agents import AgentExecutor, LLMSingleActionAgent
 from langchain.memory import ConversationBufferWindowMemory
 from tools.custom_tools import get_skyfield_planets_tool, get_planet_distance_tool
 from tools.prompts import CustomPromptTemplate, CustomOutputParser
-from tools.prompts import mistral_template_1, mistral_template_2, mistral_template_3
+from tools.prompts import mistral_template_1, mistral_template_2, mistral_template_3, mistral_template_4
+from tools.prompts import mistral_template_5, mistral_template_6, mistral_template_7, mistral_template_8
 
 app = FastAPI()
 
