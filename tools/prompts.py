@@ -108,6 +108,9 @@ Action: the action to take, should be one of [{tool_names}]
 Action Input: the input to the action
 Observation: the result of the action
 ... (this Thought/Action/Action Input/Observation can repeat N times)
+When you have or know the answer to the user question use the format:
+Thought: I now know the final answer
+Final Answer: The final answer should answer the user question
 
 Previous conversation history:
 {history}
@@ -133,6 +136,9 @@ Action: the action to take, should be one of [{tool_names}]
 Action Input: the input to the action
 Observation: the result of the action
 ... (this Thought/Action/Action Input/Observation can repeat N times)
+When you have or know the answer to the user question use the format:
+Thought: I now know the final answer
+Final Answer: The final answer should answer the user question
 
 Previous conversation history:
 {history}
@@ -172,3 +178,5 @@ User question: {input}
 {agent_scratchpad}"""
 
 mistral_template_3 = ZEPHYR_SYSTEM_PREFIX + mistral_template_agent + ZEPHYR_SYSTEM_SUFFIX
+
+mistral_template_4 = mistral_template_agent
