@@ -58,11 +58,13 @@ class CustomOutputParser(AgentOutputParser):
         pre_final = "Final Answer:" # deleted the ':'
         post_final = "Final Answer"
         if pre_final in llm_output:
+            print("pre_final detected!!!")
             return AgentFinish(
                 return_values={"output": llm_output.split(pre_final)[-1].strip()},
                 log=llm_output,
             )
         elif post_final in llm_output:
+            print("post_final detected!!!")
             return AgentFinish(
                 return_values={"output": llm_output.split(post_final)[-1].strip()},
                 log=llm_output,
@@ -74,12 +76,18 @@ class CustomOutputParser(AgentOutputParser):
             raise ValueError(f"Could not parse LLM output: `{llm_output}`")
 
         # Action parsing
+        print("="*40)
         action = match.group(1).strip()
+        print("Action before:", action)
         action = parse_string(action)
+        print("Action after parse:", action)
 
         # Action input parsing
         action_input = match.group(2)
+        print("action_input before:", action_input)
         action_input = parse_repeated_string(action_input)
+        print("action_input after parse:", action_input)
+        print("="*40)
 
         return AgentAction(tool=action, tool_input=action_input.strip(" ").strip('"'), log=llm_output)
 
