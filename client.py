@@ -1,5 +1,6 @@
 import math
 import os
+import re
 import requests
 import time
 
@@ -37,6 +38,20 @@ def generate_text(prompt):
     payload = {"text": prompt}
     response = requests.post(f"{API_URL}/generate", json=payload)
     return response.json()
+
+def clean_text(input_text: str) -> str:
+    """Cleans up the input text by removing unnecessary characters,
+    extra whitespaces, and correcting formatting."""
+    cleaned_text = input_text.strip('<|>') # Removes trailing characters
+
+    # Removes extra spaces and newlines
+    cleaned_text = re.sub(r'\s+', ' ', cleaned_text).strip()
+
+    # Corrects spacing around punctuation if needed
+    for punct in ['.', ',', '?', '!']:
+        cleaned_text = cleaned_text.replace(f" {punct}", punct)
+    
+    return cleaned_text
 
 def parse_response(input_string: str) -> Optional[str]:
     """Parses "user" or "|user|" text from Zephyr-7B."""
@@ -85,6 +100,7 @@ if __name__ == "__main__":
             response = result['text']
             response = parse_llm_server(response)
             response = parse_response(response)
+            response = clean_text(response)
 
             queries = result['queries']
             print(f"LLM Response: {response}")
