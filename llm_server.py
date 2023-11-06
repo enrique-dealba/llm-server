@@ -152,6 +152,7 @@ llm_agent = LLMAgent(llm=llm)
 
 @app.post("/generate")
 async def generate(request: Request):
+    print("Hello World, from llm_server.py")
     request_dict = await request.json()
     query = request_dict.pop("text", None)
     

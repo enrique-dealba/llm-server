@@ -27,8 +27,33 @@ class CustomPromptTemplate(StringPromptTemplate):
         return self.template.format(**kwargs)
 
 class CustomOutputParser(AgentOutputParser):
-    
+
     def parse(self, llm_output: str) -> Union[AgentAction, AgentFinish]:
+        def parse_string(input_str):
+            """ Robustly parses input string removing surrounding quotes (', ", `) """
+            if len(input_str) < 2:
+                return input_str
+            
+            first_char = input_str[0]
+            last_char = input_str[-1]
+            
+            # Check if the first and last characters are matching quotes
+            if first_char == last_char and first_char in "\"'`":
+                return input_str[1:-1]
+            
+            return input_str
+        def parse_repeated_string(input_str):
+            """
+            Parses a repeated string with backticks and potential punctuation, 
+            removing the backticks and duplicates.
+            """
+            # Removing backticks and punctuation, then splitting by spaces
+            words = re.sub(r"[`',]", "", input_str).split()
+
+            unique_words = list(set(words))
+
+            return " ".join(unique_words)
+
         # Checks if agent should finish
         pre_final = "Final Answer:" # deleted the ':'
         post_final = "Final Answer"
@@ -47,8 +72,14 @@ class CustomOutputParser(AgentOutputParser):
         match = re.search(regex, llm_output, re.DOTALL)
         if not match:
             raise ValueError(f"Could not parse LLM output: `{llm_output}`")
+
+        # Action parsing
         action = match.group(1).strip()
+        action = parse_string(action)
+
+        # Action input parsing
         action_input = match.group(2)
+        action_input = parse_repeated_string(action_input)
 
         return AgentAction(tool=action, tool_input=action_input.strip(" ").strip('"'), log=llm_output)
 

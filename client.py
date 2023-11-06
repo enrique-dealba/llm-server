@@ -3,6 +3,7 @@ import os
 import requests
 import time
 
+from typing import List, Union
 from dotenv import load_dotenv
 import tiktoken
 
@@ -16,9 +17,18 @@ def num_tokens(string: str, encoding_name: str = "cl100k_base") -> int:
     num_tokens = len(encoding.encode(string))
     return num_tokens
 
-def get_tps(string: str, num_seconds):
+def concatenate_strings(responses: List[str]) -> str:
+    if isinstance(responses, list) and all(isinstance(item, str) for item in responses):
+        return " ".join(responses)
+    # Raise an error for invalid input types
+    raise TypeError("Input must be a list of strings")
+
+def get_tps(response: Union[str, List[str]], num_seconds):
     """Returns token per second (tps) performance for LLM."""
-    tokens = num_tokens(string)
+    if isinstance(response, list):
+        response = concatenate_strings(response)
+    
+    tokens = num_tokens(response)
     tps = tokens / num_seconds
     return math.floor(tps)
 
