@@ -29,6 +29,7 @@ def get_tps(response: Union[str, List[str]], num_seconds):
         response = concatenate_strings(response)
     
     tokens = num_tokens(response)
+    print(f"Tokens: {tokens}, Seconds: {num_seconds}")
     tps = tokens / num_seconds
     return math.floor(tps)
 

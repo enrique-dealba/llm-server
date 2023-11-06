@@ -147,8 +147,11 @@ in json markdown that when composed can help answer the full user question:
 
 """
 
+ZEPHYR_SYSTEM_PREFIX = "<|system|>\n"
+ZEPHYR_SYSTEM_SUFFIX = "</s>\n"
+
 ## MISTRAL TEMPLATE #3
-mistral_template_3 = PREFIX + """Available Tools: {tools}
+mistral_template_agent = PREFIX + """Available Tools: {tools}
 
 Use the following format:
 
@@ -167,3 +170,5 @@ Previous conversation history:
 
 User question: {input}
 {agent_scratchpad}"""
+
+mistral_template_3 = ZEPHYR_SYSTEM_PREFIX + mistral_template_agent + ZEPHYR_SYSTEM_SUFFIX

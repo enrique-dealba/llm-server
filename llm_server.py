@@ -104,8 +104,9 @@ class LLMAgent:
         # Prompt for Mistral-based agent.
         prefix = "[INST] "
         suffix = " [/INST]"
-        template = f'''Given the following user task: `{prompt}`, Use your Skyfield tools for planets to answer the user question'''
-        new_prompt = prefix + template + suffix
+        # template = f'''Given the following user task: `{prompt}`, Use your Skyfield tools for planets to answer the user question'''
+        template_agostic = f'''Given the following user task: `{prompt}`, Use your tools to answer the user question'''
+        new_prompt = prefix + template_agostic + suffix
         return new_prompt
 
     def reset_thoughts(self):
