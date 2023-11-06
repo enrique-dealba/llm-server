@@ -3,7 +3,7 @@ import os
 import requests
 import time
 
-from typing import List, Union
+from typing import List, Union, Optional
 from dotenv import load_dotenv
 import tiktoken
 
@@ -38,6 +38,24 @@ def generate_text(prompt):
     response = requests.post(f"{API_URL}/generate", json=payload)
     return response.json()
 
+def parse_response(input_string: str) -> Optional[str]:
+    """Parses "user" or "|user|" text from Zephyr-7B."""
+    keywords = ["user", "|user|"]
+    for keyword in keywords:
+        keyword_index = input_string.find(keyword)
+        if keyword_index != -1:
+            return input_string[:keyword_index].strip()
+    return input_string
+
+def parse_llm_server(input_data: Union[str, List[str]]) -> str:
+    """Parses input data and returns a single string."""
+    if isinstance(input_data, list):
+        return " ".join(input_data)
+    elif isinstance(input_data, str):
+        return input_data
+    else:
+        raise TypeError("Input must be a string or a list of strings.")
+
 def parse_llm(response):
     raw_text = response.get('text', [])
     if not raw_text:
@@ -61,11 +79,16 @@ if __name__ == "__main__":
             result = generate_text(prompt)
             end_time = time.time()
             elapsed_time = end_time - start_time
+            # parse_llm is useful when running my_server.py
             # result = parse_llm(result)
+            # Parses LLM Server responses for Zephyr-7B
             response = result['text']
+            response = parse_llm_server(response)
+            response = parse_response(response)
+
             queries = result['queries']
             print(f"LLM Response: {response}")
-            print(f"LLM Queries: {queries}")
+            print(f"LLM Prev Queries: {queries}")
             print(f"Tokens per second: {get_tps(response, elapsed_time)} t/s")
 
         except requests.exceptions.RequestException as e:

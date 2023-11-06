@@ -62,7 +62,7 @@ class LLMAgent:
         # custom_tools += [get_skyfield_satellites_tool]
         # custom_tools += [get_next_visible_time_for_satellite_tool]
 
-        api_template = mistral_template_3 # or 1, 2, 3, etc
+        api_template = mistral_template_7 # or 1, 2, 3, etc
         
         self.custom_template = CustomPromptTemplate(
             template=api_template,
@@ -85,7 +85,7 @@ class LLMAgent:
         self.memory = ConversationBufferWindowMemory(k=num_memories)
         self.tools = custom_tools
 
-        max_iterations = 8
+        max_iterations = 5 # changed from 8 -> 5
         self.agent_executor = AgentExecutor.from_agent_and_tools(
             agent=self.agent,
             tools=self.tools,
