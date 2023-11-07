@@ -17,6 +17,7 @@ mistral_model = "mistralai/Mistral-7B-Instruct-v0.1"
 # Setting model directly
 llm_model = os.getenv("MODEL", "mistralai/Mistral-7B-Instruct-v0.1")
 
+# TODO: try to lower gpu_memory_utilization to 0.3 - 0.6
 engine_args = AsyncEngineArgs(model=llm_model, gpu_memory_utilization=0.96)
 engine = AsyncLLMEngine.from_engine_args(engine_args)
 
@@ -25,7 +26,7 @@ async def generate(request: Request):
     request_dict = await request.json()
     prompt = request_dict.pop("text", None)
     
-    sampling_params = SamplingParams(n=2, # Number of output sequences to return for the given prompt
+    sampling_params = SamplingParams(n=1, # Number of output sequences to return for the given prompt
                               temperature=0.2,
                               top_p=0.95, # Must be in (0, 1] - set to 1 to consider all tokens
                               #frequency_penalty=0.1, # > 0 leads to new tokens, < 0 leads to repeat tokens
