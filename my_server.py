@@ -46,6 +46,7 @@ async def generate(request: Request):
             await engine.abort(request_id)
             return Response(status_code=499)
         final_output = request_output
+    # TODO: Test streaming
 
     assert final_output is not None
     prompt = final_output.prompt

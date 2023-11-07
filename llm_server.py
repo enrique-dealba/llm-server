@@ -145,16 +145,11 @@ class LLMAgent:
         self.reset_thoughts()
         return responses
 
-# template = """Question: {query}
-# Answer: Let's think step by step."""
-# prompt = PromptTemplate(template=template, input_variables=["query"])
-
 # Instantiates LLMAgent at the module level
 llm_agent = LLMAgent(llm=llm)
 
 @app.post("/generate")
 async def generate(request: Request):
-    print("Hello World, from llm_server.py")
     request_dict = await request.json()
     query = request_dict.pop("text", None)
     

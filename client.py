@@ -71,7 +71,7 @@ def parse_llm_server(input_data: Union[str, List[str]]) -> str:
     else:
         raise TypeError("Input must be a string or a list of strings.")
 
-def parse_llm(response):
+def parse_my_server(response):
     raw_text = response.get('text', [])
     if not raw_text:
         return "No response from LLM."
@@ -83,6 +83,8 @@ def parse_llm(response):
     return parsed_str.strip()
 
 if __name__ == "__main__":
+    # Change to True if using llm_server.py
+    using_llm_server = False
     while True:
         prompt = input("Prompt: ")
         if prompt.lower() in ["quit", "exit"]:
@@ -94,13 +96,17 @@ if __name__ == "__main__":
             result = generate_text(prompt)
             end_time = time.time()
             elapsed_time = end_time - start_time
-            # parse_llm is useful when running my_server.py
-            # result = parse_llm(result)
-            # Parses LLM Server responses for Zephyr-7B
+
             response = result['text']
-            response = parse_llm_server(response)
-            response = parse_response(response)
-            response = clean_text(response)
+            # Different parsings for llm_server vs my_server
+            if using_llm_server:
+                # Parsings tuned for Zephyr-7B
+                # TODO: Validate for Mistral-7B
+                response = parse_llm_server(response)
+                response = parse_response(response)
+                response = clean_text(response)
+            else:
+                response = parse_my_server(result)
 
             queries = result['queries']
             print(f"LLM Response: {response}")

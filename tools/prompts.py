@@ -235,3 +235,51 @@ User question: {input} </s>
 mistral_template_7 = mistral_template_agent3
 
 mistral_template_8 = ZEPHYR_SYSTEM_PREFIX + mistral_template_agent3 + ZEPHYR_SYSTEM_SUFFIX
+
+mistral_1 = mistral_template_agent3
+
+mistral_2 = PREFIX + """ <|system|>
+Available Tools: {tools}
+
+Use the following format:
+
+Task: the input task you must solve by outputting a valid response to the user question
+Thought: you must always think about what to do
+Action: the action to take, must be one of [{tool_names}]
+Action Input: the input to the action
+Observation: the result of the action
+... (this Thought/Action/Action Input/Observation can repeat multiple times)
+When you know the answer to the user question use the format:
+Thought: I now know the final answer
+Final Answer: The final answer should answer the user question
+</s>
+
+Previous conversation history:
+{history}
+
+<|user|>
+User question: {input} </s>
+{agent_scratchpad}"""
+
+mistral_3 = PREFIX + """ <|system|>
+Available Tools: {tools}
+
+Use the following format:
+
+Task: the input task you must solve by outputting a valid response to the user question
+Thought: you must always think about what to do
+Action: the action to take, must be one of [{tool_names}]
+Action Input: the input to the action
+Observation: the result of the action
+... (this Thought/Action/Action Input/Observation can repeat multiple times)
+When you know the answer to the user question use the format:
+Thought: I now know the final answer
+Final Answer: The final answer should answer the user question
+</s>
+
+Previous conversation history:
+{history}
+
+<|user|>
+User question: {input} </s>
+{agent_scratchpad}"""
