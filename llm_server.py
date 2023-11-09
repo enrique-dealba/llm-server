@@ -3,7 +3,7 @@ import os
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse, Response, StreamingResponse
 from langchain.llms import VLLM
-from pydantic import BaseModel, BaseSettings
+from pydantic import BaseModel, BaseSettings, validator
 
 from llm_agent import LLMAgent
 
@@ -19,6 +19,10 @@ class Config(BaseSettings):
         num_gpus: int = 1
         temperature: float = 0.2
         max_new_tokens: int = 512
+
+    @validator('llm_model', pre=True, always=True)
+    def set_llm_model(cls, v):
+        return v or cls.opt_model
 
     def create_llm(self):
         return VLLM(
