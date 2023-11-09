@@ -1,6 +1,7 @@
 from langchain.agents import Tool
 from langchain.tools import BaseTool
 from pydantic import BaseModel, Field
+import re
 
 ## Skyfield API
 from skyfield.api import load, Topos
@@ -34,11 +35,10 @@ class PlanetDistance(BaseModel):
     planet_names: str = Field(description="Valid planet names from Skyfield")
     # planet_2: str = Field(description="Valid planet name from Skyfield")
 
-def get_planet_distance(planet_names: str,
-                        #planet_2: str,
-                        *args, **kwargs):
+def get_planet_distance(planet_names: str, *args, **kwargs):
     print(f"planets: {planet_names}")
-    planet_list = planet_names.split(", ")
+    # Splits 'A and B', 'A, B', and 'A & B' for A, B \in planets
+    planet_list = re.split(r',\s*|\s+and\s+|\s*&\s*', planet_names)
     assert len(planet_list) >= 2 # Make sure there's at least 2 planet entries
     planet_1 = planet_list[0]
     planet_2 = planet_list[1]
