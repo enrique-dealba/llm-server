@@ -1,10 +1,10 @@
-import json
 import argparse
+import json
 import os
 
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse, Response, StreamingResponse
-from vllm import LLMEngine, EngineArgs, SamplingParams
+from vllm import EngineArgs, LLMEngine, SamplingParams
 from vllm.engine.arg_utils import AsyncEngineArgs
 from vllm.engine.async_llm_engine import AsyncLLMEngine
 from vllm.utils import random_uuid
@@ -18,7 +18,7 @@ mistral_model = "mistralai/Mistral-7B-Instruct-v0.1"
 llm_model = os.getenv("MODEL", "mistralai/Mistral-7B-Instruct-v0.1")
 
 # TODO: try to lower gpu_memory_utilization to 0.3 - 0.6
-engine_args = AsyncEngineArgs(model=llm_model, gpu_memory_utilization=0.96)
+engine_args = AsyncEngineArgs(model=llm_model, gpu_memory_utilization=0.80)
 engine = AsyncLLMEngine.from_engine_args(engine_args)
 
 @app.post("/generate")
@@ -32,7 +32,7 @@ async def generate(request: Request):
                               #frequency_penalty=0.1, # > 0 leads to new tokens, < 0 leads to repeat tokens
                               #use_beam_search=False, # whether to use beam search instead of sampling
                               max_tokens=250,
-                            )
+    )
     
     request_id = random_uuid()
     results_generator = engine.generate(prompt, sampling_params, request_id)
