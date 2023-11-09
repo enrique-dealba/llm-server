@@ -33,8 +33,8 @@ class LLMAgent:
         custom_tools = []
 
         ## Add list of API tools
-        custom_tools += [get_skyfield_planets_tool]
-        # custom_tools += [get_planet_distance_tool]
+        # custom_tools += [get_skyfield_planets_tool]
+        custom_tools += [get_planet_distance_tool]
         # custom_tools += [get_latitude_longitude_tool]
         # custom_tools += [get_skyfield_satellites_tool]
         # custom_tools += [get_next_visible_time_for_satellite_tool]
