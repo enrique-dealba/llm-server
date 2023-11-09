@@ -83,8 +83,8 @@ def parse_my_server(response):
     return parsed_str.strip()
 
 if __name__ == "__main__":
-    # Change to True if using llm_server.py
-    using_llm_server = False
+    # Changes to False if using my_server.py
+    using_llm_server = os.getenv("USING_LLM_SERVER", "False").lower() == "true"
     while True:
         prompt = input("Prompt: ")
         if prompt.lower() in ["quit", "exit"]:
@@ -108,7 +108,7 @@ if __name__ == "__main__":
                 queries = result['queries']
             else:
                 response = parse_my_server(result)
-
+            
             print(f"LLM Response: {response}")
             if using_llm_server:
                 print(f"LLM Prev Queries: {queries}")
