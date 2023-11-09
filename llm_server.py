@@ -3,21 +3,22 @@ import os
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse, Response, StreamingResponse
 from langchain.llms import VLLM
+from pydantic import BaseModel, BaseSettings
 
 from llm_agent import LLMAgent
 
 
-class Config:
+class Config(BaseSettings):
     def __init__(self):
-        self.opt_model = "facebook/opt-125m"
-        self.mistral_model = "mistralai/Mistral-7B-Instruct-v0.1"
-        self.zephyr_model = "HuggingFaceH4/zephyr-7b-beta"
-        self.llm_model = os.getenv("MODEL", self.zephyr_model)
+        opt_model: str = "facebook/opt-125m"
+        mistral_model: str = "mistralai/Mistral-7B-Instruct-v0.1"
+        zephyr_model: str = "HuggingFaceH4/zephyr-7b-beta"
+        llm_model: str = os.getenv("MODEL", self.opt_model) # Defaults to opt-125m
 
         # LLM Configs
-        self.num_gpus = 1
-        self.temperature = 0.2
-        self.max_new_tokens = 512
+        num_gpus: int = 1
+        temperature: float = 0.2
+        max_new_tokens: int = 512
 
     def create_llm(self):
         return VLLM(
@@ -28,6 +29,11 @@ class Config:
             tensor_parallel_size=self.num_gpus,
             trust_remote_code=True,
         )
+
+
+class GenerateRequest(BaseModel):
+    text: str
+
 
 app = FastAPI()
 
@@ -42,7 +48,8 @@ app = FastAPI()
 @app.post("/generate")
 async def generate(request: Request):
     request_dict = await request.json()
-    query = request_dict.pop("text", None)
+    request_data = GenerateRequest(**request_dict)
+    query = request_data.text
     
     llm_agent.add_query(query)
 
