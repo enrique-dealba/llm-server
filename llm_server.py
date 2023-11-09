@@ -3,27 +3,23 @@ import os
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse, Response, StreamingResponse
 from langchain.llms import VLLM
-from pydantic import BaseModel, BaseSettings, validator
+from pydantic import BaseModel
 
 from llm_agent import LLMAgent
 
 
-class Config(BaseSettings):
+class Config():
     def __init__(self):
-        opt_model: str = "facebook/opt-125m"
-        mistral_model: str = "mistralai/Mistral-7B-Instruct-v0.1"
-        zephyr_model: str = "HuggingFaceH4/zephyr-7b-beta"
-        llm_model: str = os.getenv("MODEL", self.opt_model) # Defaults to opt-125m
+        self.opt_model: str = "facebook/opt-125m"
+        self.mistral_model: str = "mistralai/Mistral-7B-Instruct-v0.1"
+        self.zephyr_model: str = "HuggingFaceH4/zephyr-7b-beta"
+        self.llm_model: str = os.getenv("MODEL", self.opt_model) # Defaults to opt-125m
 
         # LLM Configs
-        num_gpus: int = 1
-        temperature: float = 0.2
-        max_new_tokens: int = 512
-
-    @validator('llm_model', pre=True, always=True)
-    def set_llm_model(cls, v):
-        return v or cls.opt_model
-
+        self.num_gpus: int = 1
+        self.temperature: float = 0.2
+        self.max_new_tokens: int = 512
+    
     def create_llm(self):
         return VLLM(
             model=self.llm_model,
