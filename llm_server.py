@@ -4,7 +4,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse, Response, StreamingResponse
 from langchain.llms import VLLM
 
-from .llm_agent import LLMAgent
+from llm_agent import LLMAgent
 
 
 class Config:
