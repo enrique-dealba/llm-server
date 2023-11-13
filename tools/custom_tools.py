@@ -37,11 +37,11 @@ class PlanetDistance(BaseModel):
 
 def get_planet_distance(planet_names: str, *args, **kwargs):
     print(f"planets: {planet_names}")
-    # Splits 'A and B', 'A, B', and 'A & B' for A, B \in planets
-    planet_list = re.split(r',\s*|\s+and\s+|\s*&\s*', planet_names)
-    assert len(planet_list) >= 2 # Make sure there's at least 2 planet entries
-    planet_1 = planet_list[0]
-    planet_2 = planet_list[1]
+    # Splits 'A and B', 'A, B', and 'A & B' for A, B \in planets into ['', 'A', 'B', '']
+    planet_list = re.split(r'\b(\w+)\b\s*(?:and|&|,)\s*\b(\w+)\b', planet_names)
+    assert len(planet_list) == 4
+    planet_1 = planet_list[1]
+    planet_2 = planet_list[2]
 
     planets = load('de421.bsp')
     planet_a = planets[str(planet_1)]
