@@ -148,7 +148,7 @@ get_planet_distance_tool = Tool(
     name="get_planet_distance",
     func=get_planet_distance,
     description = (
-        "Use this tool to get distance between planets from Skyfield."
+        "Use this tool to get distance in au (Astronomical units) between planets from Skyfield."
         "Note: Make sure to input valid planet names."
         ),
     args_schema = PlanetDistance
