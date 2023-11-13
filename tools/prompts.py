@@ -57,6 +57,10 @@ class CustomOutputParser(AgentOutputParser):
         # Checks if agent should finish
         pre_final = "Final Answer:" # deleted the ':'
         post_final = "Final Answer"
+        # TODO: Make this more general. E.g., sometimes LLM uses "Conclusion:"
+        """
+        Zephyr 7B ReAct Notes:
+        """
         if pre_final in llm_output:
             print("pre_final detected!!!")
             return AgentFinish(
