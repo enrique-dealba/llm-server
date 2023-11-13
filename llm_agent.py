@@ -3,7 +3,10 @@ from langchain.chains import LLMChain
 from langchain.memory import ConversationBufferWindowMemory
 
 from tools.custom_tools import (get_planet_distance_tool,
-                                get_skyfield_planets_tool)
+                                get_skyfield_planets_tool,
+                                get_latitude_longitude_tool,
+                                get_skyfield_satellites_tool,
+                                get_next_visible_time_for_satellite_tool)
 from tools.prompts import (CustomOutputParser, CustomPromptTemplate,
                            mistral_template_1, mistral_template_2,
                            mistral_template_3, mistral_template_4,
@@ -35,9 +38,9 @@ class LLMAgent:
         custom_tools = []
 
         ## Add list of API tools
-        # custom_tools += [get_skyfield_planets_tool]
+        custom_tools += [get_skyfield_planets_tool]
         custom_tools += [get_planet_distance_tool]
-        # custom_tools += [get_latitude_longitude_tool]
+        custom_tools += [get_latitude_longitude_tool]
         # custom_tools += [get_skyfield_satellites_tool]
         # custom_tools += [get_next_visible_time_for_satellite_tool]
 

@@ -60,6 +60,11 @@ class CustomOutputParser(AgentOutputParser):
         # TODO: Make this more general. E.g., sometimes LLM uses "Conclusion:"
         """
         Zephyr 7B ReAct Notes:
+        Sometimes have:
+        'Final Answer: XYZ
+        Thought: ABC
+        etc'
+        Might want to clip to just 'Final Answer: XYZ' and not include other stuff.
         """
         if pre_final in llm_output:
             print("pre_final detected!!!")
