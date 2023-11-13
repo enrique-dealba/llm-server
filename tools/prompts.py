@@ -261,7 +261,13 @@ Previous conversation history:
 User question: {input} </s>
 {agent_scratchpad}"""
 
-mistral_3 = PREFIX + """ <|system|>
+PREFIX_2 = """\
+Given a user question, and a list of tools, output a question \
+in json markdown that can help answer the user question:
+
+"""
+
+mistral_3 = PREFIX_2 + """ <|system|>
 Available Tools: {tools}
 
 Use the following format:
@@ -273,6 +279,52 @@ Action Input: the input to the action
 Observation: the result of the action
 ... (this Thought/Action/Action Input/Observation can repeat multiple times)
 When you know the answer to the user question use the format:
+Thought: I now know the final answer
+Final Answer: The final answer should answer the user question
+</s>
+
+Previous conversation history:
+{history}
+
+<|user|>
+User question: {input} </s>
+{agent_scratchpad}"""
+
+mistral_4 = PREFIX_2 + """ <|system|>
+Available Tools: {tools}
+
+Use the following format:
+
+Task: the input task you must solve by outputting a valid response to the user question
+Thought: you must always think about what to do
+Action: the action to take, must be one of [{tool_names}]
+Action Input: the input to the action
+Observation: the result of the action
+... (this Thought/Action/Action Input/Observation can repeat multiple times)
+When you know the answer to the user question use the format:
+Thought: I now know the final answer
+Final Answer: The final answer should answer the user question
+</s>
+
+Previous conversation history:
+{history}
+
+<|user|>
+User question: {input} </s>
+{agent_scratchpad}"""
+
+mistral_5 = PREFIX_2 + """ <|system|>
+Available Tools: {tools}
+
+Use the following format:
+
+Task: the input task you must solve by outputting a valid response to the user task
+Thought: you should always think about what to do
+Action: the action to take, should be one of [{tool_names}]
+Action Input: the input to the action
+Observation: the result of the action
+... (this Thought/Action/Action Input/Observation can repeat N times)
+When you have or know the answer to the user question use the format:
 Thought: I now know the final answer
 Final Answer: The final answer should answer the user question
 </s>

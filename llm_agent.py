@@ -8,7 +8,9 @@ from tools.prompts import (CustomOutputParser, CustomPromptTemplate,
                            mistral_template_1, mistral_template_2,
                            mistral_template_3, mistral_template_4,
                            mistral_template_5, mistral_template_6,
-                           mistral_template_7, mistral_template_8)
+                           mistral_template_7, mistral_template_8,
+                           mistral_1, mistral_2, mistral_3,
+                           mistral_4, mistral_5)
 
 
 class LLMAgent:
@@ -39,7 +41,8 @@ class LLMAgent:
         # custom_tools += [get_skyfield_satellites_tool]
         # custom_tools += [get_next_visible_time_for_satellite_tool]
 
-        api_template = mistral_template_7 # or 1, 2, 3, etc
+        # TODO: mistral_1 - 5 testing
+        api_template = mistral_1 # or 1, 2, 3, etc
         
         self.custom_template = CustomPromptTemplate(
             template=api_template,
