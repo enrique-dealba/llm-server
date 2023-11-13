@@ -36,14 +36,20 @@ class PlanetDistance(BaseModel):
     # planet_2: str = Field(description="Valid planet name from Skyfield")
 
 def get_planet_distance(planet_names: str, *args, **kwargs):
-    print(f"planets: {planet_names}")
-    # Splits 'A and B', 'A, B', and 'A & B' for A, B \in planets into ['', 'A', 'B', '']
-    planet_list = re.split(r'\b(\w+)\b\s*(?:and|&|,)\s*\b(\w+)\b', planet_names)
-    assert len(planet_list) == 4
-    planet_1 = planet_list[1]
-    planet_2 = planet_list[2]
-
     planets = load('de421.bsp')
+    names_dict = planets.names()
+    planet_list = [name for sublist in names_dict.values() for name in sublist]
+    planet_set = set(planet.lower() for planet in planet_list)
+
+    print(f"planet_names: {planet_names}")
+    found_planets = set(re.findall(r'\b\w+\b', planet_names.lower())) & planet_set
+    # Check if at least two unique planets are found
+    if len(found_planets) < 2:
+        return f"I can't find the distance for: {planet_names}"
+    
+    planet_1 = planet_list[0]
+    planet_2 = planet_list[1]
+
     planet_a = planets[str(planet_1)]
     planet_b = planets[str(planet_2)]
     
