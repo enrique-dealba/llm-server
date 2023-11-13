@@ -47,8 +47,9 @@ def get_planet_distance(planet_names: str, *args, **kwargs):
     if len(found_planets) < 2:
         return f"I can't find the distance for: {planet_names}"
     
-    planet_1 = planet_list[0]
-    planet_2 = planet_list[1]
+    found_planets = [planet.capitalize() for planet in found_planets]
+    planet_1 = found_planets[0]
+    planet_2 = found_planets[1]
 
     planet_a = planets[str(planet_1)]
     planet_b = planets[str(planet_2)]
