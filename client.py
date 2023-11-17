@@ -54,8 +54,8 @@ def clean_text(input_text: str) -> str:
     return cleaned_text
 
 def parse_response(input_string: str) -> Optional[str]:
-    """Parses "user" or "|user|" text from Zephyr-7B."""
-    keywords = ["user", "|user|"]
+    """Parses "user" or "|user|" text variations from Zephyr-7B."""
+    keywords = ["user", "|user|", "[/USER]", "USER"]
     for keyword in keywords:
         keyword_index = input_string.find(keyword)
         if keyword_index != -1:
@@ -108,7 +108,7 @@ if __name__ == "__main__":
                 queries = result['queries']
             else:
                 response = parse_my_server(result)
-            
+            "?"
             print(f"\nLLM Response: {response}")
             if using_llm_server:
                 print(f"LLM Prev Queries: {queries}")
