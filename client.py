@@ -55,7 +55,7 @@ def clean_text(input_text: str) -> str:
 
 def parse_response(input_string: str) -> Optional[str]:
     """Parses "user" or "|user|" text variations from Zephyr-7B."""
-    keywords = ["user", "|user|", "[/USER]", "USER"]
+    keywords = ["[/user]", "|user|", "user", "[/USER]", "USER"]
     for keyword in keywords:
         keyword_index = input_string.find(keyword)
         if keyword_index != -1:
