@@ -109,7 +109,7 @@ if __name__ == "__main__":
             else:
                 response = parse_my_server(result)
             
-            print(f"LLM Response: {response}")
+            print(f"\nLLM Response: {response}")
             if using_llm_server:
                 print(f"LLM Prev Queries: {queries}")
             print(f"Tokens per second: {get_tps(response, elapsed_time)} t/s")
