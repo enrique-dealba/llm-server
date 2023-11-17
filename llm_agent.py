@@ -45,7 +45,16 @@ class LLMAgent:
         # custom_tools += [get_next_visible_time_for_satellite_tool]
 
         # TODO: mistral_1 - 5 testing
-        api_template = mistral_1 # or 1, 2, 3, etc
+        """
+        mistral_1 - mistral_5 Testing Notes:
+        n = bad, - = worse, + = better, 0 = no test, y = good
+        mistral_1: n, n-,
+        mistral_2: n, n, 
+        mistral_3: n, n-, 
+        mistral_4: 0, n-, 
+        mistral_5: 0, n, 
+        """
+        api_template = mistral_2 # 2 seems most stable
         
         self.custom_template = CustomPromptTemplate(
             template=api_template,
