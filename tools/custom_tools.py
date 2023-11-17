@@ -88,7 +88,7 @@ def get_next_visible_time_for_satellite(satellite_and_location: str, *args, **kw
     sat_loc_list = satellite_and_location.split(" and ")
     assert len(sat_loc_list) >= 2 # Make sure there's at least 2 entries
     satellite_name = sat_loc_list[0]
-    location_name = sat_loc_list[1]=
+    location_name = sat_loc_list[1]
     print("location_name:", location_name, len(location_name))
     print("satellite_name:", satellite_name, len(satellite_name))
     lat_, long_ = get_latitude_longitude(location=location_name)
