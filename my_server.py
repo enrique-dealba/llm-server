@@ -53,7 +53,7 @@ async def generate(request: Request):
     assert final_output is not None
     prompt = final_output.prompt
     # text_outputs = [prompt + output.text for output in final_output.outputs]
-    # TODO: Are there multiple outputs because of n>1?
+    # TODO: Are there multiple outputs because of n>1? (Pretty sure)
     text_outputs = [output.text for output in final_output.outputs]
     ret = {"text": text_outputs}
 

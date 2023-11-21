@@ -344,3 +344,50 @@ Previous conversation history:
 <|user|>
 User question: {input} </s>
 {agent_scratchpad}"""
+
+fn = """{"name": "function_name", "arguments": {"arg_1": value_1, "arg_2": value_2, ...}}"""
+
+open_hermes_mistral_1 = """<|im_start|>system
+You are a helpful assistant with access to the following functions:
+{tools}
+
+To use these functions respond with:
+<functioncall> {fn} </functioncall>
+
+Edge cases you must handle:
+- If there are no functions that match the user request, you will respond politely that you cannot help.<|im_end|>
+<|im_start|>user
+{input}<|im_end|>
+<|im_start|>assistant
+"""
+
+open_hermes_mistral_2 = """<|im_start|>system
+You are a helpful assistant with access to the following functions:
+{tools}
+
+with the function names:
+{tool_names}
+
+To use these functions respond with:
+<functioncall> {fn} </functioncall>
+
+Edge cases you must handle:
+- If there are no functions that match the user request, you will respond politely that you cannot help.<|im_end|>
+<|im_start|>user
+{input}<|im_end|>
+<|im_start|>assistant
+"""
+
+open_hermes_mistral_3 = """<|im_start|>system
+You are a helpful assistant with access to the following functions:
+{tool_names}
+
+To use these functions respond with:
+<functioncall> {fn} </functioncall>
+
+Edge cases you must handle:
+- If there are no functions that match the user request, you will respond politely that you cannot help.<|im_end|>
+<|im_start|>user
+{input}<|im_end|>
+<|im_start|>assistant
+"""

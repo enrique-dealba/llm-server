@@ -13,7 +13,8 @@ from tools.prompts import (CustomOutputParser, CustomPromptTemplate,
                            mistral_template_5, mistral_template_6,
                            mistral_template_7, mistral_template_8,
                            mistral_1, mistral_2, mistral_3,
-                           mistral_4, mistral_5)
+                           mistral_4, mistral_5, open_hermes_mistral_1,
+                           open_hermes_mistral_2, open_hermes_mistral_3)
 
 
 class LLMAgent:
@@ -39,8 +40,8 @@ class LLMAgent:
 
         ## Add list of API tools
         custom_tools += [get_skyfield_planets_tool]
-        custom_tools += [get_planet_distance_tool]
-        custom_tools += [get_latitude_longitude_tool]
+        # custom_tools += [get_planet_distance_tool]
+        # custom_tools += [get_latitude_longitude_tool]
         # custom_tools += [get_skyfield_satellites_tool]
         # custom_tools += [get_next_visible_time_for_satellite_tool]
 
@@ -54,6 +55,9 @@ class LLMAgent:
         mistral_4: 0, n-, 
         mistral_5: 0, n, 
         """
+        # TODO: Open-hermes 2.5 function calling testing
+        """open_hermes_mistral_1 - 3 ... testing here"""
+        # api_template = open_hermes_mistral_1
         api_template = mistral_2 # 2 seems most stable
         
         self.custom_template = CustomPromptTemplate(

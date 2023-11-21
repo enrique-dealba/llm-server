@@ -13,6 +13,9 @@ class Config():
         self.opt_model: str = "facebook/opt-125m"
         self.mistral_model: str = "mistralai/Mistral-7B-Instruct-v0.1"
         self.zephyr_model: str = "HuggingFaceH4/zephyr-7b-beta"
+        self.hermes_model: str = "teknium/OpenHermes-2.5-Mistral-7B"
+        self.yarn_64k_model: str = "NousResearch/Yarn-Mistral-7b-64k"
+        self.yarn_128k_model: str = "NousResearch/Yarn-Mistral-7b-128k"
         self.llm_model: str = os.getenv("MODEL", self.opt_model) # Defaults to opt-125m
 
         # LLM Configs
