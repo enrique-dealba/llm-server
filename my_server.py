@@ -11,11 +11,15 @@ from vllm.utils import random_uuid
 
 app = FastAPI()
 
-opt_model = "facebook/opt-125m" # For testing
-mistral_model = "mistralai/Mistral-7B-Instruct-v0.1"
+opt_model: str = "facebook/opt-125m"
+mistral_model: str = "mistralai/Mistral-7B-Instruct-v0.1"
+zephyr_model: str = "HuggingFaceH4/zephyr-7b-beta"
+hermes_model: str = "teknium/OpenHermes-2.5-Mistral-7B"
+yarn_64k_model: str = "NousResearch/Yarn-Mistral-7b-64k"
+yarn_128k_model: str = "NousResearch/Yarn-Mistral-7b-128k"
 
 # Setting model directly
-llm_model = os.getenv("MODEL", "mistralai/Mistral-7B-Instruct-v0.1")
+llm_model = os.getenv("MODEL", yarn_64k_model)
 
 # TODO: try to lower gpu_memory_utilization to 0.3 - 0.6
 # TODO: start with 0.80 to see if it works
