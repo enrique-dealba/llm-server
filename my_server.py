@@ -19,7 +19,7 @@ yarn_64k_model: str = "NousResearch/Yarn-Mistral-7b-64k"
 yarn_128k_model: str = "NousResearch/Yarn-Mistral-7b-128k"
 
 # Setting model directly
-llm_model = os.getenv("MODEL", yarn_64k_model)
+llm_model = os.getenv("MODEL", mistral_model)
 
 # TODO: try to lower gpu_memory_utilization to 0.3 - 0.6
 # TODO: start with 0.80 to see if it works

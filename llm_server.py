@@ -16,7 +16,7 @@ class Config():
         self.hermes_model: str = "teknium/OpenHermes-2.5-Mistral-7B"
         self.yarn_64k_model: str = "NousResearch/Yarn-Mistral-7b-64k"
         self.yarn_128k_model: str = "NousResearch/Yarn-Mistral-7b-128k"
-        self.llm_model: str = os.getenv("MODEL", self.opt_model) # Defaults to opt-125m
+        self.llm_model: str = os.getenv("MODEL", self.yarn_64k_model) # Defaults to opt-125m
 
         # LLM Configs
         self.num_gpus: int = 1
@@ -50,13 +50,17 @@ app = FastAPI()
 
 @app.post("/generate")
 async def generate(request: Request):
+    # For testing LLM when my_server doesn't work
+    test = True
     request_dict = await request.json()
     request_data = GenerateRequest(**request_dict)
     query = request_data.text
-    
-    llm_agent.add_query(query)
 
-    response = llm_agent.run(query)
+    llm_agent.add_query(query)
+    if test:
+        response = llm(query)
+    else:
+        response = llm_agent.run(query)
 
     ret = {"text": response, "queries": llm_agent.queries}
 
