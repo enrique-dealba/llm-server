@@ -1,5 +1,7 @@
 import unittest
+
 from docker import from_env
+
 
 class TestDockerfile(unittest.TestCase):
     def setUp(self):
