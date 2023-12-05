@@ -8,9 +8,13 @@ class TestDockerfile(unittest.TestCase):
         print("Setting up the test...")
         self.client = from_env()
         print("Building the image...")
-        self.image, _ = self.client.images.build(path=".", tag="myapp:test")
+        self.image, _ = self.client.images.build(path="..", tag="myapp:test")
         print("Docker image built.")
-
+    
+    def tearDown(self):
+        print("Cleaning up...")
+        self.client.images.remove(image="myapp:test", force=True)
+    
     def test_image_build(self):
         print("Testing image build...")
         self.assertIsNotNone(self.image)
