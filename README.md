@@ -19,6 +19,18 @@ If you don't want to use the cached model weights, you can also run:
 
 ## Usage
 
+Use the following `.env` setup for the base LLM implementation.
+```.env
+SERVER_TYPE=my_server
+USING_LLM_SERVER=False
+```
+Note: `llm_server.py` is for R&D.
+
+Also, make sure the `my_server.py` script is using the model you want to test:
+```python
+llm_model = os.getenv("MODEL", model_name_here)
+```
+
 ### API Endpoint
 The server listens on port 8888. You can interact with it using the `/generate` endpoint:
 
