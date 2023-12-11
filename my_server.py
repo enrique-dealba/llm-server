@@ -15,8 +15,6 @@ opt_model: str = "facebook/opt-125m"
 mistral_model: str = "mistralai/Mistral-7B-Instruct-v0.1"
 zephyr_model: str = "HuggingFaceH4/zephyr-7b-beta"
 hermes_model: str = "teknium/OpenHermes-2.5-Mistral-7B"
-yarn_64k_model: str = "NousResearch/Yarn-Mistral-7b-64k"
-yarn_128k_model: str = "NousResearch/Yarn-Mistral-7b-128k"
 
 # Setting model directly
 llm_model = os.getenv("MODEL", mistral_model)
@@ -56,8 +54,6 @@ async def generate(request: Request):
 
     assert final_output is not None
     prompt = final_output.prompt
-    # text_outputs = [prompt + output.text for output in final_output.outputs]
-    # TODO: Are there multiple outputs because of n>1? (Pretty sure)
     text_outputs = [output.text for output in final_output.outputs]
     ret = {"text": text_outputs}
 
