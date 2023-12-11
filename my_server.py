@@ -20,8 +20,7 @@ hermes_model: str = "teknium/OpenHermes-2.5-Mistral-7B"
 llm_model = os.getenv("MODEL", mistral_model)
 
 # TODO: try to lower gpu_memory_utilization to 0.3 - 0.6
-# TODO: start with 0.80 to see if it works
-engine_args = AsyncEngineArgs(model=llm_model, gpu_memory_utilization=0.50)
+engine_args = AsyncEngineArgs(model=llm_model, gpu_memory_utilization=0.3)
 engine = AsyncLLMEngine.from_engine_args(engine_args)
 
 @app.post("/generate")
