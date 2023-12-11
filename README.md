@@ -46,8 +46,8 @@ Note: For our usage of `client.py` we use a conda env with Python 3.11.5:
 3. `pip -r requirements.txt`
 
 ## Important Notes
-- If you're using the Mistral-7B-Instruct model, make sure you have around 18.2 GiB of GPU memory. This has been tested on A100 GPUs.
-- In `my_server.py` you can change the GPU memory utilization like so. In this example we're working with 81.92 GiB NVIDIA A100 GPUs, so to get 18.2 GiB for a 7B LLM we need a 0.25 GPU memory utilization:
+- If you're using the Mistral-7B-Instruct model, make sure to have at least 18.2 GiB of GPU memory. This has been tested on A100 GPUs.
+- In our example we're working with 81.92 GiB NVIDIA A100 GPUs, so to get 18.2 GiB for a 7B LLM we need a 0.25 GPU memory utilization. In `my_server.py` you can change the GPU memory utilization like so:
 ```python
 engine_args = AsyncEngineArgs(model=llm_model, gpu_memory_utilization=0.25)
 engine = AsyncLLMEngine.from_engine_args(engine_args)
