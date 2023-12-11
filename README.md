@@ -37,12 +37,21 @@ The server listens on port 8888. You can interact with it using the `/generate` 
 `curl -X POST -d '{"text": "your_prompt_here"}' http://localhost:8888/generate`
 
 ### Using client.py
-Alternatively, you can use `client.py` to interact with the server:
-`python client.py`
+Alternatively, you can use `client.py` to interact with the server by running `python client.py`
 Follow the prompt to input your text.
 
+Note: For our usage of `client.py` we use a conda env with Python 3.11.5:
+1. `conda create -n llm python=3.11.5`
+2. `conda activate llm`
+3. `pip -r requirements.txt`
+
 ## Important Notes
-- If you're using the Mistral-7B-Instruct model, make sure you have around 75.713 GiB of GPU memory. This has been tested on A100 GPUs.
+- If you're using the Mistral-7B-Instruct model, make sure you have around 18.2 GiB of GPU memory. This has been tested on A100 GPUs.
+- In `my_server.py` you can change the GPU memory utilization like so. In this example we're working with 81.92 GiB NVIDIA A100 GPUs, so to get 18.2 GiB for a 7B LLM we need a 0.25 GPU memory utilization:
+```python
+engine_args = AsyncEngineArgs(model=llm_model, gpu_memory_utilization=0.25)
+engine = AsyncLLMEngine.from_engine_args(engine_args)
+```
 
 ## Troubleshooting
 - Make sure Docker has access to your GPU. You may need to install NVIDIA Docker if not already done so.
