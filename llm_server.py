@@ -46,8 +46,6 @@ config = Config()
 llm = config.create_llm()
 llm_agent = LLMAgent(llm=llm)
 
-app = FastAPI()
-
 @app.post("/generate")
 async def generate(request: Request):
     # For testing LLM when my_server doesn't work
