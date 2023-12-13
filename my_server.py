@@ -13,13 +13,15 @@ app = FastAPI()
 
 opt_model: str = "facebook/opt-125m"
 mistral_model: str = "mistralai/Mistral-7B-Instruct-v0.1"
+mistral_cpu: str = "TheBloke/Mistral-7B-Instruct-v0.1-GGUF"
 zephyr_model: str = "HuggingFaceH4/zephyr-7b-beta"
 hermes_model: str = "teknium/OpenHermes-2.5-Mistral-7B"
 
 # Setting model directly
-llm_model = os.getenv("MODEL", mistral_model)
+llm_model = os.getenv("MODEL", mistral_cpu)
 
-engine_args = AsyncEngineArgs(model=llm_model, gpu_memory_utilization=0.25)
+# gpu_memory_utilization=0.25 works for 7B models
+engine_args = AsyncEngineArgs(model=llm_model, gpu_memory_utilization=0.50)
 engine = AsyncLLMEngine.from_engine_args(engine_args)
 
 @app.post("/generate")
