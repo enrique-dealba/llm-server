@@ -43,7 +43,7 @@ Follow the prompt to input your text.
 Note: For our usage of `client.py` we use a conda env with Python 3.11.5:
 1. `conda create -n llm python=3.11.5`
 2. `conda activate llm`
-3. `pip -r requirements.txt`
+3. `pip install -r requirements.txt`
 
 ## Important Notes
 - If you're using the Mistral-7B-Instruct model, make sure to have at least 18.2 GiB of GPU memory. This has been tested on A100 GPUs.
