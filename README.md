@@ -28,14 +28,14 @@ docker run --gpus all --rm -p 8888:8888 my_llm_server
 
 ## GPU Performance Metrics
 
-Below is a comparison of performance metrics across different LLMs at different quantizations.
+The following table shows GPU performance metrics for different LLMs, focusing on the 4-bit Activation-aware Weight Quantization (AWQ) and default 16-bit precision formats.
 
-| | **Bits** | **4 (AWQ)** | **BB** | **BB** | **BB** | **BB** | **16** |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| *Mistral-7B-Instruct-v0.1* | TPS (tokens/s) | 69.28 | AA | AA | AA | AA | 62.60 |
-| | Total time (s) | 3.18 | AA | AA | AA | AA | 3.52 |
-| **OpenHermes-2.5-Mistral-7B** | TPS (tokens/s) | 0.51 | 1.28 | 3.57 | 7.56 | 7.29 | 7.59 |
-| | Total time (s) | 484.68 | 208.17 | 67.52 | 33.22 | 36.50 | 28.35 |
+| Model | Metric | 4-bit AWQ | 16-bit |
+|-------|--------|-----------|--------|
+| *Mistral-7B-Instruct-v0.1* | TPS (tokens/s) | 69.28 | 60.15 |
+| | Total Time (s) | 3.18 | 3.38 |
+| **OpenHermes-2.5-Mistral-7B** | TPS (tokens/s) | XX | XX |
+| | Total Time (s) | YY | YY |
 
 ## Usage
 
