@@ -1,16 +1,21 @@
 import math
 import os
 import re
-import requests
 import time
+from typing import List, Optional, Union
 
-from typing import List, Union, Optional
-from dotenv import load_dotenv
+import requests
 import tiktoken
+from dotenv import load_dotenv
 
 load_dotenv()
 
 API_URL = os.getenv("API_URL")
+
+def generate_text(prompt):
+    payload = {"text": prompt}
+    response = requests.post(f"{API_URL}/generate", json=payload)
+    return response.json()
 
 def num_tokens(string: str, encoding_name: str = "cl100k_base") -> int:
     """Returns the number of tokens in a text string."""
@@ -33,11 +38,6 @@ def get_tps(response: Union[str, List[str]], num_seconds):
     print(f"Tokens: {tokens}, Seconds: {num_seconds}")
     tps = tokens / num_seconds
     return math.floor(tps)
-
-def generate_text(prompt):
-    payload = {"text": prompt}
-    response = requests.post(f"{API_URL}/generate", json=payload)
-    return response.json()
 
 def clean_text(input_text: str) -> str:
     """Cleans up the input text by removing unnecessary characters,
@@ -108,7 +108,7 @@ if __name__ == "__main__":
                 queries = result['queries']
             else:
                 response = parse_my_server(result)
-            "?"
+            
             print(f"\nLLM Response: {response}")
             if using_llm_server:
                 print(f"LLM Prev Queries: {queries}")
