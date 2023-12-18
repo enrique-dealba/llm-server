@@ -1,4 +1,4 @@
-DEFAULT_MODEL = "mistralai/Mistral-7B-Instruct-v0.1"
+DEFAULT_MODEL = "teknium/OpenHermes-2.5-Mistral-7B"
 
 """
 --- Choose from following models ---

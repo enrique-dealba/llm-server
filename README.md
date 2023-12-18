@@ -28,9 +28,9 @@ docker run --gpus all --rm -p 8888:8888 my_llm_server
 
 ## GPU Performance Metrics
 
-The following table shows GPU performance metrics for different LLMs, focusing on the 4-bit Activation-aware Weight Quantization (AWQ) and default 16-bit precision formats.
+The following table shows GPU performance metrics for different LLMs, focusing on the 4-bit Activation-aware Weight Quantization (AWQ) and default 16-bit (`torch.bfloat16`) precision formats.
 
-| Model | Metric | 4-bit AWQ | 16-bit |
+| Model | Metrics | 4-bit AWQ | 16-bit |
 |-------|--------|-----------|--------|
 | *Mistral-7B-Instruct-v0.1* | TPS (tokens/s) | 69.28 | 60.15 |
 | | Total Time (s) | 3.18 | 3.38 |
