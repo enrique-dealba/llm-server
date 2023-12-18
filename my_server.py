@@ -16,11 +16,13 @@ llm_model = os.getenv("MODEL", DEFAULT_MODEL)
 
 GPU_UTILIZATION = 0.30
 QUANTIZATION = "awq"
+dtype = "half"
 
 # gpu_memory_utilization=0.25 works for 7B models
 engine_args = AsyncEngineArgs(model=llm_model,
                               gpu_memory_utilization=GPU_UTILIZATION,
-                              quantization=QUANTIZATION)
+                              quantization=QUANTIZATION,
+                              dtype=dtype)
 engine = AsyncLLMEngine.from_engine_args(engine_args)
 
 @app.post("/generate")
