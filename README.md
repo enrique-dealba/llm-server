@@ -37,6 +37,8 @@ The following table shows GPU performance metrics for different LLMs, focusing o
 | **OpenHermes-2.5-Mistral-7B** | TPS (tokens/s) | 67.99 | 59.52 |
 | | Total Time (s) | 3.72 | 4.81 |
 
+These tests were conducted by running benchmarks.py and running a handful of prompts through the LLM FastAPI server and timing their responses.
+
 ## Usage
 
 Use the following `.env` setup for the base LLM implementation.
