@@ -14,15 +14,23 @@ app = FastAPI()
 # Setting model directly
 llm_model = os.getenv("MODEL", DEFAULT_MODEL)
 
-GPU_UTILIZATION = 0.30
-QUANTIZATION = "awq"
-dtype = "half"
+def get_engine_args(llm_model: str) -> AsyncEngineArgs:
+    """Generates AsyncEngineArgs based on the given llm_model."""
+    # gpu_memory_utilization=0.25 works for 7B models
+    GPU_UTILIZATION = 0.95
+    QUANTIZATION = "awq"
+    DTYPE = "half"
 
-# gpu_memory_utilization=0.25 works for 7B models
-engine_args = AsyncEngineArgs(model=llm_model,
-                              gpu_memory_utilization=GPU_UTILIZATION,
-                              quantization=QUANTIZATION,
-                              dtype=dtype)
+    if 'awq' in llm_model.lower():
+        return AsyncEngineArgs(model=llm_model,
+                               gpu_memory_utilization=GPU_UTILIZATION,
+                               quantization=QUANTIZATION,
+                               dtype=DTYPE)
+    else:
+        return AsyncEngineArgs(model=llm_model,
+                               gpu_memory_utilization=GPU_UTILIZATION)
+
+engine_args = get_engine_args(llm_model)
 engine = AsyncLLMEngine.from_engine_args(engine_args)
 
 @app.post("/generate")

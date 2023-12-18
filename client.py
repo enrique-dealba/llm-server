@@ -1,4 +1,3 @@
-import math
 import os
 import re
 import time
@@ -36,8 +35,8 @@ def get_tps(response: Union[str, List[str]], num_seconds):
     
     tokens = num_tokens(response)
     print(f"Tokens: {tokens}, Seconds: {num_seconds}")
-    tps = tokens / num_seconds
-    return math.floor(tps)
+    tps = float(tokens) / float(num_seconds)
+    return tps
 
 def clean_text(input_text: str) -> str:
     """Cleans up the input text by removing unnecessary characters,
