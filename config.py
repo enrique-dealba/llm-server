@@ -1,4 +1,4 @@
-DEFAULT_MODEL = "teknium/OpenHermes-2.5-Mistral-7B"
+DEFAULT_MODEL = "TheBloke/OpenHermes-2.5-Mistral-7B-AWQ"
 
 """
 --- Choose from following models ---
@@ -10,6 +10,7 @@ mistral_cpu: str = "TheBloke/Mistral-7B-Instruct-v0.1-GGUF" # Doesn't work
 mistral_awq: str = "TheBloke/Mistral-7B-Instruct-v0.1-AWQ"
 zephyr_model: str = "HuggingFaceH4/zephyr-7b-beta"
 hermes_model: str = "teknium/OpenHermes-2.5-Mistral-7B"
+hermes_awq: sre = "TheBloke/OpenHermes-2.5-Mistral-7B-AWQ"
 
 ## LLM Server Models:
 self.opt_model: str = "facebook/opt-125m"

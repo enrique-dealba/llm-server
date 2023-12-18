@@ -34,8 +34,8 @@ The following table shows GPU performance metrics for different LLMs, focusing o
 |-------|--------|-----------|--------|
 | *Mistral-7B-Instruct-v0.1* | TPS (tokens/s) | 69.28 | 60.15 |
 | | Total Time (s) | 3.18 | 3.38 |
-| **OpenHermes-2.5-Mistral-7B** | TPS (tokens/s) | XX | XX |
-| | Total Time (s) | YY | YY |
+| **OpenHermes-2.5-Mistral-7B** | TPS (tokens/s) | XX | 59.52 |
+| | Total Time (s) | YY | 4.81 |
 
 ## Usage
 
