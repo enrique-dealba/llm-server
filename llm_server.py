@@ -5,6 +5,7 @@ from fastapi.responses import JSONResponse, Response, StreamingResponse
 from langchain.llms import VLLM
 from pydantic import BaseModel
 
+from config import DEFAULT_MODEL
 from llm_agent import LLMAgent
 
 
@@ -17,7 +18,7 @@ class Config():
         self.hermes_model: str = "teknium/OpenHermes-2.5-Mistral-7B"
         self.yarn_64k_model: str = "NousResearch/Yarn-Mistral-7b-64k"
         self.yarn_128k_model: str = "NousResearch/Yarn-Mistral-7b-128k"
-        self.llm_model: str = os.getenv("MODEL", self.mistral_cpu)
+        self.llm_model: str = DEFAULT_MODEL
 
         # LLM Configs
         self.num_gpus: int = 1

@@ -11,9 +11,6 @@ from config import DEFAULT_MODEL, MAX_TOKENS, NUM_RESPONSES, TEMPERATURE, TOP_P
 
 app = FastAPI()
 
-# Setting model directly
-llm_model = os.getenv("MODEL", DEFAULT_MODEL)
-
 def get_engine_args(llm_model: str) -> AsyncEngineArgs:
     """Generates AsyncEngineArgs based on the given llm_model."""
     # gpu_memory_utilization=0.25 works for 7B models
@@ -30,7 +27,7 @@ def get_engine_args(llm_model: str) -> AsyncEngineArgs:
         return AsyncEngineArgs(model=llm_model,
                                gpu_memory_utilization=GPU_UTILIZATION)
 
-engine_args = get_engine_args(llm_model)
+engine_args = get_engine_args(llm_model=DEFAULT_MODEL)
 engine = AsyncLLMEngine.from_engine_args(engine_args)
 
 @app.post("/generate")
