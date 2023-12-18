@@ -30,12 +30,12 @@ docker run --gpus all --rm -p 8888:8888 my_llm_server
 
 Below is a comparison of performance metrics across different LLMs at different quantizations.
 
-<!-- | | **Bits** | **4 (AWQ)** | **32** | **64** | **128** | **192** | **MAX** |
+| | **Bits** | **4 (AWQ)** | **BB** | **BB** | **BB** | **BB** | **16** |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| *Mistral-7B-Instruct-v0.1* | TPS (tokens/s) | 0.46 | 1.32 | 3.35 | 7.46 | 7.31 | 7.36 |
-| | Total time (s) | 559.3 | 178.9 | 73.72 | 37.13 | 34.76 | 35.07 |
+| *Mistral-7B-Instruct-v0.1* | TPS (tokens/s) | AA | AA | AA | AA | AA | 59.40 |
+| | Total time (s) | AA | AA | AA | AA | AA | 3.33 |
 | **OpenHermes-2.5-Mistral-7B** | TPS (tokens/s) | 0.51 | 1.28 | 3.57 | 7.56 | 7.29 | 7.59 |
-| | Total time (s) | 484.68 | 208.17 | 67.52 | 33.22 | 36.50 | 28.35 | -->
+| | Total time (s) | 484.68 | 208.17 | 67.52 | 33.22 | 36.50 | 28.35 |
 
 ## Usage
 

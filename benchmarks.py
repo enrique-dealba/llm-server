@@ -16,7 +16,7 @@ def benchmark_prompts(prompts: List[str]) -> Dict[str, float]:
 
     for prompt in prompts:
         start_time = time.time()
-        response = generate_text(user_message=prompt)
+        response = generate_text(prompt)['text']
         end_time = time.time()
 
         if response:
