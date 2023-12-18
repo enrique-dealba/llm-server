@@ -39,6 +39,17 @@ Below is a comparison of performance metrics across different LLMs at different 
 
 ## Usage
 
+Use the following `.env` setup for the base LLM implementation.
+```.env
+SERVER_TYPE=my_server
+USING_LLM_SERVER=False
+```
+
+Note: Make sure the `my_server.py` script is using the model you want to test (`llm_server.py` is for R&D.):
+```python
+llm_model = os.getenv("MODEL", model_name_here)
+```
+
 ### API Endpoint
 The server listens on port 8888. You can interact with it using the `/generate` endpoint:
 ```sh
@@ -52,7 +63,12 @@ python client.py
 ```
 
 ## Important Notes
-- If you're using the Mistral-7B-Instruct model, make sure you have around 75.713 GiB of GPU memory. This has been tested on A100 GPUs.
+- If you're using the Mistral-7B-Instruct model, make sure to have at least 18.2 GiB of GPU memory. This has been tested on A100 GPUs.
+- In our example we're working with 81.92 GiB NVIDIA A100 GPUs, so to get 18.2 GiB for a 7B LLM we need a 0.25 GPU memory utilization. In `my_server.py` you can change the GPU memory utilization like so:
+```python
+engine_args = AsyncEngineArgs(model=llm_model, gpu_memory_utilization=0.25)
+engine = AsyncLLMEngine.from_engine_args(engine_args)
+```
 
 ## Troubleshooting
 - Make sure Docker has access to your GPU. You may need to install NVIDIA Docker if not already done so.
