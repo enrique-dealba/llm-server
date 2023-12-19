@@ -1,4 +1,4 @@
-vllm
+vllm==0.2.6
 fastapi
 uvicorn
 python-dotenv
@@ -7,4 +7,3 @@ tiktoken
 pydantic
 skyfield
 geopy
-vllm
