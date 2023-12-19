@@ -39,6 +39,8 @@ The following table shows GPU performance metrics for different LLMs, focusing o
 
 These tests were conducted by running benchmarks.py and running a handful of prompts through the LLM FastAPI server and timing their responses.
 
+Note: 
+
 ## Usage
 
 Use the following `.env` setup for the base LLM implementation.
