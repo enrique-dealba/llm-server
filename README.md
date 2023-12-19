@@ -49,9 +49,9 @@ SERVER_TYPE=my_server
 USING_LLM_SERVER=False
 ```
 
-Note: Make sure the `my_server.py` script is using the model you want to test (`llm_server.py` is for R&D.):
+Note: Make sure the `config.py` script is using the model you want to test (`llm_server.py` is for R&D.):
 ```python
-llm_model = os.getenv("MODEL", model_name_here)
+DEFAULT_MODEL = "model_name_here"
 ```
 
 ### API Endpoint
