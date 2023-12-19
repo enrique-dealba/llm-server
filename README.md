@@ -39,7 +39,7 @@ The following table shows GPU performance metrics for different LLMs, focusing o
 
 These tests were conducted by running benchmarks.py and running a handful of prompts through the LLM FastAPI server and timing their responses.
 
-Note: 
+Note: 4-bit AWQ formatted 7B parameter models like `Mistral-7B-Instruct-v0.1-AWQ` and `OpenHermes-2.5-Mistral-7B-AWQ` require at least 6.43 GiB of GPU memory, while the 16-bit models require at least 18.2 GiB of GPU memory.
 
 ## Usage
 

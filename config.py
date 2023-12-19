@@ -1,4 +1,4 @@
-DEFAULT_MODEL = "TheBloke/Mistral-7B-Instruct-v0.1-AWQ"
+DEFAULT_MODEL = "mistralai/Mistral-7B-Instruct-v0.1"
 
 """
 --- Choose from following models ---

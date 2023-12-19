@@ -1,5 +1,3 @@
-import os
-
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse, Response, StreamingResponse
 from vllm import SamplingParams
@@ -15,18 +13,19 @@ def get_engine_args(llm_model: str) -> AsyncEngineArgs:
     """Generates AsyncEngineArgs based on the given llm_model."""
     # gpu_memory_utilization=0.25 works for 7B models
     # gpu_memory_utilization=0.31 works for 7B AWQ models
-    GPU_UTILIZATION = 0.31
+    DEFAULT_GPU = 0.25 # requires at least 18.2 GiB for 7B models
+    AWQ_GPU = 0.31 # for quantized models like AWQ
     QUANTIZATION = "awq"
     DTYPE = "half"
 
     if 'awq' in llm_model.lower():
         return AsyncEngineArgs(model=llm_model,
-                               gpu_memory_utilization=GPU_UTILIZATION,
+                               gpu_memory_utilization=AWQ_GPU,
                                quantization=QUANTIZATION,
                                dtype=DTYPE)
     else:
         return AsyncEngineArgs(model=llm_model,
-                               gpu_memory_utilization=GPU_UTILIZATION)
+                               gpu_memory_utilization=DEFAULT_GPU)
 
 engine_args = get_engine_args(llm_model=DEFAULT_MODEL)
 engine = AsyncLLMEngine.from_engine_args(engine_args)
