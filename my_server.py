@@ -14,7 +14,8 @@ app = FastAPI()
 def get_engine_args(llm_model: str) -> AsyncEngineArgs:
     """Generates AsyncEngineArgs based on the given llm_model."""
     # gpu_memory_utilization=0.25 works for 7B models
-    GPU_UTILIZATION = 0.50
+    # gpu_memory_utilization=0.31 works for 7B AWQ models
+    GPU_UTILIZATION = 0.31
     QUANTIZATION = "awq"
     DTYPE = "half"
 

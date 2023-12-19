@@ -1,4 +1,4 @@
-DEFAULT_MODEL = "TheBloke/OpenHermes-2.5-Mistral-7B-AWQ"
+DEFAULT_MODEL = "TheBloke/Mistral-7B-Instruct-v0.1-AWQ"
 
 """
 --- Choose from following models ---
