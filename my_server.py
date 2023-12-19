@@ -5,15 +5,13 @@ from vllm.engine.arg_utils import AsyncEngineArgs
 from vllm.engine.async_llm_engine import AsyncLLMEngine
 from vllm.utils import random_uuid
 
-from config import DEFAULT_MODEL, MAX_TOKENS, NUM_RESPONSES, TEMPERATURE, TOP_P
+from config import (DEFAULT_GPU, DEFAULT_MODEL, MAX_TOKENS, NUM_RESPONSES,
+                    TEMPERATURE, TOP_P)
 
 app = FastAPI()
 
-def get_engine_args(llm_model: str) -> AsyncEngineArgs:
+def get_engine_args(llm_model: str, gpu_utilization: float) -> AsyncEngineArgs:
     """Generates AsyncEngineArgs based on the given llm_model."""
-    # gpu_memory_utilization=0.25 works for 7B models
-    # gpu_memory_utilization=0.31 works for 7B AWQ models
-    DEFAULT_GPU = 0.25 # requires at least 18.2 GiB for 7B models
     AWQ_GPU = 0.31 # for quantized models like AWQ
     QUANTIZATION = "awq"
     DTYPE = "half"
@@ -25,9 +23,10 @@ def get_engine_args(llm_model: str) -> AsyncEngineArgs:
                                dtype=DTYPE)
     else:
         return AsyncEngineArgs(model=llm_model,
-                               gpu_memory_utilization=DEFAULT_GPU)
+                               gpu_memory_utilization=gpu_utilization)
 
-engine_args = get_engine_args(llm_model=DEFAULT_MODEL)
+engine_args = get_engine_args(llm_model=DEFAULT_MODEL,
+                              gpu_utilization=DEFAULT_GPU)
 engine = AsyncLLMEngine.from_engine_args(engine_args)
 
 @app.post("/generate")
