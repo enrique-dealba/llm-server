@@ -12,15 +12,21 @@ app = FastAPI()
 
 def get_engine_args(llm_model: str, gpu_utilization: float) -> AsyncEngineArgs:
     """Generates AsyncEngineArgs based on the given llm_model."""
-    AWQ_GPU = 0.31 # for quantized models like AWQ
-    QUANTIZATION = "awq"
+    QUANTIZED_GPU = 0.31 # for quantized models like AWQ
+    # QUANTIZATION = "awq"
     DTYPE = "half"
 
     if 'awq' in llm_model.lower():
         return AsyncEngineArgs(model=llm_model,
-                               gpu_memory_utilization=AWQ_GPU,
-                               quantization=QUANTIZATION,
+                               gpu_memory_utilization=QUANTIZED_GPU,
+                               quantization="awq",
                                dtype=DTYPE)
+    elif 'gptq' in llm_model.lower():
+        return AsyncEngineArgs(model=llm_model,
+                               gpu_memory_utilization=QUANTIZED_GPU,
+                               quantization="gptq",
+                               #dtype=DTYPE,
+                               )
     else:
         return AsyncEngineArgs(model=llm_model,
                                gpu_memory_utilization=gpu_utilization)
