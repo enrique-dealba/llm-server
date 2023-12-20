@@ -1,4 +1,4 @@
-vllm==0.2.6
+vllm==0.2.0
 fastapi
 uvicorn
 python-dotenv
