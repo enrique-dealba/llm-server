@@ -1,4 +1,8 @@
-vllm
+# Compatible with CUDA 11.8
+torch==1.12.1+cu118 -f https://download.pytorch.org/whl/cu118/torch_stable.html
+torchvision==0.13.1+cu118 -f https://download.pytorch.org/whl/cu118/torch_stable.html
+torchaudio==0.12.1+cu118 -f https://download.pytorch.org/whl/cu118/torch_stable.html
+
 fastapi
 uvicorn
 python-dotenv
@@ -7,3 +11,4 @@ tiktoken
 pydantic
 skyfield
 geopy
+vllm
