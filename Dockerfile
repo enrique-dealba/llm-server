@@ -8,6 +8,9 @@ RUN apt-get update && \
     ln -s /usr/bin/python3.9 /usr/bin/python && \
     pip3 install --upgrade pip
 
+# Verify CUDA installation
+RUN nvcc --version
+
 ENV VLLM_VERSION=0.2.4
 ENV PYTHON_VERSION=39
 
