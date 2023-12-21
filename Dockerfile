@@ -5,7 +5,7 @@ FROM python:3.9-slim-buster
 WORKDIR /app
 
 # Install PyTorch separately for CUDA 11.8
-RUN pip install torch==2.0.0+cu118 torchvision==0.15.0+cu118 torchaudio==0.16.0+cu118 -f https://download.pytorch.org/whl/cu118/torch_stable.html
+# RUN pip install torch==2.0.0+cu118 torchvision==0.15.0+cu118 torchaudio==0.16.0+cu118 -f https://download.pytorch.org/whl/cu118/torch_stable.html
 
 # Copy requirements file and install dependencies
 COPY requirements.txt .
