@@ -1,5 +1,7 @@
 # Start from an NVIDIA CUDA base image with Python
-FROM nvidia/cuda:11.8.0-runtime-ubuntu20.04
+# FROM nvidia/cuda:11.8.0-runtime-ubuntu20.04
+# Attempt 2:
+FROM nvidia/cuda:11.8.0-devel-ubuntu20.04
 
 # Install tzdata without interactive prompts and then Python 3.9
 RUN apt-get update && \
