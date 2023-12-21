@@ -6,8 +6,12 @@ WORKDIR /app
 
 # Install PyTorch separately for CUDA 11.8
 # RUN pip install torch==2.0.0+cu118 torchvision==0.15.0+cu118 torchaudio==0.16.0+cu118 -f https://download.pytorch.org/whl/cu118/torch_stable.html
-RUN pip install light-the-torch
-RUN ltt install torch torchvision
+# Attempt 2:
+# RUN pip install light-the-torch
+# RUN ltt install torch torchvision
+# Attempt 3:
+RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+
 
 # Copy requirements file and install dependencies
 COPY requirements.txt .
