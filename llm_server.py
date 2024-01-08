@@ -46,7 +46,7 @@ app = FastAPI()
 config = Config()
 
 llm = config.create_llm()
-llm_agent = LLMAgent(llm=llm)
+# llm_agent = LLMAgent(llm=llm)
 
 @app.post("/generate")
 async def generate(request: Request):
