@@ -6,7 +6,7 @@ from langchain.llms import VLLM
 from pydantic import BaseModel
 
 from config import DEFAULT_MODEL
-from llm_agent import LLMAgent
+# from llm_agent import LLMAgent
 
 
 class Config():
@@ -56,12 +56,12 @@ async def generate(request: Request):
     request_data = GenerateRequest(**request_dict)
     query = request_data.text
 
-    llm_agent.add_query(query)
     if test:
         response = llm(query)
-    else:
-        response = llm_agent.run(query)
-
-    ret = {"text": response, "queries": llm_agent.queries}
+        ret = {"text": response}
+    # else:
+    #     llm_agent.add_query(query)
+    #     response = llm_agent.run(query)
+    #     ret = {"text": response, "queries": llm_agent.queries}
 
     return JSONResponse(ret)
