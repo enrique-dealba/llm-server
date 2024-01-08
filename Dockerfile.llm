@@ -8,6 +8,21 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Set environment variables for vLLM version and Python version
+ENV VLLM_VERSION=0.2.4
+ENV PYTHON_VERSION=39
+
+# Install vLLM with CUDA 11.8
+RUN pip install https://github.com/vllm-project/vllm/releases/download/v${VLLM_VERSION}/vllm-${VLLM_VERSION}+cu118-cp${PYTHON_VERSION}-cp${PYTHON_VERSION}-manylinux1_x86_64.whl
+
+# Re-install PyTorch with CUDA 11.8
+RUN pip uninstall torch -y && \
+    pip install torch --upgrade --index-url https://download.pytorch.org/whl/cu118
+
+# Re-install xFormers with CUDA 11.8
+RUN pip uninstall xformers -y && \
+    pip install --upgrade xformers --index-url https://download.pytorch.org/whl/cu118
+
 # Copy .env file and other files
 COPY .env .env
 COPY . .
