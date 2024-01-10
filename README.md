@@ -47,8 +47,8 @@ The following table shows GPU performance metrics for different LLMs using vLLM 
 |-------|--------|-----------|--------|
 | *Mistral-7B-Instruct-v0.1* | TPS (tokens/s) | 85.98 | 64.28 |
 | | Total Time (s) | 2.61 | 3.30 |
-| **OpenHermes-2.5-Mistral-7B** | TPS (tokens/s) | XXX | 66.73 |
-| | Total Time (s) | XXX | 4.05 |
+| **OpenHermes-2.5-Mistral-7B** | TPS (tokens/s) | 85.87 | 66.73 |
+| | Total Time (s) | 3.02 | 4.05 |
 
 There were also conducted by running benchmarks.py.
 

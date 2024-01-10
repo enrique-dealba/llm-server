@@ -1,4 +1,4 @@
-DEFAULT_MODEL = "TheBloke/OpenHermes-2.5-Mistral-7B-AWQ"
+DEFAULT_MODEL = "TheBloke/Mistral-7B-v0.1-GPTQ"
 DEFAULT_GPU = 0.25 # gpu_memory_utilization=0.25 works for 7B models
 
 """

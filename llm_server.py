@@ -24,6 +24,8 @@ class Config():
         self.num_gpus: int = 1
         self.temperature: float = 0.2
         self.max_new_tokens: int = 512
+        self.awq_gpu_util: float = 0.31
+        self.gptq_gpu_util: float = 0.50
     
     def create_llm(self):
         return VLLM(
@@ -33,10 +35,10 @@ class Config():
             max_new_tokens=self.max_new_tokens,
             tensor_parallel_size=self.num_gpus,
             trust_remote_code=True,
-            dtype='half',
-            vllm_kwargs={'quantization': 'awq',
+            # dtype='half',
+            vllm_kwargs={'quantization': 'gptq',
                          #'dtype': 'half',
-                         'gpu_memory_utilization': 0.31}, # for quantization
+                         'gpu_memory_utilization': self.gptq_gpu_util}, # for quantization
             # vllm_kwargs={'gpu_memory_utilization': DEFAULT_GPU},
         )
 
