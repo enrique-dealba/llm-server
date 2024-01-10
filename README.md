@@ -41,6 +41,17 @@ These tests were conducted by running benchmarks.py and running a handful of pro
 
 Note: 4-bit AWQ formatted 7B parameter models like `Mistral-7B-Instruct-v0.1-AWQ` and `OpenHermes-2.5-Mistral-7B-AWQ` require at least 6.43 GiB of GPU memory, while the 16-bit 7B models require at least 18.2 GiB of GPU memory.
 
+The following table shows GPU performance metrics for different LLMs using vLLM via LangChain.
+
+| Model | Metrics | 4-bit AWQ | 16-bit |
+|-------|--------|-----------|--------|
+| *Mistral-7B-Instruct-v0.1* | TPS (tokens/s) | XXX | 64.28 |
+| | Total Time (s) | XXX | 3.30 |
+| **OpenHermes-2.5-Mistral-7B** | TPS (tokens/s) | XXX | XXX |
+| | Total Time (s) | XXX | XXX |
+
+There were also conducted by running benchmarks.py.
+
 ## Usage
 
 Use the following `.env` setup for the base LLM implementation.

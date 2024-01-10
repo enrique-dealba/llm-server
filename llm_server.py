@@ -5,7 +5,7 @@ from fastapi.responses import JSONResponse, Response, StreamingResponse
 from langchain.llms import VLLM
 from pydantic import BaseModel
 
-from config import DEFAULT_MODEL
+from config import DEFAULT_MODEL, DEFAULT_GPU
 # from llm_agent import LLMAgent
 
 
@@ -34,7 +34,7 @@ class Config():
             tensor_parallel_size=self.num_gpus,
             trust_remote_code=True,
             # vllm_kwargs={"quantization": "awq"}, # for quantization
-            vllm_kwargs={"gpu_memory_utilization": 0.25},
+            vllm_kwargs={"gpu_memory_utilization": DEFAULT_GPU},
         )
 
 
