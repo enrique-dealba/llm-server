@@ -33,6 +33,7 @@ class Config():
             max_new_tokens=self.max_new_tokens,
             tensor_parallel_size=self.num_gpus,
             trust_remote_code=True,
+            dtype='half',
             vllm_kwargs={'quantization': 'awq',
                          #'dtype': 'half',
                          'gpu_memory_utilization': 0.31}, # for quantization
