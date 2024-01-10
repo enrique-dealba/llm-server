@@ -64,13 +64,6 @@ from langchain.llms import VLLM
 
 Both sets of benchmarks were conducted using benchmarks.py.
 
-Additional Information:
-
-TPS (Tokens Per Second): Measures the processing speed of the model.
-Total Time: The total time taken for the model to respond to a prompt.
-4-bit AWQ: Precision format that allows for reduced memory usage.
-16-bit (torch.bfloat16): Standard precision format for LLMs.
-
 Note: Have not tested GPTQ quantization.
 
 ## Usage
