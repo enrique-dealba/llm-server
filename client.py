@@ -104,13 +104,15 @@ if __name__ == "__main__":
                 response = parse_llm_server(response)
                 response = parse_response(response)
                 response = clean_text(response)
-                queries = result['queries']
+                # TODO: this should work when un-commented
+                # queries = result['queries']
             else:
                 response = parse_my_server(result)
             
             print(f"\nLLM Response: {response}")
-            if using_llm_server:
-                print(f"LLM Prev Queries: {queries}")
+            # TODO: this should also work when un-commented
+            # if using_llm_server:
+            #     print(f"LLM Prev Queries: {queries}")
             print(f"Tokens per second: {get_tps(response, elapsed_time)} t/s")
 
         except requests.exceptions.RequestException as e:
