@@ -28,7 +28,16 @@ docker run --gpus all --rm -p 8888:8888 my_llm_server
 
 ## GPU Performance Metrics
 
-The following table shows GPU performance metrics for different LLMs, focusing on the 4-bit Activation-aware Weight Quantization (AWQ) and default 16-bit (`torch.bfloat16`) precision formats.
+We show GPU performance metrics for two LLMs: Mistral-7B-Instruct-v0.1 and OpenHermes-2.5-Mistral-7B. We compare these models under two different precision formats: 4-bit Activation-aware Weight Quantization (AWQ) and the default 16-bit (`torch.bfloat16`). The metrics are presented in two separate contexts, each using different Python libraries for model handling.
+
+1. Performance Metrics Using vLLM Library
+
+This set of metrics is derived when running the models using pure vLLM:
+```python
+from vllm import SamplingParams
+from vllm.engine.arg_utils import AsyncEngineArgs
+from vllm.engine.async_llm_engine import AsyncLLMEngine
+```
 
 | Model | Metrics | 4-bit AWQ | 16-bit |
 |-------|--------|-----------|--------|
@@ -37,11 +46,14 @@ The following table shows GPU performance metrics for different LLMs, focusing o
 | **OpenHermes-2.5-Mistral-7B** | TPS (tokens/s) | 67.99 | 59.52 |
 | | Total Time (s) | 3.72 | 4.81 |
 
-These tests were conducted by running benchmarks.py and running a handful of prompts through the LLM FastAPI server and timing their responses.
-
 Note: 4-bit AWQ formatted 7B parameter models like `Mistral-7B-Instruct-v0.1-AWQ` and `OpenHermes-2.5-Mistral-7B-AWQ` require at least 6.43 GiB of GPU memory, while the 16-bit 7B models require at least 18.2 GiB of GPU memory.
 
-The following table shows GPU performance metrics for different LLMs using vLLM via LangChain.
+2. Performance Metrics Using LangChain's vLLM
+
+The following table shows GPU performance metrics for different LLMs using vLLM via LangChain:
+```python
+from langchain.llms import VLLM
+```
 
 | Model | Metrics | 4-bit AWQ | 16-bit |
 |-------|--------|-----------|--------|
@@ -50,7 +62,16 @@ The following table shows GPU performance metrics for different LLMs using vLLM 
 | **OpenHermes-2.5-Mistral-7B** | TPS (tokens/s) | 85.87 | 66.73 |
 | | Total Time (s) | 3.02 | 4.05 |
 
-There were also conducted by running benchmarks.py.
+Both sets of benchmarks were conducted using benchmarks.py.
+
+Additional Information:
+
+TPS (Tokens Per Second): Measures the processing speed of the model.
+Total Time: The total time taken for the model to respond to a prompt.
+4-bit AWQ: Precision format that allows for reduced memory usage.
+16-bit (torch.bfloat16): Standard precision format for LLMs.
+
+Note: Have not tested GPTQ quantization.
 
 ## Usage
 

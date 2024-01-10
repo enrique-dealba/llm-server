@@ -27,19 +27,28 @@ class Config():
         self.awq_gpu_util: float = 0.31
         self.gptq_gpu_util: float = 0.50
     
-    def create_llm(self):
+    def create_llm(self, quantization = None):
+        if quantization == 'awq':
+            return VLLM(
+                model=self.llm_model,
+                temperature=self.temperature,
+                use_beam_search=False,
+                max_new_tokens=self.max_new_tokens,
+                tensor_parallel_size=self.num_gpus,
+                trust_remote_code=True,
+                dtype='half',
+                vllm_kwargs={'quantization': 'awq',
+                            'gpu_memory_utilization': self.awq_gpu_util}, # for quantization
+                # vllm_kwargs={'gpu_memory_utilization': DEFAULT_GPU},
+            )
         return VLLM(
-            model=self.llm_model,
-            temperature=self.temperature,
-            use_beam_search=False,
-            max_new_tokens=self.max_new_tokens,
-            tensor_parallel_size=self.num_gpus,
-            trust_remote_code=True,
-            # dtype='half',
-            vllm_kwargs={'quantization': 'gptq',
-                         #'dtype': 'half',
-                         'gpu_memory_utilization': self.gptq_gpu_util}, # for quantization
-            # vllm_kwargs={'gpu_memory_utilization': DEFAULT_GPU},
+                model=self.llm_model,
+                temperature=self.temperature,
+                use_beam_search=False,
+                max_new_tokens=self.max_new_tokens,
+                tensor_parallel_size=self.num_gpus,
+                trust_remote_code=True,
+                vllm_kwargs={'gpu_memory_utilization': DEFAULT_GPU},
         )
 
 
@@ -52,7 +61,7 @@ app = FastAPI()
 # Initialize configurations and dependencies
 config = Config()
 
-llm = config.create_llm()
+llm = config.create_llm(quantization=None)
 # llm_agent = LLMAgent(llm=llm)
 
 @app.post("/generate")
