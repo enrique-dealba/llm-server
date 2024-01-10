@@ -34,7 +34,7 @@ class Config():
             tensor_parallel_size=self.num_gpus,
             trust_remote_code=True,
             vllm_kwargs={'quantization': 'awq',
-                         'dtype': 'half',
+                         #'dtype': 'half',
                          'gpu_memory_utilization': 0.31}, # for quantization
             # vllm_kwargs={'gpu_memory_utilization': DEFAULT_GPU},
         )
