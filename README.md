@@ -62,7 +62,7 @@ from langchain.llms import VLLM
 | **OpenHermes-2.5-Mistral-7B** | TPS (tokens/s) | 85.87 | 66.73 |
 | | Total Time (s) | 3.02 | 4.05 |
 
-Both sets of benchmarks were conducted using benchmarks.py.
+Both sets of metrics were conducted using benchmarks.py.
 
 Note: Have not tested GPTQ quantization.
 
