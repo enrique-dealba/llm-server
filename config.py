@@ -1,5 +1,6 @@
 DEFAULT_MODEL = "mistralai/Mistral-7B-Instruct-v0.1"
-DEFAULT_GPU = 0.25 # gpu_memory_utilization=0.25 works for 7B models
+DEFAULT_GPU_UTIL = 0.25 # gpu_memory_utilization=0.25 works for 7B models
+AWQ_GPU_UTIL = 0.31 # min needed for 7B AWQ models
 
 """
 --- Choose from following models ---
@@ -26,7 +27,7 @@ self.yarn_128k_model: str = "NousResearch/Yarn-Mistral-7b-128k"
 """
 
 NUM_RESPONSES = 1
-MAX_TOKENS = 500
+MAX_TOKENS = 512
 TEMPERATURE = 0.2
 TOP_P = 0.95 # Must be in (0, 1] - set to 1 to consider all tokens
 API_URL = "http://localhost:8888"
