@@ -27,12 +27,6 @@ RUN pip uninstall xformers -y && \
 COPY .env .env
 COPY . .
 
-# Debugging: Lists current directory and files
-RUN pwd && ls -la
-
-# Debugging: Locates chmod command
-RUN whereis chmod
-
 # Make sure start.sh is executable
 RUN chmod +x start.sh
 
