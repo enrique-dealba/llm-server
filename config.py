@@ -25,7 +25,7 @@ self.yarn_64k_model: str = "NousResearch/Yarn-Mistral-7b-64k"
 self.yarn_128k_model: str = "NousResearch/Yarn-Mistral-7b-128k"
 
 """
-
+NUM_GPUS = 1
 NUM_RESPONSES = 1
 MAX_TOKENS = 512
 TEMPERATURE = 0.2
