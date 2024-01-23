@@ -1,5 +1,5 @@
 DEFAULT_MODEL = "mistralai/Mistral-7B-Instruct-v0.1"
-DEFAULT_GPU_UTIL = 0.25 # gpu_memory_utilization=0.25 works for 7B models
+DEFAULT_GPU_UTIL = 0.30 # gpu_memory_utilization=0.25 works for 7B models
 AWQ_GPU_UTIL = 0.31 # min needed for 7B AWQ models
 
 """

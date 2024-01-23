@@ -33,7 +33,7 @@ class Config():
                 max_new_tokens=self.max_new_tokens,
                 tensor_parallel_size=self.num_gpus,
                 trust_remote_code=False,
-                dtype='half' if quantization == 'awq' else 'float',
+                dtype='half' if quantization == 'awq' else 'bfloat16',
                 vllm_kwargs={'quantization': quantization,
                              'gpu_memory_utilization': gpu_utilization},
             )
