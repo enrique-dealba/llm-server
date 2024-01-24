@@ -1,16 +1,30 @@
+"""FastAPI server for handling Large Language Model (LLM) requests."""
+
 from typing import Optional
 
 from fastapi import Depends, FastAPI, HTTPException, Request
-from fastapi.responses import JSONResponse, Response, StreamingResponse
+from fastapi.responses import JSONResponse
 from langchain.llms import VLLM
 from pydantic import BaseModel
 
-from config import (AWQ_GPU_UTIL, DEFAULT_GPU_UTIL, DEFAULT_MODEL, MAX_TOKENS,
-                    NUM_GPUS, TEMPERATURE)
+from config import (
+    AWQ_GPU_UTIL,
+    DEFAULT_GPU_UTIL,
+    DEFAULT_MODEL,
+    MAX_TOKENS,
+    NUM_GPUS,
+    TEMPERATURE,
+)
 
 
-class Config():
+class Config:
+    """Configuration management for LLM server.
+    
+    Handles GPU settings and LLM parameters.
+    """
+
     def __init__(self):
+        """Initializes the config with default values for LLM server."""
         self.llm_model: str = DEFAULT_MODEL
 
         # LLM Configs
@@ -18,12 +32,13 @@ class Config():
         self.temperature: float = TEMPERATURE
         self.max_new_tokens: int = MAX_TOKENS
         self.gpu_util = {
-            'default': DEFAULT_GPU_UTIL,
-            'awq': AWQ_GPU_UTIL,
+            "default": DEFAULT_GPU_UTIL,
+            "awq": AWQ_GPU_UTIL,
         }
-    
+
     def create_llm(self, quantization: Optional[str] = None) -> VLLM:
-        gpu_utilization = self.gpu_util.get(quantization, self.gpu_util['default'])
+        """Creates and returns VLLM instance based on current configuration."""
+        gpu_utilization = self.gpu_util.get(quantization, self.gpu_util["default"])
 
         try:
             llm = VLLM(
@@ -33,9 +48,11 @@ class Config():
                 max_new_tokens=self.max_new_tokens,
                 tensor_parallel_size=self.num_gpus,
                 trust_remote_code=False,
-                dtype='half' if quantization == 'awq' else 'bfloat16',
-                vllm_kwargs={'quantization': quantization,
-                             'gpu_memory_utilization': gpu_utilization},
+                dtype="half" if quantization == "awq" else "bfloat16",
+                vllm_kwargs={
+                    "quantization": quantization,
+                    "gpu_memory_utilization": gpu_utilization,
+                },
             )
             return llm
         except Exception as e:
@@ -43,6 +60,7 @@ class Config():
 
 
 class GenerateRequest(BaseModel):
+    """Schema for LLM text generation request."""
     text: str
 
 
@@ -56,7 +74,11 @@ app = FastAPI()
 
 
 def get_llm():
-    """Dependency injector for the LLM."""
+    """Dependency injector for the LLM.
+    
+    Useful for testing the /generate endpoint. Easily swap LLM with a mock or stub
+    during testing.
+    """
     try:
         return llm
     except Exception as e:
@@ -72,4 +94,6 @@ async def generate(request: Request, llm: VLLM = Depends(get_llm)):
         response = llm(query)
         return JSONResponse({"text": response})
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Error processing user request: {e}")
+        raise HTTPException(
+            status_code=400, detail=f"Error processing user request: {e}"
+        )
