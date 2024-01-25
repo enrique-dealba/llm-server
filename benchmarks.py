@@ -15,9 +15,9 @@ def benchmark_prompts(prompts: List[str]) -> Dict[str, float]:
     successful_requests = 0.0
 
     for prompt in prompts:
-        start_time = time.time()
+        start_time = time.perf_counter()
         response = generate_text(prompt)['text']
-        end_time = time.time()
+        end_time = time.perf_counter()
 
         if response:
             elapsed_time = end_time - start_time

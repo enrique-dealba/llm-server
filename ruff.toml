@@ -9,7 +9,12 @@ extend-select = [
   "E501", # line-too-long
 ]
 
-ignore = ["UP007"]
+ignore = [
+    "D100",
+    "UP006",
+    "UP007",
+    "UP035",
+]
 
 [lint.pydocstyle]
 convention = "google"
