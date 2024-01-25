@@ -3,10 +3,12 @@ from typing import Dict, List
 
 from dotenv import load_dotenv
 
-from client import generate_text, get_tps
+from client import Client
+from text_processing import TextProcessing as tp
 
 # Loads environment variables
 load_dotenv()
+
 
 def benchmark_prompts(prompts: List[str]) -> Dict[str, float]:
     """Runs a series of prompts through the LLM and benchmarks response speed."""
@@ -15,28 +17,29 @@ def benchmark_prompts(prompts: List[str]) -> Dict[str, float]:
     successful_requests = 0.0
 
     for prompt in prompts:
-        start_time = time.perf_counter()
-        response = generate_text(prompt)['text']
-        end_time = time.perf_counter()
+        t_0 = time.perf_counter()
+        response = Client.generate_text(prompt)["text"]
+        t_1 = time.perf_counter()
 
         if response:
-            elapsed_time = end_time - start_time
-            tps = get_tps(response, elapsed_time)
+            elapsed_time = t_1 - t_0
+            tps = tp.measure_performance(t_0, t_1, response)
             total_tps += tps
             total_time += elapsed_time
             successful_requests += 1
             print(f"Prompt: {prompt}\nTPS: {tps:.2f}\n")
         else:
             print(f"Failed to get response for prompt: {prompt}")
-    
+
     stats = {}
     if successful_requests > 0:
         stats = {
-            'avg_tps': total_tps / successful_requests,
-            'avg_time': total_time / successful_requests,
+            "avg_tps": total_tps / successful_requests,
+            "avg_time": total_time / successful_requests,
         }
-    
+
     return stats
+
 
 if __name__ == "__main__":
     prompts = [
