@@ -80,6 +80,7 @@ def get_llm():
     during testing.
     """
     try:
+        print("get_llm called, returning llm instance")
         return llm
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -91,9 +92,12 @@ async def generate(request: Request, llm: VLLM = Depends(get_llm)):
     try:
         request_data = await request.json()
         query = GenerateRequest(**request_data).text
+        print(f"generate endpoint called with query: {query}")
         response = llm(query)
+        print(f"LLM response: {response}")
         return JSONResponse({"text": response})
     except Exception as e:
+        print(f"Error in generate endpoint: {e}")
         raise HTTPException(
             status_code=400, detail=f"Error processing user request: {e}"
         )
