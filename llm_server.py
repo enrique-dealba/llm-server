@@ -84,7 +84,7 @@ def get_llm():
         return llm
     except Exception as e:
         print(f"Error in get_llm: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e))
 
 
 @app.post("/generate")
