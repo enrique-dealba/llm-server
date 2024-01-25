@@ -67,7 +67,7 @@ class GenerateRequest(BaseModel):
 # Initialize configurations and dependencies
 config = Config()
 llm = config.create_llm(quantization=None)
-# from llm_agent import LLMAgent
+# from llm_agent.llm_agent import LLMAgent
 # llm_agent = LLMAgent(llm=llm)
 
 app = FastAPI()

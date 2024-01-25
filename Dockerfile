@@ -1,26 +1,5 @@
-# Start from an NVIDIA CUDA base image with Python
-# FROM nvidia/cuda:11.8.0-runtime-ubuntu20.04
-# Attempt 2:
-FROM nvidia/cuda:11.8.0-devel-ubuntu20.04
-
-# Install tzdata without interactive prompts and then Python 3.9
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get install -y tzdata && \
-    apt-get install -y python3.9 python3-pip python3.9-dev && \
-    ln -s /usr/bin/python3.9 /usr/bin/python && \
-    pip3 install --upgrade pip
-
-# Verify CUDA installation
-RUN nvcc --version
-
-ENV VLLM_VERSION=0.2.4
-ENV PYTHON_VERSION=39
-
-RUN pip install https://github.com/vllm-project/vllm/releases/download/v${VLLM_VERSION}/vllm-${VLLM_VERSION}+cu118-cp${PYTHON_VERSION}-cp${PYTHON_VERSION}-manylinux1_x86_64.whl
-
-# Re-installs PyTorch with CUDA 11.8
-RUN pip uninstall torch -y && \
-    pip install torch --upgrade --index-url https://download.pytorch.org/whl/cu118
+# Use official Python image
+FROM python:3.9-slim-buster
 
 # Set working directory
 WORKDIR /app
@@ -28,6 +7,21 @@ WORKDIR /app
 # Copy requirements file and install dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Set environment variables for vLLM version and Python version
+ENV VLLM_VERSION=0.2.4
+ENV PYTHON_VERSION=39
+
+# Install vLLM with CUDA 11.8
+RUN pip install https://github.com/vllm-project/vllm/releases/download/v${VLLM_VERSION}/vllm-${VLLM_VERSION}+cu118-cp${PYTHON_VERSION}-cp${PYTHON_VERSION}-manylinux1_x86_64.whl
+
+# Re-install PyTorch with CUDA 11.8
+RUN pip uninstall torch -y && \
+    pip install torch --upgrade --index-url https://download.pytorch.org/whl/cu118
+
+# Re-install xFormers with CUDA 11.8
+RUN pip uninstall xformers -y && \
+    pip install --upgrade xformers --index-url https://download.pytorch.org/whl/cu118
 
 # Copy .env file and other files
 COPY .env .env

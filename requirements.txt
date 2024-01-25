@@ -6,4 +6,3 @@ tiktoken
 pydantic
 skyfield
 geopy
-# vllm==0.2.6

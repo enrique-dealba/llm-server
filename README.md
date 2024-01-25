@@ -68,13 +68,13 @@ Note: Have not tested GPTQ quantization.
 
 ## Usage
 
-Use the following `.env` setup for the base LLM implementation.
+<!-- Use the following `.env` setup for the base LLM implementation.
 ```.env
 SERVER_TYPE=my_server
 USING_LLM_SERVER=False
-```
+``` -->
 
-Note: Make sure the `config.py` script is using the model you want to test (`llm_server.py` is for R&D.):
+Note: Make sure the `config.py` script is using the model you want to test:
 ```python
 DEFAULT_MODEL = "model_name_here"
 ```
@@ -97,11 +97,11 @@ python client.py
 ```python
 DEFAULT_GPU_UTIL = 0.25
 ```
-or you can change gpu_utilization directly in `my_server.py`:
+<!-- or you can change gpu_utilization directly in `my_server.py`:
 ```python
 engine_args = get_engine_args(llm_model=DEFAULT_MODEL, gpu_utilization=DEFAULT_GPU_UTIL)
 engine = AsyncLLMEngine.from_engine_args(engine_args)
-```
+``` -->
 
 ## Troubleshooting
 - Make sure Docker has access to your GPU. You may need to install NVIDIA Docker if not already done so.
