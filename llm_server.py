@@ -73,6 +73,11 @@ llm = config.create_llm(quantization=None)
 app = FastAPI()
 
 
+def get_llm_instance():
+    """Function to retrieve the LLM instance."""
+    # Logic to get and return the llm instance
+    return llm
+
 def get_llm():
     """Dependency injector for the LLM.
     
@@ -81,10 +86,10 @@ def get_llm():
     """
     try:
         print("get_llm called, returning llm instance")
-        return llm
+        return get_llm_instance()
     except Exception as e:
         print(f"Error in get_llm: {e}")
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.post("/generate")
