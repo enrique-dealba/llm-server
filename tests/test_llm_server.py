@@ -42,14 +42,14 @@ class TestFastAPIEndpoints(unittest.TestCase):
 
     def test_generate_endpoint(self):
         """Test the /generate endpoint."""
-        with patch("llm_server.get_llm", return_value=VLLMMock()):
-            print("Patching get_llm with VLLMMock")
+        global llm
+        with patch('llm_server.llm', new=VLLMMock()):  # Patch llm
+            print("Patching llm with VLLMMock")
             response = self.client.post("/generate", json={"text": "test query"})
             print("Response status code:", response.status_code)
             print("Response JSON:", response.json())
             self.assertEqual(response.status_code, 200)
             self.assertEqual(response.json(), {"text": "mocked response"})
-
 
 if __name__ == "__main__":
     unittest.main()

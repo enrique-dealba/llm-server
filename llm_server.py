@@ -83,6 +83,7 @@ def get_llm():
         print("get_llm called, returning llm instance")
         return llm
     except Exception as e:
+        print(f"Error in get_llm: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
