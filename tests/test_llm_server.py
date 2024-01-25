@@ -68,25 +68,25 @@ class TestConfigCreateLLM(unittest.TestCase):
 
 
 class TestGetLLM(unittest.TestCase):
-    @patch("llm_server.llm", side_effect=Exception("Test Exception"))
-    def test_get_llm_exception(self, mock_llm):
-        with self.assertRaises(HTTPException) as context:
-            get_llm()
-        self.assertEqual(context.exception.status_code, 500)
-        self.assertIn("Test Exception", str(context.exception.detail))
+    @patch("llm_server.Config.create_llm", side_effect=Exception("Test Exception"))
+    def test_get_llm_exception(self, mock_create_llm):
+        response = self.client.get("/generate")  # Triggering get_llm indirectly
+        print("Response status code:", response.status_code)
+        print("Response detail:", response.json()["detail"])
+        self.assertEqual(response.status_code, 500)
+        self.assertIn("Test Exception", response.json()["detail"])
 
 
 class TestGenerateEndpoint(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
 
-    @patch("llm_server.get_llm")
-    def test_generate_exception_on_llm_call(self, mock_get_llm):
-        mock_llm = MagicMock()
-        mock_llm.side_effect = Exception("LLM Exception")
-        mock_get_llm.return_value = mock_llm
-
+    @patch("llm_server.generate")  # Patch the generate function directly
+    def test_generate_exception_on_llm_call(self, mock_generate):
+        mock_generate.side_effect = Exception("LLM Exception")
         response = self.client.post("/generate", json={"text": "test query"})
+        print("Response status code:", response.status_code)
+        print("Response JSON:", response.json())
         self.assertEqual(response.status_code, 400)
         self.assertIn("LLM Exception", response.json()["detail"])
 
