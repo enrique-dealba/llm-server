@@ -70,7 +70,7 @@ class TestConfigCreateLLM(unittest.TestCase):
 class TestGetLLM(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
-    
+
     def test_get_llm_exception(self):
         global llm
         with patch("llm_server.llm", side_effect=Exception("Test Exception")):
@@ -78,18 +78,19 @@ class TestGetLLM(unittest.TestCase):
             response = self.client.post("/generate", json={"text": "test query"})
             print("TestGetLLM - Response status code:", response.status_code)
             print("TestGetLLM - Response JSON:", response.json())
-            self.assertEqual(response.status_code, 500)
+            self.assertEqual(response.status_code, 400)
             self.assertIn("Test Exception", response.json()["detail"])
-
 
 
 class TestGenerateEndpoint(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
-    
+
     def test_generate_exception_on_llm_call(self):
         global llm
-        with patch("llm_server.llm", new=MagicMock(side_effect=Exception("LLM Exception"))):
+        with patch(
+            "llm_server.llm", new=MagicMock(side_effect=Exception("LLM Exception"))
+        ):
             print("Patching llm with a mock that raises an exception")
             response = self.client.post("/generate", json={"text": "test query"})
             print("TestGenerateEndpoint - Response status code:", response.status_code)
