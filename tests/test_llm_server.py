@@ -19,7 +19,6 @@ class VLLMMock:
         return "mocked response"
 
 
-# Test cases for the Config class
 class TestConfig(unittest.TestCase):
     """Test cases for the Config class."""
 
