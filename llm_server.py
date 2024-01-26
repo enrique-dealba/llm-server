@@ -19,7 +19,7 @@ from config import (
 
 class Config:
     """Configuration management for LLM server.
-    
+
     Handles GPU settings and LLM parameters.
     """
 
@@ -61,6 +61,7 @@ class Config:
 
 class GenerateRequest(BaseModel):
     """Schema for LLM text generation request."""
+
     text: str
 
 
@@ -75,20 +76,18 @@ app = FastAPI()
 
 def get_llm_instance():
     """Function to retrieve the LLM instance."""
-    # Logic to get and return the llm instance
     return llm
+
 
 def get_llm():
     """Dependency injector for the LLM.
-    
+
     Useful for testing the /generate endpoint. Easily swap LLM with a mock or stub
     during testing.
     """
     try:
-        print("get_llm called, returning llm instance")
         return get_llm_instance()
     except Exception as e:
-        print(f"Error in get_llm: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -98,12 +97,9 @@ async def generate(request: Request, llm: VLLM = Depends(get_llm)):
     try:
         request_data = await request.json()
         query = GenerateRequest(**request_data).text
-        print(f"generate endpoint called with query: {query}")
         response = llm(query)
-        print(f"LLM response: {response}")
         return JSONResponse({"text": response})
     except Exception as e:
-        print(f"Error in generate endpoint: {e}")
         raise HTTPException(
             status_code=400, detail=f"Error processing user request: {e}"
         )
