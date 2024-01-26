@@ -56,7 +56,7 @@ class TextProcessing:
     @staticmethod
     def measure_performance(start_time, end_time, response_text):
         """Calculates the tokens per second (tps) performance of a text response."""
-        elapsed_time = (end_time - start_time).total_seconds()
+        elapsed_time = end_time - start_time
         tokens = TextProcessing.num_tokens(response_text)
         tps = float(tokens) / float(elapsed_time)
         return tps

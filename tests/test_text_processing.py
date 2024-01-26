@@ -1,5 +1,4 @@
 import unittest
-from datetime import datetime
 from unittest.mock import patch
 
 from text_processing import TextProcessing as tp
@@ -99,8 +98,8 @@ class TestTextProcessing(unittest.TestCase):
         """Mock num_tokens to return a fixed value."""
         mock_num_tokens.return_value = 10
 
-        start_time = datetime(2024, 1, 1, 12, 0, 0)
-        end_time = datetime(2024, 1, 1, 12, 0, 10)  # 10 seconds later
+        start_time = 10
+        end_time = 20 # 10 seconds later
 
         tps = tp.measure_performance(start_time, end_time, "Test string")
         self.assertEqual(tps, 1.0)
