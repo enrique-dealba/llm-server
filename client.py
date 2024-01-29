@@ -4,7 +4,7 @@ import time
 import requests
 from dotenv import load_dotenv
 
-from config import API_URL
+from config import API_URL, DEFAULT_MODEL
 from text_processing import TextProcessing as tp
 
 load_dotenv()
@@ -37,6 +37,7 @@ if __name__ == "__main__":
             t_1 = time.perf_counter()
 
             response = result["text"]
+            response = tp.clean_mistral(response) # TODO: check DEFAULT_MODEL to choose
             # response1 = tp.parse_llm_server(response) # for list/str responses
             # response2 = tp.parse_response(response1) # for /user [user] etc
             # response3 = tp.clean_text(response2) # for whitespaces

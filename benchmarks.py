@@ -4,6 +4,7 @@ from typing import Dict, List
 from dotenv import load_dotenv
 
 from client import Client
+from config import DEFAULT_MODEL
 from text_processing import TextProcessing as tp
 
 # Loads environment variables
@@ -29,14 +30,10 @@ def benchmark_prompts(prompts: List[str]) -> Dict[str, float]:
             successful_requests += 1
             print(f"Prompt: {prompt}\nTPS: {tps:.2f}\n")
 
-            response1 = tp.parse_llm_server(response) # for list/str responses
-            response2 = tp.parse_response(response1) # for /user [user] etc
-            response3 = tp.clean_text(response2) # for whitespaces
+            response1 = tp.clean_mistral(response)
 
             print(f"\nResponse 0: {response}\n")
             print(f"\nResponse 1: {response1}\n")
-            print(f"\nResponse 2: {response2}\n")
-            print(f"\nResponse 3: {response3}\n")
         else:
             print(f"Failed to get response for prompt: {prompt}")
 

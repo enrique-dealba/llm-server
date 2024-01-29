@@ -6,9 +6,10 @@ import tiktoken
 
 class TextProcessing:
     """For text processing operations.
-    
+
     Includes tokenization, cleaning, parsing, and concatenation.
     """
+
     @staticmethod
     def num_tokens(string: str, encoding_name: str = "cl100k_base") -> int:
         """Counts the number of tokens in a string based on a specified encoding."""
@@ -23,6 +24,19 @@ class TextProcessing:
         for punct in [".", ",", "?", "!"]:
             cleaned_text = cleaned_text.replace(f" {punct}", punct)
         return cleaned_text
+
+    @staticmethod
+    def clean_mistral(input_text: str) -> str:
+        """Cleans input text by removing prefixes and unwanted characters."""
+        if not isinstance(input_text, str):
+            raise ValueError("Input must be a string")
+
+        # For ". ", "A:", "Answer:", and "\n"
+        pattern = r"^(Answer: |A: |\.\s*A?:? |\n\s*)"
+
+        cleaned_str = re.sub(pattern, "", input_text, 1)
+
+        return cleaned_str
 
     @staticmethod
     def parse_response(input_string: str) -> str:
@@ -52,7 +66,7 @@ class TextProcessing:
             return input_data
         else:
             raise TypeError("Input must be a string or a list of strings.")
-        
+
     @staticmethod
     def measure_performance(start_time, end_time, response_text):
         """Calculates the tokens per second (tps) performance of a text response."""

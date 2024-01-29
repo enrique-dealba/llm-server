@@ -104,6 +104,17 @@ class TestTextProcessing(unittest.TestCase):
         tps = tp.measure_performance(start_time, end_time, "Test string")
         self.assertEqual(tps, 1.0)
 
+    def test_clean_mistral_valid(self):
+        """Test clean_input_string with a valid string input."""
+        test_str = "Answer: This is a valid test."
+        expected_result = "This is a valid test."
+        self.assertEqual(tp.clean_mistral(test_str), expected_result)
+
+    def test_clean_mistral_invalid(self):
+        """Test clean_input_string with a non-string input."""
+        test_input = 12345
+        with self.assertRaises(ValueError):
+            tp.clean_mistral(test_input)
 
 if __name__ == "__main__":
     unittest.main()
