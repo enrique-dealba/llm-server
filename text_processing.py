@@ -17,6 +17,17 @@ class TextProcessing:
         return len(encoding.encode(string))
 
     @staticmethod
+    def preprocess_prompt(prompt: str) -> str:
+        """Cleans prompts before being sent to LLM."""
+        if not isinstance(prompt, str):
+            raise ValueError("Input prompt must be a string")
+
+        if not prompt.endswith((".", "\n", "?", "!")):
+            prompt += "."
+
+        return prompt
+
+    @staticmethod
     def clean_text(input_text: str) -> str:
         """Cleans text by removing specific characters and whitespace."""
         cleaned_text = input_text.strip("<|>")
@@ -35,7 +46,8 @@ class TextProcessing:
         regex_patterns = [
             r"^[\#\s]*Answer\s*[\(\d\)]*\s*:?\s?",  # Complex Answer pattern
             r"^A:\s?",  # A: pattern
-            r"^\.\s*(A?:?\s?)?",  # Period and optional A: pattern
+            r"^\.\s*(?:A?:?\s?)?\n\s*",  # Period, optional A: pattern, followed by \n
+            r"^\.\s*A?:?\s*",  # Period and optional A: pattern
             r"^\n\s*",  # Newline pattern
         ]
 

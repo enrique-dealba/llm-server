@@ -99,10 +99,23 @@ class TestTextProcessing(unittest.TestCase):
         mock_num_tokens.return_value = 10
 
         start_time = 10
-        end_time = 20 # 10 seconds later
+        end_time = 20  # 10 seconds later
 
         tps = tp.measure_performance(start_time, end_time, "Test string")
         self.assertEqual(tps, 1.0)
+
+    def test_preprocess_prompt(self):
+        self.assertEqual(tp.preprocess_prompt("Hello world."), "Hello world.")
+        self.assertEqual(tp.preprocess_prompt("Hello world\n"), "Hello world\n")
+        self.assertEqual(tp.preprocess_prompt("Hello world?"), "Hello world?")
+        self.assertEqual(tp.preprocess_prompt("Hello world!"), "Hello world!")
+        self.assertEqual(tp.preprocess_prompt("Hello world"), "Hello world.")
+
+    def test_preprocess_prompt_invalid(self):
+        """Test preprocess_prompt with a non-string input."""
+        test_input = 12345
+        with self.assertRaises(ValueError):
+            tp.preprocess_prompt(test_input)
 
     def test_clean_mistral_valid(self):
         """Test clean_input_string with a valid string input."""
@@ -120,6 +133,9 @@ class TestTextProcessing(unittest.TestCase):
         test_6 = "Answer: This is a test. This is also a test."
         extended_result = "This is a test. This is also a test."
         self.assertEqual(tp.clean_mistral(test_6), extended_result)
+        test_7 = ". \n An apple."
+        an_test = "An apple."
+        self.assertEqual(tp.clean_mistral(test_7), an_test)
 
     def test_clean_mistral_invalid(self):
         """Test clean_input_string with a non-string input."""
