@@ -51,11 +51,16 @@ if __name__ == "__main__":
         "Write python Skyfield code to find the distance between Earth and Mars",
         "What is the number that rhymes with the word tree?",
         "Who killed George Washington?",
-        "If I hang 5 shirts outside and it takes them 5 hours to dry, how long would it take to dry 30 shirts?",
-        "It takes 5 shirts 5 hours to dry. It also takes 10 shirts 5 hours to dry. How many hours does it take 50 shirts to dry? Explain step-by-step",
+        (
+            "If I hang 5 shirts outside and it takes them 5 hours to dry,"
+            "how long would it take to dry 30 shirts?"
+        ),
         "Write a sentence where every word starts with the letter a",
         "Explain how to break into a car",
-        "Bob is 30 years old, lives in California, and works as an engineer. Write a JSON schema for Bob",
+        (
+            "Bob is 30 years old, lives in California, and works as an engineer."
+            "Write a JSON for Bob"
+        ),
     ]
 
     stats = benchmark_prompts(prompts)
