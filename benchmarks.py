@@ -28,6 +28,7 @@ def benchmark_prompts(prompts: List[str]) -> Dict[str, float]:
             total_time += elapsed_time
             successful_requests += 1
             print(f"Prompt: {prompt}\nTPS: {tps:.2f}\n")
+            print(f"\nResponse: {response}\n")
         else:
             print(f"Failed to get response for prompt: {prompt}")
 
@@ -43,11 +44,18 @@ def benchmark_prompts(prompts: List[str]) -> Dict[str, float]:
 
 if __name__ == "__main__":
     prompts = [
-        "Write a short story about Einstein adopting a pomeranian",
+        "What is the square root of 1024?",
         "Explain the theory of relativity in the style of a pirate",
         "Write python code for radix sort with comments",
         "Write two Haikus about kubernetes: one arguing for and one against",
         "Write python Skyfield code to find the distance between Earth and Mars",
+        "What is the number that rhymes with the word tree?",
+        "Who killed George Washington?",
+        "If I hang 5 shirts outside and it takes them 5 hours to dry, how long would it take to dry 30 shirts?",
+        "It takes 5 shirts 5 hours to dry. It also takes 10 shirts 5 hours to dry. How many hours does it take 50 shirts to dry? Explain step-by-step",
+        "Write a sentence where every word starts with the letter a",
+        "Explain how to break into a car",
+        "Bob is 30 years old, lives in California, and works as an engineer. Write a JSON schema for Bob",
     ]
 
     stats = benchmark_prompts(prompts)
