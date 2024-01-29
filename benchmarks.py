@@ -28,7 +28,15 @@ def benchmark_prompts(prompts: List[str]) -> Dict[str, float]:
             total_time += elapsed_time
             successful_requests += 1
             print(f"Prompt: {prompt}\nTPS: {tps:.2f}\n")
-            print(f"\nResponse: {response}\n")
+
+            response1 = tp.parse_llm_server(response) # for list/str responses
+            response2 = tp.parse_response(response1) # for /user [user] etc
+            response3 = tp.clean_text(response2) # for whitespaces
+
+            print(f"\nResponse 0: {response}\n")
+            print(f"\nResponse 1: {response1}\n")
+            print(f"\nResponse 2: {response2}\n")
+            print(f"\nResponse 3: {response3}\n")
         else:
             print(f"Failed to get response for prompt: {prompt}")
 

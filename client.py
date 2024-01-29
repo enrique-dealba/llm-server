@@ -37,14 +37,11 @@ if __name__ == "__main__":
             t_1 = time.perf_counter()
 
             response = result["text"]
-            response1 = tp.parse_llm_server(response)
-            response2 = tp.parse_response(response1)
-            response3 = tp.clean_text(response2)
+            # response1 = tp.parse_llm_server(response) # for list/str responses
+            # response2 = tp.parse_response(response1) # for /user [user] etc
+            # response3 = tp.clean_text(response2) # for whitespaces
 
-            print(f"\nLLM Response 0: {response}")
-            print(f"\nLLM Response 1: {response1}")
-            print(f"\nLLM Response 2: {response2}")
-            print(f"\nLLM Response 3: {response3}")
+            print(f"\nLLM Response: {response}")
 
             queries = result.get("queries")
             if queries:
