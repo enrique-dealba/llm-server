@@ -31,12 +31,18 @@ class TextProcessing:
         if not isinstance(input_text, str):
             raise ValueError("Input must be a string")
 
-        # For ". ", "A:", "Answer:", and "\n"
-        pattern = r"^(Answer: |A: |\.\s*A?:? |\n\s*)"
+        # Regex patterns to target only the beginning of the text
+        regex_patterns = [
+            r"^[\#\s]*Answer\s*[\(\d\)]*\s*:?\s?",  # Complex Answer pattern
+            r"^A:\s?",  # A: pattern
+            r"^\.\s*(A?:?\s?)?",  # Period and optional A: pattern
+            r"^\n\s*",  # Newline pattern
+        ]
 
-        cleaned_str = re.sub(pattern, "", input_text, 1)
+        for pattern in regex_patterns:
+            input_text = re.sub(pattern, "", input_text, 1)
 
-        return cleaned_str
+        return input_text
 
     @staticmethod
     def parse_response(input_string: str) -> str:

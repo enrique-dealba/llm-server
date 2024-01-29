@@ -106,15 +106,27 @@ class TestTextProcessing(unittest.TestCase):
 
     def test_clean_mistral_valid(self):
         """Test clean_input_string with a valid string input."""
-        test_str = "Answer: This is a valid test."
-        expected_result = "This is a valid test."
-        self.assertEqual(tp.clean_mistral(test_str), expected_result)
+        period_result = "This is a test."
+        test_1 = "Answer: This is a test."
+        self.assertEqual(tp.clean_mistral(test_1), period_result)
+        test_2 = "A: This is a test."
+        self.assertEqual(tp.clean_mistral(test_2), period_result)
+        test_3 = ". A: This is a test."
+        self.assertEqual(tp.clean_mistral(test_3), period_result)
+        test_4 = "\n Answer: This is a test."
+        self.assertEqual(tp.clean_mistral(test_4), period_result)
+        test_5 = "\n\n ## Answer (1) \n This is a test."
+        self.assertEqual(tp.clean_mistral(test_5), period_result)
+        test_6 = "Answer: This is a test. This is also a test."
+        extended_result = "This is a test. This is also a test."
+        self.assertEqual(tp.clean_mistral(test_6), extended_result)
 
     def test_clean_mistral_invalid(self):
         """Test clean_input_string with a non-string input."""
         test_input = 12345
         with self.assertRaises(ValueError):
             tp.clean_mistral(test_input)
+
 
 if __name__ == "__main__":
     unittest.main()
