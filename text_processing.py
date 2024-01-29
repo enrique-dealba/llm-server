@@ -44,6 +44,7 @@ class TextProcessing:
 
         # Regex patterns to target only the beginning of the text
         regex_patterns = [
+            r"^\s+",  # Leading whitespace pattern
             r"^[\#\s]*Answer\s*[\(\d\)]*\s*:?\s?",  # Complex Answer pattern
             r"^A:\s?",  # A: pattern
             r"^\.\s*(?:A?:?\s?)?\n\s*",  # Period, optional A: pattern, followed by \n

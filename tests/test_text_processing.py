@@ -136,6 +136,10 @@ class TestTextProcessing(unittest.TestCase):
         test_7 = ". \n An apple."
         an_test = "An apple."
         self.assertEqual(tp.clean_mistral(test_7), an_test)
+        test_8 = "  This is a test."
+        self.assertEqual(tp.clean_mistral(test_8), period_result)
+        test_9 = "  \n \n \n\n A: This is a test."
+        self.assertEqual(tp.clean_mistral(test_9), period_result)
 
     def test_clean_mistral_invalid(self):
         """Test clean_input_string with a non-string input."""
