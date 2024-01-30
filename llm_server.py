@@ -73,7 +73,7 @@ class GenerateRequest(BaseModel):
 
 # Initialize configurations and dependencies
 config = Config()
-llm = config.create_llm(quantization=None, use_agent=False)
+llm = config.create_llm(quantization=None, use_agent=True)
 
 app = FastAPI()
 
