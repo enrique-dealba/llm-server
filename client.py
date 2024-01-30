@@ -38,8 +38,11 @@ def main():
             t_0 = time.perf_counter()  # better than time.time()
             result = Client.generate_text(prompt)
             t_1 = time.perf_counter()
+            print(result)
+            print(type(result))
 
-            response = result["text"]
+            #response = result["text"]
+            response = result
             response = tp.clean_mistral(response)  # TODO: check DEFAULT_MODEL to choose
 
             print(f"\nLLM Response: {response}")
