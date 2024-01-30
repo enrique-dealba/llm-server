@@ -4,7 +4,7 @@ import time
 import requests
 from dotenv import load_dotenv
 
-from config import API_URL, DEFAULT_MODEL
+from config import API_URL
 from text_processing import TextProcessing as tp
 
 load_dotenv()
@@ -12,6 +12,7 @@ load_dotenv()
 
 class Client:
     """Client for interacting with LLM server."""
+
     @staticmethod
     def generate_text(prompt: str):
         """Sends text generation request to LLM server."""
@@ -25,7 +26,8 @@ class Client:
             raise
 
 
-if __name__ == "__main__":
+def main():
+    """Conversation loop with LLM server."""
     while True:
         prompt = input("Prompt: ")
         if prompt.lower() in ["quit", "exit"]:
@@ -33,12 +35,12 @@ if __name__ == "__main__":
             break
 
         try:
-            t_0 = time.perf_counter() # better than time.time()
+            t_0 = time.perf_counter()  # better than time.time()
             result = Client.generate_text(prompt)
             t_1 = time.perf_counter()
 
             response = result["text"]
-            response = tp.clean_mistral(response) # TODO: check DEFAULT_MODEL to choose
+            response = tp.clean_mistral(response)  # TODO: check DEFAULT_MODEL to choose
 
             print(f"\nLLM Response: {response}")
 
@@ -51,3 +53,7 @@ if __name__ == "__main__":
 
         except requests.exceptions.RequestException as e:
             print(f"An error occurred: {e}")
+
+
+if __name__ == "__main__":
+    main()
