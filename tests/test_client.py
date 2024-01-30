@@ -1,7 +1,8 @@
 import io
-import requests
 import unittest
 from unittest.mock import patch
+
+import requests
 
 import client
 
@@ -82,15 +83,17 @@ class TestClient(unittest.TestCase):
         # Checks that loop ran twice (once for the prompt and once for 'quit')
         self.assertEqual(mock_input.call_count, 2)
 
-        # Check if loop correctly prints LLM response and the exit message
+        # Checks if loop correctly prints LLM response and the exit message
         self.assertIn("LLM Response: Mocked LLM response", output)
         self.assertIn("Exiting the conversation.", output)
 
         mock_generate_text.assert_called_with("test prompt")
 
     @patch("logging.error")
-    @patch("requests.post",
-           side_effect=requests.exceptions.RequestException("API request failed"))
+    @patch(
+        "requests.post",
+        side_effect=requests.exceptions.RequestException("API request failed"),
+    )
     def test_generate_text_logging(self, mock_post, mock_logging):
         """Tests if logging.error is called when an API request fails."""
         with self.assertRaises(requests.exceptions.RequestException):
@@ -98,18 +101,20 @@ class TestClient(unittest.TestCase):
         mock_logging.assert_called_with("API request failed: API request failed")
 
     @patch("builtins.input")
-    @patch("client.Client.generate_text",
-           side_effect=requests.exceptions.RequestException("Error occurred"))
+    @patch(
+        "client.Client.generate_text",
+        side_effect=requests.exceptions.RequestException("Error occurred"),
+    )
     def test_main_loop_error_handling(self, mock_generate_text, mock_input):
         """Tests error handling in the main loop."""
         mock_input.side_effect = ["test prompt", "quit"]
-        
+
         with patch("sys.stdout", new_callable=io.StringIO) as mock_stdout:
             with patch.object(client, "__name__", "__main__"):
                 client.main()
-            
+
             output = mock_stdout.getvalue()
-        
+
         self.assertIn("An error occurred: Error occurred", output)
 
     @patch("client.main")
@@ -118,6 +123,7 @@ class TestClient(unittest.TestCase):
         with patch.object(client, "__name__", "__main__"):
             client.main()
             mock_main.assert_called_once()
+
 
 if __name__ == "__main__":
     unittest.main()
