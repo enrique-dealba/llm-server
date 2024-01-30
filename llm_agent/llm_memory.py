@@ -19,7 +19,7 @@ class MemoryLLM:
         prompt_template = ChatPromptTemplate(
             messages=[
                 SystemMessagePromptTemplate.from_template(
-                    "You are a nice chatbot having a conversation with a human."
+                    "You are a helpful assistant having a conversation with a person."
                 ),
                 MessagesPlaceholder(variable_name="chat_history"),
                 HumanMessagePromptTemplate.from_template("{question}"),
