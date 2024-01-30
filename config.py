@@ -1,7 +1,7 @@
 """Config settings for LLMs and server parameters."""
 
 # LLM
-DEFAULT_MODEL = "microsoft/phi-2"
+DEFAULT_MODEL = "mistralai/Mistral-7B-Instruct-v0.2"
 
 # Constants
 NUM_GPUS = 1
@@ -25,6 +25,7 @@ class LLM:
     MISTRAL_CPU = "TheBloke/Mistral-7B-Instruct-v0.1-GGUF"  # Has issues
     MISTRAL_AWQ = "TheBloke/Mistral-7B-Instruct-v0.1-AWQ"
     MISTRAL_GPTQ = "TheBloke/Mistral-7B-v0.1-GPTQ"
+    MISTRAL_V2 = "mistralai/Mistral-7B-Instruct-v0.2"
     ZEPHYR_7B = "HuggingFaceH4/zephyr-7b-beta"
     HERMES_2_5 = "teknium/OpenHermes-2.5-Mistral-7B"
     HERMES_AWQ = "TheBloke/OpenHermes-2.5-Mistral-7B-AWQ"
