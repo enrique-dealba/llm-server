@@ -1,4 +1,5 @@
 import io
+import requests
 import unittest
 from unittest.mock import patch
 
@@ -87,6 +88,36 @@ class TestClient(unittest.TestCase):
 
         mock_generate_text.assert_called_with("test prompt")
 
+    @patch("logging.error")
+    @patch("requests.post",
+           side_effect=requests.exceptions.RequestException("API request failed"))
+    def test_generate_text_logging(self, mock_post, mock_logging):
+        """Tests if logging.error is called when an API request fails."""
+        with self.assertRaises(requests.exceptions.RequestException):
+            client.Client.generate_text("Test prompt")
+        mock_logging.assert_called_with("API request failed: API request failed")
+
+    @patch("builtins.input")
+    @patch("client.Client.generate_text",
+           side_effect=requests.exceptions.RequestException("Error occurred"))
+    def test_main_loop_error_handling(self, mock_generate_text, mock_input):
+        """Tests error handling in the main loop."""
+        mock_input.side_effect = ["test prompt", "quit"]
+        
+        with patch("sys.stdout", new_callable=io.StringIO) as mock_stdout:
+            with patch.object(client, "__name__", "__main__"):
+                client.main()
+            
+            output = mock_stdout.getvalue()
+        
+        self.assertIn("An error occurred: Error occurred", output)
+
+    @patch("client.main")
+    def test_main_execution(self, mock_main):
+        """Tests if main function is called when script run as __main__."""
+        with patch.object(client, "__name__", "__main__"):
+            client.main()
+            mock_main.assert_called_once()
 
 if __name__ == "__main__":
     unittest.main()
