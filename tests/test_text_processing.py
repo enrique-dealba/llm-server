@@ -105,6 +105,7 @@ class TestTextProcessing(unittest.TestCase):
         self.assertEqual(tps, 1.0)
 
     def test_preprocess_prompt(self):
+        """Test preprocess_prompt with valid inputs."""
         self.assertEqual(tp.preprocess_prompt("Hello world."), "Hello world.")
         self.assertEqual(tp.preprocess_prompt("Hello world\n"), "Hello world\n")
         self.assertEqual(tp.preprocess_prompt("Hello world?"), "Hello world?")

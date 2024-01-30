@@ -61,9 +61,9 @@ class TestConfigCreateLLM(unittest.TestCase):
 
     def setUp(self):
         """Set up a Config instance before each test."""
-        self.config = Config()  # Initialize Config object
+        self.config = Config()
 
-    @patch("llm_server.VLLM")  # Mock the VLLM class
+    @patch("llm_server.VLLM")  # Mocks VLLM class
     def test_create_llm_exception(self, mock_vllm):
         """Ensures create_llm raises RuntimeError on VLLM init failure."""
         mock_vllm.side_effect = Exception("Test Exception")

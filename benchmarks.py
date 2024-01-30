@@ -30,10 +30,9 @@ def benchmark_prompts(prompts: List[str]) -> Dict[str, float]:
             successful_requests += 1
             print(f"Prompt: {prompt}\nTPS: {tps:.2f}\n")
 
-            response1 = tp.clean_mistral(response)
+            response = tp.clean_mistral(response)
 
-            print(f"\nResponse 0: {response}\n")
-            print(f"\nResponse 1: {response1}\n")
+            print(f"\nResponse: {response}\n")
         else:
             print(f"Failed to get response for prompt: {prompt}")
 

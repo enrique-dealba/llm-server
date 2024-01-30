@@ -15,6 +15,7 @@ from config import (
     NUM_GPUS,
     TEMPERATURE,
 )
+from llm_agent.llm_agent import LLMAgent
 
 
 class Config:
@@ -36,7 +37,9 @@ class Config:
             "awq": AWQ_GPU_UTIL,
         }
 
-    def create_llm(self, quantization: Optional[str] = None) -> VLLM:
+    def create_llm(
+        self, quantization: Optional[str] = None, use_agent: Optional[bool] = False
+    ) -> VLLM:
         """Creates and returns VLLM instance based on current configuration."""
         gpu_utilization = self.gpu_util.get(quantization, self.gpu_util["default"])
 
@@ -54,6 +57,8 @@ class Config:
                     "gpu_memory_utilization": gpu_utilization,
                 },
             )
+            if use_agent:
+                return LLMAgent(llm=llm)
             return llm
         except Exception as e:
             raise RuntimeError(f"Failed to initialize LLM: {e}")
@@ -67,9 +72,7 @@ class GenerateRequest(BaseModel):
 
 # Initialize configurations and dependencies
 config = Config()
-llm = config.create_llm(quantization=None)
-# from llm_agent.llm_agent import LLMAgent
-# llm_agent = LLMAgent(llm=llm)
+llm = config.create_llm(quantization=None, use_agent=False)
 
 app = FastAPI()
 

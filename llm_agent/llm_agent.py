@@ -39,7 +39,7 @@ class LLMAgent:
         custom_tools = []
 
         ## Add list of API tools
-        custom_tools += [get_skyfield_planets_tool]
+        # custom_tools += [get_skyfield_planets_tool]
         # custom_tools += [get_planet_distance_tool]
         # custom_tools += [get_latitude_longitude_tool]
         # custom_tools += [get_skyfield_satellites_tool]
@@ -140,3 +140,6 @@ class LLMAgent:
 
         self.reset_thoughts()
         return responses
+    
+    def __call__(self, prompt):
+        return self.run(prompt)
