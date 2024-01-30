@@ -26,6 +26,22 @@ template_5 = """<s>[INST] You are a helpful assistant.[/INST]</s>
 Human: <s>[INST] {prompt} [/INST]</s>
 Assistant:"""
 
+template_6 = """<s>[INST] You are a helpful assistant.[/INST]</s>
+{chat_history}
+<s>[INST] {prompt} [/INST]</s>
+Assistant:"""
+
+template_7 = """<s>[INST] You are a helpful assistant.[/INST]</s>
+{chat_history}
+<s>[INST] {prompt} [/INST]</s>"""
+
+template_8 = """{chat_history}
+<s>[INST] {prompt} [/INST]</s>"""
+
+template_9 = """{chat_history}
+<s>[INST] {prompt} [/INST]</s>
+Assistant:"""
+
 
 class MemoryLLM:
     """LLM with memory that responds to user prompts."""
