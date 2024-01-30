@@ -38,13 +38,15 @@ def main():
             t_0 = time.perf_counter()  # better than time.time()
             result = Client.generate_text(prompt)
             t_1 = time.perf_counter()
-            print(result)
-            print(type(result))
 
-            #response = result["text"]
-            response = result
+            if "text" not in result:
+                raise KeyError("Missing 'text' key in LLM response")
+            
+            response = result["text"]
+            if not response:
+                raise ValueError("Empty LLM response content")
+            
             response = tp.clean_mistral(response)  # TODO: check DEFAULT_MODEL to choose
-
             print(f"\nLLM Response: {response}")
 
             queries = result.get("queries")
