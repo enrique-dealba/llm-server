@@ -4,6 +4,7 @@ from langchain.prompts import (
     ChatPromptTemplate,
     HumanMessagePromptTemplate,
     MessagesPlaceholder,
+    PromptTemplate,
     SystemMessagePromptTemplate,
 )
 
@@ -16,29 +17,27 @@ class MemoryLLM:
         self.llm_chain = None
 
     def setup_memory(self):
-        prompt_template = ChatPromptTemplate(
-            messages=[
-                SystemMessagePromptTemplate.from_template(
-                    "You are a helpful assistant having a conversation with a person."
-                ),
-                MessagesPlaceholder(variable_name="chat_history"),
-                HumanMessagePromptTemplate.from_template("{question}"),
-            ]
+        template = """You are a helpful assistant having a conversation with a human.
+    {chat_history}
+    Human: {prompt}
+    Assistant:"""
+
+        prompt = PromptTemplate(
+            input_variables=["chat_history", "prompt"], template=template
         )
 
-        memory = ConversationBufferMemory(
-            k=7,  # Number of memories
-            memory_key="chat_history",
-            return_messages=True,
-        )
+        memory = ConversationBufferMemory(k=7, memory_key="chat_history")
 
         self.llm_chain = LLMChain(
-            llm=self.llm, prompt=prompt_template, verbose=True, memory=memory
+            llm=self.llm,
+            prompt=prompt,
+            verbose=True,
+            memory=memory,
         )
 
     def run(self, prompt: str):
         self.setup_memory()
-        response = self.llm_chain({"question": prompt})
+        response = self.llm_chain.predict(prompt=prompt)
         return response
 
     def __call__(self, prompt):
