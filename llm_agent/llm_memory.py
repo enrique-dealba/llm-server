@@ -3,6 +3,30 @@ from langchain.memory import ConversationBufferMemory
 from langchain.prompts import PromptTemplate
 
 
+template_1 = """<s>[INST] You are a helpful assistant.[/INST]</s> 
+{chat_history}
+Human: {prompt}
+Assistant:"""
+
+template_2 = """<s>[INST] You are a helpful assistant.[/INST]
+{chat_history}
+Human: {prompt}</s> 
+Assistant:"""
+
+template_3 = """<s>[INST] You are a helpful assistant.[/INST]</s>
+{chat_history}
+Human: {prompt}"""
+
+template_4 = """<s>[INST] You are a helpful assistant.[/INST]</s>
+{chat_history}
+Human: <s>[INST] {prompt} [/INST]</s>"""
+
+template_5 = """<s>[INST] You are a helpful assistant.[/INST]</s>
+{chat_history}
+Human: <s>[INST] {prompt} [/INST]</s>
+Assistant:"""
+
+
 class MemoryLLM:
     """LLM with memory that responds to user prompts."""
 
@@ -13,13 +37,8 @@ class MemoryLLM:
 
     def setup_memory(self):
         """Sets up the conversational memory for the LLM."""
-        template = """You are a helpful assistant having a conversation with a human.
-    {chat_history}
-    Human: {prompt}
-    Assistant:"""
-
         prompt = PromptTemplate(
-            input_variables=["chat_history", "prompt"], template=template
+            input_variables=["chat_history", "prompt"], template=template_1
         )
 
         memory = ConversationBufferMemory(k=7, memory_key="chat_history")
