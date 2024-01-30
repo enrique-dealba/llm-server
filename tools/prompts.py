@@ -247,6 +247,8 @@ mistral_template_8 = ZEPHYR_SYSTEM_PREFIX + mistral_template_agent3 + ZEPHYR_SYS
 
 mistral_1 = mistral_template_agent3
 
+mistral_base = "TODO: Find this."
+
 mistral_2 = PREFIX + """ <|system|>
 Available Tools: {tools}
 

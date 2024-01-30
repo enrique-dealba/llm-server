@@ -16,6 +16,7 @@ from config import (
     TEMPERATURE,
 )
 from llm_agent.llm_agent import LLMAgent
+from llm_agent.llm_memory import MemoryLLM
 
 
 class Config:
@@ -58,7 +59,7 @@ class Config:
                 },
             )
             if use_agent:
-                return LLMAgent(llm=llm)
+                return MemoryLLM(llm=llm)
             return llm
         except Exception as e:
             raise RuntimeError(f"Failed to initialize LLM: {e}")
