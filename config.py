@@ -1,7 +1,7 @@
 """Config settings for LLMs and server parameters."""
 
 # LLM
-DEFAULT_MODEL = "mistralai/Mistral-7B-Instruct-v0.1"
+DEFAULT_MODEL = "cognitivecomputations/dolphin-2_6-phi-2"
 
 # Constants
 NUM_GPUS = 1
@@ -30,3 +30,4 @@ class LLM:
     HERMES_AWQ = "TheBloke/OpenHermes-2.5-Mistral-7B-AWQ"
     YARN_64K = "NousResearch/Yarn-Mistral-7b-64k"
     YARN_128K = "NousResearch/Yarn-Mistral-7b-128k"
+    DOLPHIN_26_PHI = "cognitivecomputations/dolphin-2_6-phi-2"

@@ -22,7 +22,7 @@ class TextProcessing:
         if not isinstance(prompt, str):
             raise ValueError("Input prompt must be a string")
 
-        if not prompt.endswith((".", "\n", "?", "!")):
+        if not prompt.endswith((".", "\n", "?", "!", ":")):
             prompt += "."
 
         return prompt

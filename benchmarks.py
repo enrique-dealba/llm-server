@@ -52,7 +52,7 @@ if __name__ == "__main__":
         "Explain the theory of relativity in the style of a pirate",
         "Write python code for radix sort with comments",
         "Write two Haikus about kubernetes: one arguing for and one against",
-        "Write python Skyfield code to find the distance between Earth and Mars",
+        "Write python Skyfield code to find the distance between Earth and Mars. Code:",
         "What is the number that rhymes with the word tree?",
         "Who killed George Washington?",
         (
@@ -62,7 +62,7 @@ if __name__ == "__main__":
         "Write a sentence where every word starts with the letter a",
         "Explain how to break into a car",
         (
-            "Bob is 30 years old, lives in California, and works as an engineer."
+            "Bob is 30 years old, lives in California, and works as an engineer. "
             "Write a JSON for Bob"
         ),
     ]
