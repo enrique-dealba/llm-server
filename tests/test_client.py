@@ -1,3 +1,4 @@
+import io
 import unittest
 from unittest.mock import patch
 
@@ -55,6 +56,36 @@ class TestClient(unittest.TestCase):
         with self.assertRaises(Exception) as context:
             client.Client.generate_text("Test prompt")
         self.assertTrue("API request failed" in str(context.exception))
+
+    @patch("builtins.input")
+    @patch("client.Client.generate_text")
+    def test_main_loop(self, mock_generate_text, mock_input):
+        """Tests main loop logic.
+
+        Includes user input handling, API call, and response processing.
+        """
+        mock_input.side_effect = ["test prompt", "quit"]  # Simulates test prompt + quit
+        mock_generate_text.return_value = {
+            "text": "Mocked LLM response",
+            "queries": ["query1", "query2"],
+        }
+
+        # Redirects stdout to capture print statements
+        with patch("sys.stdout", new_callable=io.StringIO) as mock_stdout:
+            with patch.object(client, "__name__", "__main__"):
+                client.main()
+
+            # Captures printed output
+            output = mock_stdout.getvalue()
+
+        # Checks that loop ran twice (once for the prompt and once for 'quit')
+        self.assertEqual(mock_input.call_count, 2)
+
+        # Check if loop correctly prints LLM response and the exit message
+        self.assertIn("LLM Response: Mocked LLM response", output)
+        self.assertIn("Exiting the conversation.", output)
+
+        mock_generate_text.assert_called_with("test prompt")
 
 
 if __name__ == "__main__":
