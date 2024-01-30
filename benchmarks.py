@@ -56,7 +56,7 @@ if __name__ == "__main__":
         "What is the number that rhymes with the word tree?",
         "Who killed George Washington?",
         (
-            "If I hang 5 shirts outside and it takes them 5 hours to dry,"
+            "If I hang 5 shirts outside and it takes them 5 hours to dry, "
             "how long would it take to dry 30 shirts?"
         ),
         "Write a sentence where every word starts with the letter a",

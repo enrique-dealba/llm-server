@@ -39,9 +39,6 @@ if __name__ == "__main__":
 
             response = result["text"]
             response = tp.clean_mistral(response) # TODO: check DEFAULT_MODEL to choose
-            # response1 = tp.parse_llm_server(response) # for list/str responses
-            # response2 = tp.parse_response(response1) # for /user [user] etc
-            # response3 = tp.clean_text(response2) # for whitespaces
 
             print(f"\nLLM Response: {response}")
 

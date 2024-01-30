@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This repository contains code for running a FastAPI server capable of text generation using the Mistral-7B-Instruct or any other compatible language models from vLLM.
+This repository contains code for running a FastAPI server capable of text generation using the Mistral-7B-Instruct-v0.2 or any other compatible language models from vLLM.
 
 ## Quick Start
 Clone the codebase:
@@ -68,12 +68,6 @@ Note: Have not tested GPTQ quantization.
 
 ## Usage
 
-<!-- Use the following `.env` setup for the base LLM implementation.
-```.env
-SERVER_TYPE=my_server
-USING_LLM_SERVER=False
-``` -->
-
 Note: Make sure the `config.py` script is using the model you want to test:
 ```python
 DEFAULT_MODEL = "model_name_here"
@@ -97,11 +91,6 @@ python client.py
 ```python
 DEFAULT_GPU_UTIL = 0.25
 ```
-<!-- or you can change gpu_utilization directly in `my_server.py`:
-```python
-engine_args = get_engine_args(llm_model=DEFAULT_MODEL, gpu_utilization=DEFAULT_GPU_UTIL)
-engine = AsyncLLMEngine.from_engine_args(engine_args)
-``` -->
 
 ## Troubleshooting
 - Make sure Docker has access to your GPU. You may need to install NVIDIA Docker if not already done so.
