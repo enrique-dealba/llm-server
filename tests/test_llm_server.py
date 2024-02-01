@@ -29,12 +29,21 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(config.llm_model, DEFAULT_MODEL)
         self.assertEqual(config.num_gpus, NUM_GPUS)
 
-    def test_create_llm(self):
+    @patch('llm_server.Config.create_llm', return_value=VLLMMock())
+    @patch('huggingface_hub.snapshot_download')
+    def test_create_llm(self, mock_snapshot_download, mock_create_llm):
         """Ensures create_llm method correctly creates VLLM instance."""
+        # config = Config()
+        # with patch("llm_server.VLLM", new=VLLMMock):
+        #     llm = config.create_llm(quantization=None)
+        #     self.assertIsInstance(llm, VLLMMock)
+        mock_snapshot_download.return_value = '/mock/path/to/model'
+
         config = Config()
-        with patch("llm_server.VLLM", new=VLLMMock):
-            llm = config.create_llm(quantization=None)
-            self.assertIsInstance(llm, VLLMMock)
+        llm = config.create_llm(quantization=None)
+        mock_create_llm.assert_called_once()
+        
+        self.assertIsInstance(llm, VLLMMock)
 
 
 class TestFastAPIEndpoints(unittest.TestCase):
