@@ -3,6 +3,7 @@ from unittest.mock import MagicMock, patch
 
 from fastapi.testclient import TestClient
 
+from config import DEFAULT_MODEL, NUM_GPUS
 from llm_server import Config, app
 
 
@@ -25,8 +26,8 @@ class TestConfig(unittest.TestCase):
     def test_init(self):
         """Test initialization of Config."""
         config = Config()
-        self.assertEqual(config.llm_model, "mistralai/Mistral-7B-Instruct-v0.1")
-        self.assertEqual(config.num_gpus, 1)
+        self.assertEqual(config.llm_model, DEFAULT_MODEL)
+        self.assertEqual(config.num_gpus, NUM_GPUS)
 
     def test_create_llm(self):
         """Ensures create_llm method correctly creates VLLM instance."""
