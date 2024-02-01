@@ -74,7 +74,7 @@ class TestConfigCreateLLM(unittest.TestCase):
         """Ensures create_llm raises RuntimeError on VLLM init failure."""
         mock_vllm.side_effect = Exception("Test Exception")
         with self.assertRaises(RuntimeError) as context:
-            self.config.create_llm()
+            self.config.create_llm(quantization=None, use_agent=False)
         self.assertIn(
             "Failed to initialize LLM: Test Exception", str(context.exception)
         )
