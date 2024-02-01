@@ -29,20 +29,16 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(config.llm_model, DEFAULT_MODEL)
         self.assertEqual(config.num_gpus, NUM_GPUS)
 
-    @patch('llm_server.Config.create_llm', return_value=VLLMMock())
-    @patch('huggingface_hub.snapshot_download')
+    @patch("llm_server.Config.create_llm", return_value=VLLMMock())
+    @patch("huggingface_hub.snapshot_download")
     def test_create_llm(self, mock_snapshot_download, mock_create_llm):
         """Ensures create_llm method correctly creates VLLM instance."""
-        # config = Config()
-        # with patch("llm_server.VLLM", new=VLLMMock):
-        #     llm = config.create_llm(quantization=None)
-        #     self.assertIsInstance(llm, VLLMMock)
-        mock_snapshot_download.return_value = '/mock/path/to/model'
+        mock_snapshot_download.return_value = "/mock/path/to/model"
 
         config = Config()
-        llm = config.create_llm(quantization=None)
+        llm = config.create_llm(quantization=None, use_agent=False)
         mock_create_llm.assert_called_once()
-        
+
         self.assertIsInstance(llm, VLLMMock)
 
 
