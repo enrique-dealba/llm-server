@@ -1,9 +1,9 @@
 """Config settings for LLMs and server parameters."""
 
-# LLM
-DEFAULT_MODEL = "mistralai/Mistral-7B-Instruct-v0.2"
+# ----- LLM -----
+DEFAULT_MODEL = "mistralai/Mistral-7B-Instruct-v0.1"
 
-# Constants
+# ----- Constants -----
 NUM_GPUS = 1
 NUM_RESPONSES = 1
 MAX_TOKENS = 512
@@ -11,12 +11,12 @@ TEMPERATURE = 0.2
 TOP_P = 0.95  # Must be in (0, 1] - set to 1 to consider all tokens
 API_URL = "http://localhost:8888"
 
-# GPU Utilization Settings
+# ----- GPU Utilization Settings -----
 DEFAULT_GPU_UTIL = 0.25  # works for 7B models
 AWQ_GPU_UTIL = 0.31  # min needed for 7B AWQ models
 
 
-# Model Names
+# ----- Model Names -----
 class LLM:
     """HuggingFace models."""
 

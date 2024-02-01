@@ -68,7 +68,7 @@ class MemoryLLM:
 
     def run(self, prompt: str):
         """Processes prompt using memory-augmented LLM and returns response."""
-        self.setup_memory()
+        self.setup_memory() # TODO: Logic to avoid overwriting memory
         response = self.llm_chain.predict(prompt=prompt)
         return response
 
