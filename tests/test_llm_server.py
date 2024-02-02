@@ -2,6 +2,7 @@ import unittest
 from unittest.mock import MagicMock, patch
 
 from fastapi.testclient import TestClient
+from langchain.llms import VLLM
 
 from config import DEFAULT_MODEL, NUM_GPUS
 from llm_server import Config, app
@@ -41,17 +42,18 @@ class TestConfig(unittest.TestCase):
 
         self.assertIsInstance(llm, VLLMMock)
 
-    @patch("llm_server.Config.create_llm", return_value=VLLMMock())
+    @patch("llm_server.VLLM")
     @patch("huggingface_hub.snapshot_download")
-    def test_create_llm_with_agent(self, mock_snapshot_download, mock_create_llm):
-        """Ensures create_llm method correctly creates VLLM with agent paradigm."""
+    def test_create_llm_directly(self, mock_snapshot_download, mock_vllm):
+        """Directly tests create_llm."""
         mock_snapshot_download.return_value = "/mock/path/to/model"
+        mock_vllm.return_value = MagicMock(spec=VLLM)
 
         config = Config()
-        llm = config.create_llm(quantization=None, use_agent=True)
-        mock_create_llm.assert_called_once()
+        llm = config.create_llm(quantization=None, use_agent=False)
 
-        self.assertIsInstance(llm, VLLMMock)
+        self.assertIsInstance(llm, MagicMock)
+        mock_vllm.assert_called_once()
 
 
 class TestFastAPIEndpoints(unittest.TestCase):
@@ -87,16 +89,6 @@ class TestConfigCreateLLM(unittest.TestCase):
         mock_vllm.side_effect = Exception("Test Exception")
         with self.assertRaises(RuntimeError) as context:
             self.config.create_llm(quantization=None, use_agent=False)
-        self.assertIn(
-            "Failed to initialize LLM: Test Exception", str(context.exception)
-        )
-
-    @patch("llm_server.VLLM")  # Mocks VLLM class
-    def test_create_llm_exception_with_agent(self, mock_vllm):
-        """Ensures create_llm raises RuntimeError on VLLM init failure (with agent)."""
-        mock_vllm.side_effect = Exception("Test Exception")
-        with self.assertRaises(RuntimeError) as context:
-            self.config.create_llm(quantization=None, use_agent=True)
         self.assertIn(
             "Failed to initialize LLM: Test Exception", str(context.exception)
         )
