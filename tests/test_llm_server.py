@@ -5,6 +5,7 @@ from fastapi.testclient import TestClient
 from langchain.llms import VLLM
 
 from config import DEFAULT_MODEL, NUM_GPUS
+from llm_agent.llm_memory import MemoryLLM
 from llm_server import Config, app
 
 
@@ -65,7 +66,7 @@ class TestConfig(unittest.TestCase):
         config = Config()
         llm = config.create_llm(quantization=None, use_agent=True)
 
-        self.assertIsInstance(llm, MagicMock)
+        self.assertIsInstance(llm, MemoryLLM)
         mock_vllm.assert_called_once()
 
 
