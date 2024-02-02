@@ -55,6 +55,19 @@ class TestConfig(unittest.TestCase):
         self.assertIsInstance(llm, MagicMock)
         mock_vllm.assert_called_once()
 
+    @patch("llm_server.VLLM")
+    @patch("huggingface_hub.snapshot_download")
+    def test_create_llm_directly_with_agent(self, mock_snapshot_download, mock_vllm):
+        """Directly tests create_llm with LLM agent paradigm."""
+        mock_snapshot_download.return_value = "/mock/path/to/model"
+        mock_vllm.return_value = MagicMock(spec=VLLM)
+
+        config = Config()
+        llm = config.create_llm(quantization=None, use_agent=True)
+
+        self.assertIsInstance(llm, MagicMock)
+        mock_vllm.assert_called_once()
+
 
 class TestFastAPIEndpoints(unittest.TestCase):
     """Test cases for FastAPI endpoints."""
