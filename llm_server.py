@@ -37,7 +37,7 @@ class Config:
         self.gpu_util = {
             "default": DEFAULT_GPU_UTIL,
             "awq": AWQ_GPU_UTIL,
-            "gptq": 
+            "gptq": GPTQ_GPU_UTIL,
         }
 
     def create_llm(
@@ -45,6 +45,7 @@ class Config:
     ) -> VLLM:
         """Creates and returns VLLM instance based on current configuration."""
         gpu_utilization = self.gpu_util.get(quantization, self.gpu_util["default"])
+        dtype_value = "half" if quantization in ["awq", "gptq"] else "bfloat16"
 
         try:
             llm = VLLM(
@@ -54,7 +55,7 @@ class Config:
                 max_new_tokens=self.max_new_tokens,
                 tensor_parallel_size=self.num_gpus,
                 trust_remote_code=False,
-                dtype="half" if quantization == "awq" else "bfloat16",
+                dtype=dtype_value,
                 vllm_kwargs={
                     "quantization": quantization,
                     "gpu_memory_utilization": gpu_utilization,
