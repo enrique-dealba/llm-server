@@ -18,11 +18,13 @@ RUN pip install https://github.com/vllm-project/vllm/releases/download/v${VLLM_V
 
 # Re-install PyTorch with CUDA 11.8
 RUN pip uninstall torch -y && \
-    pip install torch --upgrade --index-url https://download.pytorch.org/whl/cu118
+    pip install torch==2.1.2 --index-url https://download.pytorch.org/whl/cu118
+    # pip install torch --upgrade --index-url https://download.pytorch.org/whl/cu118
 
 # Re-install xFormers with CUDA 11.8
 RUN pip uninstall xformers -y && \
-    pip install --upgrade xformers --index-url https://download.pytorch.org/whl/cu118
+    pip install xformers==0.0.23.post1 --index-url https://download.pytorch.org/whl/cu118
+    # pip install --upgrade xformers --index-url https://download.pytorch.org/whl/cu118
 
 # Copy .env file and other files
 COPY .env .env
