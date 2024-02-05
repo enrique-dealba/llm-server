@@ -11,11 +11,12 @@ from config import (
     AWQ_GPU_UTIL,
     DEFAULT_GPU_UTIL,
     DEFAULT_MODEL,
+    GPTQ_GPU_UTIL,
     MAX_TOKENS,
     NUM_GPUS,
     TEMPERATURE,
 )
-from llm_agent.llm_agent import LLMAgent
+# from llm_agent.llm_agent import LLMAgent
 from llm_agent.llm_memory import MemoryLLM
 
 
@@ -36,6 +37,7 @@ class Config:
         self.gpu_util = {
             "default": DEFAULT_GPU_UTIL,
             "awq": AWQ_GPU_UTIL,
+            "gptq": 
         }
 
     def create_llm(
@@ -73,7 +75,7 @@ class GenerateRequest(BaseModel):
 
 # Initialize configurations and dependencies
 config = Config()
-llm = config.create_llm(quantization=None, use_agent=False)
+llm = config.create_llm(quantization="gptq", use_agent=False)
 
 app = FastAPI()
 

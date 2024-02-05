@@ -1,7 +1,7 @@
 """Config settings for LLMs and server parameters."""
 
 # ----- LLM -----
-DEFAULT_MODEL = "mistralai/Mistral-7B-Instruct-v0.1"
+DEFAULT_MODEL = "TheBloke/Mistral-7B-v0.1-GPTQ"
 
 # ----- Constants -----
 NUM_GPUS = 1
@@ -12,9 +12,9 @@ TOP_P = 0.95  # Must be in (0, 1] - set to 1 to consider all tokens
 API_URL = "http://localhost:8888"
 
 # ----- GPU Utilization Settings -----
-DEFAULT_GPU_UTIL = 0.25  # works for 7B models
-AWQ_GPU_UTIL = 0.31  # min needed for 7B AWQ models
-
+DEFAULT_GPU_UTIL = 0.50  # works for 7B models, 0.25 for 7B
+AWQ_GPU_UTIL = 0.50  # min needed for 7B AWQ models, 0.31 for 7B AWQ
+GPTQ_GPU_UTIL = 0.50  # min needed for 7B GPTQ models, 0.5 for 7B GPTQ
 
 # ----- Model Names -----
 class LLM:
