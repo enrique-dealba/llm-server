@@ -14,7 +14,7 @@ API_URL = "http://localhost:8888"
 # ----- GPU Utilization Settings -----
 DEFAULT_GPU_UTIL = 0.50  # works for 7B models, 0.25 for 7B
 AWQ_GPU_UTIL = 0.50  # min needed for 7B AWQ models, 0.31 for 7B AWQ
-GPTQ_GPU_UTIL = 0.50  # min needed for 7B GPTQ models, 0.5 for 7B GPTQ
+GPTQ_GPU_UTIL = 0.16  # min needed for 7B GPTQ models, 0.5 for 7B GPTQ
 
 # ----- Model Names -----
 class LLM:
