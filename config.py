@@ -1,7 +1,7 @@
 """Config settings for LLMs and server parameters."""
 
 # ----- LLM -----
-DEFAULT_MODEL = "microsoft/phi-2"
+DEFAULT_MODEL = "TheBloke/dolphin-2_6-phi-2-GPTQ"
 
 # ----- Constants -----
 NUM_GPUS = 1
@@ -36,3 +36,4 @@ class LLM:
     YARN_128K = "NousResearch/Yarn-Mistral-7b-128k"
     PHI_2 = "microsoft/phi-2"
     DOLPHIN_26_PHI = "cognitivecomputations/dolphin-2_6-phi-2"
+    DOLPHIN_26_PHI_GPTQ = "TheBloke/dolphin-2_6-phi-2-GPTQ"
