@@ -7,6 +7,7 @@ DEFAULT_MODEL = "TheBloke/Mistral-7B-Instruct-v0.2-AWQ"
 NUM_GPUS = 1
 NUM_RESPONSES = 1
 MAX_TOKENS = 512
+MAX_SEQ_LEN = 32768
 TEMPERATURE = 0.2
 TOP_P = 0.95  # Must be in (0, 1] - set to 1 to consider all tokens
 API_URL = "http://localhost:8888"

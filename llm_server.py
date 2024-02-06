@@ -12,6 +12,7 @@ from config import (
     DEFAULT_GPU_UTIL,
     DEFAULT_MODEL,
     GPTQ_GPU_UTIL,
+    MAX_SEQ_LEN,
     MAX_TOKENS,
     NUM_GPUS,
     TEMPERATURE,
@@ -34,6 +35,7 @@ class Config:
         self.num_gpus: int = NUM_GPUS
         self.temperature: float = TEMPERATURE
         self.max_new_tokens: int = MAX_TOKENS
+        self.max_seq_len: int = MAX_SEQ_LEN
         self.gpu_util = {
             "default": DEFAULT_GPU_UTIL,
             "awq": AWQ_GPU_UTIL,
@@ -59,6 +61,7 @@ class Config:
                 vllm_kwargs={
                     "quantization": quantization,
                     "gpu_memory_utilization": gpu_utilization,
+                    "max_seq_len": self.max_seq_len,
                 },
             )
             if use_agent:
