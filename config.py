@@ -7,7 +7,7 @@ DEFAULT_MODEL = "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ"
 NUM_GPUS = 1
 NUM_RESPONSES = 1
 MAX_TOKENS = 512
-MAX_SEQ_LEN = 32768
+MAX_SEQ_LEN = 16384
 TEMPERATURE = 0.2
 TOP_P = 0.95  # Must be in (0, 1] - set to 1 to consider all tokens
 API_URL = "http://localhost:8888"
@@ -15,7 +15,7 @@ API_URL = "http://localhost:8888"
 # ----- GPU Utilization Settings -----
 DEFAULT_GPU_UTIL = 0.30  # works for 7B models, 0.25 for 7B
 AWQ_GPU_UTIL = 0.50  # min needed for 7B AWQ models, 0.31 for 7B AWQ
-GPTQ_GPU_UTIL = 0.16  # min needed for 7B GPTQ models, 0.5 for 7B GPTQ
+GPTQ_GPU_UTIL = 0.15  # min needed for 7B GPTQ models, 0.5 for 7B GPTQ
 
 # ----- Model Names -----
 class LLM:
