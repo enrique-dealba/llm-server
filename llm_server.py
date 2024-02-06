@@ -58,11 +58,9 @@ class Config:
                 tensor_parallel_size=self.num_gpus,
                 trust_remote_code=False,
                 dtype=dtype_value,
-                # max_model_len=self.max_seq_len,
                 vllm_kwargs={
                     "quantization": quantization,
                     "gpu_memory_utilization": gpu_utilization,
-                    # "max_seq_len": self.max_seq_len,
                     "max_model_len": self.max_seq_len,
                 },
             )
@@ -81,7 +79,7 @@ class GenerateRequest(BaseModel):
 
 # Initialize configurations and dependencies
 config = Config()
-llm = config.create_llm(quantization="gptq", use_agent=False)
+llm = config.create_llm(quantization=None, use_agent=False)
 
 app = FastAPI()
 
