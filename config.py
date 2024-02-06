@@ -1,7 +1,7 @@
 """Config settings for LLMs and server parameters."""
 
 # ----- LLM -----
-DEFAULT_MODEL = "TheBloke/Mistral-7B-Instruct-v0.2-AWQ"
+DEFAULT_MODEL = "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ"
 
 # ----- Constants -----
 NUM_GPUS = 1

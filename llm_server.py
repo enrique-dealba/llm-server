@@ -61,7 +61,7 @@ class Config:
                 vllm_kwargs={
                     "quantization": quantization,
                     "gpu_memory_utilization": gpu_utilization,
-                    "max_seq_len": self.max_seq_len,
+                    # "max_seq_len": self.max_seq_len,
                 },
             )
             if use_agent:
@@ -79,7 +79,7 @@ class GenerateRequest(BaseModel):
 
 # Initialize configurations and dependencies
 config = Config()
-llm = config.create_llm(quantization="awq", use_agent=False)
+llm = config.create_llm(quantization="gptq", use_agent=False)
 
 app = FastAPI()
 
