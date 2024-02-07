@@ -39,20 +39,14 @@ def main():
             result = Client.generate_text(prompt)
             t_1 = time.perf_counter()
 
-            # if "text" not in result:
-            #     raise KeyError("Missing 'text' key in LLM response")
-            
-            # response = result["text"]
-            response = result
-            print(response)
-            print(type(response))
-            
-            if 'detail' in response:
-                response = response['detail']
+            if "text" in result:
+                response = result["text"]
+            elif "detail" in result:
+                response = result["detail"]
 
             if not response:
                 raise ValueError("Empty LLM response content")
-            
+
             response = tp.clean_mistral(response)  # TODO: check DEFAULT_MODEL to choose
             print(f"\nLLM Response: {response}")
 
