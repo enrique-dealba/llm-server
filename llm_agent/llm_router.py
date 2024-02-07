@@ -14,16 +14,20 @@ from tools.routes import get_time
 
 class VLLMAdapter(BaseLLM):
     name: str
-    vllm: VLLM
+    vllm: VLLM = None
 
     class Config:
         arbitrary_types_allowed = True
 
     def __init__(self, vllm_instance: VLLM, name: str, **kwargs):
+        kwargs['vllm'] = vllm_instance
         super().__init__(name=name, **kwargs)
-        self.vllm = vllm_instance
 
     def __call__(self, messages: List[Message]) -> Optional[str]:
+        if not messages:
+            logger.info("No messages provided for generation.")
+            return None
+    
         prompts = [message.content for message in messages]
         result = self.vllm._generate(prompts=prompts)
         # result = self.vllm(prompts)
@@ -102,7 +106,7 @@ class LLMRouter:
 
     def __init__(self, llm):
         """Initializes LLMRouter with a specified LLM."""
-        self.llm = VLLMAdapter(vllm_instance=llm)
+        self.llm = VLLMAdapter(vllm_instance=llm, name="vllm")
         self.route_layer = None
 
     def setup_router(self):
