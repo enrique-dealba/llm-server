@@ -6,3 +6,4 @@ tiktoken
 pydantic
 skyfield
 geopy
+semantic-router[local]==0.0.20

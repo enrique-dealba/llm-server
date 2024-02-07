@@ -17,7 +17,6 @@ class Client:
     def generate_text(prompt: str):
         """Sends text generation request to LLM server."""
         prompt = tp.preprocess_prompt(prompt)
-        print(f"New Prompt: {prompt}")
         payload = {"text": prompt}
         try:
             response = requests.post(f"{API_URL}/generate", json=payload)

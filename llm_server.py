@@ -19,7 +19,8 @@ from config import (
 )
 
 # from llm_agent.llm_agent import LLMAgent
-from llm_agent.llm_memory import MemoryLLM
+# from llm_agent.llm_memory import MemoryLLM
+from llm_agent.llm_router import LLMRouter
 
 
 class Config:
@@ -62,11 +63,11 @@ class Config:
                 vllm_kwargs={
                     "quantization": quantization,
                     "gpu_memory_utilization": gpu_utilization,
-                    "max_model_len": self.max_seq_len,
+                    # "max_model_len": self.max_seq_len,
                 },
             )
             if use_agent:
-                return MemoryLLM(llm=llm)
+                return LLMRouter(llm=llm)
             return llm
         except Exception as e:
             raise RuntimeError(f"Failed to initialize LLM: {e}")
@@ -80,7 +81,7 @@ class GenerateRequest(BaseModel):
 
 # Initialize configurations and dependencies
 config = Config()
-llm = config.create_llm(quantization=None, use_agent=False)
+llm = config.create_llm(quantization=None, use_agent=True)
 
 app = FastAPI()
 
