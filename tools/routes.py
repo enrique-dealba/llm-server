@@ -1,5 +1,30 @@
 from datetime import datetime
+from typing import Callable
 from zoneinfo import ZoneInfo
+
+from pydantic import BaseModel, Field
+from semantic_router import Route
+from semantic_router.utils.function_call import get_schema
+
+
+class RouteModel(BaseModel):
+    """Class that encapsulates a function and its associated Route.
+
+    Useful for Semantic router.
+    """
+
+    function: Callable
+    route: Route
+    name: str = Field(default_factory=lambda: "")
+
+    @classmethod
+    def validate_route(cls, v, values):
+        """Validation to ensure both function and Route are correctly setup."""
+        if "function" in values and get_schema(values["function"]) != v.function_schema:
+            raise ValueError(
+                "Function schema does not match the route's function schema"
+            )
+        return v
 
 
 def get_time(timezone: str) -> str:
@@ -15,3 +40,18 @@ def get_time(timezone: str) -> str:
     """
     now = datetime.now(ZoneInfo(timezone))
     return now.strftime("%H:%M")
+
+
+time_schema = get_schema(get_time)
+
+time = Route(
+    name="get_time",
+    utterances=[
+        "what is the time in new york city?",
+        "what is the time in london?",
+        "I live in Rome, what time is it?",
+    ],
+    function_schema=time_schema,
+)
+
+time_route = RouteModel(function=get_time, route=time, name="get_time")
