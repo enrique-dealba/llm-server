@@ -42,7 +42,11 @@ def main():
             if "text" not in result:
                 raise KeyError("Missing 'text' key in LLM response")
             
-            response = result["text"]
+            # response = result["text"]
+            response = result
+            print(response)
+            print(type(response))
+            
             if not response:
                 raise ValueError("Empty LLM response content")
             
