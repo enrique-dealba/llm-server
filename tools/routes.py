@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Callable
 from zoneinfo import ZoneInfo
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from semantic_router import Route
 from semantic_router.utils.function_call import get_schema
 
@@ -17,13 +17,14 @@ class RouteModel(BaseModel):
     route: Route
     name: str = Field(default_factory=lambda: "")
 
-    @classmethod
+    @field_validator("route")
     def validate_route(cls, v, values):
         """Validation to ensure both function and Route are correctly setup."""
-        if "function" in values and get_schema(values["function"]) != v.function_schema:
-            raise ValueError(
-                "Function schema does not match the route's function schema"
-            )
+        if "function" in values:
+            if get_schema(values["function"]) != v.function_schema:
+                raise ValueError(
+                    "Function schema doesn't match Route's function schema"
+                )
         return v
 
 
