@@ -3,6 +3,7 @@ from typing import Callable
 from zoneinfo import ZoneInfo
 
 from pydantic import BaseModel, Field, field_validator
+from pydantic_core.core_schema import FieldValidationInfo
 from semantic_router import Route
 from semantic_router.utils.function_call import get_schema
 
@@ -18,7 +19,7 @@ class RouteModel(BaseModel):
     name: str = Field(default_factory=lambda: "")
 
     @field_validator("route")
-    def validate_route(cls, v, values):
+    def validate_route(cls, v, values, info: FieldValidationInfo):
         """Validation to ensure both function and Route are correctly setup."""
         if "function" in values:
             if get_schema(values["function"]) != v.function_schema:
