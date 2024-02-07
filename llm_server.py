@@ -17,6 +17,7 @@ from config import (
     NUM_GPUS,
     TEMPERATURE,
 )
+
 # from llm_agent.llm_agent import LLMAgent
 from llm_agent.llm_memory import MemoryLLM
 
@@ -79,7 +80,7 @@ class GenerateRequest(BaseModel):
 
 # Initialize configurations and dependencies
 config = Config()
-llm = config.create_llm(quantization="gptq", use_agent=False)
+llm = config.create_llm(quantization=None, use_agent=False)
 
 app = FastAPI()
 

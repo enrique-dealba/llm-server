@@ -1,7 +1,7 @@
 """Config settings for LLMs and server parameters."""
 
 # ----- LLM -----
-DEFAULT_MODEL = "TheBloke/phi-2-GPTQ"
+DEFAULT_MODEL = "mistralai/Mistral-7B-Instruct-v0.2"
 
 # ----- Constants -----
 NUM_GPUS = 1
@@ -16,6 +16,7 @@ API_URL = "http://localhost:8888"
 DEFAULT_GPU_UTIL = 0.30  # works for 7B models, 0.25 for 7B
 AWQ_GPU_UTIL = 0.50  # min needed for 7B AWQ models, 0.31 for 7B AWQ
 GPTQ_GPU_UTIL = 0.15  # min needed for 7B GPTQ models, 0.5 for 7B GPTQ
+
 
 # ----- Model Names -----
 class LLM:
@@ -37,4 +38,4 @@ class LLM:
     PHI_2 = "microsoft/phi-2"
     PHI_2_GPTQ = "TheBloke/phi-2-GPTQ"
     DOLPHIN_26_PHI = "cognitivecomputations/dolphin-2_6-phi-2"
-    DOLPHIN_26_PHI_GPTQ = "TheBloke/dolphin-2_6-phi-2-GPTQ" # doesn't work with vLLM
+    DOLPHIN_26_PHI_GPTQ = "TheBloke/dolphin-2_6-phi-2-GPTQ"  # doesn't work with vLLM
