@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Callable
 from zoneinfo import ZoneInfo
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field # , field_validator
 from semantic_router import Route
 from semantic_router.utils.function_call import get_schema
 
@@ -15,7 +15,7 @@ class RouteModel(BaseModel):
 
     function: Callable
     route: Route
-    name: str = Field(default_factory=lambda: "")
+    name: str = Field(description="Name of Route Model")
 
     # TODO: Fix validation issues with Docker version of pydantic (v1 or v2?)
     # @field_validator("route")
