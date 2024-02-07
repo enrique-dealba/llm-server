@@ -16,6 +16,19 @@ class RouteModel:
     route: Route
     name: str
 
+    def __init__(self, function: Callable, route: Route, name: str):
+        """Initializes the RouteModel instance."""
+        if not callable(function):
+            raise ValueError("function must be callable")
+        if not isinstance(route, Route):
+            raise ValueError("route must be an instance of Route")
+        if not isinstance(name, str):
+            raise ValueError("name must be a string")
+
+        self.function = function
+        self.route = route
+        self.name = name
+
 
 def get_time(timezone: str) -> str:
     """Finds the current time in a specific timezone.
