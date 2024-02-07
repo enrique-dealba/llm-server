@@ -17,15 +17,16 @@ class RouteModel(BaseModel):
     route: Route
     name: str = Field(default_factory=lambda: "")
 
-    @field_validator("route")
-    def validate_route(cls, v, values):
-        """Validation to ensure both function and Route are correctly setup."""
-        if "function" in values:
-            if get_schema(values["function"]) != v.function_schema:
-                raise ValueError(
-                    "Function schema doesn't match Route's function schema"
-                )
-        return v
+    # TODO: Fix validation issues with Docker version of pydantic (v1 or v2?)
+    # @field_validator("route")
+    # def validate_route(cls, v, values):
+    #     """Validation to ensure both function and Route are correctly setup."""
+    #     if "function" in values:
+    #         if get_schema(values["function"]) != v.function_schema:
+    #             raise ValueError(
+    #                 "Function schema doesn't match Route's function schema"
+    #             )
+    #     return v
 
 
 def get_time(timezone: str) -> str:
