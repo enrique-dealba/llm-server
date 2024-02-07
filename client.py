@@ -39,14 +39,17 @@ def main():
             result = Client.generate_text(prompt)
             t_1 = time.perf_counter()
 
-            if "text" not in result:
-                raise KeyError("Missing 'text' key in LLM response")
+            # if "text" not in result:
+            #     raise KeyError("Missing 'text' key in LLM response")
             
             # response = result["text"]
             response = result
             print(response)
             print(type(response))
             
+            if 'detail' in response:
+                response = response['detail']
+
             if not response:
                 raise ValueError("Empty LLM response content")
             
