@@ -19,8 +19,8 @@ from config import (
 )
 
 # from llm_agent.llm_agent import LLMAgent
-# from llm_agent.llm_memory import MemoryLLM
-from llm_agent.llm_router import LLMRouter
+from llm_agent.llm_memory import MemoryLLM
+# from llm_agent.llm_router import LLMRouter
 
 
 class Config:
@@ -67,7 +67,7 @@ class Config:
                 },
             )
             if use_agent:
-                return LLMRouter(llm=llm)
+                return MemoryLLM(llm=llm)
             return llm
         except Exception as e:
             raise RuntimeError(f"Failed to initialize LLM: {e}")
