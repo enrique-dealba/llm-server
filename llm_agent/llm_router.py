@@ -40,6 +40,7 @@ class LLMRouter:
         response = self.route_layer(prompt)
         if "get_time" in response.name:
             response = get_time(**response)
+        print(f"LLM Router Response: {response}, dtype={type(response)}")
         return response
 
     def __call__(self, prompt):
