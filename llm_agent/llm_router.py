@@ -157,7 +157,7 @@ class LLMRouter:
         response = self.route_layer(prompt)
         if "get_time" in response.name:
             print("run_3")
-            response = get_time(**response)
+            response = get_time(**response.function_call)
         print("run_4")
         print(f"LLM Router Response: {response}, dtype={type(response)}")
         return response
