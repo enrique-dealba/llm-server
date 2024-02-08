@@ -14,6 +14,10 @@ class LLMRouter:
         self.vllm = VLLMAdapter(vllm_instance=llm, name="vllm")
         self.route_layer = None
 
+    def __call__(self, prompt):
+        """Allows LLMRouter to be called directly with a prompt."""
+        return self.run(prompt)
+
     def setup_router(self):
         """Sets up the semantic router for the LLM."""
         routes = [time_route.route, general_route]
@@ -33,7 +37,3 @@ class LLMRouter:
             response = self.llm(prompt)
         print(f"LLM Router Response: {response}, dtype={type(response)}")
         return response
-
-    def __call__(self, prompt):
-        """Allows LLMRouter to be called directly with a prompt."""
-        return self.run(prompt)
