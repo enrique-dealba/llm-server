@@ -58,3 +58,17 @@ time = Route(
 )
 
 time_route = RouteModel(function=get_time, route=time, name="get_time")
+
+general_route = Route(
+    name="general",
+    utterances=[
+        "how's the weather today?",
+        "how are things going?",
+        "explain the theory of relativity",
+        "write a poem about birds",
+        "what number is the square root of 16?",
+        "write a short sentence",
+        "tell me about general knowledge and info",
+        "give me a JSON for the solar system",
+    ],
+)
