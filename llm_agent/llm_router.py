@@ -20,7 +20,7 @@ class LLMRouter:
 
     def setup_router(self):
         """Sets up the semantic router for the LLM."""
-        routes = [time_route.route, lat_long_route, general_route]
+        routes = [time_route.route, lat_long_route.route, general_route]
         encoder = HuggingFaceEncoder()
 
         self.route_layer = RouteLayer(encoder=encoder, routes=routes, llm=self.vllm)
