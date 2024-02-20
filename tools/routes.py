@@ -52,11 +52,12 @@ def get_lat_long(location: str) -> str:
     :param location: The name of the location to find the latitude and
         longitude for. This should be a string representing a place
         that can be recognized by the Nominatim geocoder, such as
-        "Paris, France" or "Tokyo, Japan".
+        "Paris, France" or "Tokyo, Japan". Please make sure to include
+        a comma for the location string.
     :type location: str
     :return: A tuple containing the latitude and longitude of the
         specified location.
-    :rtype: tuple(float, float).
+    :rtype: The latitude, longitude for the specified location.
     """
     geolocator = Nominatim(user_agent="YourAppNameHere")
     location = geolocator.geocode(str(location))
@@ -86,6 +87,7 @@ lat_long = Route(
         "what is the latitude and longitude of france?",
         "what is the latitude of dallas texas",
         "I live in Rome, what's the longitutde?",
+        "whats the longitude in allen tx",
     ],
     function_schema=lat_long_schema,
 )
