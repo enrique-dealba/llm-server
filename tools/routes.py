@@ -53,7 +53,10 @@ def get_lat_long(location: str) -> str:
         longitude for. This should be a string representing a place
         that can be recognized by the Nominatim geocoder, such as
         "Paris, France" or "Tokyo, Japan". Please make sure to include
-        a comma for the location string.
+        a comma for the location string like "Dallas, Texas". Do NOT
+        just put the name "Dallas" please make sure to include the
+        full localised name of the place like "Dallas, Texas" or for
+        Socorro / socorro we would use "Socorro, New Mexico" etc.
     :type location: str
     :return: A tuple containing the latitude and longitude of the
         specified location.
