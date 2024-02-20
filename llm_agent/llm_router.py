@@ -33,7 +33,7 @@ class LLMRouter:
             self.setup_router()
 
         response = self.route_layer(prompt)
-        if response.function_call:
+        if response.function_call and response.name:
             for tool in self.tools:
                 if tool.name in response.name:
                     response = tool.function(**response.function_call)
