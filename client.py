@@ -46,6 +46,8 @@ def main():
 
             if not response:
                 raise ValueError("Empty LLM response content")
+            if not isinstance(response, str):
+                response = str(response) # TODO: add try/catch block
 
             response = tp.clean_mistral(response)  # TODO: check DEFAULT_MODEL to choose
             print(f"\nLLM Response: {response}")
