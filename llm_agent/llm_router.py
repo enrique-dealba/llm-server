@@ -33,10 +33,11 @@ class LLMRouter:
             self.setup_router()
 
         response = self.route_layer(prompt)
-        for tool in self.tools:
-            if response.name and tool.name in response.name:
-                response = tool.function(**response.function_call)
-        if not response.name:
+        if response.name:
+            for tool in self.tools:
+                if tool.name in response.name:
+                    response = tool.function(**response.function_call)
+        else:
             response = self.llm(prompt)
         print(f"LLM Router Response: {response}, dtype={type(response)}")
         return response
