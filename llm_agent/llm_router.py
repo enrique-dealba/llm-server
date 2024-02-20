@@ -22,7 +22,7 @@ class LLMRouter:
     def setup_router(self):
         """Sets up the semantic router for the LLM."""
         routes = [tool.route for tool in self.tools]
-        routes += general_route
+        routes += [general_route]
         encoder = HuggingFaceEncoder()
 
         self.route_layer = RouteLayer(encoder=encoder, routes=routes, llm=self.vllm)
@@ -37,6 +37,7 @@ class LLMRouter:
             for tool in self.tools:
                 if tool.name in response.name:
                     response = tool.function(**response.function_call)
+                    break
         else:
             response = self.llm(prompt)
         print(f"LLM Router Response: {response}, dtype={type(response)}")
