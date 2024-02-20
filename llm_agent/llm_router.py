@@ -12,6 +12,7 @@ class LLMRouter:
         """Initializes LLMRouter with a specified LLM."""
         self.llm = llm
         self.vllm = VLLMAdapter(vllm_instance=llm, name="vllm")
+        self.tools = [time_route, lat_long_route]
         self.route_layer = None
 
     def __call__(self, prompt):
@@ -20,7 +21,8 @@ class LLMRouter:
 
     def setup_router(self):
         """Sets up the semantic router for the LLM."""
-        routes = [time_route.route, lat_long_route.route, general_route]
+        routes = [tool.route for tool in self.tools]
+        routes += general_route
         encoder = HuggingFaceEncoder()
 
         self.route_layer = RouteLayer(encoder=encoder, routes=routes, llm=self.vllm)
@@ -31,11 +33,10 @@ class LLMRouter:
             self.setup_router()
 
         response = self.route_layer(prompt)
-        if response.name and time_route.name in response.name:
-            response = time_route.function(**response.function_call)
-        elif response.name and lat_long_route.name in response.name:
-            response = lat_long_route.function(**response.function_call)
-        else:
+        for tool in self.tools:
+            if response.name and tool.name in response.name:
+                response = tool.function(**response.function_call)
+        if not response.name:
             response = self.llm(prompt)
         print(f"LLM Router Response: {response}, dtype={type(response)}")
         return response
