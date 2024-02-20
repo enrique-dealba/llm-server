@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import Callable
 from zoneinfo import ZoneInfo
 
+from geopy.geocoders import Nominatim
 from semantic_router import Route
 from semantic_router.utils.function_call import get_schema
 
@@ -45,6 +46,24 @@ def get_time(timezone: str) -> str:
     return now.strftime("%H:%M")
 
 
+def get_lat_long(location: str) -> str:
+    """Finds the latitude and longitude of a specific location.
+
+    :param location: The name of the location to find the latitude and
+        longitude for. This should be a string representing a place
+        that can be recognized by the Nominatim geocoder, such as
+        "Paris, France" or "Tokyo, Japan".
+    :type location: str
+    :return: A tuple containing the latitude and longitude of the
+        specified location.
+    :rtype: tuple(float, float).
+    """
+    geolocator = Nominatim(user_agent="YourAppNameHere")
+    location = geolocator.geocode(str(location))
+    latitude, longitude = location.latitude, location.longitude
+    return latitude, longitude
+
+
 time_schema = get_schema(get_time)
 
 time = Route(
@@ -58,6 +77,20 @@ time = Route(
 )
 
 time_route = RouteModel(function=get_time, route=time, name="get_time")
+
+lat_long_schema = get_schema(get_lat_long)
+
+lat_long = Route(
+    name="get_lat_long",
+    utterances=[
+        "what is the latitude and longitude of france?",
+        "what is the latitude of dallas texas",
+        "I live in Rome, what's the longitutde?",
+    ],
+    function_schema=lat_long_schema,
+)
+
+lat_long_route = RouteModel(function=get_lat_long, route=lat_long, name="get_lat_long")
 
 general_route = Route(
     name="general",
