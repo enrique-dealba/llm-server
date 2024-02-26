@@ -30,6 +30,7 @@ def function_call(fn_test: FunctionTest) -> Dict[str, float]:
     """Runs a series of prompts through the LLM router and benchmarks function call."""
     total_tps = 0.0
     total_time = 0.0
+    total_correct = 0.0
     successful_requests = 0.0
 
     for idx in range(len(fn_test.prompts)):
@@ -52,8 +53,12 @@ def function_call(fn_test: FunctionTest) -> Dict[str, float]:
             target = fn_test.targets[idx]
             expected_response = fn_test.function(target)
             print(f"Actual: {expected_response}")
-            check = bool(str(target) in str(response) or str(response) in str(target))
+            check = bool(
+                str(expected_response) in str(response)
+                or str(response) in str(expected_response)
+            )
             print(f"Check: {check}")
+            total_correct += int(check) # Adds 1 if correct fn call response
         else:
             print(f"Failed to get response for prompt: {prompt}")
 
@@ -62,6 +67,8 @@ def function_call(fn_test: FunctionTest) -> Dict[str, float]:
         stats = {
             "avg_tps": total_tps / successful_requests,
             "avg_time": total_time / successful_requests,
+            "avg_correct": total_correct / successful_requests,
+            "total_correct": total_correct,
         }
 
     return stats
