@@ -45,11 +45,11 @@ def function_call(fn_test: FunctionTest) -> Dict[str, float]:
             total_tps += tps
             total_time += elapsed_time
             successful_requests += 1
-            print(f"Prompt: {prompt}\nTPS: {tps:.2f}\n")
+            print(f"Prompt: {prompt}\nTPS: {tps:.2f}")
 
             response = tp.clean_mistral(response)  # TODO: Maybe remove this
 
-            print(f"\nResponse: {response}")
+            print(f"Response: {response}")
             target = fn_test.targets[idx]
             expected_response = fn_test.function(target)
             print(f"Actual: {expected_response}")
@@ -57,7 +57,7 @@ def function_call(fn_test: FunctionTest) -> Dict[str, float]:
                 str(expected_response) in str(response)
                 or str(response) in str(expected_response)
             )
-            print(f"Check: {check}")
+            print(f"Check: {check}\n")
             total_correct += int(check) # Adds 1 if correct fn call response
         else:
             print(f"Failed to get response for prompt: {prompt}")
@@ -92,3 +92,5 @@ if __name__ == "__main__":
     stats = function_call(get_time_test)
     print(f"Average Tokens per Second (TPS): {stats['avg_tps']:.2f}")
     print(f"Average Total Time Elapsed Per Response: {stats['avg_time']:.2f}")
+    print(f"Average Correct Answers: {stats['avg_correct']:.2f}")
+    print(f"Total Correct Answers: {stats['total_correct']:.2f}")
