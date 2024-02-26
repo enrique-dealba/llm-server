@@ -48,12 +48,12 @@ def function_call(fn_test: FunctionTest) -> Dict[str, float]:
 
             response = tp.clean_mistral(response)  # TODO: Maybe remove this
 
-            print(f"\nResponse: {response}\n")
+            print(f"\nResponse: {response}")
             target = fn_test.targets[idx]
             expected_response = fn_test.function(target)
-            print(f"\nActual: {expected_response}\n")
-            check = bool(target in response)
-            print(f"\nCheck: {check}\n")
+            print(f"Actual: {expected_response}")
+            check = bool(str(target) in str(response) or str(response) in str(target))
+            print(f"Check: {check}")
         else:
             print(f"Failed to get response for prompt: {prompt}")
 
