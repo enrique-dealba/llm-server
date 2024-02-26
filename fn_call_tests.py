@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 from client import Client
 from text_processing import TextProcessing as tp
-from tools.routes import get_time
+from tools.tools import get_time
 
 # Loads environment variables
 load_dotenv()
