@@ -52,6 +52,9 @@ def get_time_and_location(json_data: str) -> str:
     'timezone' is a string representing a valid timezone from the IANA Time Zone
     Database.
 
+    Example input format:
+    {'json_data': '{"location": "Paris, France", "timezone": "Europe/Paris"}'}
+
     :param json_data: A JSON string containing the keys 'location' and 'timezone'.
     :type json_data: str
     :return: A string containing the current time in the specified timezone and
