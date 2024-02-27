@@ -36,7 +36,9 @@ def check_response(response, expected):
     return check or double_check
 
 
-def function_call(fn_test: FunctionTest, num_tests: int = 20) -> Dict[str, float]:
+def function_call(
+    fn_test: FunctionTest, stats: dict, num_tests: int = 20
+) -> Dict[str, float]:
     """Runs a series of prompts through the LLM router and benchmarks function call."""
     total_tps = 0.0
     total_time = 0.0
@@ -80,21 +82,26 @@ def function_call(fn_test: FunctionTest, num_tests: int = 20) -> Dict[str, float
                     print(f"TPS: {tps:.2f}")
             else:
                 total_requests += 1
-                print(f"Failed to get response for prompt: {prompt}")
+                print(f"\nFailed to get response for prompt: {prompt}")
 
-    stats = {}
-    if successful_requests > 0:
-        stats = {
-            "avg_tps": total_tps / successful_requests,
-            "avg_time": total_time / successful_requests,
-            "avg_correct": total_correct / total_requests,
-            "total_correct": total_correct,
-        }
+    stats["total_tps"] += total_tps
+    stats["total_time"] += total_time
+    stats["total_correct"] += total_correct
+    stats["successful_requests"] += successful_requests
+    stats["total_requests"] += total_requests
 
     return stats
 
 
 if __name__ == "__main__":
+    stats = {
+        "total_tps": 0.0,
+        "total_time": 0.0,
+        "total_correct": 0.0,
+        "successful_requests": 0.0,
+        "total_requests": 0.0,
+    }
+
     get_time_prompts = [
         "What's the time in rome?",
         "What is the current time in new york?",
@@ -125,7 +132,9 @@ if __name__ == "__main__":
         targets=get_lat_long_targets,
     )
 
-    stats = function_call(get_lat_long_test)
+    stats = function_call(get_time_test, stats=stats)
+    stats = function_call(get_lat_long_test, stats=stats)
+
     print(f"Average Tokens per Second (TPS): {stats['avg_tps']:.2f}")
     print(f"Average Total Time Elapsed Per Response: {stats['avg_time']:.2f}")
     print(f"Average Correct Answers: {stats['avg_correct']:.2f}")
