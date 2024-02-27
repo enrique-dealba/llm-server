@@ -19,10 +19,11 @@ def benchmark_prompts(prompts: List[str]) -> Dict[str, float]:
 
     for prompt in prompts:
         t_0 = time.perf_counter()
-        response = Client.generate_text(prompt)["text"]
+        response = Client.generate_text(prompt)
         t_1 = time.perf_counter()
 
-        if response:
+        if response and "text" in response:
+            response = response["text"]
             elapsed_time = t_1 - t_0
             tps = tp.measure_performance(t_0, t_1, response)
             total_tps += tps
