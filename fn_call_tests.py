@@ -20,7 +20,7 @@ class FunctionTest:
     targets: List[str]
 
     def __init__(self, function: Callable, prompts: List[str], targets: List[str]):
-        """Initializes the RouteModel instance."""
+        """Initializes the FunctionTest instance."""
         self.function = function
         assert len(prompts) == len(targets)
         self.prompts = prompts
@@ -135,7 +135,9 @@ if __name__ == "__main__":
     stats = function_call(get_time_test, stats=stats)
     stats = function_call(get_lat_long_test, stats=stats)
 
-    print(f"Average Tokens per Second (TPS): {stats['avg_tps']:.2f}")
-    print(f"Average Total Time Elapsed Per Response: {stats['avg_time']:.2f}")
-    print(f"Average Correct Answers: {stats['avg_correct']:.2f}")
+    num_requests = stats["successful_requests"]
+
+    print(f"Avg Tokens per Second (TPS): {stats['total_tps']/num_requests:.2f}")
+    print(f"Avg Time Elapsed Per Response: {stats['total_time']/num_requests:.2f}")
+    print(f"Avg Correct Answers: {stats['total_correct']/stats['total_requests']:.2f}")
     print(f"Total Correct Answers: {stats['total_correct']:.2f}")
