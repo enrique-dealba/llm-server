@@ -42,7 +42,8 @@ def function_call(fn_test: FunctionTest, num_tests: int = 20) -> Dict[str, float
             t_1 = time.perf_counter()
 
             if response and "text" in response:
-                response = str(response["text"]) # TODO: More elegant way to check str type
+                # TODO: More elegant way to check str type
+                response = str(response["text"])
                 elapsed_time = t_1 - t_0
                 tps = tp.measure_performance(t_0, t_1, response)
                 total_tps += tps
@@ -58,7 +59,11 @@ def function_call(fn_test: FunctionTest, num_tests: int = 20) -> Dict[str, float
                     str(expected_response) in str(response)
                     or str(response) in str(expected_response)
                 )
-                total_correct += int(check)  # Adds 1 if correct fn call response
+                double_check = bool(
+                    str(expected_response) in str(response)[1:-1]
+                    or str(response)[1:-1] in str(expected_response)
+                )
+                total_correct += int(check or double_check)  # Adds 1 if correct
 
                 if i == 0:  # We only print these out during first iter.
                     print(f"Prompt: {prompt}")
