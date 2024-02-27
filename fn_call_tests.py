@@ -42,7 +42,7 @@ def function_call(fn_test: FunctionTest, num_tests: int = 20) -> Dict[str, float
             t_1 = time.perf_counter()
 
             if response and "text" in response:
-                response = response["text"]
+                response = str(response["text"]) # TODO: More elegant way to check str type
                 elapsed_time = t_1 - t_0
                 tps = tp.measure_performance(t_0, t_1, response)
                 total_tps += tps
