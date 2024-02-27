@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 from client import Client
 from text_processing import TextProcessing as tp
-from tools.router_tools import get_time
+from tools.router_tools import get_time, get_lat_long
 
 # Loads environment variables
 load_dotenv()
@@ -32,6 +32,7 @@ def function_call(fn_test: FunctionTest, num_tests: int = 20) -> Dict[str, float
     total_time = 0.0
     total_correct = 0.0
     successful_requests = 0.0
+    total_requests = 0.0
 
     for i in range(num_tests):
         for idx in range(len(fn_test.prompts)):
@@ -47,6 +48,7 @@ def function_call(fn_test: FunctionTest, num_tests: int = 20) -> Dict[str, float
                 total_tps += tps
                 total_time += elapsed_time
                 successful_requests += 1
+                total_requests += 1
 
                 response = tp.clean_mistral(response)  # TODO: Maybe remove this
 
@@ -57,7 +59,7 @@ def function_call(fn_test: FunctionTest, num_tests: int = 20) -> Dict[str, float
                     or str(response) in str(expected_response)
                 )
                 total_correct += int(check) # Adds 1 if correct fn call response
-                
+
                 if i == 0: # We only print these out during first iter.
                     print(f"Prompt: {prompt}")
                     print(f"Response: {response}")
@@ -65,6 +67,7 @@ def function_call(fn_test: FunctionTest, num_tests: int = 20) -> Dict[str, float
                     print(f"Check: {check}\n")
                     print(f"TPS: {tps:.2f}")
             else:
+                total_requests += 1
                 print(f"Failed to get response for prompt: {prompt}")
 
     stats = {}
@@ -72,7 +75,7 @@ def function_call(fn_test: FunctionTest, num_tests: int = 20) -> Dict[str, float
         stats = {
             "avg_tps": total_tps / successful_requests,
             "avg_time": total_time / successful_requests,
-            "avg_correct": total_correct / successful_requests,
+            "avg_correct": total_correct / total_requests,
             "total_correct": total_correct,
         }
 
@@ -94,7 +97,23 @@ if __name__ == "__main__":
         function=get_time, prompts=get_time_prompts, targets=get_time_targets
     )
 
-    stats = function_call(get_time_test)
+    get_lat_long_prompts = [
+        "What's the latitude and longitude of Dallas, TX?",
+        "What's the latitude and longitude of Paris?",
+    ]
+
+    get_lat_long_targets = [
+        "Dallas, Texas",
+        "Paris, France",
+    ]
+
+    get_lat_long_test = FunctionTest(
+        function=get_lat_long,
+        prompts=get_lat_long_prompts,
+        targets=get_lat_long_targets
+    )
+    
+    stats = function_call(get_lat_long_test)
     print(f"Average Tokens per Second (TPS): {stats['avg_tps']:.2f}")
     print(f"Average Total Time Elapsed Per Response: {stats['avg_time']:.2f}")
     print(f"Average Correct Answers: {stats['avg_correct']:.2f}")
