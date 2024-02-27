@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 from client import Client
 from text_processing import TextProcessing as tp
-from tools.router_tools import get_time, get_lat_long
+from tools.router_tools import get_lat_long, get_time
 
 # Loads environment variables
 load_dotenv()
@@ -58,9 +58,9 @@ def function_call(fn_test: FunctionTest, num_tests: int = 20) -> Dict[str, float
                     str(expected_response) in str(response)
                     or str(response) in str(expected_response)
                 )
-                total_correct += int(check) # Adds 1 if correct fn call response
+                total_correct += int(check)  # Adds 1 if correct fn call response
 
-                if i == 0: # We only print these out during first iter.
+                if i == 0:  # We only print these out during first iter.
                     print(f"Prompt: {prompt}")
                     print(f"Response: {response}")
                     print(f"Actual: {expected_response}")
@@ -110,9 +110,9 @@ if __name__ == "__main__":
     get_lat_long_test = FunctionTest(
         function=get_lat_long,
         prompts=get_lat_long_prompts,
-        targets=get_lat_long_targets
+        targets=get_lat_long_targets,
     )
-    
+
     stats = function_call(get_lat_long_test)
     print(f"Average Tokens per Second (TPS): {stats['avg_tps']:.2f}")
     print(f"Average Total Time Elapsed Per Response: {stats['avg_time']:.2f}")
