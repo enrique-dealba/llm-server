@@ -26,41 +26,45 @@ class FunctionTest:
         self.targets = targets
 
 
-def function_call(fn_test: FunctionTest) -> Dict[str, float]:
+def function_call(fn_test: FunctionTest, num_tests: int = 20) -> Dict[str, float]:
     """Runs a series of prompts through the LLM router and benchmarks function call."""
     total_tps = 0.0
     total_time = 0.0
     total_correct = 0.0
     successful_requests = 0.0
 
-    for idx in range(len(fn_test.prompts)):
-        prompt = fn_test.prompts[idx]
-        t_0 = time.perf_counter()
-        response = Client.generate_text(prompt)["text"]
-        t_1 = time.perf_counter()
+    for i in range(num_tests):
+        for idx in range(len(fn_test.prompts)):
+            prompt = fn_test.prompts[idx]
+            t_0 = time.perf_counter()
+            response = Client.generate_text(prompt)["text"]
+            t_1 = time.perf_counter()
 
-        if response:
-            elapsed_time = t_1 - t_0
-            tps = tp.measure_performance(t_0, t_1, response)
-            total_tps += tps
-            total_time += elapsed_time
-            successful_requests += 1
-            print(f"Prompt: {prompt}\nTPS: {tps:.2f}")
+            if response:
+                elapsed_time = t_1 - t_0
+                tps = tp.measure_performance(t_0, t_1, response)
+                total_tps += tps
+                total_time += elapsed_time
+                successful_requests += 1
 
-            response = tp.clean_mistral(response)  # TODO: Maybe remove this
+                response = tp.clean_mistral(response)  # TODO: Maybe remove this
 
-            print(f"Response: {response}")
-            target = fn_test.targets[idx]
-            expected_response = fn_test.function(target)
-            print(f"Actual: {expected_response}")
-            check = bool(
-                str(expected_response) in str(response)
-                or str(response) in str(expected_response)
-            )
-            print(f"Check: {check}\n")
-            total_correct += int(check) # Adds 1 if correct fn call response
-        else:
-            print(f"Failed to get response for prompt: {prompt}")
+                target = fn_test.targets[idx]
+                expected_response = fn_test.function(target)
+                check = bool(
+                    str(expected_response) in str(response)
+                    or str(response) in str(expected_response)
+                )
+                total_correct += int(check) # Adds 1 if correct fn call response
+                
+                if i == 0: # We only print these out during first iter.
+                    print(f"Prompt: {prompt}")
+                    print(f"Response: {response}")
+                    print(f"Actual: {expected_response}")
+                    print(f"Check: {check}\n")
+                    print(f"TPS: {tps:.2f}")
+            else:
+                print(f"Failed to get response for prompt: {prompt}")
 
     stats = {}
     if successful_requests > 0:
