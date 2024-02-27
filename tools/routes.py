@@ -3,7 +3,7 @@ from typing import Callable
 from semantic_router import Route
 from semantic_router.utils.function_call import get_schema
 
-from tools.router_tools import get_lat_long, get_time
+from tools.router_tools import get_lat_long, get_time, get_time_and_location
 
 
 class RouteModel:
@@ -58,6 +58,24 @@ lat_long = Route(
 )
 
 lat_long_route = RouteModel(function=get_lat_long, route=lat_long, name="get_lat_long")
+
+time_location_schema = get_schema(get_time_and_location)
+
+time_location = Route(
+    name="get_time_and_location",
+    utterances=[
+        "what is the time, latitude, and longitude of france?",
+        "what is the time, latitude, and longitude of paris?",
+        "what is the time and latitude of dallas texas",
+        "I live in Rome, what's the time and longitutde?",
+        "whats the time and longitude in allen tx",
+    ],
+    function_schema=time_location_schema,
+)
+
+time_location_route = RouteModel(
+    function=get_time_and_location, route=time_location, name="get_time_and_location"
+)
 
 general_route = Route(
     name="general",

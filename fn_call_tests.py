@@ -78,8 +78,8 @@ def function_call(
                     print(f"Prompt: {prompt}")
                     print(f"Response: {response}")
                     print(f"Actual: {expected_response}")
-                    print(f"Check: {correct}\n")
-                    print(f"TPS: {tps:.2f}")
+                    print(f"Check: {correct}")
+                    print(f"TPS: {tps:.2f}\n")
             else:
                 total_requests += 1
                 print(f"\nFailed to get response for prompt: {prompt}")

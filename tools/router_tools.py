@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
@@ -39,3 +40,38 @@ def get_lat_long(location: str) -> str:
     location = geolocator.geocode(str(location))
     latitude, longitude = location.latitude, location.longitude
     return latitude, longitude
+
+
+def get_time_and_location(json_data: str) -> str:
+    """Parses a JSON string to extract location and timezone information.
+
+    Finds the current time in the specified timezone and the latitude
+    and longitude of the specified location.
+    The JSON string must contain the keys 'location' and 'timezone', where 'location'
+    is a string representing a place recognized by the Nominatim geocoder, and
+    'timezone' is a string representing a valid timezone from the IANA Time Zone
+    Database.
+
+    :param json_data: A JSON string containing the keys 'location' and 'timezone'.
+    :type json_data: str
+    :return: A string containing the current time in the specified timezone and
+             the latitude and longitude of the specified location.
+    :rtype: str
+    """
+    try:
+        data = json.loads(json_data)
+        location = data.get("location")
+        timezone = data.get("timezone")
+
+        if not location or not timezone:
+            raise ValueError("JSON must include 'location' and 'timezone' fields.")
+
+        time = get_time(timezone)
+        latitude, longitude = get_lat_long(location)
+
+        return (
+            f"Current time in {timezone} is {time}. "
+            f"Latitude and longitude of {location} are {latitude}, {longitude}."
+        )
+    except json.JSONDecodeError:
+        raise ValueError("Invalid JSON data provided.")
