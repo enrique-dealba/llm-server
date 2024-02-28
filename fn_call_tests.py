@@ -187,7 +187,8 @@ if __name__ == "__main__":
             "What's 6 divided by 2?",
             "What is 100 divided by 2?",
             "what's half of 76?",
-            "what is 999 divided by 2?" "What's 999999999 divided by 2?",
+            "what is 999 divided by 2?",
+            "What's 999999999 divided by 2?",
         ],
         targets=[
             "6",
