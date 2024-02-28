@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 from client import Client
 from text_processing import TextProcessing as tp
-from tools.router_tools import get_lat_long, get_time
+from tools.router_tools import divide_by_2, get_last_letter, get_lat_long, get_time
 
 # Loads environment variables
 load_dotenv()
@@ -30,9 +30,12 @@ class FunctionTest:
 def check_response(response, expected):
     """Boolean logic to check if function call response is coorect."""
     check = bool(str(expected) in str(response) or str(response) in str(expected))
-    double_check = bool(
-        str(expected) in str(response)[1:-1] or str(response)[1:-1] in str(expected)
-    )
+    if len(str(response)) >= 2:
+        double_check = bool(
+            str(expected) in str(response)[1:-1] or str(response)[1:-1] in str(expected)
+        )
+    else:
+        double_check = False
     return check or double_check
 
 
@@ -102,38 +105,58 @@ if __name__ == "__main__":
         "total_requests": 0.0,
     }
 
-    get_time_prompts = [
-        "What's the time in rome?",
-        "What is the current time in new york?",
-    ]
-
-    get_time_targets = [
-        "Europe/Rome",
-        "America/New_York",
-    ]
-
     get_time_test = FunctionTest(
-        function=get_time, prompts=get_time_prompts, targets=get_time_targets
+        function=get_time,
+        prompts=[
+            "What's the time in rome?",
+            "What is the current time in new york?",
+        ],
+        targets=[
+            "Europe/Rome",
+            "America/New_York",
+        ],
     )
-
-    get_lat_long_prompts = [
-        "What's the latitude and longitude of Dallas, TX?",
-        "What's the latitude and longitude of Paris?",
-    ]
-
-    get_lat_long_targets = [
-        "Dallas, Texas",
-        "Paris, France",
-    ]
 
     get_lat_long_test = FunctionTest(
         function=get_lat_long,
-        prompts=get_lat_long_prompts,
-        targets=get_lat_long_targets,
+        prompts=[
+            "What's the latitude and longitude of Dallas, TX?",
+            "What's the latitude and longitude of Paris?",
+        ],
+        targets=[
+            "Dallas, Texas",
+            "Paris, France",
+        ],
+    )
+
+    get_last_letter_test = FunctionTest(
+        function=get_last_letter,
+        prompts=[
+            "What's the last letter in Texas?",
+            "What is the last letter of Diamond?",
+        ],
+        targets=[
+            "Texas",
+            "Diamond",
+        ],
+    )
+
+    divide_by_two_test = FunctionTest(
+        function=divide_by_2,
+        prompts=[
+            "What's 6 divided by 2?",
+            "What is 100 divided by 2?",
+        ],
+        targets=[
+            "6",
+            "100",
+        ],
     )
 
     stats = function_call(get_time_test, stats=stats)
     stats = function_call(get_lat_long_test, stats=stats)
+    stats = function_call(get_last_letter_test, stats=stats)
+    stats = function_call(divide_by_two_test, stats=stats)
 
     num_requests = stats["successful_requests"]
 
