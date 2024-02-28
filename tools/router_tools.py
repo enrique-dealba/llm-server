@@ -1,4 +1,7 @@
 import json
+
+import re
+
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
@@ -75,6 +78,173 @@ def get_lat_long(location: str) -> str:
     location = geolocator.geocode(str(location))
     latitude, longitude = location.latitude, location.longitude
     return latitude, longitude
+
+
+def get_day_of_week(date: str) -> str:
+    """Finds the day of the week for a given date.
+
+    :param date: The date to find the day of the week for, should
+        be a string in the format "YYYY-MM-DD". Do NOT put dates in
+        other formats or non-date strings, you must provide
+        a valid date string in the specified "YYYY-MM-DD" format.
+    :type date: str
+    :return: The day of the week for the specified date. If the input is empty,
+        returns "Invalid date". If the date format is incorrect, returns
+        "Invalid date format".
+    """
+    if not date:
+        return "Invalid date"
+    try:
+        return datetime.strptime(date, "%Y-%m-%d").strftime("%A")
+    except ValueError:
+        return "Invalid date format"
+    
+
+def format_phone_number(number: str) -> str:
+    """Formats a 10-digit phone number into a more readable form.
+
+    :param number: The phone number to format, should be a string of
+        10 digits without any separators. Do NOT put numbers with
+        less or more than 10 digits or numbers that contain letters
+        or special characters, you must provide a valid 10-digit
+        numerical string.
+    :type number: str
+    :return: The formatted phone number in the form "(XXX) XXX-XXXX".
+        If the input is not a valid 10-digit numerical string,
+        returns "Invalid phone number".
+    """
+    if len(number) != 10 or not number.isdigit():
+        return "Invalid phone number"
+    return f"({number[:3]}) {number[3:6]}-{number[6:]}"
+
+def compress_whitespace(text: str) -> str:
+    """Compresses all consecutive whitespaces in the text to a single space.
+
+    :param text: The text to compress whitespaces in. Do NOT put non-string
+        values, you must provide a string, even if it's empty.
+    :type text: str
+    :return: The text with all consecutive whitespaces compressed to a single space.
+        If the input is only whitespaces or empty, returns an empty string.
+    """
+    if not text.strip():
+        return ""
+    return " ".join(text.split())
+
+def capitalize_first_letter(text: str) -> str:
+    """Capitalizes the first letter of the text.
+
+    :param text: The text to capitalize the first letter of. Do NOT put non-string
+        values, you must provide a string, even if it's empty.
+    :type text: str
+    :return: The text with the first letter capitalized. If the input is empty,
+        it will return an empty string.
+    """
+    return text.capitalize()
+
+def reverse_string(text: str) -> str:
+    """Reverses the given string.
+
+    :param text: The text to be reversed. Do NOT put non-string values,
+        you must provide a string, even if it's empty.
+    :type text: str
+    :return: The reverse of the input text. If the input is empty,
+        returns an empty string.
+    """
+    return text[::-1]
+
+def generate_acronym(text: str) -> str:
+    """Generates an acronym from the first letters of each word in the text.
+
+    :param text: The text to generate an acronym from. Do NOT put non-string
+        values or strings that do not contain any words, you must provide
+        a valid string with at least one word.
+    :type text: str
+    :return: The acronym generated from the first letters of each word in the text,
+        converted to uppercase. If the input is only whitespaces or empty,
+        returns an empty string.
+    """
+    if not text.strip():
+        return ""
+    return ''.join(word[0].upper() for word in text.split())
+
+def get_vowel_count(text: str) -> str:
+    """Counts the number of vowels in the given text.
+
+    :param text: The text to count vowels in. Do NOT put non-string values,
+        you must provide a string, even if it's empty.
+    :type text: str
+    :return: The number of vowels in the text as a string. Counts both
+        uppercase and lowercase vowels.
+    """
+    return str(sum(1 for char in text.lower() if char in "aeiou"))
+
+
+def convert_to_binary(number: str) -> str:
+    """Converts a numerical string to its binary representation.
+
+    :param number: The number to convert to binary, should be a string of digits.
+        Do NOT put non-digit strings or strings that contain letters or
+        special characters, you must provide a valid numerical string.
+    :type number: str
+    :return: The binary representation of the number as a string. If the input
+        is not a valid numerical string, returns "Invalid input".
+    """
+    if not number.isdigit():
+        return "Invalid input"
+    return bin(int(number))[2:]
+
+##
+
+def get_ascii_value(character: str) -> str:
+    """Finds the ASCII value of a single character.
+
+    :param character: The character to find the ASCII value for. Do NOT put strings with
+        more than one character or empty strings, you must provide a single character.
+    :type character: str
+    :return: The ASCII value of the character as a string. If the input is not a single
+        character, returns "Invalid input".
+    """
+    if len(character) != 1:
+        return "Invalid input"
+    return str(ord(character))
+
+def extract_domain(url: str) -> str:
+    """Extracts the domain name from a URL.
+
+    :param url: The URL to extract the domain from. Do NOT put non-URL strings or
+        strings that do not conform to URL formatting, you must provide a valid URL.
+    :type url: str
+    :return: The domain name extracted from the URL. If the URL is invalid or the domain
+        cannot be extracted, returns "Invalid URL".
+    """
+    try:
+        return re.findall(r'://([^/]+)/?', url)[0]
+    except IndexError:
+        return "Invalid URL"
+
+def count_words(text: str) -> str:
+    """Counts the number of words in the given text.
+
+    :param text: The text to count words in. Do NOT put non-string values,
+        you must provide a string, even if it's empty.
+    :type text: str
+    :return: The number of words in the text as a string. If the input is only whitespaces
+        or empty, returns "0".
+    """
+    if not text.strip():
+        return "0"
+    return str(len(text.split()))
+
+def convert_to_uppercase(text: str) -> str:
+    """Converts all lowercase letters in the text to uppercase.
+
+    :param text: The text to convert to uppercase. Do NOT put non-string values,
+        you must provide a string, even if it's empty.
+    :type text: str
+    :return: The text with all lowercase letters converted to uppercase.
+    """
+    return text.upper()
+
 
 
 """
