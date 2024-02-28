@@ -3,7 +3,8 @@ from typing import Callable
 from semantic_router import Route
 from semantic_router.utils.function_call import get_schema
 
-from tools.router_tools import get_lat_long, get_time, get_time_and_location
+from tools.router_tools import (divide_by_2, get_last_letter, get_lat_long,
+                                get_time, get_time_and_location)
 
 
 class RouteModel:
@@ -75,6 +76,42 @@ time_location = Route(
 
 time_location_route = RouteModel(
     function=get_time_and_location, route=time_location, name="get_time_and_location"
+)
+
+last_letter_schema = get_schema(get_last_letter)
+
+last_letter = Route(
+    name="get_last_letter",
+    utterances=[
+        "what is the last letter of 'Apple'?",
+        "what is the last letter of Banana?",
+        "what's the last letter of camel",
+        "I live in Rome. What's the last letter in Rome?",
+        "whats the last letter in texas",
+    ],
+    function_schema=last_letter_schema,
+)
+
+last_letter_route = RouteModel(
+    function=get_last_letter, route=last_letter, name="get_last_letter"
+)
+
+divide_two_schema = get_schema(divide_by_2)
+
+divide_two = Route(
+    name="divide_by_2",
+    utterances=[
+        "what is half of 7?",
+        "what is 19.5 divided by two?",
+        "what's 11 divided by 2",
+        "I like the number 23. whats 23 divided by 2?",
+        "whats half of 100",
+    ],
+    function_schema=divide_two_schema,
+)
+
+divide_two_route = RouteModel(
+    function=divide_by_2, route=divide_two, name="divide_by_2"
 )
 
 general_route = Route(

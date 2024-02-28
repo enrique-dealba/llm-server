@@ -2,7 +2,8 @@ from semantic_router import RouteLayer
 from semantic_router.encoders import HuggingFaceEncoder
 
 from llm_agent.llm_adapter import VLLMAdapter
-from tools.routes import general_route, lat_long_route, time_route, time_location_route
+from tools.routes import (divide_two_route, general_route, last_letter_route,
+                          lat_long_route, time_location_route, time_route)
 
 
 class LLMRouter:
@@ -12,7 +13,7 @@ class LLMRouter:
         """Initializes LLMRouter with a specified LLM."""
         self.llm = llm
         self.vllm = VLLMAdapter(vllm_instance=llm, name="vllm")
-        self.tools = [time_location_route]
+        self.tools = [last_letter_route, divide_two_route]
         self.route_layer = None
 
     def __call__(self, prompt):
