@@ -6,7 +6,24 @@ from dotenv import load_dotenv
 
 from client import Client
 from text_processing import TextProcessing as tp
-from tools.router_tools import divide_by_2, get_last_letter, get_lat_long, get_time
+from tools.router_tools import (
+    capitalize_first_letter,
+    compress_whitespace,
+    convert_to_binary,
+    convert_to_uppercase,
+    count_words,
+    divide_by_2,
+    extract_domain,
+    format_phone_number,
+    generate_acronym,
+    get_ascii_value,
+    get_day_of_week,
+    get_last_letter,
+    get_lat_long,
+    get_time,
+    get_vowel_count,
+    reverse_string,
+)
 
 # Loads environment variables
 load_dotenv()
@@ -52,7 +69,7 @@ def function_call(
     expected_responses = []
     for idx in range(len(fn_test.targets)):
         target = fn_test.targets[idx]
-        t_response = fn_test.function(target) # TODO: try/except here?
+        t_response = fn_test.function(target)  # TODO: try/except here?
         expected_responses.append(t_response)
 
     for i in range(num_tests):
@@ -117,7 +134,7 @@ if __name__ == "__main__":
             "What is the current time in new york?",
             "What's the time in Seoul?",
             "what is the current time in kuwait?",
-            "what's the time in Panama"
+            "what's the time in Panama",
         ],
         targets=[
             "Europe/Rome",
@@ -135,7 +152,7 @@ if __name__ == "__main__":
             "What's the latitude and longitude of Paris?",
             "What is the latitude and longitude of Socorro NM?",
             "What is the longitude of London?",
-            "what is the latitude of Moscow"
+            "what is the latitude of Moscow",
         ],
         targets=[
             "Dallas, Texas",
@@ -153,7 +170,7 @@ if __name__ == "__main__":
             "What is the last letter of Diamond?",
             "what's the last letter of ABABAB",
             "what is the last letter of 'This_is_a_long_word'?",
-            "what is the last letter of This_is_a_long_word?"
+            "what is the last letter of This_is_a_long_word?",
         ],
         targets=[
             "Texas",
@@ -170,8 +187,7 @@ if __name__ == "__main__":
             "What's 6 divided by 2?",
             "What is 100 divided by 2?",
             "what's half of 76?",
-            "what is 999 divided by 2?"
-            "What's 999999999 divided by 2?"
+            "what is 999 divided by 2?" "What's 999999999 divided by 2?",
         ],
         targets=[
             "6",
@@ -179,6 +195,240 @@ if __name__ == "__main__":
             "76",
             "999",
             "999999999",
+        ],
+    )
+
+    get_last_letter_test = FunctionTest(
+        function=get_last_letter,
+        prompts=[
+            "What is the last letter of 'Orange'?",
+            "Find the last character in 'Zebra'",
+            "How does 'Python' end?",
+            "The final letter of 'Monday'?",
+            "Last character in 'water'?",
+        ],
+        targets=[
+            "Orange",
+            "Zebra",
+            "Python",
+            "Monday",
+            "water",
+        ],
+    )
+
+    get_day_of_week_test = FunctionTest(
+        function=get_day_of_week,
+        prompts=[
+            "What day was it on 2018-03-14?",
+            "Tell me the day of the week for 2024-01-01",
+            "What's the weekday for 2017-09-10?",
+            "Find the weekday on 2025-12-31",
+            "The day of the week for 2019-04-20?",
+        ],
+        targets=[
+            "2018-03-14",
+            "2024-01-01",
+            "2017-09-10",
+            "2025-12-31",
+            "2019-04-20",
+        ],
+    )
+
+    format_phone_number_test = FunctionTest(
+        function=format_phone_number,
+        prompts=[
+            "Can you format 2468101214?",
+            "Make 1357911131 into a phone number",
+            "How to write 9080706050 as a phone number?",
+            "Format 3213214321 as a phone number",
+            "Turn 7539514567 into a readable number",
+        ],
+        targets=[
+            "2468101214",
+            "1357911131",
+            "9080706050",
+            "3213214321",
+            "7539514567",
+        ],
+    )
+
+    compress_whitespace_test = FunctionTest(
+        function=compress_whitespace,
+        prompts=[
+            "Clean up spacing in 'too   many    spaces'",
+            "Compress all the spaces in 'spaces   everywhere'",
+            "Turn multiple spaces into a single space in 'single    space   please'",
+            "How to reduce 'lots    of   spaces' effectively?",
+            "Remove extra whitespaces from 'whitespace     reduction'",
+        ],
+        targets=[
+            "too   many    spaces",
+            "spaces   everywhere",
+            "single    space   please",
+            "lots    of   spaces",
+            "whitespace     reduction",
+        ],
+    )
+
+    capitalize_first_letter_test = FunctionTest(
+        function=capitalize_first_letter,
+        prompts=[
+            "Capitalize the first letter of 'capitalize me'",
+            "Make the initial letter big in 'small to big'",
+            "Start 'sentence with uppercase'",
+            "First letter uppercase in 'lower to upper'",
+            "Capitalize 'beginning'",
+        ],
+        targets=[
+            "capitalize me",
+            "small to big",
+            "sentence with uppercase",
+            "lower to upper",
+            "beginning",
+        ],
+    )
+
+    reverse_string_test = FunctionTest(
+        function=reverse_string,
+        prompts=[
+            "Reverse the string 'reverse'",
+            "Flip 'backwards' to its opposite",
+            "How to reverse 'mirror'",
+            "Turn '123abc' around",
+            "Write 'hello' in reverse",
+        ],
+        targets=[
+            "reverse",
+            "backwards",
+            "mirror",
+            "123abc",
+            "hello",
+        ],
+    )
+
+    generate_acronym_test = FunctionTest(
+        function=generate_acronym,
+        prompts=[
+            "Acronym for 'Graphics Interchange Format'",
+            "Short form of 'Portable Network Graphics'",
+            "Create an acronym from 'Wireless Fidelity'",
+            "What's the acronym for 'Read Only Memory'?",
+            "Generate an acronym for 'Global Positioning System'",
+        ],
+        targets=[
+            "Graphics Interchange Format",
+            "Portable Network Graphics",
+            "Wireless Fidelity",
+            "Read Only Memory",
+            "Global Positioning System",
+        ],
+    )
+
+    get_vowel_count_test = FunctionTest(
+        function=get_vowel_count,
+        prompts=[
+            "How many vowels in 'quick brown fox'?",
+            "Count the vowels in 'lazy dog'",
+            "Number of vowels in 'jumped over'",
+            "Vowel count for 'the lazy moon'",
+            "Tell me how many vowels are in 'bright sunny day'",
+        ],
+        targets=[
+            "quick brown fox",
+            "lazy dog",
+            "jumped over",
+            "the lazy moon",
+            "bright sunny day",
+        ],
+    )
+
+    convert_to_binary_test = FunctionTest(
+        function=convert_to_binary,
+        prompts=[
+            "Convert '10' to binary",
+            "Binary version of 64",
+            "What is 100 in binary?",
+            "Show 32 as a binary number",
+            "How to write '128' in binary?",
+        ],
+        targets=[
+            "10",
+            "64",
+            "100",
+            "32",
+            "128",
+        ],
+    )
+
+    get_ascii_value_test = FunctionTest(
+        function=get_ascii_value,
+        prompts=[
+            "ASCII value of 'b'",
+            "What's the ASCII for 'Z'?",
+            "Find ASCII number for '@'",
+            "ASCII code for '9'",
+            "Get me the ASCII of '#'",
+        ],
+        targets=[
+            "b",
+            "Z",
+            "@",
+            "9",
+            "#",
+        ],
+    )
+
+    extract_domain_test = FunctionTest(
+        function=extract_domain,
+        prompts=[
+            "Domain name of 'https://api.example.com/data'",
+            "Extract domain from 'http://blog.example.net/read'",
+            "What's the domain in 'https://store.example-shop.com/product'",
+            "Find the domain of 'www.example-portal.com'",
+            "Get the domain from 'https://news.example-news.co/info'",
+        ],
+        targets=[
+            "https://api.example.com/data",
+            "http://blog.example.net/read",
+            "https://store.example-shop.com/product",
+            "www.example-portal.com",
+            "https://news.example-news.co/info",
+        ],
+    )
+
+    count_words_test = FunctionTest(
+        function=count_words,
+        prompts=[
+            "How many words in 'Quick test of words'?",
+            "Count words in 'Another, example.'",
+            "Word count for 'Word'",
+            "Tell me the number of words in 'Three word sentence.'",
+            "How many words are there in 'Four words here indeed'?",
+        ],
+        targets=[
+            "Quick test of words",
+            "Another, example.",
+            "Word",
+            "Three word sentence.",
+            "Four words here indeed",
+        ],
+    )
+
+    convert_to_uppercase_test = FunctionTest(
+        function=convert_to_uppercase,
+        prompts=[
+            "Make 'simple text' all uppercase",
+            "Uppercase 'Mixed Input Case'",
+            "Convert 'varied cases of letters' to all caps",
+            "Change 'Another Test' to all uppercase",
+            "Transform 'yet another lowercase' into UPPERCASE",
+        ],
+        targets=[
+            "simple text",
+            "Mixed Input Case",
+            "varied cases of letters",
+            "Another Test'",
+            "yet another lowercase",
         ],
     )
 

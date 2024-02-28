@@ -1,7 +1,5 @@
 import json
-
 import re
-
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
@@ -98,7 +96,7 @@ def get_day_of_week(date: str) -> str:
         return datetime.strptime(date, "%Y-%m-%d").strftime("%A")
     except ValueError:
         return "Invalid date format"
-    
+
 
 def format_phone_number(number: str) -> str:
     """Formats a 10-digit phone number into a more readable form.
@@ -117,6 +115,7 @@ def format_phone_number(number: str) -> str:
         return "Invalid phone number"
     return f"({number[:3]}) {number[3:6]}-{number[6:]}"
 
+
 def compress_whitespace(text: str) -> str:
     """Compresses all consecutive whitespaces in the text to a single space.
 
@@ -130,6 +129,7 @@ def compress_whitespace(text: str) -> str:
         return ""
     return " ".join(text.split())
 
+
 def capitalize_first_letter(text: str) -> str:
     """Capitalizes the first letter of the text.
 
@@ -141,6 +141,7 @@ def capitalize_first_letter(text: str) -> str:
     """
     return text.capitalize()
 
+
 def reverse_string(text: str) -> str:
     """Reverses the given string.
 
@@ -151,6 +152,7 @@ def reverse_string(text: str) -> str:
         returns an empty string.
     """
     return text[::-1]
+
 
 def generate_acronym(text: str) -> str:
     """Generates an acronym from the first letters of each word in the text.
@@ -165,7 +167,8 @@ def generate_acronym(text: str) -> str:
     """
     if not text.strip():
         return ""
-    return ''.join(word[0].upper() for word in text.split())
+    return "".join(word[0].upper() for word in text.split())
+
 
 def get_vowel_count(text: str) -> str:
     """Counts the number of vowels in the given text.
@@ -193,7 +196,6 @@ def convert_to_binary(number: str) -> str:
         return "Invalid input"
     return bin(int(number))[2:]
 
-##
 
 def get_ascii_value(character: str) -> str:
     """Finds the ASCII value of a single character.
@@ -208,6 +210,7 @@ def get_ascii_value(character: str) -> str:
         return "Invalid input"
     return str(ord(character))
 
+
 def extract_domain(url: str) -> str:
     """Extracts the domain name from a URL.
 
@@ -218,9 +221,10 @@ def extract_domain(url: str) -> str:
         cannot be extracted, returns "Invalid URL".
     """
     try:
-        return re.findall(r'://([^/]+)/?', url)[0]
+        return re.findall(r"://([^/]+)/?", url)[0]
     except IndexError:
         return "Invalid URL"
+
 
 def count_words(text: str) -> str:
     """Counts the number of words in the given text.
@@ -228,12 +232,13 @@ def count_words(text: str) -> str:
     :param text: The text to count words in. Do NOT put non-string values,
         you must provide a string, even if it's empty.
     :type text: str
-    :return: The number of words in the text as a string. If the input is only whitespaces
-        or empty, returns "0".
+    :return: The number of words in the text as a string. If the input is only
+        whitespaces or empty, returns "0".
     """
     if not text.strip():
         return "0"
     return str(len(text.split()))
+
 
 def convert_to_uppercase(text: str) -> str:
     """Converts all lowercase letters in the text to uppercase.
@@ -244,7 +249,6 @@ def convert_to_uppercase(text: str) -> str:
     :return: The text with all lowercase letters converted to uppercase.
     """
     return text.upper()
-
 
 
 """
