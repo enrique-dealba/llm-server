@@ -40,7 +40,7 @@ def check_response(response, expected):
 
 
 def function_call(
-    fn_test: FunctionTest, stats: dict, num_tests: int = 20
+    fn_test: FunctionTest, stats: dict, num_tests: int = 100
 ) -> Dict[str, float]:
     """Runs a series of prompts through the LLM router and benchmarks function call."""
     total_tps = 0.0
@@ -48,6 +48,12 @@ def function_call(
     total_correct = 0.0
     successful_requests = 0.0
     total_requests = 0.0
+
+    expected_responses = []
+    for idx in range(len(fn_test.targets)):
+        target = fn_test.targets[idx]
+        t_response = fn_test.function(target) # TODO: try/except here?
+        expected_responses.append(t_response)
 
     for i in range(num_tests):
         for idx in range(len(fn_test.prompts)):
@@ -72,8 +78,7 @@ def function_call(
 
                 response = tp.clean_mistral(response)  # TODO: Maybe remove this
 
-                target = fn_test.targets[idx]
-                expected_response = fn_test.function(target)
+                expected_response = expected_responses[idx]
                 correct = check_response(response, expected_response)
                 total_correct += int(correct)  # Adds 1 if correct
 
