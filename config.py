@@ -1,7 +1,7 @@
 """Config settings for LLMs and server parameters."""
 
 # ----- LLM -----
-DEFAULT_MODEL = "mistralai/Mistral-7B-Instruct-v0.2"
+DEFAULT_MODEL = "mistralai/Mistral-7B-Instruct-v0.1"
 
 # ----- Constants -----
 NUM_GPUS = 1
