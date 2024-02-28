@@ -13,7 +13,7 @@ class LLMRouter:
         """Initializes LLMRouter with a specified LLM."""
         self.llm = llm
         self.vllm = VLLMAdapter(vllm_instance=llm, name="vllm")
-        self.tools = [last_letter_route, divide_two_route]
+        self.tools = [time_route, lat_long_route, last_letter_route, divide_two_route]
         self.route_layer = None
 
     def __call__(self, prompt):
