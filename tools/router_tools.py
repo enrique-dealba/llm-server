@@ -42,27 +42,26 @@ def get_lat_long(location: str) -> str:
     return latitude, longitude
 
 
+"""
+Example input format:
+    {'json_data': '{"location": "Paris, France", "timezone": "Europe/Paris"}'}
+"""
+
+
 def get_time_and_location(json_data: str) -> str:
     """Parses a JSON string to extract location and timezone information.
 
-    Finds the current time in the specified timezone and the latitude
-    and longitude of the specified location.
+    :param json_data: A JSON string containing the keys 'location' and 'timezone'.
     The JSON string must be formatted with these keys and their respective values
     encapsulated in curly braces, like so:
     "{'location': 'Your Location Here', 'timezone': 'Your Timezone Here'}".
-    An example of a correctly formatted input string is "{'location': 'Paris, France',
-    'timezone': 'Europe/Paris'}. This string tells the function to find the latitude
-    and longitude for Paris, France, and to determine the current time in the
-    Europe/Paris timezone.
-
-    Example input format:
-    {'json_data': '{"location": "Paris, France", "timezone": "Europe/Paris"}'}
-
-    :param json_data: A JSON string containing the keys 'location' and 'timezone'.
+    Make sure to input the correctly formatted input string like:
+    "{'location': 'Paris, France', 'timezone': 'Europe/Paris'}". Do NOT just put
+    the json brackets {} without the str quotes. Please include quotes " like so:
+    "{'field': 'value'}".
     :type json_data: str
     :return: A string containing the current time in the specified timezone and
              the latitude and longitude of the specified location.
-    :rtype: str
     """
     try:
         data = json.loads(json_data)
@@ -82,4 +81,4 @@ def get_time_and_location(json_data: str) -> str:
         )
     except json.JSONDecodeError:
         return "Invalid JSON data provided."
-        #raise ValueError("Invalid JSON data provided.")
+        # raise ValueError("Invalid JSON data provided.")
