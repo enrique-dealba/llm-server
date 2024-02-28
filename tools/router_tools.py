@@ -47,10 +47,13 @@ def get_time_and_location(json_data: str) -> str:
 
     Finds the current time in the specified timezone and the latitude
     and longitude of the specified location.
-    The JSON string must contain the keys 'location' and 'timezone', where 'location'
-    is a string representing a place recognized by the Nominatim geocoder, and
-    'timezone' is a string representing a valid timezone from the IANA Time Zone
-    Database.
+    The JSON string must be formatted with these keys and their respective values
+    encapsulated in curly braces, like so:
+    "{'location': 'Your Location Here', 'timezone': 'Your Timezone Here'}".
+    An example of a correctly formatted input string is "{'location': 'Paris, France',
+    'timezone': 'Europe/Paris'}. This string tells the function to find the latitude
+    and longitude for Paris, France, and to determine the current time in the
+    Europe/Paris timezone.
 
     Example input format:
     {'json_data': '{"location": "Paris, France", "timezone": "Europe/Paris"}'}
@@ -67,7 +70,8 @@ def get_time_and_location(json_data: str) -> str:
         timezone = data.get("timezone")
 
         if not location or not timezone:
-            raise ValueError("JSON must include 'location' and 'timezone' fields.")
+            return "JSON must include 'location' and 'timezone' fields."
+            # raise ValueError("JSON must include 'location' and 'timezone' fields.")
 
         time = get_time(timezone)
         latitude, longitude = get_lat_long(location)
@@ -77,4 +81,5 @@ def get_time_and_location(json_data: str) -> str:
             f"Latitude and longitude of {location} are {latitude}, {longitude}."
         )
     except json.JSONDecodeError:
-        raise ValueError("Invalid JSON data provided.")
+        return "Invalid JSON data provided."
+        #raise ValueError("Invalid JSON data provided.")
