@@ -40,7 +40,7 @@ def check_response(response, expected):
 
 
 def function_call(
-    fn_test: FunctionTest, stats: dict, num_tests: int = 100
+    fn_test: FunctionTest, stats: dict, num_tests: int = 20
 ) -> Dict[str, float]:
     """Runs a series of prompts through the LLM router and benchmarks function call."""
     total_tps = 0.0
@@ -115,10 +115,16 @@ if __name__ == "__main__":
         prompts=[
             "What's the time in rome?",
             "What is the current time in new york?",
+            "What's the time in Seoul?",
+            "what is the current time in kuwait?",
+            "what's the time in Panama"
         ],
         targets=[
             "Europe/Rome",
             "America/New_York",
+            "Asia/Seoul",
+            "Asia/Kuwait",
+            "America/Panama",
         ],
     )
 
@@ -127,10 +133,16 @@ if __name__ == "__main__":
         prompts=[
             "What's the latitude and longitude of Dallas, TX?",
             "What's the latitude and longitude of Paris?",
+            "What is the latitude and longitude of Socorro NM?",
+            "What is the longitude of London?",
+            "what is the latitude of Moscow"
         ],
         targets=[
             "Dallas, Texas",
             "Paris, France",
+            "Socorro, New Mexico",
+            "London",
+            "Moscow, Russia",
         ],
     )
 
@@ -139,10 +151,16 @@ if __name__ == "__main__":
         prompts=[
             "What's the last letter in Texas?",
             "What is the last letter of Diamond?",
+            "what's the last letter of ABABAB",
+            "what is the last letter of 'This_is_a_long_word'?",
+            "what is the last letter of This_is_a_long_word?"
         ],
         targets=[
             "Texas",
             "Diamond",
+            "ABABAB",
+            "This_is_a_long_word",
+            "This_is_a_long_word",
         ],
     )
 
@@ -151,17 +169,26 @@ if __name__ == "__main__":
         prompts=[
             "What's 6 divided by 2?",
             "What is 100 divided by 2?",
+            "what's half of 76?",
+            "what is 999 divided by 2?"
+            "What's 999999999 divided by 2?"
         ],
         targets=[
             "6",
             "100",
+            "76",
+            "999",
+            "999999999",
         ],
     )
 
+    t_0 = time.perf_counter()
     stats = function_call(get_time_test, stats=stats)
     stats = function_call(get_lat_long_test, stats=stats)
     stats = function_call(get_last_letter_test, stats=stats)
     stats = function_call(divide_by_two_test, stats=stats)
+    t_1 = time.perf_counter()
+    total_time = t_1 - t_0
 
     num_requests = stats["successful_requests"]
 
@@ -169,3 +196,4 @@ if __name__ == "__main__":
     print(f"Avg Time Elapsed Per Response: {stats['total_time']/num_requests:.2f}")
     print(f"Avg Correct Answers: {stats['total_correct']/stats['total_requests']:.2f}")
     print(f"Total Correct Answers: {stats['total_correct']:.2f}")
+    print(f"\nTotal Benchmarking Time: {total_time}")
