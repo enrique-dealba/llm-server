@@ -94,6 +94,7 @@ last_letter_route = RouteModel(
         "what's the last letter of camel",
         "I live in Rome. What's the last letter in Rome?",
         "whats the last letter in texas",
+        "give me the last letter of 'lemon'",
     ],
 )
 
@@ -106,6 +107,7 @@ divide_two_route = RouteModel(
         "what's 11 divided by 2",
         "I like the number 23. whats 23 divided by 2?",
         "whats half of 100",
+        "tell me what 7 divided by 2 is",
     ],
 )
 
@@ -114,10 +116,11 @@ get_day_of_week_route = RouteModel(
     name="get_day_of_week",
     examples=[
         "what day of the week was it on 2021-07-04?",
-        "tell me the day for 2020-01-01",
+        "tell me the day of the week for 2020-01-01",
         "what weekday falls on 2023-12-25?",
         "can you find the day of the week for 2022-08-15?",
         "I need the weekday for 2019-11-11",
+        "Find the weekday for 2024-01-02",
     ],
 )
 
@@ -130,6 +133,7 @@ format_phone_number_route = RouteModel(
         "format this phone number for me: 1122334455",
         "I have a phone number 5556667777, make it pretty",
         "what's the proper format for 4445556666 as a phone number?",
+        "How can we write 9998887777 as a phone number?",
     ],
 )
 
@@ -139,9 +143,10 @@ compress_whitespace_route = RouteModel(
     examples=[
         "clean up the spacing in 'hello    world'",
         "compress spaces in 'I  love   Python'",
-        "reduce multiple whitespaces to a single space in 'This    is  a  test'",
+        "Turn multiple whitespaces to a single space in 'This    is  a  test'",
         "how to make 'So   many    spaces' neat?",
         "remove extra spaces from 'Too  much    space between  words'",
+        "Reduce the extra whitespaces for the following: '   ABC   '.",
     ],
 )
 
@@ -154,6 +159,8 @@ capitalize_first_letter_route = RouteModel(
         "start with a capital letter 'capitalize this'",
         "I want the first character uppercase in 'lowercase to uppercase'",
         "how to capitalize 'first letter'",
+        "Please make the first letter capitalized: 'word'",
+        "What's the capitalized first letter version for 'peanut'?",
     ],
 )
 
@@ -166,6 +173,9 @@ reverse_string_route = RouteModel(
         "how to say 'reverse me' in reverse",
         "turn 'backwards' around",
         "write '12345' in reverse order",
+        "How can we write 'WORD' in reverse?",
+        "flip the string 'hello world' backwards",
+        "reverse the string 'this is an example'",
     ],
 )
 
@@ -178,6 +188,8 @@ generate_acronym_route = RouteModel(
         "acronym for 'Light Amplification by Stimulated Emission of Radiation'",
         "shorten 'Central Processing Unit' to its acronym",
         "create an acronym from 'Application Programming Interface'",
+        "generate an acronym for Wireless Fidelity",
+        "what's the acronym for Read Only Memory?",
     ],
 )
 
@@ -185,11 +197,13 @@ get_vowel_count_route = RouteModel(
     function=get_vowel_count,
     name="get_vowel_count",
     examples=[
-        "how many vowels in 'example text'?",
-        "count the vowels in 'Hello World'",
-        "number of vowels in 'AEIOU'",
+        "How many vowels in 'example text'?",
+        "Count the vowels in 'Hello World'",
+        "Number of vowels in 'AEIOU'",
         "vowel count for 'abcdefghijklmnopqrstuvwxyz'",
         "tell me how many vowels are in 'This is a test sentence'",
+        "Vowel count for the sentence: 'the quick brown fox'",
+        "how many vowels in the following: 'Lazy Moon'?",
     ],
 )
 
@@ -202,6 +216,8 @@ convert_to_binary_route = RouteModel(
         "what is '5' in binary?",
         "show '255' as a binary number",
         "how to write '42' in binary?",
+        "Convert 150 to binary",
+        "What's the binary of 1664?",
     ],
 )
 
@@ -214,6 +230,8 @@ get_ascii_value_route = RouteModel(
         "find ASCII number for '?'",
         "ASCII code for '0'",
         "get me the ASCII of ' ' (space)",
+        "What's the ASCII for 'p'?",
+        "Give me the ASCII for '*'",
     ],
 )
 
@@ -221,11 +239,11 @@ extract_domain_route = RouteModel(
     function=extract_domain,
     name="extract_domain",
     examples=[
-        "domain name of 'https://www.example.com/page'",
-        "extract domain from 'http://subdomain.example.org/test'",
-        "what's the domain in 'https://another-example.net/path'",
-        "find the domain of 'www.test-site.com'",
-        "get the domain from 'https://www.this-is-a-test.co.uk/path'",
+        "Domain name of 'https://www.example.com/page'",
+        "Extract domain from 'http://subdomain.example.org/test'",
+        "What's the domain in 'https://another-example.net/path'",
+        "Find the domain of 'www.test-site.com'",
+        "Get the domain from 'https://www.this-is-a-test.co.uk/path'",
     ],
 )
 
@@ -233,11 +251,11 @@ count_words_route = RouteModel(
     function=count_words,
     name="count_words",
     examples=[
-        "how many words are in 'This is an example sentence'?",
-        "count words in 'Hello, world!'",
-        "word count for 'Single'",
-        "tell me the number of words in 'This is another test.'",
-        "how many words are there in 'Just a simple sentence'?",
+        "How many words are in 'This is an example sentence'?",
+        "Count words in 'Hello, world!'",
+        "Word count for 'Single'",
+        "Tell me the number of words in 'This is another test.'",
+        "How many words are there in 'Just a simple sentence'?",
     ],
 )
 
@@ -245,11 +263,13 @@ convert_to_uppercase_route = RouteModel(
     function=convert_to_uppercase,
     name="convert_to_uppercase",
     examples=[
-        "make 'hello world' all uppercase",
-        "uppercase 'This is a test'",
-        "convert 'small letters' to big",
-        "change 'mixed Case' to all uppercase",
-        "transform 'lowercase' into UPPERCASE",
+        "Make 'hello world' all uppercase",
+        "Uppercase 'This is a test'",
+        "Convert 'small letters' to big",
+        "Change 'mixed Case' to all uppercase",
+        "Transform 'lowercase' into UPPERCASE",
+        "Make the string: apple all uppercase",
+        "Convert this: 'tiny letters' to all caps",
     ],
 )
 
