@@ -21,6 +21,7 @@ from tools.routes import (
     lat_long_route,
     reverse_string_route,
     time_route,
+    get_time_and_location
 )
 
 
@@ -32,24 +33,25 @@ class LLMRouter:
         self.llm = llm
         self.vllm = VLLMAdapter(vllm_instance=llm, name="vllm")
         #self.num_tools = 15
-        self.tools = [
-            time_route,
-            lat_long_route,
-            last_letter_route,
-            divide_two_route,
-            get_day_of_week_route,
-            format_phone_number_route,
-            compress_whitespace_route,
-            capitalize_first_letter_route,
-            reverse_string_route,
-            generate_acronym_route,
-            get_vowel_count_route,
-            convert_to_binary_route,
-            get_ascii_value_route,
-            extract_domain_route,
-            count_words_route,
-            convert_to_uppercase_route,
-        ]
+        # self.tools = [
+        #     time_route,
+        #     lat_long_route,
+        #     last_letter_route,
+        #     divide_two_route,
+        #     get_day_of_week_route,
+        #     format_phone_number_route,
+        #     compress_whitespace_route,
+        #     capitalize_first_letter_route,
+        #     reverse_string_route,
+        #     generate_acronym_route,
+        #     get_vowel_count_route,
+        #     convert_to_binary_route,
+        #     get_ascii_value_route,
+        #     extract_domain_route,
+        #     count_words_route,
+        #     convert_to_uppercase_route,
+        # ]
+        self.tools = [get_time_and_location]
         # self.tools = random.sample(tools, self.num_tools)
         self.route_layer = None
 

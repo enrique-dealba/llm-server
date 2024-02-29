@@ -23,6 +23,7 @@ from tools.router_tools import (
     get_time,
     get_vowel_count,
     reverse_string,
+    get_time_and_location
 )
 
 # Loads environment variables
@@ -143,6 +144,24 @@ if __name__ == "__main__":
             "Asia/Seoul",
             "Asia/Kuwait",
             "America/Panama",
+        ],
+    )
+
+    get_time_and_location_test = FunctionTest(
+        function=get_time_and_location,
+        prompts=[
+            "What's the time, latitude and longitude in rome?",
+            "What is the current time, latitude and longitude in new york?",
+            "What's the time, latitude and longitude in Seoul?",
+            "what is the current time, latitude and longitude in kuwait?",
+            "what's the time, latitude and longitude in Panama?",
+        ],
+        targets=[
+            "{'location': 'Rome', 'timezone': 'Europe/Rome'}",
+            "{'location': 'New York', 'timezone': 'America/New_York'}",
+            "{'location': 'Seoul, Korea', 'timezone': 'Asia/Seoul'}",
+            "{'location': 'Kuwait', 'timezone': 'Asia/Kuwait'}",
+            "{'location':, 'Panama', 'timezone': 'America/Panama'}",
         ],
     )
 
@@ -439,22 +458,24 @@ if __name__ == "__main__":
     ]
     """
 
-    stats = function_call(get_time_test, stats=stats)
-    stats = function_call(get_lat_long_test, stats=stats)
-    stats = function_call(get_last_letter_test, stats=stats)
-    stats = function_call(divide_by_two_test, stats=stats)
-    stats = function_call(get_day_of_week_test, stats=stats)
-    stats = function_call(format_phone_number_test, stats=stats)
-    stats = function_call(compress_whitespace_test, stats=stats)
-    stats = function_call(capitalize_first_letter_test, stats=stats)
-    stats = function_call(reverse_string_test, stats=stats)
-    stats = function_call(generate_acronym_test, stats=stats)
-    stats = function_call(get_vowel_count_test, stats=stats)
-    stats = function_call(convert_to_binary_test, stats=stats)
-    stats = function_call(get_ascii_value_test, stats=stats)
-    stats = function_call(extract_domain_test, stats=stats)
-    stats = function_call(count_words_test, stats=stats)
-    stats = function_call(convert_to_uppercase_test, stats=stats)
+    # stats = function_call(get_time_test, stats=stats)
+    # stats = function_call(get_lat_long_test, stats=stats)
+    # stats = function_call(get_last_letter_test, stats=stats)
+    # stats = function_call(divide_by_two_test, stats=stats)
+    # stats = function_call(get_day_of_week_test, stats=stats)
+    # stats = function_call(format_phone_number_test, stats=stats)
+    # stats = function_call(compress_whitespace_test, stats=stats)
+    # stats = function_call(capitalize_first_letter_test, stats=stats)
+    # stats = function_call(reverse_string_test, stats=stats)
+    # stats = function_call(generate_acronym_test, stats=stats)
+    # stats = function_call(get_vowel_count_test, stats=stats)
+    # stats = function_call(convert_to_binary_test, stats=stats)
+    # stats = function_call(get_ascii_value_test, stats=stats)
+    # stats = function_call(extract_domain_test, stats=stats)
+    # stats = function_call(count_words_test, stats=stats)
+    # stats = function_call(convert_to_uppercase_test, stats=stats)
+
+    stats = function_call(get_time_and_location_test, stats=stats)
 
     t_1 = time.perf_counter()
     total_time = t_1 - t_0
