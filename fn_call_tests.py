@@ -158,11 +158,11 @@ if __name__ == "__main__":
             "what's the time, latitude and longitude in Panama?",
         ],
         targets=[
-            "{'location': 'Rome', 'timezone': 'Europe/Rome'}",
-            "{'location': 'New York', 'timezone': 'America/New_York'}",
-            "{'location': 'Seoul, Korea', 'timezone': 'Asia/Seoul'}",
-            "{'location': 'Kuwait', 'timezone': 'Asia/Kuwait'}",
-            "{'location':, 'Panama', 'timezone': 'America/Panama'}",
+            '{"location": "Rome, Italy", "timezone": "Europe/Rome"}',
+            '{"location": "New York, USA", "timezone": "America/New_York"}',
+            '{"location": "Seoul, South Korea", "timezone": "Asia/Seoul"}',
+            '{"location": "Kuwait City, Kuwait", "timezone": "Asia/Kuwait"}',
+            '{"location": "Panama City, Panama", "timezone": "America/Panama"}',
         ],
     )
 

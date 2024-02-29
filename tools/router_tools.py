@@ -263,14 +263,21 @@ def get_time_and_location(json_data: str) -> str:
     :param json_data: A JSON string containing the keys 'location' and 'timezone'.
         The JSON string must be formatted with these keys and their respective values
         encapsulated in curly braces, like so:
-        "{'location': 'Your Location Here', 'timezone': 'Your Timezone Here'}".
+        '{"location": "Location Here", "timezone": "Timezone Here"}'.
         Make sure to input the correctly formatted input string like:
-        "{'location': 'Paris, France', 'timezone': 'Europe/Paris'}". Do NOT just put
-        the json brackets {} without the str quotes. Please include quotes " like so:
-        "{'field': 'value'}".
+        '{"location": "Paris, France", "timezone": "Europe/Paris"}'. Do NOT just put
+        the JSON brackets {} without the string quotes. Please include quotes " like so:
+        '{"field": "value"}'.
     :type json_data: str
     :return: A string containing the current time in the specified timezone and
              the latitude and longitude of the specified location.
+
+    Example of a valid input:
+        "json_data": '{"location": "Rome, Italy", "timezone": "Europe/Rome"}'
+        "json_data": '{"location": "New York, USA", "timezone": "America/New_York"}'
+        "json_data": '{"location": "Seoul, South Korea", "timezone": "Asia/Seoul"}'
+        "json_data": '{"location": "Kuwait City, Kuwait", "timezone": "Asia/Kuwait"}'
+        "json_data": '{"location": "Panama City, Panama", "timezone": "America/Panama"}'
     """
     try:
         data = json.loads(json_data)
