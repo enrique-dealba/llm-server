@@ -58,7 +58,7 @@ def check_response(response, expected):
 
 
 def function_call(
-    fn_test: FunctionTest, stats: dict, num_tests: int = 5
+    fn_test: FunctionTest, stats: dict, num_tests: int = 3
 ) -> Dict[str, float]:
     """Runs a series of prompts through the LLM router and benchmarks function call."""
     total_tps = 0.0
@@ -417,6 +417,27 @@ if __name__ == "__main__":
     )
 
     t_0 = time.perf_counter()
+
+    """
+    tools = [
+    time_route,
+    lat_long_route,
+    last_letter_route,
+    divide_two_route,
+    get_day_of_week_route,
+    format_phone_number_route,
+    compress_whitespace_route,
+    capitalize_first_letter_route,
+    reverse_string_route,
+    generate_acronym_route,
+    get_vowel_count_route,
+    convert_to_binary_route,
+    get_ascii_value_route,
+    extract_domain_route,
+    count_words_route,
+    convert_to_uppercase_route,
+    ]
+    """
 
     stats = function_call(get_time_test, stats=stats)
     stats = function_call(get_lat_long_test, stats=stats)
