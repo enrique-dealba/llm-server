@@ -73,6 +73,7 @@ def function_call(
         target = fn_test.targets[idx]
         t_response = fn_test.function(target)  # TODO: try/except here?
         expected_responses.append(t_response)
+        print("EXPECT:", t_response)
 
     for i in range(num_tests):
         for idx in range(len(fn_test.prompts)):
@@ -481,6 +482,8 @@ if __name__ == "__main__":
     total_time = t_1 - t_0
 
     num_requests = stats["successful_requests"]
+    if num_requests <= 0:
+        num_requests = 1
 
     print(f"Avg Tokens per Second (TPS): {stats['total_tps']/num_requests:.2f}")
     print(f"Avg Time Elapsed Per Response: {stats['total_time']/num_requests:.2f}")
