@@ -2,8 +2,24 @@ from semantic_router import RouteLayer
 from semantic_router.encoders import HuggingFaceEncoder
 
 from llm_agent.llm_adapter import VLLMAdapter
-from tools.routes import (divide_two_route, general_route, last_letter_route,
-                          lat_long_route, time_location_route, time_route)
+from tools.routes import (
+    capitalize_first_letter_route,
+    compress_whitespace_route,
+    convert_to_binary_route,
+    convert_to_uppercase_route,
+    count_words_route,
+    divide_two_route,
+    extract_domain_route,
+    format_phone_number_route,
+    generate_acronym_route,
+    get_ascii_value_route,
+    get_day_of_week_route,
+    get_vowel_count_route,
+    last_letter_route,
+    lat_long_route,
+    reverse_string_route,
+    time_route,
+)
 
 
 class LLMRouter:
@@ -13,7 +29,24 @@ class LLMRouter:
         """Initializes LLMRouter with a specified LLM."""
         self.llm = llm
         self.vllm = VLLMAdapter(vllm_instance=llm, name="vllm")
-        self.tools = [time_route, lat_long_route, last_letter_route, divide_two_route]
+        self.tools = [
+            time_route,
+            lat_long_route,
+            last_letter_route,
+            divide_two_route,
+            get_day_of_week_route,
+            format_phone_number_route,
+            compress_whitespace_route,
+            capitalize_first_letter_route,
+            reverse_string_route,
+            generate_acronym_route,
+            get_vowel_count_route,
+            convert_to_binary_route,
+            get_ascii_value_route,
+            extract_domain_route,
+            count_words_route,
+            convert_to_uppercase_route,
+        ]
         self.route_layer = None
 
     def __call__(self, prompt):
@@ -23,7 +56,7 @@ class LLMRouter:
     def setup_router(self):
         """Sets up the semantic router for the LLM."""
         routes = [tool.route for tool in self.tools]
-        routes += [general_route]
+        # routes += [general_route]
         encoder = HuggingFaceEncoder()
 
         self.route_layer = RouteLayer(encoder=encoder, routes=routes, llm=self.vllm)

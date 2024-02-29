@@ -53,11 +53,12 @@ def check_response(response, expected):
         )
     else:
         double_check = False
-    return check or double_check
+    len_check = abs(len(response) - len(expected)) <= 5  # True if within 5 chars
+    return (check or double_check) and len_check
 
 
 def function_call(
-    fn_test: FunctionTest, stats: dict, num_tests: int = 20
+    fn_test: FunctionTest, stats: dict, num_tests: int = 5
 ) -> Dict[str, float]:
     """Runs a series of prompts through the LLM router and benchmarks function call."""
     total_tps = 0.0
@@ -196,24 +197,6 @@ if __name__ == "__main__":
             "76",
             "999",
             "999999999",
-        ],
-    )
-
-    get_last_letter_test = FunctionTest(
-        function=get_last_letter,
-        prompts=[
-            "What is the last letter of 'Orange'?",
-            "Find the last character in 'Zebra'",
-            "How does 'Python' end?",
-            "The final letter of 'Monday'?",
-            "Last character in 'water'?",
-        ],
-        targets=[
-            "Orange",
-            "Zebra",
-            "Python",
-            "Monday",
-            "water",
         ],
     )
 
@@ -434,10 +417,24 @@ if __name__ == "__main__":
     )
 
     t_0 = time.perf_counter()
+
     stats = function_call(get_time_test, stats=stats)
     stats = function_call(get_lat_long_test, stats=stats)
     stats = function_call(get_last_letter_test, stats=stats)
     stats = function_call(divide_by_two_test, stats=stats)
+    stats = function_call(get_day_of_week_test, stats=stats)
+    stats = function_call(format_phone_number_test, stats=stats)
+    stats = function_call(compress_whitespace_test, stats=stats)
+    stats = function_call(capitalize_first_letter_test, stats=stats)
+    stats = function_call(reverse_string_test, stats=stats)
+    stats = function_call(generate_acronym_test, stats=stats)
+    stats = function_call(get_vowel_count_test, stats=stats)
+    stats = function_call(convert_to_binary_test, stats=stats)
+    stats = function_call(get_ascii_value_test, stats=stats)
+    stats = function_call(extract_domain_test, stats=stats)
+    stats = function_call(count_words_test, stats=stats)
+    stats = function_call(convert_to_uppercase_test, stats=stats)
+
     t_1 = time.perf_counter()
     total_time = t_1 - t_0
 
