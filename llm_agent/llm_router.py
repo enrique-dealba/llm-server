@@ -1,3 +1,5 @@
+import random
+
 from semantic_router import RouteLayer
 from semantic_router.encoders import HuggingFaceEncoder
 
@@ -29,7 +31,8 @@ class LLMRouter:
         """Initializes LLMRouter with a specified LLM."""
         self.llm = llm
         self.vllm = VLLMAdapter(vllm_instance=llm, name="vllm")
-        self.tools = [
+        self.num_tools = 15
+        tools = [
             time_route,
             lat_long_route,
             last_letter_route,
@@ -47,6 +50,7 @@ class LLMRouter:
             count_words_route,
             convert_to_uppercase_route,
         ]
+        self.tools = random.sample(tools, self.num_tools)
         self.route_layer = None
 
     def __call__(self, prompt):
