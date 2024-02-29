@@ -21,7 +21,7 @@ from tools.routes import (
     lat_long_route,
     reverse_string_route,
     time_route,
-    get_time_and_location
+    time_location_route
 )
 
 
@@ -51,7 +51,7 @@ class LLMRouter:
         #     count_words_route,
         #     convert_to_uppercase_route,
         # ]
-        self.tools = [get_time_and_location]
+        self.tools = [time_location_route]
         # self.tools = random.sample(tools, self.num_tools)
         self.route_layer = None
 
