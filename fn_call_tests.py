@@ -411,7 +411,7 @@ if __name__ == "__main__":
             "simple text",
             "Mixed Input Case",
             "varied cases of letters",
-            "Another Test'",
+            "Another Test",
             "yet another lowercase",
         ],
     )
