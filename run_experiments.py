@@ -131,7 +131,7 @@ def log_experiment_results(experiment_number, stats, total_time, used_tools):
         log_file.write(log_entry)
 
 
-def run_tests(experiment_tests):
+def run_tests(experiment_number, experiment_tests):
     stats = {
         "total_tps": 0.0,
         "total_time": 0.0,
@@ -140,7 +140,7 @@ def run_tests(experiment_tests):
         "total_requests": 0.0,
     }
 
-    log_file = "fn_call_tests_output.log"
+    log_file = f"fn_call_tests_output_{experiment_number}.log"
     with open(log_file, "a") as file:
         file.write("")
 
@@ -150,16 +150,16 @@ def run_tests(experiment_tests):
     )
 
     try:
-        with open(log_file) as file:
+        with open(log_file, "r") as file:
             lines = file.readlines()
             if lines:
                 last_line = lines[-1].strip()
                 if last_line:
                     stats = eval(last_line)
                 else:
-                    print("Warning: The last line of the log file is empty.")
+                    print(f"Warning: The last line of the log file '{log_file}' is empty.")
             else:
-                print("Warning: The log file is empty.")
+                print(f"Warning: The log file '{log_file}' is empty.")
     except FileNotFoundError:
         print(f"Warning: The log file '{log_file}' does not exist.")
 
@@ -178,11 +178,11 @@ def main():
         time.sleep(20)  # Wait for the container to start
 
         start_time = time.time()
-        stats = run_tests(experiment_tests)
+        stats = run_tests(i+1, experiment_tests)
         end_time = time.time()
         total_time = end_time - start_time
 
-        log_experiment_results(i + 1, stats, total_time, used_tool_names)
+        log_experiment_results(i+1, stats, total_time, used_tool_names)
         stop_docker_container()
 
 
