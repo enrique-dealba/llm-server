@@ -23,24 +23,6 @@ from fn_call_tests import (
     get_vowel_count_test,
     reverse_string_test,
 )
-# from tools.routes import (
-#     capitalize_first_letter_route,
-#     compress_whitespace_route,
-#     convert_to_binary_route,
-#     convert_to_uppercase_route,
-#     count_words_route,
-#     divide_two_route,
-#     extract_domain_route,
-#     format_phone_number_route,
-#     generate_acronym_route,
-#     get_ascii_value_route,
-#     get_day_of_week_route,
-#     get_vowel_count_route,
-#     last_letter_route,
-#     lat_long_route,
-#     reverse_string_route,
-#     time_route,
-# )
 
 
 def select_tools_and_tests(num_tools):
@@ -116,9 +98,6 @@ def run_docker_container():
     )
 
 
-# def run_tests():
-#     subprocess.run(["python", "fn_call_tests.py"])
-
 def stop_docker_container():
     subprocess.run(["docker", "stop", "llm6"])
 
@@ -166,10 +145,20 @@ def run_tests(experiment_tests):
         env={"STATS": str(stats), "EXPERIMENT_TESTS": str(experiment_tests)},
     )
 
-    with open(log_file, "r") as file:
-        lines = file.readlines()
-        stats = eval(lines[-1])
-    
+    try:
+        with open(log_file) as file:
+            lines = file.readlines()
+            if lines:
+                last_line = lines[-1].strip()
+                if last_line:
+                    stats = eval(last_line)
+                else:
+                    print("Warning: The last line of the log file is empty.")
+            else:
+                print("Warning: The log file is empty.")
+    except FileNotFoundError:
+        print(f"Warning: The log file '{log_file}' does not exist.")
+
     return stats
 
 

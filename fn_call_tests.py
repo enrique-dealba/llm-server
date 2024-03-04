@@ -3,7 +3,7 @@ import os
 import time
 from typing import Callable, Dict, List
 
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 
 from client import Client
 from text_processing import TextProcessing as tp
@@ -28,7 +28,7 @@ from tools.router_tools import (
 )
 
 # Loads environment variables
-load_dotenv()
+# load_dotenv()
 
 
 class FunctionTest:
@@ -446,7 +446,7 @@ def run_experiment_tests(stats, experiment_tests):
     print(f"Avg Correct Answers: {stats['total_correct']/stats['total_requests']:.2f}")
     print(f"Total Correct Answers: {stats['total_correct']:.2f}")
     print(f"\nTotal Benchmarking Time: {total_time}")
-    
+
     print(stats)
 
 if __name__ == "__main__":
