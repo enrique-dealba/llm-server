@@ -155,7 +155,7 @@ def run_tests(experiment_number):
             if lines:
                 last_line = lines[-1].strip()
                 if last_line:
-                    stats = eval(last_line)
+                    stats = json.loads(last_line)
                 else:
                     print("Warning: The last line of the log file 'fn_call_tests_output.log' is empty.")
             else:
@@ -164,6 +164,10 @@ def run_tests(experiment_number):
         print("Warning: The log file 'fn_call_tests_output.log' does not exist.")
 
     return stats
+
+def clear_or_create_log_file():
+    with open("fn_call_tests_output.log", "w") as file:
+        pass  # This clears the file if it exists or creates it if it doesn't
 
 
 def main():
@@ -175,6 +179,7 @@ def main():
 
     for i in range(num_experiments):
         print(f"Running experiment {i+1}/{num_experiments}")
+        clear_or_create_log_file()
         used_tool_names, experiment_tests = select_tools_and_tests(num_tools)
         write_used_tools_to_file(used_tool_names)
 

@@ -472,7 +472,8 @@ def run_experiment_tests(stats, experiment_tests):
     print(f"\nTotal Benchmarking Time: {total_time}")
 
     with open("fn_call_tests_output.log", "a") as log_file:
-        log_file.write(str(stats) + "\n")
+        json.dump(stats, log_file)
+        log_file.write("\n")  # Add a newline to separate entries
 
 if __name__ == "__main__":
     stats_str = os.getenv("STATS")
