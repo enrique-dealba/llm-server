@@ -80,6 +80,7 @@ def run_docker_container():
     subprocess.run(["docker", "build", "-t", "my_llm_server", "."])
     subprocess.run(["docker", "rm", "-f", "llm6"])
     huggingface_cache_dir = os.path.expanduser("~/.cache/huggingface")
+    current_dir = os.path.abspath(os.path.dirname(__file__))
     subprocess.run(
         [
             "docker",
@@ -87,6 +88,8 @@ def run_docker_container():
             "-d",
             "-v",
             f"{huggingface_cache_dir}:/root/.cache/huggingface",
+            "-v",
+            f"{current_dir}:/app",
             "--gpus",
             "all",
             "--name",
@@ -145,7 +148,7 @@ def run_tests(experiment_number, experiment_tests):
     #     file.write("")
 
     subprocess.run(
-        ["python", "fn_call_tests.py"],
+        ["docker", "exec", "llm6", "python", "fn_call_tests.py"],
         env={"STATS": str(stats), "EXPERIMENT_TESTS": str(experiment_tests)},
     )
 
@@ -169,6 +172,9 @@ def run_tests(experiment_number, experiment_tests):
 def main():
     num_experiments = 3
     num_tools = 4
+
+    # Create an empty log file
+    open("fn_call_tests_output.log", "w").close()
 
     for i in range(num_experiments):
         print(f"Running experiment {i+1}/{num_experiments}")
