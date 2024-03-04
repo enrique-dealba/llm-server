@@ -140,9 +140,9 @@ def run_tests(experiment_number, experiment_tests):
         "total_requests": 0.0,
     }
 
-    log_file = f"fn_call_tests_output_{experiment_number}.log"
-    with open(log_file, "a") as file:
-        file.write("")
+    # log_file = f"fn_call_tests_output_{experiment_number}.log"
+    # with open(log_file, "a") as file:
+    #     file.write("")
 
     subprocess.run(
         ["python", "fn_call_tests.py"],
@@ -150,18 +150,18 @@ def run_tests(experiment_number, experiment_tests):
     )
 
     try:
-        with open(log_file, "r") as file:
+        with open("fn_call_tests_output.log", "r") as file:
             lines = file.readlines()
             if lines:
                 last_line = lines[-1].strip()
                 if last_line:
                     stats = eval(last_line)
                 else:
-                    print(f"Warning: The last line of the log file '{log_file}' is empty.")
+                    print("Warning: The last line of the log file 'fn_call_tests_output.log' is empty.")
             else:
-                print(f"Warning: The log file '{log_file}' is empty.")
+                print("Warning: The log file 'fn_call_tests_output.log' is empty.")
     except FileNotFoundError:
-        print(f"Warning: The log file '{log_file}' does not exist.")
+        print("Warning: The log file 'fn_call_tests_output.log' does not exist.")
 
     return stats
 

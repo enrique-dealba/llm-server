@@ -447,7 +447,8 @@ def run_experiment_tests(stats, experiment_tests):
     print(f"Total Correct Answers: {stats['total_correct']:.2f}")
     print(f"\nTotal Benchmarking Time: {total_time}")
 
-    print(stats)
+    with open("fn_call_tests_output.log", "a") as log_file:
+        log_file.write(str(stats) + "\n")
 
 if __name__ == "__main__":
     stats_str = os.getenv("STATS")
