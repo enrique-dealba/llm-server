@@ -1,4 +1,5 @@
 import datetime
+import json
 import random
 import subprocess
 import time
@@ -21,7 +22,6 @@ from fn_call_tests import (
     get_vowel_count_test,
     reverse_string_test,
 )
-from llm_agent.llm_router import update_used_tools
 from tools.routes import (
     capitalize_first_letter_route,
     compress_whitespace_route,
@@ -86,6 +86,11 @@ def select_tools_and_tests(num_tools):
     experiment_tests = [tests[i] for i in selected_indices]
 
     return used_tools, experiment_tests
+
+
+def write_used_tools_to_file(used_tools):
+    with open("used_tools.json", "w") as file:
+        json.dump(used_tools, file)
 
 
 def run_docker_container():
@@ -168,7 +173,7 @@ def main():
     for i in range(num_experiments):
         print(f"Running experiment {i+1}/{num_experiments}")
         used_tools, experiment_tests = select_tools_and_tests(num_tools)
-        update_used_tools(used_tools)
+        write_used_tools_to_file(used_tools)
         run_docker_container()
         time.sleep(20)  # Wait for the container to start
 

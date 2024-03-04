@@ -1,3 +1,4 @@
+import json
 import random
 
 from semantic_router import RouteLayer
@@ -24,7 +25,15 @@ from tools.routes import (
     time_location_route
 )
 
-used_tools = []
+
+def load_used_tools_from_file():
+    try:
+        with open("used_tools.json", "r") as file:
+            used_tools = json.load(file)
+            return used_tools
+    except FileNotFoundError:
+        return []
+
 
 class LLMRouter:
     """LLM with semantic routing."""
@@ -33,27 +42,7 @@ class LLMRouter:
         """Initializes LLMRouter with a specified LLM."""
         self.llm = llm
         self.vllm = VLLMAdapter(vllm_instance=llm, name="vllm")
-        # self.num_tools = os.getenv("NUM_TOOLS")
-        # tools = [
-        #     time_route,
-        #     lat_long_route,
-        #     last_letter_route,
-        #     divide_two_route,
-        #     get_day_of_week_route,
-        #     format_phone_number_route,
-        #     compress_whitespace_route,
-        #     capitalize_first_letter_route,
-        #     reverse_string_route,
-        #     generate_acronym_route,
-        #     get_vowel_count_route,
-        #     convert_to_binary_route,
-        #     get_ascii_value_route,
-        #     extract_domain_route,
-        #     count_words_route,
-        #     convert_to_uppercase_route,
-        # ]
-        self.tools = used_tools
-        # self.tools = [time_location_route]
+        self.tools = load_used_tools_from_file()
         self.route_layer = None
 
     def __call__(self, prompt):
@@ -83,7 +72,3 @@ class LLMRouter:
             response = self.llm(prompt)
         print(f"LLM Router Response: {response}, dtype={type(response)}")
         return response
-
-def update_used_tools(selected_tools):
-    global used_tools
-    used_tools = selected_tools
