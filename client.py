@@ -2,12 +2,12 @@ import logging
 import time
 
 import requests
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 
 from config import API_URL
 from text_processing import TextProcessing as tp
 
-load_dotenv()
+#load_dotenv()
 
 
 class Client:
