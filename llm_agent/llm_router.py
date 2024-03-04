@@ -29,7 +29,8 @@ from tools.routes import (
 def load_used_tools_from_file():
     try:
         with open("used_tools.json", "r") as file:
-            used_tools = json.load(file)
+            used_tool_names = json.load(file)
+            used_tools = [eval(tool_name) for tool_name in used_tool_names]
             return used_tools
     except FileNotFoundError:
         return []

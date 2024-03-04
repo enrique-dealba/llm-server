@@ -83,15 +83,14 @@ def select_tools_and_tests(num_tools):
 
     selected_indices = random.sample(range(len(tool_names)), num_tools)
     used_tool_names = [tool_names[i] for i in selected_indices]
-    used_tools = [eval(tool_name) for tool_name in used_tool_names]
     experiment_tests = [tests[i] for i in selected_indices]
 
-    return used_tools, experiment_tests
+    return used_tool_names, experiment_tests
 
 
-def write_used_tools_to_file(used_tools):
+def write_used_tools_to_file(used_tool_names):
     with open("used_tools.json", "w") as file:
-        json.dump(used_tools, file)
+        json.dump(used_tool_names, file)
 
 
 def run_docker_container():
@@ -173,8 +172,8 @@ def main():
 
     for i in range(num_experiments):
         print(f"Running experiment {i+1}/{num_experiments}")
-        used_tools, experiment_tests = select_tools_and_tests(num_tools)
-        write_used_tools_to_file(used_tools)
+        used_tool_names, experiment_tests = select_tools_and_tests(num_tools)
+        write_used_tools_to_file(used_tool_names)
         run_docker_container()
         time.sleep(20)  # Wait for the container to start
 
@@ -183,7 +182,7 @@ def main():
         end_time = time.time()
         total_time = end_time - start_time
 
-        log_experiment_results(i + 1, stats, total_time, used_tools)
+        log_experiment_results(i + 1, stats, total_time, used_tool_names)
         stop_docker_container()
 
 
