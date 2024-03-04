@@ -24,6 +24,7 @@ from tools.routes import (
     time_location_route
 )
 
+used_tools = []
 
 class LLMRouter:
     """LLM with semantic routing."""
@@ -32,8 +33,8 @@ class LLMRouter:
         """Initializes LLMRouter with a specified LLM."""
         self.llm = llm
         self.vllm = VLLMAdapter(vllm_instance=llm, name="vllm")
-        #self.num_tools = 15
-        # self.tools = [
+        # self.num_tools = os.getenv("NUM_TOOLS")
+        # tools = [
         #     time_route,
         #     lat_long_route,
         #     last_letter_route,
@@ -51,8 +52,8 @@ class LLMRouter:
         #     count_words_route,
         #     convert_to_uppercase_route,
         # ]
-        self.tools = [time_location_route]
-        # self.tools = random.sample(tools, self.num_tools)
+        self.tools = used_tools
+        # self.tools = [time_location_route]
         self.route_layer = None
 
     def __call__(self, prompt):
@@ -82,3 +83,7 @@ class LLMRouter:
             response = self.llm(prompt)
         print(f"LLM Router Response: {response}, dtype={type(response)}")
         return response
+
+def update_used_tools(selected_tools):
+    global used_tools
+    used_tools = selected_tools
