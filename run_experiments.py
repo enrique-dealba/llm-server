@@ -107,9 +107,9 @@ def log_experiment_results(experiment_number, stats, total_time, used_tools):
     if num_requests <= 0:
         num_requests = 1
 
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    #timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     log_entry = f"Experiment {experiment_number} Results:\n"
-    log_entry += f"Timestamp: {timestamp}\n"
+    #log_entry += f"Timestamp: {timestamp}\n"
     log_entry += f"Selected Tools: {', '.join(used_tools)}\n"
     log_entry += f"Number of Requests: {num_requests}\n"
     log_entry += f"Avg Tokens per Second (TPS): {stats['total_tps']/num_requests:.2f}\n"
