@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 import time
@@ -428,11 +429,34 @@ convert_to_uppercase_test = FunctionTest(
     ],
 )
 
+test_functions_mapping = {
+        "get_time_test": get_time_test,
+        "get_lat_long_test": get_lat_long_test,
+        "get_last_letter_test": get_last_letter_test,
+        "divide_by_two_test": divide_by_two_test,
+        "get_day_of_week_test": get_day_of_week_test,
+        "format_phone_number_test": format_phone_number_test,
+        "compress_whitespace_test": compress_whitespace_test,
+        "capitalize_first_letter_test": capitalize_first_letter_test,
+        "reverse_string_test": reverse_string_test,
+        "generate_acronym_test": generate_acronym_test,
+        "get_vowel_count_test": get_vowel_count_test,
+        "convert_to_binary_test": convert_to_binary_test,
+        "get_ascii_value_test": get_ascii_value_test,
+        "extract_domain_test": extract_domain_test,
+        "count_words_test": count_words_test,
+        "convert_to_uppercase_test": convert_to_uppercase_test,
+}
+
 def run_experiment_tests(stats, experiment_tests):
     t_0 = time.perf_counter()
 
-    for test in experiment_tests:
-        stats = function_call(test, stats=stats)
+    for test_name in experiment_tests:
+        test_function = test_functions_mapping.get(test_name)
+        if test_function:
+            stats = function_call(test_function, stats=stats)
+        else:
+            print(f"Test function {test_name} not found.")
 
     t_1 = time.perf_counter()
     total_time = t_1 - t_0
@@ -452,11 +476,10 @@ def run_experiment_tests(stats, experiment_tests):
 
 if __name__ == "__main__":
     stats_str = os.getenv("STATS")
-    experiment_tests_str = os.getenv("EXPERIMENT_TESTS")
+    experiment_tests_str = os.getenv("EXPERIMENT_TESTS").split(',')
     if stats_str and experiment_tests_str:
-        stats = eval(stats_str)
-        experiment_tests = eval(experiment_tests_str)
-        run_experiment_tests(stats, experiment_tests)
+        stats = json.loads(stats_str)
+        run_experiment_tests(stats, experiment_tests_str)
     else:
         print("STATS or EXPERIMENT_TESTS environment variable not found.")
 

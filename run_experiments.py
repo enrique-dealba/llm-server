@@ -5,24 +5,24 @@ import random
 import subprocess
 import time
 
-from fn_call_tests import (
-    capitalize_first_letter_test,
-    compress_whitespace_test,
-    convert_to_binary_test,
-    convert_to_uppercase_test,
-    count_words_test,
-    divide_by_two_test,
-    extract_domain_test,
-    format_phone_number_test,
-    generate_acronym_test,
-    get_ascii_value_test,
-    get_day_of_week_test,
-    get_last_letter_test,
-    get_lat_long_test,
-    get_time_test,
-    get_vowel_count_test,
-    reverse_string_test,
-)
+# from fn_call_tests import (
+#     capitalize_first_letter_test,
+#     compress_whitespace_test,
+#     convert_to_binary_test,
+#     convert_to_uppercase_test,
+#     count_words_test,
+#     divide_by_two_test,
+#     extract_domain_test,
+#     format_phone_number_test,
+#     generate_acronym_test,
+#     get_ascii_value_test,
+#     get_day_of_week_test,
+#     get_last_letter_test,
+#     get_lat_long_test,
+#     get_time_test,
+#     get_vowel_count_test,
+#     reverse_string_test,
+# )
 
 
 def select_tools_and_tests(num_tools):
@@ -46,29 +46,29 @@ def select_tools_and_tests(num_tools):
     ]
 
     tests = [
-        get_time_test,
-        get_lat_long_test,
-        get_last_letter_test,
-        divide_by_two_test,
-        get_day_of_week_test,
-        format_phone_number_test,
-        compress_whitespace_test,
-        capitalize_first_letter_test,
-        reverse_string_test,
-        generate_acronym_test,
-        get_vowel_count_test,
-        convert_to_binary_test,
-        get_ascii_value_test,
-        extract_domain_test,
-        count_words_test,
-        convert_to_uppercase_test,
+        "get_time_test",
+        "get_lat_long_test",
+        "get_last_letter_test",
+        "divide_by_two_test",
+        "get_day_of_week_test",
+        "format_phone_number_test",
+        "compress_whitespace_test",
+        "capitalize_first_letter_test",
+        "reverse_string_test",
+        "generate_acronym_test",
+        "get_vowel_count_test",
+        "convert_to_binary_test",
+        "get_ascii_value_test",
+        "extract_domain_test",
+        "count_words_test",
+        "convert_to_uppercase_test",
     ]
 
     selected_indices = random.sample(range(len(tool_names)), num_tools)
     used_tool_names = [tool_names[i] for i in selected_indices]
-    experiment_tests = [tests[i] for i in selected_indices]
+    experiment_test_names = [tests[i] for i in selected_indices]
 
-    return used_tool_names, experiment_tests
+    return used_tool_names, experiment_test_names
 
 
 def write_used_tools_to_file(used_tool_names):

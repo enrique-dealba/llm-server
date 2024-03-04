@@ -21,19 +21,38 @@ from tools.routes import (
     last_letter_route,
     lat_long_route,
     reverse_string_route,
-    time_route,
-    time_location_route
+    time_route
 )
+
+routes = {
+        "time_route": time_route,
+        "lat_long_route": lat_long_route,
+        "last_letter_route": last_letter_route,
+        "divide_two_route": divide_two_route,
+        "get_day_of_week_route": get_day_of_week_route,
+        "format_phone_number_route": format_phone_number_route,
+        "compress_whitespace_route": compress_whitespace_route,
+        "capitalize_first_letter_route": capitalize_first_letter_route,
+        "reverse_string_route": reverse_string_route,
+        "generate_acronym_route": generate_acronym_route,
+        "get_vowel_count_route": get_vowel_count_route,
+        "convert_to_binary_route": convert_to_binary_route,
+        "get_ascii_value_route": get_ascii_value_route,
+        "extract_domain_route": extract_domain_route,
+        "count_words_route": count_words_route,
+        "convert_to_uppercase_route": convert_to_uppercase_route,
+}
 
 
 def load_used_tools_from_file():
     try:
         with open("used_tools.json", "r") as file:
-            used_tool_names = json.load(file)
-            used_tools = [eval(tool_name) for tool_name in used_tool_names]
+            tool_names = json.load(file)
+            used_tools = [routes[tool] for tool in tool_names if tool in routes]
             return used_tools
     except FileNotFoundError:
-        return []
+        print("File not found. Loading all tools.")
+        return list(routes.values())
 
 
 class LLMRouter:
