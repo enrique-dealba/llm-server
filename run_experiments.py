@@ -107,6 +107,10 @@ def log_experiment_results(experiment_number, stats, total_time, used_tools):
     if num_requests <= 0:
         num_requests = 1
 
+    total_requests = stats['total_requests']
+    if total_requests <= 0:
+        total_requests = 1
+
     #timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     log_entry = f"Experiment {experiment_number} Results:\n"
     #log_entry += f"Timestamp: {timestamp}\n"
@@ -117,7 +121,7 @@ def log_experiment_results(experiment_number, stats, total_time, used_tools):
         f"Avg Time Elapsed Per Response: {stats['total_time']/num_requests:.2f}\n"
     )
     log_entry += (
-        f"Avg Correct Answers: {stats['total_correct']/stats['total_requests']:.2f}\n"
+        f"Avg Correct Answers: {stats['total_correct']/total_requests:.2f}\n"
     )
     log_entry += f"Total Correct Answers: {stats['total_correct']:.2f}\n"
     log_entry += f"Total Benchmarking Time: {total_time}\n"
