@@ -76,7 +76,7 @@ def write_used_tools_to_file(used_tool_names):
         json.dump(used_tool_names, file)
 
 
-def run_docker_container():
+def run_docker_container(stats, experiment_tests):
     subprocess.run(["docker", "build", "-t", "my_llm_server", "."])
     subprocess.run(["docker", "rm", "-f", "llm6"])
     huggingface_cache_dir = os.path.expanduser("~/.cache/huggingface")
@@ -90,6 +90,10 @@ def run_docker_container():
             f"{huggingface_cache_dir}:/root/.cache/huggingface",
             "-v",
             f"{current_dir}:/app",
+            "-e",
+            f"STATS={stats}",
+            "-e",
+            f"EXPERIMENT_TESTS={experiment_tests}",
             "--gpus",
             "all",
             "--name",
@@ -134,7 +138,7 @@ def log_experiment_results(experiment_number, stats, total_time, used_tools):
         log_file.write(log_entry)
 
 
-def run_tests(experiment_number, experiment_tests):
+def run_tests(experiment_number):
     stats = {
         "total_tps": 0.0,
         "total_time": 0.0,
@@ -143,14 +147,7 @@ def run_tests(experiment_number, experiment_tests):
         "total_requests": 0.0,
     }
 
-    # log_file = f"fn_call_tests_output_{experiment_number}.log"
-    # with open(log_file, "a") as file:
-    #     file.write("")
-
-    subprocess.run(
-        ["docker", "exec", "llm6", "python", "fn_call_tests.py"],
-        env={"STATS": str(stats), "EXPERIMENT_TESTS": str(experiment_tests)},
-    )
+    subprocess.run(["docker", "exec", "llm6", "python", "fn_call_tests.py"])
 
     try:
         with open("fn_call_tests_output.log", "r") as file:
@@ -180,11 +177,20 @@ def main():
         print(f"Running experiment {i+1}/{num_experiments}")
         used_tool_names, experiment_tests = select_tools_and_tests(num_tools)
         write_used_tools_to_file(used_tool_names)
-        run_docker_container()
+
+        stats = {
+            "total_tps": 0.0,
+            "total_time": 0.0,
+            "total_correct": 0.0,
+            "successful_requests": 0.0,
+            "total_requests": 0.0,
+        }
+
+        run_docker_container(str(stats), str(experiment_tests))
         time.sleep(20)  # Wait for the container to start
 
         start_time = time.time()
-        stats = run_tests(i+1, experiment_tests)
+        stats = run_tests(i+1)
         end_time = time.time()
         total_time = end_time - start_time
 
