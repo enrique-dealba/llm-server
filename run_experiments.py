@@ -22,44 +22,44 @@ from fn_call_tests import (
     get_vowel_count_test,
     reverse_string_test,
 )
-from tools.routes import (
-    capitalize_first_letter_route,
-    compress_whitespace_route,
-    convert_to_binary_route,
-    convert_to_uppercase_route,
-    count_words_route,
-    divide_two_route,
-    extract_domain_route,
-    format_phone_number_route,
-    generate_acronym_route,
-    get_ascii_value_route,
-    get_day_of_week_route,
-    get_vowel_count_route,
-    last_letter_route,
-    lat_long_route,
-    reverse_string_route,
-    time_route,
-)
+# from tools.routes import (
+#     capitalize_first_letter_route,
+#     compress_whitespace_route,
+#     convert_to_binary_route,
+#     convert_to_uppercase_route,
+#     count_words_route,
+#     divide_two_route,
+#     extract_domain_route,
+#     format_phone_number_route,
+#     generate_acronym_route,
+#     get_ascii_value_route,
+#     get_day_of_week_route,
+#     get_vowel_count_route,
+#     last_letter_route,
+#     lat_long_route,
+#     reverse_string_route,
+#     time_route,
+# )
 
 
 def select_tools_and_tests(num_tools):
-    tools = [
-        time_route,
-        lat_long_route,
-        last_letter_route,
-        divide_two_route,
-        get_day_of_week_route,
-        format_phone_number_route,
-        compress_whitespace_route,
-        capitalize_first_letter_route,
-        reverse_string_route,
-        generate_acronym_route,
-        get_vowel_count_route,
-        convert_to_binary_route,
-        get_ascii_value_route,
-        extract_domain_route,
-        count_words_route,
-        convert_to_uppercase_route,
+    tool_names = [
+        "time_route",
+        "lat_long_route",
+        "last_letter_route",
+        "divide_two_route",
+        "get_day_of_week_route",
+        "format_phone_number_route",
+        "compress_whitespace_route",
+        "capitalize_first_letter_route",
+        "reverse_string_route",
+        "generate_acronym_route",
+        "get_vowel_count_route",
+        "convert_to_binary_route",
+        "get_ascii_value_route",
+        "extract_domain_route",
+        "count_words_route",
+        "convert_to_uppercase_route",
     ]
 
     tests = [
@@ -81,8 +81,9 @@ def select_tools_and_tests(num_tools):
         convert_to_uppercase_test,
     ]
 
-    selected_indices = random.sample(range(len(tools)), num_tools)
-    used_tools = [tools[i] for i in selected_indices]
+    selected_indices = random.sample(range(len(tool_names)), num_tools)
+    used_tool_names = [tool_names[i] for i in selected_indices]
+    used_tools = [eval(tool_name) for tool_name in used_tool_names]
     experiment_tests = [tests[i] for i in selected_indices]
 
     return used_tools, experiment_tests
