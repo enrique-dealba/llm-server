@@ -471,9 +471,7 @@ def run_experiment_tests(stats, experiment_tests):
     print(f"Total Correct Answers: {stats['total_correct']:.2f}")
     print(f"\nTotal Benchmarking Time: {total_time}")
 
-    with open("fn_call_tests_output.log", "a") as log_file:
-        json.dump(stats, log_file)
-        log_file.write("\n")  # Add a newline to separate entries
+    print(json.dumps(stats))  # Print the stats as JSON
 
 if __name__ == "__main__":
     experiment_tests_str = os.getenv("EXPERIMENT_TESTS")
