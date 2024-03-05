@@ -4,8 +4,6 @@ import os
 import time
 from typing import Callable, Dict, List
 
-#from dotenv import load_dotenv
-
 from client import Client
 from text_processing import TextProcessing as tp
 from tools.router_tools import (
@@ -23,13 +21,10 @@ from tools.router_tools import (
     get_last_letter,
     get_lat_long,
     get_time,
+    get_time_and_location,
     get_vowel_count,
     reverse_string,
-    get_time_and_location
 )
-
-# Loads environment variables
-# load_dotenv()
 
 
 class FunctionTest:
@@ -124,22 +119,22 @@ def function_call(
 
 
 get_time_test = FunctionTest(
-        function=get_time,
-        prompts=[
-            "What's the time in rome?",
-            "What is the current time in new york?",
-            "What's the time in Seoul?",
-            "what is the current time in kuwait?",
-            "what's the time in Panama",
-        ],
-        targets=[
-            "Europe/Rome",
-            "America/New_York",
-            "Asia/Seoul",
-            "Asia/Kuwait",
-            "America/Panama",
-        ],
-    )
+    function=get_time,
+    prompts=[
+        "What's the time in rome?",
+        "What is the current time in new york?",
+        "What's the time in Seoul?",
+        "what is the current time in kuwait?",
+        "what's the time in Panama",
+    ],
+    targets=[
+        "Europe/Rome",
+        "America/New_York",
+        "Asia/Seoul",
+        "Asia/Kuwait",
+        "America/Panama",
+    ],
+)
 
 get_time_and_location_test = FunctionTest(
     function=get_time_and_location,
@@ -430,25 +425,27 @@ convert_to_uppercase_test = FunctionTest(
 )
 
 test_functions_mapping = {
-        "get_time_test": get_time_test,
-        "get_lat_long_test": get_lat_long_test,
-        "get_last_letter_test": get_last_letter_test,
-        "divide_by_two_test": divide_by_two_test,
-        "get_day_of_week_test": get_day_of_week_test,
-        "format_phone_number_test": format_phone_number_test,
-        "compress_whitespace_test": compress_whitespace_test,
-        "capitalize_first_letter_test": capitalize_first_letter_test,
-        "reverse_string_test": reverse_string_test,
-        "generate_acronym_test": generate_acronym_test,
-        "get_vowel_count_test": get_vowel_count_test,
-        "convert_to_binary_test": convert_to_binary_test,
-        "get_ascii_value_test": get_ascii_value_test,
-        "extract_domain_test": extract_domain_test,
-        "count_words_test": count_words_test,
-        "convert_to_uppercase_test": convert_to_uppercase_test,
+    "get_time_test": get_time_test,
+    "get_lat_long_test": get_lat_long_test,
+    "get_last_letter_test": get_last_letter_test,
+    "divide_by_two_test": divide_by_two_test,
+    "get_day_of_week_test": get_day_of_week_test,
+    "format_phone_number_test": format_phone_number_test,
+    "compress_whitespace_test": compress_whitespace_test,
+    "capitalize_first_letter_test": capitalize_first_letter_test,
+    "reverse_string_test": reverse_string_test,
+    "generate_acronym_test": generate_acronym_test,
+    "get_vowel_count_test": get_vowel_count_test,
+    "convert_to_binary_test": convert_to_binary_test,
+    "get_ascii_value_test": get_ascii_value_test,
+    "extract_domain_test": extract_domain_test,
+    "count_words_test": count_words_test,
+    "convert_to_uppercase_test": convert_to_uppercase_test,
 }
 
+
 def run_experiment_tests(stats, experiment_tests):
+    """Runs experiment tests for a given list of route tests."""
     t_0 = time.perf_counter()
 
     for test_name in experiment_tests:
@@ -473,12 +470,13 @@ def run_experiment_tests(stats, experiment_tests):
 
     with open("fn_call_tests_output.log", "a") as log_file:
         json.dump(stats, log_file)
-        log_file.write("\n") # Add a newline to separate entries
+        log_file.write("\n")  # Add a newline to separate entries
+
 
 if __name__ == "__main__":
     experiment_tests_str = os.getenv("EXPERIMENT_TESTS")
     if experiment_tests_str:
-        experiment_tests = experiment_tests_str.split(',')
+        experiment_tests = experiment_tests_str.split(",")
 
         stats = {
             "total_tps": 0.0,
@@ -490,68 +488,3 @@ if __name__ == "__main__":
         run_experiment_tests(stats, experiment_tests)
     else:
         print("EXPERIMENT_TESTS environment variable not found.")
-
-
-# if __name__ == "__main__":
-#     stats = {
-#         "total_tps": 0.0,
-#         "total_time": 0.0,
-#         "total_correct": 0.0,
-#         "successful_requests": 0.0,
-#         "total_requests": 0.0,
-#     }
-
-#     t_0 = time.perf_counter()
-
-#     """
-#     tools = [
-#     time_route,
-#     lat_long_route,
-#     last_letter_route,
-#     divide_two_route,
-#     get_day_of_week_route,
-#     format_phone_number_route,
-#     compress_whitespace_route,
-#     capitalize_first_letter_route,
-#     reverse_string_route,
-#     generate_acronym_route,
-#     get_vowel_count_route,
-#     convert_to_binary_route,
-#     get_ascii_value_route,
-#     extract_domain_route,
-#     count_words_route,
-#     convert_to_uppercase_route,
-#     ]
-#     """
-
-#     # stats = function_call(get_time_test, stats=stats)
-#     # stats = function_call(get_lat_long_test, stats=stats)
-#     # stats = function_call(get_last_letter_test, stats=stats)
-#     # stats = function_call(divide_by_two_test, stats=stats)
-#     # stats = function_call(get_day_of_week_test, stats=stats)
-#     # stats = function_call(format_phone_number_test, stats=stats)
-#     # stats = function_call(compress_whitespace_test, stats=stats)
-#     # stats = function_call(capitalize_first_letter_test, stats=stats)
-#     # stats = function_call(reverse_string_test, stats=stats)
-#     # stats = function_call(generate_acronym_test, stats=stats)
-#     # stats = function_call(get_vowel_count_test, stats=stats)
-#     # stats = function_call(convert_to_binary_test, stats=stats)
-#     # stats = function_call(get_ascii_value_test, stats=stats)
-#     # stats = function_call(extract_domain_test, stats=stats)
-#     # stats = function_call(count_words_test, stats=stats)
-#     # stats = function_call(convert_to_uppercase_test, stats=stats)
-
-#     stats = function_call(get_time_and_location_test, stats=stats)
-
-#     t_1 = time.perf_counter()
-#     total_time = t_1 - t_0
-
-#     num_requests = stats["successful_requests"]
-#     if num_requests <= 0:
-#         num_requests = 1
-
-#     print(f"Avg Tokens per Second (TPS): {stats['total_tps']/num_requests:.2f}")
-#     print(f"Avg Time Elapsed Per Response: {stats['total_time']/num_requests:.2f}")
-#     print(f"Avg Correct Answers: {stats['total_correct']/stats['total_requests']:.2f}")
-#     print(f"Total Correct Answers: {stats['total_correct']:.2f}")
-#     print(f"\nTotal Benchmarking Time: {total_time}")

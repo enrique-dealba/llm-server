@@ -1,4 +1,3 @@
-import datetime
 import json
 import os
 import random
@@ -7,6 +6,7 @@ import time
 
 
 def select_tools_and_tests(num_tools):
+    """Randomly selects a subset of tool names and their corresponding test names."""
     tool_names = [
         "time_route",
         "lat_long_route",
@@ -53,65 +53,58 @@ def select_tools_and_tests(num_tools):
 
 
 def write_used_tools_to_file(used_tool_names):
+    """Writes the used tool names to a JSON file."""
     with open("used_tools.json", "w") as file:
         json.dump(used_tool_names, file)
 
 
 def run_docker_container(experiment_tests):
+    """Runs the Docker container with the specified experiment tests."""
     subprocess.run(["docker", "build", "-t", "my_llm_server", "."])
     subprocess.run(["docker", "rm", "-f", "llm6"])
     huggingface_cache_dir = os.path.expanduser("~/.cache/huggingface")
     current_dir = os.path.abspath(os.path.dirname(__file__))
 
-    experiment_tests_str = ','.join(experiment_tests)
+    experiment_tests_str = ",".join(experiment_tests)
 
     subprocess.run(
         [
-            "docker",
-            "run",
+            "docker", "run",
             "-d",
-            "-v",
-            f"{huggingface_cache_dir}:/root/.cache/huggingface",
-            "-v",
-            f"{current_dir}:/app",
-            "-e",
-            f"EXPERIMENT_TESTS={experiment_tests_str}",
-            "--gpus",
-            "all",
-            "--name",
-            "llm6",
-            "-p",
-            "8888:8888",
+            "-v", f"{huggingface_cache_dir}:/root/.cache/huggingface",
+            "-v", f"{current_dir}:/app",
+            "-e", f"EXPERIMENT_TESTS={experiment_tests_str}",
+            "--gpus", "all",
+            "--name", "llm6",
+            "-p", "8888:8888",
             "my_llm_server",
         ]
     )
 
 
 def stop_docker_container():
+    """Stops the Docker container."""
     subprocess.run(["docker", "stop", "llm6"])
 
 
 def log_experiment_results(experiment_number, stats, total_time, used_tools):
+    """Logs the experiment results to a log file."""
     num_requests = stats["successful_requests"]
     if num_requests <= 0:
         num_requests = 1
 
-    total_requests = stats['total_requests']
+    total_requests = stats["total_requests"]
     if total_requests <= 0:
         total_requests = 1
 
-    #timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     log_entry = f"Experiment {experiment_number} Results:\n"
-    #log_entry += f"Timestamp: {timestamp}\n"
     log_entry += f"Selected Tools: {', '.join(used_tools)}\n"
     log_entry += f"Number of Requests: {num_requests}\n"
     log_entry += f"Avg Tokens per Second (TPS): {stats['total_tps']/num_requests:.2f}\n"
     log_entry += (
         f"Avg Time Elapsed Per Response: {stats['total_time']/num_requests:.2f}\n"
     )
-    log_entry += (
-        f"Avg Correct Answers: {stats['total_correct']/total_requests:.2f}\n"
-    )
+    log_entry += f"Avg Correct Answers: {stats['total_correct']/total_requests:.2f}\n"
     log_entry += f"Total Correct Answers: {stats['total_correct']:.2f}\n"
     log_entry += f"Total Benchmarking Time: {total_time}\n"
     log_entry += "-" * 50 + "\n\n"
@@ -120,7 +113,8 @@ def log_experiment_results(experiment_number, stats, total_time, used_tools):
         log_file.write(log_entry)
 
 
-def run_tests(experiment_number):
+def run_tests():
+    """Runs the tests."""
     stats = {
         "total_tps": 0.0,
         "total_time": 0.0,
@@ -132,32 +126,36 @@ def run_tests(experiment_number):
     subprocess.run(["docker", "exec", "llm6", "python", "fn_call_tests.py"])
 
     try:
-        with open("fn_call_tests_output.log", "r") as file:
+        with open("fn_call_tests_output.log") as file:
             lines = file.readlines()
             if lines:
                 last_line = lines[-1].strip()
                 if last_line:
                     stats = json.loads(last_line)
                 else:
-                    print("Warning: The last line of the log file 'fn_call_tests_output.log' is empty.")
+                    print("Warning: The last line of log file is empty.")
             else:
-                print("Warning: The log file 'fn_call_tests_output.log' is empty.")
+                print("Warning: The log file is empty.")
     except FileNotFoundError:
-        print("Warning: The log file 'fn_call_tests_output.log' does not exist.")
+        print("Warning: The log file does not exist.")
 
     return stats
 
+
 def clear_or_create_log_file():
-    with open("fn_call_tests_output.log", "w") as file:
-        pass  # This clears the file if it exists or creates it if it doesn't
+    """Clears or creates the log file."""
+    with open("fn_call_tests_output.log", "w") as _:
+        # This clears the file if it exists or creates it if it doesn't
+        pass
 
 
 def main():
+    """Main function to run the experiments."""
     num_experiments = 20
     num_tools = 13
 
     for k in range(4, num_tools):
-        # Create an empty log file
+        # Creates an empty log file
         open("fn_call_tests_output.log", "w").close()
 
         for i in range(num_experiments):
@@ -169,16 +167,16 @@ def main():
             write_used_tools_to_file(used_tool_names)
 
             run_docker_container(experiment_test_names)
-            time.sleep(20)  # Wait for the container to start
+            time.sleep(20)  # Waits for the container to start
 
             start_time = time.time()
-            stats = run_tests(i+1)
+            stats = run_tests()
             end_time = time.time()
             total_time = end_time - start_time
 
-            log_experiment_results(i+1, stats, total_time, used_tool_names)
+            log_experiment_results(i + 1, stats, total_time, used_tool_names)
             stop_docker_container()
-            time.sleep(10)  # Wait for the container to stop
+            time.sleep(10)  # Waits for the container to stop
 
 
 if __name__ == "__main__":
