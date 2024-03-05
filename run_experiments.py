@@ -5,25 +5,6 @@ import random
 import subprocess
 import time
 
-# from fn_call_tests import (
-#     capitalize_first_letter_test,
-#     compress_whitespace_test,
-#     convert_to_binary_test,
-#     convert_to_uppercase_test,
-#     count_words_test,
-#     divide_by_two_test,
-#     extract_domain_test,
-#     format_phone_number_test,
-#     generate_acronym_test,
-#     get_ascii_value_test,
-#     get_day_of_week_test,
-#     get_last_letter_test,
-#     get_lat_long_test,
-#     get_time_test,
-#     get_vowel_count_test,
-#     reverse_string_test,
-# )
-
 
 def select_tools_and_tests(num_tools):
     tool_names = [
@@ -110,36 +91,41 @@ def stop_docker_container():
     subprocess.run(["docker", "stop", "llm6"])
 
 
-def log_experiment_results(experiment_number, stats, total_time, used_tools):
-    num_requests = stats["successful_requests"]
-    if num_requests <= 0:
-        num_requests = 1
+# def log_experiment_results(experiment_number, stats, total_time, used_tools):
+#     num_requests = stats["successful_requests"]
+#     if num_requests <= 0:
+#         num_requests = 1
 
-    total_requests = stats['total_requests']
-    if total_requests <= 0:
-        total_requests = 1
+#     total_requests = stats['total_requests']
+#     if total_requests <= 0:
+#         total_requests = 1
 
-    #timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    log_entry = f"Experiment {experiment_number} Results:\n"
-    #log_entry += f"Timestamp: {timestamp}\n"
-    log_entry += f"Selected Tools: {', '.join(used_tools)}\n"
-    log_entry += f"Number of Requests: {num_requests}\n"
-    log_entry += f"Avg Tokens per Second (TPS): {stats['total_tps']/num_requests:.2f}\n"
-    log_entry += (
-        f"Avg Time Elapsed Per Response: {stats['total_time']/num_requests:.2f}\n"
-    )
-    log_entry += (
-        f"Avg Correct Answers: {stats['total_correct']/total_requests:.2f}\n"
-    )
-    log_entry += f"Total Correct Answers: {stats['total_correct']:.2f}\n"
-    log_entry += f"Total Benchmarking Time: {total_time}\n"
-    log_entry += "-" * 50 + "\n\n"
+#     #timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+#     log_entry = f"Experiment {experiment_number} Results:\n"
+#     #log_entry += f"Timestamp: {timestamp}\n"
+#     log_entry += f"Selected Tools: {', '.join(used_tools)}\n"
+#     log_entry += f"Number of Requests: {num_requests}\n"
+#     log_entry += f"Avg Tokens per Second (TPS): {stats['total_tps']/num_requests:.2f}\n"
+#     log_entry += (
+#         f"Avg Time Elapsed Per Response: {stats['total_time']/num_requests:.2f}\n"
+#     )
+#     log_entry += (
+#         f"Avg Correct Answers: {stats['total_correct']/total_requests:.2f}\n"
+#     )
+#     log_entry += f"Total Correct Answers: {stats['total_correct']:.2f}\n"
+#     log_entry += f"Total Benchmarking Time: {total_time}\n"
+#     log_entry += "-" * 50 + "\n\n"
 
-    with open("fn_call_tests_output.log", "a") as log_file:
-        log_file.write(log_entry)
+#     with open("fn_call_tests_output.log", "a") as log_file:
+#         log_file.write(log_entry)
 
 
 def run_tests(experiment_number):
+    result = subprocess.run(["docker", "exec", "llm6", "python", "fn_call_tests.py"],
+                            capture_output=True, text=True
+    )
+    output = result.stdout
+
     stats = {
         "total_tps": 0.0,
         "total_time": 0.0,
@@ -148,51 +134,43 @@ def run_tests(experiment_number):
         "total_requests": 0.0,
     }
 
-    subprocess.run(["docker", "exec", "llm6", "python", "fn_call_tests.py"])
-
-    try:
-        with open("fn_call_tests_output.log", "r") as file:
-            lines = file.readlines()
-            if lines:
-                last_line = lines[-1].strip()
-                if last_line:
-                    stats = json.loads(last_line)
-                else:
-                    print("Warning: The last line of the log file 'fn_call_tests_output.log' is empty.")
-            else:
-                print("Warning: The log file 'fn_call_tests_output.log' is empty.")
-    except FileNotFoundError:
-        print("Warning: The log file 'fn_call_tests_output.log' does not exist.")
+    if output:
+        lines = output.split('\n')
+        for line in lines:
+            if line.startswith('{') and line.endswith('}'):
+                try:
+                    stats = json.loads(line)
+                    break
+                except json.JSONDecodeError:
+                    print("Warning: Invalid JSON format in the output.")
+    else:
+        print("Warning: No output received from the Docker container.")
 
     return stats
 
-def clear_or_create_log_file():
-    with open("fn_call_tests_output.log", "w") as file:
-        pass  # This clears the file if it exists or creates it if it doesn't
+# def clear_or_create_log_file():
+#     with open("fn_call_tests_output.log", "w") as file:
+#         pass  # This clears the file if it exists or creates it if it doesn't
 
 
 def main():
     num_experiments = 3
-    num_tools = 16
-
-    # Create an empty log file
-    open("fn_call_tests_output.log", "w").close()
+    num_tools = 15
 
     for i in range(num_experiments):
         print(f"Running experiment {i+1}/{num_experiments}")
-        clear_or_create_log_file()
         used_tool_names, experiment_test_names = select_tools_and_tests(num_tools)
         write_used_tools_to_file(used_tool_names)
 
         run_docker_container(experiment_test_names)
         time.sleep(20)  # Wait for the container to start
 
-        start_time = time.time()
+        #start_time = time.time()
         stats = run_tests(i+1)
-        end_time = time.time()
-        total_time = end_time - start_time
+        #end_time = time.time()
+        #total_time = end_time - start_time
 
-        log_experiment_results(i+1, stats, total_time, used_tool_names)
+        # log_experiment_results(i+1, stats, total_time, used_tool_names)
         stop_docker_container()
 
 
