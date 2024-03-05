@@ -170,7 +170,7 @@ def main():
         end_time = time.time()
         total_time = end_time - start_time
 
-        log_experiment_results(i+1, stats, total_time, used_tool_names)
+        #log_experiment_results(i+1, stats, total_time, used_tool_names)
         stop_docker_container()
 
 
