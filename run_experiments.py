@@ -121,11 +121,6 @@ def log_experiment_results(experiment_number, stats, total_time, used_tools):
 
 
 def run_tests(experiment_number):
-    result = subprocess.run(["docker", "exec", "llm6", "python", "fn_call_tests.py"],
-                            capture_output=True, text=True
-    )
-    output = result.stdout
-
     stats = {
         "total_tps": 0.0,
         "total_time": 0.0,
@@ -134,31 +129,39 @@ def run_tests(experiment_number):
         "total_requests": 0.0,
     }
 
-    if output:
-        lines = output.split('\n')
-        for line in lines:
-            if line.startswith('{') and line.endswith('}'):
-                try:
-                    stats = json.loads(line)
-                    break
-                except json.JSONDecodeError:
-                    print("Warning: Invalid JSON format in the output.")
-    else:
-        print("Warning: No output received from the Docker container.")
+    subprocess.run(["docker", "exec", "llm6", "python", "fn_call_tests.py"])
+
+    try:
+        with open("fn_call_tests_output.log", "r") as file:
+            lines = file.readlines()
+            if lines:
+                last_line = lines[-1].strip()
+                if last_line:
+                    stats = json.loads(last_line)
+                else:
+                    print("Warning: The last line of the log file 'fn_call_tests_output.log' is empty.")
+            else:
+                print("Warning: The log file 'fn_call_tests_output.log' is empty.")
+    except FileNotFoundError:
+        print("Warning: The log file 'fn_call_tests_output.log' does not exist.")
 
     return stats
 
-# def clear_or_create_log_file():
-#     with open("fn_call_tests_output.log", "w") as file:
-#         pass  # This clears the file if it exists or creates it if it doesn't
+def clear_or_create_log_file():
+    with open("fn_call_tests_output.log", "w") as file:
+        pass  # This clears the file if it exists or creates it if it doesn't
 
 
 def main():
-    num_experiments = 3
-    num_tools = 4
+    num_experiments = 2
+    num_tools = 2
+
+    # Create an empty log file
+    open("fn_call_tests_output.log", "w").close()
 
     for i in range(num_experiments):
         print(f"Running experiment {i+1}/{num_experiments}")
+        clear_or_create_log_file()
         used_tool_names, experiment_test_names = select_tools_and_tests(num_tools)
         write_used_tools_to_file(used_tool_names)
 
@@ -170,7 +173,7 @@ def main():
         end_time = time.time()
         total_time = end_time - start_time
 
-        #log_experiment_results(i+1, stats, total_time, used_tool_names)
+        log_experiment_results(i+1, stats, total_time, used_tool_names)
         stop_docker_container()
 
 
