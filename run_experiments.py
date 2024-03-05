@@ -91,33 +91,33 @@ def stop_docker_container():
     subprocess.run(["docker", "stop", "llm6"])
 
 
-# def log_experiment_results(experiment_number, stats, total_time, used_tools):
-#     num_requests = stats["successful_requests"]
-#     if num_requests <= 0:
-#         num_requests = 1
+def log_experiment_results(experiment_number, stats, total_time, used_tools):
+    num_requests = stats["successful_requests"]
+    if num_requests <= 0:
+        num_requests = 1
 
-#     total_requests = stats['total_requests']
-#     if total_requests <= 0:
-#         total_requests = 1
+    total_requests = stats['total_requests']
+    if total_requests <= 0:
+        total_requests = 1
 
-#     #timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-#     log_entry = f"Experiment {experiment_number} Results:\n"
-#     #log_entry += f"Timestamp: {timestamp}\n"
-#     log_entry += f"Selected Tools: {', '.join(used_tools)}\n"
-#     log_entry += f"Number of Requests: {num_requests}\n"
-#     log_entry += f"Avg Tokens per Second (TPS): {stats['total_tps']/num_requests:.2f}\n"
-#     log_entry += (
-#         f"Avg Time Elapsed Per Response: {stats['total_time']/num_requests:.2f}\n"
-#     )
-#     log_entry += (
-#         f"Avg Correct Answers: {stats['total_correct']/total_requests:.2f}\n"
-#     )
-#     log_entry += f"Total Correct Answers: {stats['total_correct']:.2f}\n"
-#     log_entry += f"Total Benchmarking Time: {total_time}\n"
-#     log_entry += "-" * 50 + "\n\n"
+    #timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    log_entry = f"Experiment {experiment_number} Results:\n"
+    #log_entry += f"Timestamp: {timestamp}\n"
+    log_entry += f"Selected Tools: {', '.join(used_tools)}\n"
+    log_entry += f"Number of Requests: {num_requests}\n"
+    log_entry += f"Avg Tokens per Second (TPS): {stats['total_tps']/num_requests:.2f}\n"
+    log_entry += (
+        f"Avg Time Elapsed Per Response: {stats['total_time']/num_requests:.2f}\n"
+    )
+    log_entry += (
+        f"Avg Correct Answers: {stats['total_correct']/total_requests:.2f}\n"
+    )
+    log_entry += f"Total Correct Answers: {stats['total_correct']:.2f}\n"
+    log_entry += f"Total Benchmarking Time: {total_time}\n"
+    log_entry += "-" * 50 + "\n\n"
 
-#     with open("fn_call_tests_output.log", "a") as log_file:
-#         log_file.write(log_entry)
+    with open("fn_call_tests_output.log", "a") as log_file:
+        log_file.write(log_entry)
 
 
 def run_tests(experiment_number):
@@ -155,7 +155,7 @@ def run_tests(experiment_number):
 
 def main():
     num_experiments = 3
-    num_tools = 15
+    num_tools = 4
 
     for i in range(num_experiments):
         print(f"Running experiment {i+1}/{num_experiments}")
@@ -165,12 +165,12 @@ def main():
         run_docker_container(experiment_test_names)
         time.sleep(20)  # Wait for the container to start
 
-        #start_time = time.time()
+        start_time = time.time()
         stats = run_tests(i+1)
-        #end_time = time.time()
-        #total_time = end_time - start_time
+        end_time = time.time()
+        total_time = end_time - start_time
 
-        # log_experiment_results(i+1, stats, total_time, used_tool_names)
+        log_experiment_results(i+1, stats, total_time, used_tool_names)
         stop_docker_container()
 
 
