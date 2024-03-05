@@ -156,7 +156,7 @@ def main():
     num_experiments = 20
     num_tools = 13
 
-    for k in range(1, num_tools):
+    for k in range(4, num_tools):
         # Create an empty log file
         open("fn_call_tests_output.log", "w").close()
 
