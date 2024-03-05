@@ -154,28 +154,30 @@ def clear_or_create_log_file():
 
 def main():
     num_experiments = 20
-    num_tools = 15
+    num_tools = 14
 
-    # Create an empty log file
-    open("fn_call_tests_output.log", "w").close()
+    for k in range(1, num_tools):
+        print(f"NUM FUNCS: {k}")
+        # Create an empty log file
+        open("fn_call_tests_output.log", "w").close()
 
-    for i in range(num_experiments):
-        print(f"Running experiment {i+1}/{num_experiments}")
-        clear_or_create_log_file()
-        used_tool_names, experiment_test_names = select_tools_and_tests(num_tools)
-        write_used_tools_to_file(used_tool_names)
+        for i in range(num_experiments):
+            print(f"Running experiment {i+1}/{num_experiments}")
+            clear_or_create_log_file()
+            used_tool_names, experiment_test_names = select_tools_and_tests(num_tools)
+            write_used_tools_to_file(used_tool_names)
 
-        run_docker_container(experiment_test_names)
-        time.sleep(20)  # Wait for the container to start
+            run_docker_container(experiment_test_names)
+            time.sleep(20)  # Wait for the container to start
 
-        start_time = time.time()
-        stats = run_tests(i+1)
-        end_time = time.time()
-        total_time = end_time - start_time
+            start_time = time.time()
+            stats = run_tests(i+1)
+            end_time = time.time()
+            total_time = end_time - start_time
 
-        log_experiment_results(i+1, stats, total_time, used_tool_names)
-        stop_docker_container()
-        time.sleep(10)  # Wait for the container to stop
+            log_experiment_results(i+1, stats, total_time, used_tool_names)
+            stop_docker_container()
+            time.sleep(10)  # Wait for the container to stop
 
 
 if __name__ == "__main__":
