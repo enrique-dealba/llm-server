@@ -154,17 +154,18 @@ def clear_or_create_log_file():
 
 def main():
     num_experiments = 20
-    num_tools = 14
+    num_tools = 13
 
     for k in range(1, num_tools):
-        print(f"NUM FUNCS: {k}")
         # Create an empty log file
         open("fn_call_tests_output.log", "w").close()
 
         for i in range(num_experiments):
+            print(f"NUM FUNCS: {k}")
             print(f"Running experiment {i+1}/{num_experiments}")
             clear_or_create_log_file()
-            used_tool_names, experiment_test_names = select_tools_and_tests(num_tools)
+            used_tool_names, experiment_test_names = select_tools_and_tests(k)
+            print(f"Used tools: {used_tool_names}")
             write_used_tools_to_file(used_tool_names)
 
             run_docker_container(experiment_test_names)
