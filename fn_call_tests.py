@@ -75,7 +75,7 @@ def function_call(
         target = fn_test.targets[idx]
         t_response = fn_test.function(target)  # TODO: try/except here?
         expected_responses.append(t_response)
-        print("EXPECT:", t_response)
+        # print("EXPECT:", t_response)
 
     for i in range(num_tests):
         for idx in range(len(fn_test.prompts)):
@@ -104,15 +104,15 @@ def function_call(
                 correct = check_response(response, expected_response)
                 total_correct += int(correct)  # Adds 1 if correct
 
-                if i == 0:  # We only print these out during first iter.
-                    print(f"Prompt: {prompt}")
-                    print(f"Response: {response}")
-                    print(f"Actual: {expected_response}")
-                    print(f"Check: {correct}")
-                    print(f"TPS: {tps:.2f}\n")
+                # if i == 0:  # We only print these out during first iter.
+                #     print(f"Prompt: {prompt}")
+                #     print(f"Response: {response}")
+                #     print(f"Actual: {expected_response}")
+                #     print(f"Check: {correct}")
+                #     print(f"TPS: {tps:.2f}\n")
             else:
                 total_requests += 1
-                print(f"\nFailed to get response for prompt: {prompt}")
+                # print(f"\nFailed to get response for prompt: {prompt}")
 
     stats["total_tps"] += total_tps
     stats["total_time"] += total_time

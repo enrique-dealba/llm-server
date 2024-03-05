@@ -173,7 +173,7 @@ def clear_or_create_log_file():
 
 def main():
     num_experiments = 3
-    num_tools = 4
+    num_tools = 16
 
     # Create an empty log file
     open("fn_call_tests_output.log", "w").close()
