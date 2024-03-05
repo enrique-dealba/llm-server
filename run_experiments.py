@@ -153,8 +153,8 @@ def clear_or_create_log_file():
 
 
 def main():
-    num_experiments = 2
-    num_tools = 2
+    num_experiments = 20
+    num_tools = 15
 
     # Create an empty log file
     open("fn_call_tests_output.log", "w").close()
@@ -175,6 +175,7 @@ def main():
 
         log_experiment_results(i+1, stats, total_time, used_tool_names)
         stop_docker_container()
+        time.sleep(10)  # Wait for the container to stop
 
 
 if __name__ == "__main__":
