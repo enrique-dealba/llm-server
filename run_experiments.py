@@ -76,11 +76,14 @@ def write_used_tools_to_file(used_tool_names):
         json.dump(used_tool_names, file)
 
 
-def run_docker_container(stats, experiment_tests):
+def run_docker_container(experiment_tests):
     subprocess.run(["docker", "build", "-t", "my_llm_server", "."])
     subprocess.run(["docker", "rm", "-f", "llm6"])
     huggingface_cache_dir = os.path.expanduser("~/.cache/huggingface")
     current_dir = os.path.abspath(os.path.dirname(__file__))
+
+    experiment_tests_str = ','.join(experiment_tests)
+
     subprocess.run(
         [
             "docker",
@@ -91,9 +94,7 @@ def run_docker_container(stats, experiment_tests):
             "-v",
             f"{current_dir}:/app",
             "-e",
-            f"STATS={stats}",
-            "-e",
-            f"EXPERIMENT_TESTS={experiment_tests}",
+            f"EXPERIMENT_TESTS={experiment_tests_str}",
             "--gpus",
             "all",
             "--name",
@@ -180,18 +181,10 @@ def main():
     for i in range(num_experiments):
         print(f"Running experiment {i+1}/{num_experiments}")
         clear_or_create_log_file()
-        used_tool_names, experiment_tests = select_tools_and_tests(num_tools)
+        used_tool_names, experiment_test_names = select_tools_and_tests(num_tools)
         write_used_tools_to_file(used_tool_names)
 
-        stats = {
-            "total_tps": 0.0,
-            "total_time": 0.0,
-            "total_correct": 0.0,
-            "successful_requests": 0.0,
-            "total_requests": 0.0,
-        }
-
-        run_docker_container(str(stats), str(experiment_tests))
+        run_docker_container(experiment_test_names)
         time.sleep(20)  # Wait for the container to start
 
         start_time = time.time()

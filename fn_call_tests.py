@@ -476,13 +476,20 @@ def run_experiment_tests(stats, experiment_tests):
         log_file.write("\n")  # Add a newline to separate entries
 
 if __name__ == "__main__":
-    stats_str = os.getenv("STATS")
-    experiment_tests_str = os.getenv("EXPERIMENT_TESTS").split(',')
-    if stats_str and experiment_tests_str:
-        stats = json.loads(stats_str)
-        run_experiment_tests(stats, experiment_tests_str)
+    experiment_tests_str = os.getenv("EXPERIMENT_TESTS")
+    if experiment_tests_str:
+        experiment_tests = experiment_tests_str.split(',')
+
+        stats = {
+            "total_tps": 0.0,
+            "total_time": 0.0,
+            "total_correct": 0.0,
+            "successful_requests": 0.0,
+            "total_requests": 0.0,
+        }
+        run_experiment_tests(stats, experiment_tests)
     else:
-        print("STATS or EXPERIMENT_TESTS environment variable not found.")
+        print("EXPERIMENT_TESTS environment variable not found.")
 
 
 # if __name__ == "__main__":
