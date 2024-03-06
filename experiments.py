@@ -428,4 +428,9 @@ funcs_master = [
 
     .73, # get_vowel_count
     .8, # reverse_string
+    .87, # format phone number
+    0.0, # get_lat_long
 ]
+
+## Mistral Instruct v0.2
+

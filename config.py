@@ -1,7 +1,7 @@
 """Config settings for LLMs and server parameters."""
 
 # ----- LLM -----
-DEFAULT_MODEL = "teknium/OpenHermes-2.5-Mistral-7B"
+DEFAULT_MODEL = "mistralai/Mistral-7B-Instruct-v0.2"
 
 # ----- Constants -----
 NUM_GPUS = 1
