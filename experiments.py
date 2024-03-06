@@ -428,9 +428,30 @@ funcs_master = [
 
     .73, # get_vowel_count
     .8, # reverse_string
-    .87, # format phone number
+    .87, # format_phone_number
     0.0, # get_lat_long
 ]
 
 ## Mistral Instruct v0.2
 
+new_master_funcs = [
+    1.0, # divide_by_two
+    0.0, # count_words
+    .87, # get_day_of_week
+    .8, # time
+
+    1.0, # get_ascii
+    0.0, # convert_to_uppercase
+    .4, # reverse_string
+    .47, # compress_whitespace
+
+    0.0, # get_lat_long
+    1.0, # last_letter
+    .13, # capitlalize_first_letter
+    0.0, # generate_acronym
+
+    1.0, # format_phone_number
+    1.0, # convert_to_binary
+    1.0, # get_vowel_count
+    .13, # extract_domain
+]
