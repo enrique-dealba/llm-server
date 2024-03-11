@@ -33,6 +33,7 @@ class LLM:
     ZEPHYR_7B = "HuggingFaceH4/zephyr-7b-beta"
     HERMES_2_5 = "teknium/OpenHermes-2.5-Mistral-7B"
     HERMES_AWQ = "TheBloke/OpenHermes-2.5-Mistral-7B-AWQ"
+    HERMES_GPTQ = "TheBloke/OpenHermes-2.5-Mistral-7B-GPTQ"
     YARN_64K = "NousResearch/Yarn-Mistral-7b-64k"
     YARN_128K = "NousResearch/Yarn-Mistral-7b-128k"
     PHI_2 = "microsoft/phi-2"

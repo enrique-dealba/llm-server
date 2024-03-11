@@ -58,7 +58,7 @@ def write_used_tools_to_file(used_tool_names):
         json.dump(used_tool_names, file)
 
 
-def run_docker_container(experiment_tests):
+def run_docker_container(experiment_tests, model_name):
     """Runs the Docker container with the specified experiment tests."""
     subprocess.run(["docker", "build", "-t", "my_llm_server", "."])
     subprocess.run(["docker", "rm", "-f", "llm6"])
@@ -74,6 +74,7 @@ def run_docker_container(experiment_tests):
             "-v", f"{huggingface_cache_dir}:/root/.cache/huggingface",
             "-v", f"{current_dir}:/app",
             "-e", f"EXPERIMENT_TESTS={experiment_tests_str}",
+            "-e", f"DEFAULT_MODEL={model_name}",
             "--gpus", "all",
             "--name", "llm6",
             "-p", "8888:8888",
@@ -151,52 +152,35 @@ def clear_or_create_log_file():
 
 def main():
     """Main function to run the experiments."""
-    num_experiments = 20
-    num_tools = 5
+    num_experiments = 2
+    models = [
+        "mistralai/Mistral-7B-Instruct-v0.2",
+        "teknium/OpenHermes-2.5-Mistral-7B",
+        # "TheBloke/Mistral-7B-v0.1-GPTQ",
+        # "TheBloke/OpenHermes-2.5-Mistral-7B-GPTQ",
+    ]
 
     """
-    UNCOMMENT TO RUN SINGLETON TOOL TESTS
+    RUN SINGLETON TOOL TESTS AND 16 TOOLS TEST
     """
-    # # get all tools
-    # used_tool_names, experiment_test_names = select_tools_and_tests(16)
-    # for i in range(len(used_tool_names)):
-    #     # test each tool individually
-    #     tool = [used_tool_names[i]]
-    #     test = [experiment_test_names[i]]
-    #     print(f"FUNCS: {tool}")
-    #     print(f"TEST: {test}")
-    #     print(f"Running experiment {i+1}/16")
-    #     clear_or_create_log_file()
-    #     print(f"Used tools: {tool}")
-    #     write_used_tools_to_file(tool)
+    # get all tools
 
-    #     run_docker_container(test)
-    #     time.sleep(20)  # Waits for the container to start
+    for model in models:
+        print(f"Running experiments for model: {model}")
 
-    #     start_time = time.time()
-    #     stats = run_tests()
-    #     end_time = time.time()
-    #     total_time = end_time - start_time
-
-    #     log_experiment_results(i + 1, stats, total_time, tool)
-    #     stop_docker_container()
-    #     time.sleep(10)  # Waits for the container to stop
-
-    # STOP DELETING
-
-    for k in range(1, num_tools):
-        # Creates an empty log file
-        open("fn_call_tests_output.log", "w").close()
-
-        for i in range(num_experiments):
-            print(f"NUM FUNCS: {k}")
-            print(f"Running experiment {i+1}/{num_experiments}")
+        used_tool_names, experiment_test_names = select_tools_and_tests(16)
+        for i in range(len(used_tool_names)):
+            # test each tool individually
+            tool = [used_tool_names[i]]
+            test = [experiment_test_names[i]]
+            print(f"FUNCS: {tool}")
+            print(f"TEST: {test}")
+            print(f"Running experiment {i+1}/16")
             clear_or_create_log_file()
-            used_tool_names, experiment_test_names = select_tools_and_tests(k)
-            print(f"Used tools: {used_tool_names}")
-            write_used_tools_to_file(used_tool_names)
+            print(f"Used tools: {tool}")
+            write_used_tools_to_file(tool)
 
-            run_docker_container(experiment_test_names)
+            run_docker_container(test, model)
             time.sleep(20)  # Waits for the container to start
 
             start_time = time.time()
@@ -204,9 +188,59 @@ def main():
             end_time = time.time()
             total_time = end_time - start_time
 
-            log_experiment_results(i + 1, stats, total_time, used_tool_names)
+            log_experiment_results(i + 1, stats, total_time, tool)
             stop_docker_container()
             time.sleep(10)  # Waits for the container to stop
+
+        for k in range(16, 17):
+            # Creates an empty log file
+            open("fn_call_tests_output.log", "w").close()
+
+            for i in range(num_experiments):
+                print(f"NUM FUNCS: {k}")
+                print(f"Running experiment {i+1}/{num_experiments}")
+                clear_or_create_log_file()
+                used_tool_names, experiment_test_names = select_tools_and_tests(k)
+                print(f"Used tools: {used_tool_names}")
+                write_used_tools_to_file(used_tool_names)
+
+                run_docker_container(experiment_test_names, model)
+                time.sleep(20)  # Waits for the container to start
+
+                start_time = time.time()
+                stats = run_tests()
+                end_time = time.time()
+                total_time = end_time - start_time
+
+                log_experiment_results(i + 1, stats, total_time, used_tool_names)
+                stop_docker_container()
+                time.sleep(10)  # Waits for the container to stop
+
+    # BELOW FOR TESTING SUBSETS OF TOOLS
+
+    # for k in range(1, num_tools):
+    #     # Creates an empty log file
+    #     open("fn_call_tests_output.log", "w").close()
+
+    #     for i in range(num_experiments):
+    #         print(f"NUM FUNCS: {k}")
+    #         print(f"Running experiment {i+1}/{num_experiments}")
+    #         clear_or_create_log_file()
+    #         used_tool_names, experiment_test_names = select_tools_and_tests(k)
+    #         print(f"Used tools: {used_tool_names}")
+    #         write_used_tools_to_file(used_tool_names)
+
+    #         run_docker_container(experiment_test_names)
+    #         time.sleep(20)  # Waits for the container to start
+
+    #         start_time = time.time()
+    #         stats = run_tests()
+    #         end_time = time.time()
+    #         total_time = end_time - start_time
+
+    #         log_experiment_results(i + 1, stats, total_time, used_tool_names)
+    #         stop_docker_container()
+    #         time.sleep(10)  # Waits for the container to stop
 
 
 if __name__ == "__main__":
