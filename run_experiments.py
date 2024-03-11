@@ -155,7 +155,7 @@ def clear_or_create_log_file():
 
 def main():
     """Main function to run the experiments."""
-    num_experiments = 2
+    num_experiments = 1 # change to 2
     models = [
         "mistralai/Mistral-7B-Instruct-v0.2",
         "teknium/OpenHermes-2.5-Mistral-7B",
@@ -174,7 +174,7 @@ def main():
         used_tool_names, experiment_test_names = select_tools_and_tests(16)
         #for i in range(len(used_tool_names)):
         # delete after testing
-        for i in range(2):
+        for i in range(1):
             # test each tool individually
             tool = [used_tool_names[i]]
             test = [experiment_test_names[i]]
@@ -199,7 +199,7 @@ def main():
 
         for k in range(16, 17):
             # Creates an empty log file
-            open("fn_call_tests_output.log", "w").close()
+            # open("fn_call_tests_output.log", "w").close()
 
             for i in range(num_experiments):
                 print(f"NUM FUNCS: {k}")
