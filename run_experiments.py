@@ -3,7 +3,13 @@ import os
 import random
 import subprocess
 import time
+import logging
 
+
+logging.basicConfig(filename='experiment.log',
+                    level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s - %(message)s'
+)
 
 def select_tools_and_tests(num_tools):
     """Randomly selects a subset of tool names and their corresponding test names."""
@@ -60,37 +66,44 @@ def write_used_tools_to_file(used_tool_names):
 
 def run_docker_container(experiment_tests, model_name):
     """Runs the Docker container with the specified experiment tests."""
-    subprocess.run(["docker", "build", "-t", "my_llm_server", "."])
-    subprocess.run(["docker", "rm", "-f", "llm6"])
-    huggingface_cache_dir = os.path.expanduser("~/.cache/huggingface")
-    current_dir = os.path.abspath(os.path.dirname(__file__))
+    try: 
+        subprocess.run(["docker", "build", "-t", "my_llm_server", "."])
+        subprocess.run(["docker", "rm", "-f", "llm6"])
+        huggingface_cache_dir = os.path.expanduser("~/.cache/huggingface")
+        current_dir = os.path.abspath(os.path.dirname(__file__))
 
-    experiment_tests_str = ",".join(experiment_tests)
+        experiment_tests_str = ",".join(experiment_tests)
 
-    quantization = "gptq" if "GPTQ" in model_name else "None"
+        quantization = "gptq" if "GPTQ" in model_name else "None"
 
-    subprocess.run(
-        [
-            "docker", "run",
-            "-d",
-            "-v", f"{huggingface_cache_dir}:/root/.cache/huggingface",
-            "-v", f"{current_dir}:/app",
-            "-e", f"EXPERIMENT_TESTS={experiment_tests_str}",
-            "-e", f"DEFAULT_MODEL={model_name}",
-            "-e", f"QUANTIZATION={quantization}",
-            "--gpus", "all",
-            "--name", "llm6",
-            "-p", "8888:8888",
-            "my_llm_server",
-        ]
-    )
+        subprocess.run(
+            [
+                "docker", "run",
+                "-d",
+                "-v", f"{huggingface_cache_dir}:/root/.cache/huggingface",
+                "-v", f"{current_dir}:/app",
+                "-e", f"EXPERIMENT_TESTS={experiment_tests_str}",
+                "-e", f"DEFAULT_MODEL={model_name}",
+                "-e", f"QUANTIZATION={quantization}",
+                "--gpus", "all",
+                "--name", "llm6",
+                "-p", "8888:8888",
+                "my_llm_server",
+            ],
+            check=True
+        )
+    except subprocess.CalledProcessError as e:
+        logging.error(f"Failed to run Docker container: {str(e)}")
+        raise
 
 
 def stop_docker_container():
     """Stops the Docker container."""
-    subprocess.run(["docker", "stop", "llm6"])
-
-
+    try:
+        subprocess.run(["docker", "stop", "llm6"], check=True)
+    except subprocess.CalledProcessError as e:
+        logging.warning(f"Failed to stop Docker container: {str(e)}")
+                        
 def log_experiment_results(experiment_number, stats, total_time, used_tools):
     """Logs the experiment results to a log file."""
     num_requests = stats["successful_requests"]
@@ -127,9 +140,13 @@ def run_tests():
         "total_requests": 0.0,
     }
 
-    subprocess.run(["docker", "exec", "llm6", "python", "fn_call_tests.py"])
+    # subprocess.run(["docker", "exec", "llm6", "python", "fn_call_tests.py"])
 
     try:
+        subprocess.run(["docker", "exec", "llm6", "python", "fn_call_tests.py"],
+                       check=True
+        )
+
         with open("fn_call_tests_output.log") as file:
             lines = file.readlines()
             if lines:
@@ -140,8 +157,10 @@ def run_tests():
                     print("Warning: The last line of log file is empty.")
             else:
                 print("Warning: The log file is empty.")
+    except subprocess.CalledProcessError as e:
+        logging.error(f"Failed to run tests: {str(e)}")
     except FileNotFoundError:
-        print("Warning: The log file does not exist.")
+        logging.warning("The log file does not exist.")
 
     return stats
 
