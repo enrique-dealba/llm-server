@@ -203,7 +203,7 @@ def main():
             write_used_tools_to_file(tool)
 
             run_docker_container(test, model)
-            time.sleep(20)  # Waits for the container to start
+            time.sleep(40)  # Waits for the container to start
 
             start_time = time.time()
             stats = run_tests()
@@ -225,7 +225,7 @@ def main():
                 write_used_tools_to_file(used_tool_names)
 
                 run_docker_container(experiment_test_names, model)
-                time.sleep(20)  # Waits for the container to start
+                time.sleep(40)  # Waits for the container to start
 
                 start_time = time.time()
                 stats = run_tests()
