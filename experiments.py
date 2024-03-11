@@ -822,3 +822,61 @@ m_funcs_13 = [
     .61,
     .54,
 ]
+
+"""New Tests.
+
+Here we're doing single pass tests per function + all funcs testing.
+"mistralai/Mistral-7B-Instruct-v0.2" - m1
+"teknium/OpenHermes-2.5-Mistral-7B" - h1
+"TheBloke/Mistral-7B-v0.1-GPTQ" - m1_gptq
+"TheBloke/OpenHermes-2.5-Mistral-7B-GPTQ" - h1_gptq
+Follow-up tests will increment the number: h{n}/m{n}{_gptq}
+"""
+
+m1_funcs1 = [
+    1.0,
+    .13,
+    .47,
+    0.0,
+    0.0,
+    .87,
+    1.0,
+    1.0,
+    0.0,
+    0.0,
+    .13,
+    .8,
+    .4,
+    1.0,
+    1.0,
+    1.0,
+]
+
+m1_funcs_16 = [
+    .55,
+    .53,
+]
+
+h1_funcs_1 = [
+    .4,
+    1.0,
+    0.0,
+    1.0,
+    0.0,
+    .87,
+    1.0,
+    1.0,
+    .8,
+    .13,
+    1.0,
+    1.0,
+    0.0,
+    0.0,
+    .47,
+    .13,
+]
+
+h1_funcs_16 = [
+    .54,
+    .55,
+]
