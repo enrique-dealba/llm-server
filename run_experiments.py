@@ -67,6 +67,8 @@ def run_docker_container(experiment_tests, model_name):
 
     experiment_tests_str = ",".join(experiment_tests)
 
+    quantization = "gptq" if "GPTQ" in model_name else "None"
+
     subprocess.run(
         [
             "docker", "run",
@@ -75,6 +77,7 @@ def run_docker_container(experiment_tests, model_name):
             "-v", f"{current_dir}:/app",
             "-e", f"EXPERIMENT_TESTS={experiment_tests_str}",
             "-e", f"DEFAULT_MODEL={model_name}",
+            "-e", f"QUANTIZATION={quantization}",
             "--gpus", "all",
             "--name", "llm6",
             "-p", "8888:8888",
@@ -156,8 +159,8 @@ def main():
     models = [
         "mistralai/Mistral-7B-Instruct-v0.2",
         "teknium/OpenHermes-2.5-Mistral-7B",
-        # "TheBloke/Mistral-7B-v0.1-GPTQ",
-        # "TheBloke/OpenHermes-2.5-Mistral-7B-GPTQ",
+        "TheBloke/Mistral-7B-v0.1-GPTQ",
+        "TheBloke/OpenHermes-2.5-Mistral-7B-GPTQ",
     ]
 
     """
@@ -169,7 +172,9 @@ def main():
         print(f"Running experiments for model: {model}")
 
         used_tool_names, experiment_test_names = select_tools_and_tests(16)
-        for i in range(len(used_tool_names)):
+        #for i in range(len(used_tool_names)):
+        # delete after testing
+        for i in range(2):
             # test each tool individually
             tool = [used_tool_names[i]]
             test = [experiment_test_names[i]]
