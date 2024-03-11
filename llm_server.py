@@ -83,11 +83,11 @@ class GenerateRequest(BaseModel):
 # Initialize configurations and dependencies
 config = Config()
 
-if "GPTQ" in DEFAULT_MODEL:
-    quantization = 'gptq'
-else:
-    quantization = os.environ.get("QUANTIZATION", "None")
-    quantization = quantization if quantization != "None" else None
+# if "GPTQ" in DEFAULT_MODEL:
+#     quantization = 'gptq'
+# else:
+quantization = os.environ.get("QUANTIZATION", "None")
+quantization = quantization if quantization != "None" else None
 llm = config.create_llm(quantization=quantization, use_agent=True)
 
 app = FastAPI()
