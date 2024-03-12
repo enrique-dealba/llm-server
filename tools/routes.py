@@ -59,6 +59,11 @@ time_route = RouteModel(
         "what is the time in new york city?",
         "what is the time in london?",
         "I live in Rome, what time is it?",
+        "Tell me the current time in Seoul, please",
+        "What's the time right now in Kuwait City?",
+        "I'm curious about the time in Panama City currently",
+        "Could you let me know the time in New York?",
+        "What time is it in Rome at the moment?",
     ],
 )
 
@@ -70,6 +75,11 @@ lat_long_route = RouteModel(
         "what is the latitude of dallas texas",
         "I live in Rome, what's the longitutde?",
         "whats the longitude in allen tx",
+        "Can you tell me the latitude and longitude coordinates of Paris?",
+        "I need to know the latitude and longitude of Socorro, New Mexico",
+        "What's the longitude of London, England?",
+        "Could you provide the latitude for Moscow, Russia?",
+        "Do you have the latitude and longitude for Dallas, TX?",
     ],
 )
 
@@ -95,6 +105,10 @@ last_letter_route = RouteModel(
         "I live in Rome. What's the last letter in Rome?",
         "whats the last letter in texas",
         "give me the last letter of 'lemon'",
+        "What letter does 'Diamond' end with?",
+        "Tell me the final letter of 'ABABAB'",
+        "What character is at the end of 'This_is_a_long_word'?",
+        "Provide the last letter for This_is_a_long_word please",
     ],
 )
 
@@ -108,6 +122,10 @@ divide_two_route = RouteModel(
         "I like the number 23. whats 23 divided by 2?",
         "whats half of 100",
         "tell me what 7 divided by 2 is",
+        "What's 100 split in half?",
+        "76 divided by 2 equals what?",
+        "Half of 999 is?",
+        "Divide 999999999 by 2 for me",
     ],
 )
 
@@ -121,6 +139,11 @@ get_day_of_week_route = RouteModel(
         "can you find the day of the week for 2022-08-15?",
         "I need the weekday for 2019-11-11",
         "Find the weekday for 2024-01-02",
+        "What day was 2018-03-14?",
+        "2024-01-01 is what day of the week?",
+        "On 2017-09-10, what day of the week was it?",
+        "Which day of the week will 2025-12-31 be?",
+        "April 20th, 2019 was which weekday?",
     ],
 )
 
@@ -134,6 +157,11 @@ format_phone_number_route = RouteModel(
         "I have a phone number 5556667777, make it pretty",
         "what's the proper format for 4445556666 as a phone number?",
         "How can we write 9998887777 as a phone number?",
+        "Please format 2468101214 as a phone number",
+        "Transform 1357911131 to phone number format",
+        "How should 9080706050 look when formatted?",
+        "Correctly format 3213214321 as a phone number",
+        "Rewrite 7539514567 in phone number style",
     ],
 )
 
@@ -147,6 +175,12 @@ compress_whitespace_route = RouteModel(
         "how to make 'So   many    spaces' neat?",
         "remove extra spaces from 'Too  much    space between  words'",
         "Reduce the extra whitespaces for the following: '   ABC   '.",
+        "Fix spacing here: 'too   many    spaces'",
+        "Tidy up 'spaces   everywhere' by compressing spaces",
+        "Make 'single    space   please' use single spaces only",
+
+        "'lots    of   spaces' has too many spaces, clean it up",
+        "Remove unnecessary whitespace from 'whitespace     reduction'",
     ],
 )
 
@@ -161,6 +195,10 @@ capitalize_first_letter_route = RouteModel(
         "how to capitalize 'first letter'",
         "Please make the first letter capitalized: 'word'",
         "What's the capitalized first letter version for 'peanut'?",
+        "Uppercase the first letter only in 'small to big'",
+        "Begin 'sentence with uppercase' properly",
+        "Take 'lower to upper' and capitalize its first letter",
+        "'beginning' should start with a capital letter",
     ],
 )
 
@@ -176,6 +214,9 @@ reverse_string_route = RouteModel(
         "How can we write 'WORD' in reverse?",
         "flip the string 'hello world' backwards",
         "reverse the string 'this is an example'",
+        "Spell 'mirror' backwards",
+        "Reverse the order of '123abc'",
+        "What's 'olleh' backwards?",
     ],
 )
 
@@ -190,6 +231,11 @@ generate_acronym_route = RouteModel(
         "create an acronym from 'Application Programming Interface'",
         "generate an acronym for Wireless Fidelity",
         "what's the acronym for Read Only Memory?",
+        "Make an acronym for 'Graphics Interchange Format'",
+        "What would you shorten 'Portable Network Graphics' to?",
+        "Acronym for 'Wireless Fidelity' please",
+        "ROM stands for what?",
+        "GPS is an acronym for?",
     ],
 )
 
@@ -204,6 +250,9 @@ get_vowel_count_route = RouteModel(
         "tell me how many vowels are in 'This is a test sentence'",
         "Vowel count for the sentence: 'the quick brown fox'",
         "how many vowels in the following: 'Lazy Moon'?",
+        "What's the vowel count for 'jumped over'?",
+        "Count vowels in 'the lazy moon'",
+        "How many vowel letters in 'bright sunny day'?",
     ],
 )
 
@@ -218,6 +267,10 @@ convert_to_binary_route = RouteModel(
         "how to write '42' in binary?",
         "Convert 150 to binary",
         "What's the binary of 1664?",
+        "Give me 64 in binary form",
+        "100 as a binary number is what?",
+        "Represent 32 using binary",
+        "What's the binary equivalent of '128'?",
     ],
 )
 
@@ -232,6 +285,11 @@ get_ascii_value_route = RouteModel(
         "get me the ASCII of ' ' (space)",
         "What's the ASCII for 'p'?",
         "Give me the ASCII for '*'",
+        "What number represents 'b' in ASCII?",
+        "ASCII value for uppercase 'Z'",
+        "Numeric ASCII code for the '@' sign",
+        "What's '9' in ASCII?",
+        "# has what ASCII value?",
     ],
 )
 
@@ -244,6 +302,11 @@ extract_domain_route = RouteModel(
         "What's the domain in 'https://another-example.net/path'",
         "Find the domain of 'www.test-site.com'",
         "Get the domain from 'https://www.this-is-a-test.co.uk/path'",
+        "Pull out just the domain from 'https://api.example.com/data'",
+        "Identify the domain in 'http://blog.example.net/read'",
+        "For 'https://store.example-shop.com/product', what's the domain portion?",
+        "Give me the domain of 'www.example-portal.com'",
+        "Extract only the domain from 'https://news.example-news.co/info'",
     ],
 )
 
@@ -256,6 +319,11 @@ count_words_route = RouteModel(
         "Word count for 'Single'",
         "Tell me the number of words in 'This is another test.'",
         "How many words are there in 'Just a simple sentence'?",
+        "Count the number of words in 'Quick test of words'",
+        "Words in 'Another, example.'?",
+        "How many words are in the string 'Word'?",
+        "Total words in 'Three word sentence.'",
+        "Give me a word count for 'Four words here indeed'",
     ],
 )
 
@@ -270,6 +338,11 @@ convert_to_uppercase_route = RouteModel(
         "Transform 'lowercase' into UPPERCASE",
         "Make the string: apple all uppercase",
         "Convert this: 'tiny letters' to all caps",
+        "Uppercase this text: 'simple text'",
+        "Make everything capital letters in 'Mixed Input Case'",
+        "Express 'varied cases of letters' in all caps",
+        "Change case of 'Another Test' to fully uppercase",
+        "'yet another lowercase' in full uppercase is what?",
     ],
 )
 
