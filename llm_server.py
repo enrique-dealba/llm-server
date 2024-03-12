@@ -21,9 +21,9 @@ from config import Settings
 #     TEMPERATURE,
 # )
 
-from llm_agent.llm_agent import LLMAgent
-# from llm_agent.llm_memory import MemoryLLM
-# from llm_agent.llm_router import LLMRouter
+#from llm_agent.llm_agent import LLMAgent
+from llm_agent.llm_memory import MemoryLLM
+#from llm_agent.llm_router import LLMRouter
 
 settings = Settings()
 
@@ -61,7 +61,7 @@ def create_llm(
         )
 
         if use_agent:
-            return LLMAgent(llm=llm)
+            return MemoryLLM(llm=llm)
         return llm
 
     except Exception as e:
