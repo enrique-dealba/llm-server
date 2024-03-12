@@ -21,9 +21,9 @@ from config import Settings
 #     TEMPERATURE,
 # )
 
-# from llm_agent.llm_agent import LLMAgent
+from llm_agent.llm_agent import LLMAgent
 # from llm_agent.llm_memory import MemoryLLM
-from llm_agent.llm_router import LLMRouter
+# from llm_agent.llm_router import LLMRouter
 
 settings = Settings()
 
@@ -124,7 +124,7 @@ def create_llm(
 quantization = os.environ.get("QUANTIZATION", "None")
 quantization = quantization if quantization != "None" else None
 
-llm = create_llm(quantization=quantization, use_agent=True)
+llm = create_llm(quantization=quantization, use_agent=False)
 
 app = FastAPI()
 
