@@ -1,7 +1,7 @@
 """Config settings for LLMs and server parameters."""
 
 # ----- LLM -----
-DEFAULT_MODEL = "cognitivecomputations/dolphin-2_6-phi-2"
+DEFAULT_MODEL = "rhysjones/phi-2-orange"
 
 # ----- Constants -----
 NUM_GPUS = 1
@@ -42,3 +42,4 @@ class LLM:
     PHI_2_GPTQ = "TheBloke/phi-2-GPTQ"
     DOLPHIN_26_PHI = "cognitivecomputations/dolphin-2_6-phi-2"
     DOLPHIN_26_PHI_GPTQ = "TheBloke/dolphin-2_6-phi-2-GPTQ"  # doesn't work with vLLM
+    PHI_2_ORANGE = "rhysjones/phi-2-orange"
