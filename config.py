@@ -4,7 +4,7 @@
 DEFAULT_MODEL = "TheBloke/Mixtral-8x7B-v0.1-GPTQ"
 
 # ----- Constants -----
-NUM_GPUS = 1
+NUM_GPUS = 2
 NUM_RESPONSES = 1
 MAX_TOKENS = 512
 MAX_SEQ_LEN = 16384

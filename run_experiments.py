@@ -178,8 +178,9 @@ def main():
     models = [
         #"mistralai/Mistral-7B-Instruct-v0.2",
         #"teknium/OpenHermes-2.5-Mistral-7B",
-        "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
-        "TheBloke/OpenHermes-2.5-Mistral-7B-GPTQ",
+        #"TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
+        #"TheBloke/OpenHermes-2.5-Mistral-7B-GPTQ",
+        "TheBloke/Mixtral-8x7B-v0.1-GPTQ",
     ]
 
     """
