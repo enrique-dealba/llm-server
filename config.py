@@ -1,7 +1,7 @@
 """Config settings for LLMs and server parameters."""
 
 # ----- LLM -----
-DEFAULT_MODEL = "mistralai/Mistral-7B-Instruct-v0.2"
+DEFAULT_MODEL = "TheBloke/Mixtral-8x7B-v0.1-GPTQ"
 
 # ----- Constants -----
 NUM_GPUS = 1
@@ -30,6 +30,8 @@ class LLM:
     MISTRAL_V2 = "mistralai/Mistral-7B-Instruct-v0.2"
     MISTRAL_V2_AWQ = "TheBloke/Mistral-7B-Instruct-v0.2-AWQ"
     MISTRAL_V2_GPTQ = "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ"
+    MIXTRAL_GPTQ = "TheBloke/Mixtral-8x7B-v0.1-GPTQ"
+    DOLPHIN_GPTQ = "TheBloke/dolphin-2.5-mixtral-8x7b-GPTQ"
     ZEPHYR_7B = "HuggingFaceH4/zephyr-7b-beta"
     HERMES_2_5 = "teknium/OpenHermes-2.5-Mistral-7B"
     HERMES_AWQ = "TheBloke/OpenHermes-2.5-Mistral-7B-AWQ"
