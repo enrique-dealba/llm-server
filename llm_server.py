@@ -11,8 +11,8 @@ from pydantic import BaseModel
 from config import Settings
 
 # from llm_agent.llm_agent import LLMAgent
-from llm_agent.llm_memory import MemoryLLM
-# from llm_agent.llm_router import LLMRouter
+# from llm_agent.llm_memory import MemoryLLM
+from llm_agent.llm_router import LLMRouter
 
 settings = Settings()
 
@@ -53,7 +53,7 @@ def create_llm(
         )
 
         if use_agent:
-            return MemoryLLM(llm=llm)
+            return LLMRouter(llm=llm)
         return llm
 
     except Exception as e:
@@ -64,7 +64,7 @@ def create_llm(
 quantization = os.environ.get("QUANTIZATION", "None")
 quantization = quantization if quantization != "None" else None
 
-llm = create_llm(quantization=quantization, use_agent=False)
+llm = create_llm(quantization=quantization, use_agent=settings.USE_AGENT)
 
 app = FastAPI()
 

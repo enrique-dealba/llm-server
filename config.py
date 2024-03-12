@@ -7,7 +7,7 @@ from pydantic import BaseSettings, Field
 class Settings(BaseSettings):
     # ----- LLM -----
     DEFAULT_MODEL: str = Field(
-        default="mistralai/Mistral-7B-Instruct-v0.1",
+        default="mistralai/Mistral-7B-Instruct-v0.2",
         description="Default LLM model to use",
     )
 
@@ -37,6 +37,9 @@ class Settings(BaseSettings):
     )
     GPTQ_GPU_UTIL: float = Field(
         default=0.25, description="Minimum GPU utilization for 7B GPTQ models"
+    )
+    USE_AGENT: bool = Field(
+        default=True, description="To use LLM Agent features like memory, agent, router"
     )
 
     class Config:
