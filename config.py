@@ -1,10 +1,10 @@
 """Config settings for LLMs and server parameters."""
 
 # ----- LLM -----
-DEFAULT_MODEL = "TheBloke/Mixtral-8x7B-v0.1-GPTQ"
+DEFAULT_MODEL = "microsoft/phi-2"
 
 # ----- Constants -----
-NUM_GPUS = 2
+NUM_GPUS = 1
 NUM_RESPONSES = 1
 MAX_TOKENS = 512
 MAX_SEQ_LEN = 16384

@@ -15,7 +15,7 @@ def select_tools_and_tests(num_tools):
     """Randomly selects a subset of tool names and their corresponding test names."""
     tool_names = [
         "time_route",
-        #"lat_long_route",
+        "lat_long_route",
         "last_letter_route",
         "divide_two_route",
         "get_day_of_week_route",
@@ -34,7 +34,7 @@ def select_tools_and_tests(num_tools):
 
     tests = [
         "get_time_test",
-        #"get_lat_long_test",
+        "get_lat_long_test",
         "get_last_letter_test",
         "divide_by_two_test",
         "get_day_of_week_test",
@@ -178,9 +178,10 @@ def main():
     models = [
         #"mistralai/Mistral-7B-Instruct-v0.2",
         #"teknium/OpenHermes-2.5-Mistral-7B",
+        "microsoft/phi-2",
         #"TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
         #"TheBloke/OpenHermes-2.5-Mistral-7B-GPTQ",
-        "TheBloke/Mixtral-8x7B-v0.1-GPTQ",
+        #"TheBloke/Mixtral-8x7B-v0.1-GPTQ",
     ]
 
     """
@@ -215,7 +216,7 @@ def main():
         #     stop_docker_container()
         #     time.sleep(10)  # Waits for the container to stop
 
-        num_funcs = 15
+        num_funcs = 16
 
         for i in range(num_experiments):
             print(f"NUM FUNCS: {num_funcs}")
