@@ -59,7 +59,7 @@ class Config:
                 use_beam_search=False,
                 max_new_tokens=self.max_new_tokens,
                 tensor_parallel_size=self.num_gpus,
-                trust_remote_code=True,
+                trust_remote_code=False,
                 dtype=dtype_value,
                 vllm_kwargs={
                     "quantization": quantization,
