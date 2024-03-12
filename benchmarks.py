@@ -4,13 +4,13 @@ from typing import Dict, List
 from dotenv import load_dotenv
 
 from client import Client
-#from config import DEFAULT_MODEL
 from config import Settings
 from text_processing import TextProcessing as tp
 
 # Loads environment variables
 load_dotenv()
 settings = Settings()
+
 
 def benchmark_prompts(prompts: List[str]) -> Dict[str, float]:
     """Runs a series of prompts through the LLM and benchmarks response speed."""

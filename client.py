@@ -4,12 +4,12 @@ import time
 import requests
 from dotenv import load_dotenv
 
-#from config import API_URL
 from config import Settings
 from text_processing import TextProcessing as tp
 
 load_dotenv()
 settings = Settings()
+
 
 class Client:
     """Client for interacting with LLM server."""
@@ -48,7 +48,7 @@ def main():
             if not response:
                 raise ValueError("Empty LLM response content")
             if not isinstance(response, str):
-                response = str(response) # TODO: add try/catch block
+                response = str(response)  # TODO: add try/catch block
 
             response = tp.clean_mistral(response)  # TODO: check DEFAULT_MODEL to choose
             print(f"\nLLM Response: {response}")

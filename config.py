@@ -8,51 +8,35 @@ class Settings(BaseSettings):
     # ----- LLM -----
     DEFAULT_MODEL: str = Field(
         default="mistralai/Mistral-7B-Instruct-v0.1",
-        description="Default LLM model to use"
+        description="Default LLM model to use",
     )
 
     # ----- Constants -----
-    NUM_GPUS: int = Field(
-        default=1,
-        description="Number of GPUs to use"
-    )
-    NUM_RESPONSES: int = Field(
-        default=1,
-        description="Number of responses to generate"
-    )
+    NUM_GPUS: int = Field(default=1, description="Number of GPUs to use")
+    NUM_RESPONSES: int = Field(default=1, description="Number of responses to generate")
     MAX_TOKENS: int = Field(
-        default=512,
-        description="Maximum number of tokens per response"
+        default=512, description="Maximum number of tokens per response"
     )
-    MAX_SEQ_LEN: int = Field(
-        default=16384,
-        description="Maximum sequence length"
-    )
+    MAX_SEQ_LEN: int = Field(default=16384, description="Maximum sequence length")
     TEMPERATURE: float = Field(
-        default=0.2,
-        description="Temperature for text generation"
+        default=0.2, description="Temperature for text generation"
     )
     TOP_P: float = Field(
-        default=0.95,
-        description="Top-p sampling value (must be in (0, 1])"
+        default=0.95, description="Top-p sampling value (must be in (0, 1])"
     )
     API_URL: str = Field(
-        default="http://localhost:8888",
-        description="URL for the FastAPI"
+        default="http://localhost:8888", description="URL for the FastAPI"
     )
 
     # ----- GPU Utilization Settings -----
     DEFAULT_GPU_UTIL: float = Field(
-        default=0.30,
-        description="Default GPU utilization (works for 7B models)"
+        default=0.30, description="Default GPU utilization (works for 7B models)"
     )
     AWQ_GPU_UTIL: float = Field(
-        default=0.50,
-        description="Minimum GPU utilization for 7B AWQ models"
+        default=0.50, description="Minimum GPU utilization for 7B AWQ models"
     )
     GPTQ_GPU_UTIL: float = Field(
-        default=0.25,
-        description="Minimum GPU utilization for 7B GPTQ models"
+        default=0.25, description="Minimum GPU utilization for 7B GPTQ models"
     )
 
     class Config:

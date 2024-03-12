@@ -6,11 +6,10 @@ from unittest.mock import MagicMock, patch
 from fastapi.testclient import TestClient
 from langchain.llms import VLLM
 
-#from config import DEFAULT_MODEL, NUM_GPUS
+# from config import DEFAULT_MODEL, NUM_GPUS
 from config import Settings
 from llm_agent.llm_memory import MemoryLLM
-from llm_server import create_llm, app
-
+from llm_server import app, create_llm
 
 settings = Settings()
 
@@ -86,10 +85,6 @@ class TestFastAPIEndpoints(unittest.TestCase):
 
 class TestConfigCreateLLM(unittest.TestCase):
     """Test cases for the create_llm method in Config class."""
-
-    # def setUp(self):
-    #     """Set up a Config instance before each test."""
-    #     self.config = Config()
 
     @patch("llm_server.VLLM")  # Mocks VLLM class
     def test_create_llm_exception(self, mock_vllm):

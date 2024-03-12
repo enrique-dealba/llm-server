@@ -5,7 +5,6 @@ from unittest.mock import patch
 import requests
 
 import client
-
 from config import Settings
 
 settings = Settings()
