@@ -1,7 +1,7 @@
 """Config settings for LLMs and server parameters."""
 
 # ----- LLM -----
-DEFAULT_MODEL = "microsoft/phi-2"
+DEFAULT_MODEL = "cognitivecomputations/dolphin-2_6-phi-2"
 
 # ----- Constants -----
 NUM_GPUS = 1
