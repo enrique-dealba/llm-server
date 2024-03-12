@@ -35,11 +35,14 @@ def create_llm(
         quantization: Optional[str] = None, use_agent: Optional[bool] = False
 ) -> VLLM:
     """Creates and returns VLLM instance based on current configuration."""
-    gpu_utilization = getattr(settings,
-                              f"{quantization.upper()}_GPU_UTIL",
-                              settings.DEFAULT_GPU_UTIL
-    )
-    dtype_value = "half" if quantization in ["awq", "gptq"] else "bfloat16"
+    if quantization is None:
+        gpu_utilization = settings.DEFAULT_GPU_UTIL
+        dtype_value = "bfloat16"
+    else:
+        gpu_utilization = getattr(settings,
+                                  f"{quantization.upper()}_GPU_UTIL",
+                                  settings.DEFAULT_GPU_UTIL)
+        dtype_value = "half" if quantization in ["awq", "gptq"] else "bfloat16"
 
     try:
         llm = VLLM(
@@ -58,7 +61,7 @@ def create_llm(
         )
 
         if use_agent:
-            return LLMRouter(llm=llm)
+            return LLMAgent(llm=llm)
         return llm
 
     except Exception as e:
