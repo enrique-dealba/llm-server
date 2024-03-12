@@ -37,6 +37,10 @@ class TestConfig(unittest.TestCase):
     #     self.assertEqual(config.llm_model, settings.DEFAULT_MODEL)
     #     self.assertEqual(config.num_gpus, settings.NUM_GPUS)
 
+    def tearDown(self):
+        # Clean up the VLLM instance after each test case
+        VLLM._instances = {}
+
     @patch("llm_server.create_llm", return_value=VLLMMock())
     @patch("huggingface_hub.snapshot_download")
     def test_create_llm(self, mock_snapshot_download, mock_create_llm):
@@ -44,6 +48,7 @@ class TestConfig(unittest.TestCase):
         mock_snapshot_download.return_value = "/mock/path/to/model"
 
         #config = Config()
+        settings = Settings()
         llm = create_llm(quantization=None, use_agent=False)
         mock_create_llm.assert_called_once()
 
