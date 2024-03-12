@@ -6,6 +6,10 @@ import requests
 
 import client
 
+from config import Settings
+
+settings = Settings()
+
 
 def mock_post(*args, **kwargs):
     """Mocks external components for testing."""
@@ -26,8 +30,8 @@ class TestClient(unittest.TestCase):
 
     def setUp(self):
         """Setup that runs before each test method."""
-        self.original_api_url = client.API_URL
-        client.API_URL = "http://mockapi.test"
+        self.original_api_url = settings.API_URL
+        settings.API_URL = "http://mockapi.test"
 
         self.test_data = "Test data"
         self.client_instance = client.Client()
@@ -37,7 +41,7 @@ class TestClient(unittest.TestCase):
 
     def tearDown(self):
         """Cleanup after each test func."""
-        client.API_URL = self.original_api_url
+        settings.API_URL = self.original_api_url
 
         del self.test_data
         del self.client_instance
