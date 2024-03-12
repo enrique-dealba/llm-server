@@ -4,9 +4,13 @@ from unittest.mock import MagicMock, patch
 from fastapi.testclient import TestClient
 from langchain.llms import VLLM
 
-from config import DEFAULT_MODEL, NUM_GPUS
+#from config import DEFAULT_MODEL, NUM_GPUS
+from config import Settings
 from llm_agent.llm_memory import MemoryLLM
-from llm_server import Config, app
+from llm_server import create_llm, app
+
+
+settings = Settings()
 
 
 class VLLMMock:
@@ -25,20 +29,20 @@ class VLLMMock:
 class TestConfig(unittest.TestCase):
     """Test cases for the Config class."""
 
-    def test_init(self):
-        """Test initialization of Config."""
-        config = Config()
-        self.assertEqual(config.llm_model, DEFAULT_MODEL)
-        self.assertEqual(config.num_gpus, NUM_GPUS)
+    # def test_init(self):
+    #     """Test initialization of Config."""
+    #     #config = Config()
+    #     self.assertEqual(config.llm_model, settings.DEFAULT_MODEL)
+    #     self.assertEqual(config.num_gpus, settings.NUM_GPUS)
 
-    @patch("llm_server.Config.create_llm", return_value=VLLMMock())
+    @patch("llm_server.create_llm", return_value=VLLMMock())
     @patch("huggingface_hub.snapshot_download")
     def test_create_llm(self, mock_snapshot_download, mock_create_llm):
         """Ensures create_llm method correctly creates VLLM instance."""
         mock_snapshot_download.return_value = "/mock/path/to/model"
 
-        config = Config()
-        llm = config.create_llm(quantization=None, use_agent=False)
+        #config = Config()
+        llm = create_llm(quantization=None, use_agent=False)
         mock_create_llm.assert_called_once()
 
         self.assertIsInstance(llm, VLLMMock)
@@ -50,8 +54,8 @@ class TestConfig(unittest.TestCase):
         mock_snapshot_download.return_value = "/mock/path/to/model"
         mock_vllm.return_value = MagicMock(spec=VLLM)
 
-        config = Config()
-        llm = config.create_llm(quantization=None, use_agent=False)
+        #config = Config()
+        llm = create_llm(quantization=None, use_agent=False)
 
         self.assertIsInstance(llm, MagicMock)
         mock_vllm.assert_called_once()
@@ -63,8 +67,8 @@ class TestConfig(unittest.TestCase):
         mock_snapshot_download.return_value = "/mock/path/to/model"
         mock_vllm.return_value = MagicMock(spec=VLLM)
 
-        config = Config()
-        llm = config.create_llm(quantization=None, use_agent=True)
+        #config = Config()
+        llm = create_llm(quantization=None, use_agent=True)
 
         self.assertIsInstance(llm, MemoryLLM)
         mock_vllm.assert_called_once()
@@ -93,16 +97,16 @@ class TestFastAPIEndpoints(unittest.TestCase):
 class TestConfigCreateLLM(unittest.TestCase):
     """Test cases for the create_llm method in Config class."""
 
-    def setUp(self):
-        """Set up a Config instance before each test."""
-        self.config = Config()
+    # def setUp(self):
+    #     """Set up a Config instance before each test."""
+    #     self.config = Config()
 
     @patch("llm_server.VLLM")  # Mocks VLLM class
     def test_create_llm_exception(self, mock_vllm):
         """Ensures create_llm raises RuntimeError on VLLM init failure."""
         mock_vllm.side_effect = Exception("Test Exception")
         with self.assertRaises(RuntimeError) as context:
-            self.config.create_llm(quantization=None, use_agent=False)
+            create_llm(quantization=None, use_agent=False)
         self.assertIn(
             "Failed to initialize LLM: Test Exception", str(context.exception)
         )

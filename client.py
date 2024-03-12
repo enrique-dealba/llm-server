@@ -4,11 +4,13 @@ import time
 import requests
 #from dotenv import load_dotenv
 
-from config import API_URL
+#from config import API_URL
+from config import Settings
 from text_processing import TextProcessing as tp
 
 #load_dotenv()
 
+settings = Settings()
 
 class Client:
     """Client for interacting with LLM server."""
@@ -19,7 +21,7 @@ class Client:
         prompt = tp.preprocess_prompt(prompt)
         payload = {"text": prompt}
         try:
-            response = requests.post(f"{API_URL}/generate", json=payload)
+            response = requests.post(f"{settings.API_URL}/generate", json=payload)
             return response.json()
         except requests.exceptions.RequestException as e:
             logging.error(f"API request failed: {e}")

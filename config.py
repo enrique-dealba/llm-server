@@ -1,26 +1,71 @@
 """Config settings for LLMs and server parameters."""
 
-# ----- LLM -----
-DEFAULT_MODEL = "mistralai/Mistral-7B-Instruct-v0.2"
+from pydantic import BaseSettings, Field
 
-# ----- Constants -----
-NUM_GPUS = 1
-NUM_RESPONSES = 1
-MAX_TOKENS = 512
-MAX_SEQ_LEN = 16384
-TEMPERATURE = 0.2
-TOP_P = 0.95  # Must be in (0, 1] - set to 1 to consider all tokens
-API_URL = "http://localhost:8888"
 
-# ----- GPU Utilization Settings -----
-DEFAULT_GPU_UTIL = 0.30  # works for 7B models, 0.25 for 7B
-AWQ_GPU_UTIL = 0.50  # min needed for 7B AWQ models, 0.31 for 7B AWQ
-GPTQ_GPU_UTIL = 0.25  # min needed for 7B GPTQ models, 0.5 for 7B GPTQ (.15->.25)
+# ----- Config Settings -----
+class Settings(BaseSettings):
+    # ----- LLM -----
+    DEFAULT_MODEL: str = Field(
+        default="mistralai/Mistral-7B-Instruct-v0.1",
+        description="Default LLM model to use"
+    )
+
+    # ----- Constants -----
+    NUM_GPUS: int = Field(
+        default=1,
+        description="Number of GPUs to use"
+    )
+    NUM_RESPONSES: int = Field(
+        default=1,
+        description="Number of responses to generate"
+    )
+    MAX_TOKENS: int = Field(
+        default=512,
+        description="Maximum number of tokens per response"
+    )
+    MAX_SEQ_LEN: int = Field(
+        default=16384,
+        description="Maximum sequence length"
+    )
+    TEMPERATURE: float = Field(
+        default=0.2,
+        description="Temperature for text generation"
+    )
+    TOP_P: float = Field(
+        default=0.95,
+        description="Top-p sampling value (must be in (0, 1])"
+    )
+    API_URL: str = Field(
+        default="http://localhost:8888",
+        description="URL for the FastAPI"
+    )
+
+    # ----- GPU Utilization Settings -----
+    DEFAULT_GPU_UTIL: float = Field(
+        default=0.30,
+        description="Default GPU utilization (works for 7B models)"
+    )
+    AWQ_GPU_UTIL: float = Field(
+        default=0.50,
+        description="Minimum GPU utilization for 7B AWQ models"
+    )
+    GPTQ_GPU_UTIL: float = Field(
+        default=0.25,
+        description="Minimum GPU utilization for 7B GPTQ models"
+    )
+
+    class Config:
+        env_file = ".env"
+        env_file_encoding = "utf-8"
 
 
 # ----- Model Names -----
 class LLM:
-    """HuggingFace models."""
+    """HuggingFace models.
+
+    The models below can be used for the DEFAULT_MODEL.
+    """
 
     OPT_125M = "facebook/opt-125m"
     MISTRAL_7B = "mistralai/Mistral-7B-Instruct-v0.1"
