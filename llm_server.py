@@ -32,7 +32,8 @@ class Config:
 
     def __init__(self):
         """Initializes the config with default values for LLM server."""
-        self.llm_model: str = DEFAULT_MODEL
+        # self.llm_model: str = DEFAULT_MODEL
+        self.llm_model: str = os.environ.get("DEFAULT_MODEL", DEFAULT_MODEL)
 
         # LLM Configs
         self.num_gpus: int = NUM_GPUS
