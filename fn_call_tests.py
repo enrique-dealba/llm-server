@@ -93,21 +93,21 @@ def function_call(
                 successful_requests += 1
                 total_requests += 1
 
-                response = tp.clean_mistral(response)  # TODO: Maybe remove this
+                #response = tp.clean_mistral(response)  # TODO: Maybe remove this
 
                 expected_response = expected_responses[idx]
                 correct = check_response(response, expected_response)
                 total_correct += int(correct)  # Adds 1 if correct
 
                 # if i == 0:  # We only print these out during first iter.
-                #     print(f"Prompt: {prompt}")
-                #     print(f"Response: {response}")
-                #     print(f"Actual: {expected_response}")
-                #     print(f"Check: {correct}")
-                #     print(f"TPS: {tps:.2f}\n")
+                print(f"Prompt: {prompt}")
+                print(f"Response: {response}")
+                print(f"Actual: {expected_response}")
+                print(f"Check: {correct}")
+                print(f"TPS: {tps:.2f}\n")
             else:
                 total_requests += 1
-                # print(f"\nFailed to get response for prompt: {prompt}")
+                print(f"\nFailed to get response for prompt: {prompt}")
 
     stats["total_tps"] += total_tps
     stats["total_time"] += total_time
