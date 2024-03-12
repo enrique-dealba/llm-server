@@ -15,7 +15,7 @@ def select_tools_and_tests(num_tools):
     """Randomly selects a subset of tool names and their corresponding test names."""
     tool_names = [
         "time_route",
-        "lat_long_route",
+        #"lat_long_route",
         "last_letter_route",
         "divide_two_route",
         "get_day_of_week_route",
@@ -34,7 +34,7 @@ def select_tools_and_tests(num_tools):
 
     tests = [
         "get_time_test",
-        "get_lat_long_test",
+        #"get_lat_long_test",
         "get_last_letter_test",
         "divide_by_two_test",
         "get_day_of_week_test",
@@ -215,27 +215,27 @@ def main():
         #     stop_docker_container()
         #     time.sleep(10)  # Waits for the container to stop
 
-        for k in range(16, 17):
+        num_funcs = 15
 
-            for i in range(num_experiments):
-                print(f"NUM FUNCS: {k}")
-                print(f"Running experiment {i+1}/{num_experiments}")
-                clear_or_create_log_file()
-                used_tool_names, experiment_test_names = select_tools_and_tests(k)
-                print(f"Used tools: {used_tool_names}")
-                write_used_tools_to_file(used_tool_names)
+        for i in range(num_experiments):
+            print(f"NUM FUNCS: {num_funcs}")
+            print(f"Running experiment {i+1}/{num_experiments}")
+            clear_or_create_log_file()
+            used_tool_names, experiment_test_names = select_tools_and_tests(num_funcs)
+            print(f"Used tools: {used_tool_names}")
+            write_used_tools_to_file(used_tool_names)
 
-                run_docker_container(experiment_test_names, model)
-                time.sleep(25)  # Waits for the container to start
+            run_docker_container(experiment_test_names, model)
+            time.sleep(25)  # Waits for the container to start
 
-                start_time = time.time()
-                stats = run_tests()
-                end_time = time.time()
-                total_time = end_time - start_time
+            start_time = time.time()
+            stats = run_tests()
+            end_time = time.time()
+            total_time = end_time - start_time
 
-                log_experiment_results(i + 1, stats, total_time, used_tool_names)
-                stop_docker_container()
-                time.sleep(10)  # Waits for the container to stop
+            log_experiment_results(i + 1, stats, total_time, used_tool_names)
+            stop_docker_container()
+            time.sleep(10)  # Waits for the container to stop
 
     # BELOW FOR TESTING SUBSETS OF TOOLS
 
