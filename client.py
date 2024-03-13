@@ -40,6 +40,8 @@ def main():
             result = Client.generate_text(prompt)
             t_1 = time.perf_counter()
 
+            print(f"Raw Response: {result}")
+
             if "text" in result:
                 response = result["text"]
             elif "detail" in result:
