@@ -83,7 +83,7 @@ def function_call(
             except Exception as e:
                 logging.error(f"LLM failed to generate text: {e}")
 
-            print(f"Raw Response: {response}")
+            # print(f"Raw Response: {response}")
 
             if response and "text" in response:
                 # TODO: More elegant way to check str type
