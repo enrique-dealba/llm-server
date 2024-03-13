@@ -55,7 +55,6 @@ def create_llm(
         if use_agent:
             return LLMRouter(llm=llm)
         return llm
-
     except Exception as e:
         raise RuntimeError(f"Failed to initialize LLM: {e}")
 

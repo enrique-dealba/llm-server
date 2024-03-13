@@ -21,10 +21,10 @@ class Settings(BaseSettings):
     DEFAULT_GPU_UTIL: float = 0.30
     AWQ_GPU_UTIL: float = 0.50
     GPTQ_GPU_UTIL: float = 0.25
-    USE_AGENT: bool = True
+    USE_AGENT: bool = False
 
     # ----- Hugging Face Hub Settings -----
-    HF_HUB_OFFLINE: bool = False  # Add this line
+    HF_HUB_OFFLINE: bool = False
 
     class Config:
         env_file = ".env"
@@ -57,6 +57,6 @@ class LLM:
     YARN_128K = "NousResearch/Yarn-Mistral-7b-128k"
     PHI_2 = "microsoft/phi-2"
     PHI_2_GPTQ = "TheBloke/phi-2-GPTQ"
-    DOLPHIN_26_PHI = "cognitivecomputations/dolphin-2_6-phi-2"
+    DOLPHIN_26_PHI = "cognitivecomputations/dolphin-2_6-phi-2" # doesn't work with vLLM
     DOLPHIN_26_PHI_GPTQ = "TheBloke/dolphin-2_6-phi-2-GPTQ"  # doesn't work with vLLM
-    PHI_2_ORANGE = "rhysjones/phi-2-orange"
+    PHI_2_ORANGE = "rhysjones/phi-2-orange" # doesn't work with vLLM
