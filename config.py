@@ -1,46 +1,27 @@
 """Config settings for LLMs and server parameters."""
 
-from pydantic import BaseSettings, Field
+from pydantic_settings import BaseSettings
 
 
 # ----- Config Settings -----
 class Settings(BaseSettings):
     # ----- LLM -----
-    DEFAULT_MODEL: str = Field(
-        default="mistralai/Mistral-7B-Instruct-v0.2",
-        description="Default LLM model to use",
-    )
+    DEFAULT_MODEL: str = "mistralai/Mistral-7B-Instruct-v0.2"
 
     # ----- Constants -----
-    NUM_GPUS: int = Field(default=1, description="Number of GPUs to use")
-    NUM_RESPONSES: int = Field(default=1, description="Number of responses to generate")
-    MAX_TOKENS: int = Field(
-        default=512, description="Maximum number of tokens per response"
-    )
-    MAX_SEQ_LEN: int = Field(default=16384, description="Maximum sequence length")
-    TEMPERATURE: float = Field(
-        default=0.2, description="Temperature for text generation"
-    )
-    TOP_P: float = Field(
-        default=0.95, description="Top-p sampling value (must be in (0, 1])"
-    )
-    API_URL: str = Field(
-        default="http://localhost:8888", description="URL for the FastAPI"
-    )
+    NUM_GPUS: int = 1
+    NUM_RESPONSES: int = 1
+    MAX_TOKENS: int = 512
+    MAX_SEQ_LEN: int = 16384
+    TEMPERATURE: float = 0.2
+    TOP_P: float = 0.95
+    API_URL: str = "http://localhost:8888"
 
     # ----- GPU Utilization Settings -----
-    DEFAULT_GPU_UTIL: float = Field(
-        default=0.30, description="Default GPU utilization (works for 7B models)"
-    )
-    AWQ_GPU_UTIL: float = Field(
-        default=0.50, description="Minimum GPU utilization for 7B AWQ models"
-    )
-    GPTQ_GPU_UTIL: float = Field(
-        default=0.25, description="Minimum GPU utilization for 7B GPTQ models"
-    )
-    USE_AGENT: bool = Field(
-        default=True, description="To use LLM Agent features like memory, agent, router"
-    )
+    DEFAULT_GPU_UTIL: float = 0.30
+    AWQ_GPU_UTIL: float = 0.50
+    GPTQ_GPU_UTIL: float = 0.25
+    USE_AGENT: bool = True
 
     class Config:
         env_file = ".env"
