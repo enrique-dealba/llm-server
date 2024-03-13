@@ -23,9 +23,13 @@ class Settings(BaseSettings):
     GPTQ_GPU_UTIL: float = 0.25
     USE_AGENT: bool = True
 
+    # ----- Hugging Face Hub Settings -----
+    HF_HUB_OFFLINE: bool = False  # Add this line
+
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
+        extra = "ignore"
 
 
 # ----- Model Names -----
