@@ -19,8 +19,6 @@ def deserialize_llm_result(obj: Dict) -> Dict:
         # Deserialize LLMResult object
         return {
             "text": obj["text"],
-            "score": obj["score"],
-            # Add other fields as needed
         }
     return obj
 
