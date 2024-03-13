@@ -4,6 +4,7 @@ python-dotenv
 langchain
 tiktoken
 pydantic
+pydantic_settings
 skyfield
 geopy
 semantic-router[local]==0.0.20
