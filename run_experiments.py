@@ -174,7 +174,7 @@ def clear_or_create_log_file():
 
 def main():
     """Main function to run the experiments."""
-    num_experiments = 5
+    num_experiments = 1
     models = [
         #"mistralai/Mistral-7B-Instruct-v0.2",
         #"teknium/OpenHermes-2.5-Mistral-7B",
@@ -192,31 +192,31 @@ def main():
     for model in models:
         print(f"Running experiments for model: {model}")
 
-        used_tool_names, experiment_test_names = select_tools_and_tests(16)
-        for i in range(len(used_tool_names)):
-            # test each tool individually
-            tool = [used_tool_names[i]]
-            test = [experiment_test_names[i]]
-            print(f"FUNCS: {tool}")
-            print(f"TEST: {test}")
-            print(f"Running experiment {i+1}/16")
-            clear_or_create_log_file()
-            print(f"Used tools: {tool}")
-            write_used_tools_to_file(tool)
+        # used_tool_names, experiment_test_names = select_tools_and_tests(16)
+        # for i in range(len(used_tool_names)):
+        #     # test each tool individually
+        #     tool = [used_tool_names[i]]
+        #     test = [experiment_test_names[i]]
+        #     print(f"FUNCS: {tool}")
+        #     print(f"TEST: {test}")
+        #     print(f"Running experiment {i+1}/16")
+        #     clear_or_create_log_file()
+        #     print(f"Used tools: {tool}")
+        #     write_used_tools_to_file(tool)
 
-            run_docker_container(test, model)
-            time.sleep(25)  # Waits for the container to start
+        #     run_docker_container(test, model)
+        #     time.sleep(25)  # Waits for the container to start
 
-            start_time = time.time()
-            stats = run_tests()
-            end_time = time.time()
-            total_time = end_time - start_time
+        #     start_time = time.time()
+        #     stats = run_tests()
+        #     end_time = time.time()
+        #     total_time = end_time - start_time
 
-            log_experiment_results(i + 1, stats, total_time, tool)
-            stop_docker_container()
-            time.sleep(10)  # Waits for the container to stop
+        #     log_experiment_results(i + 1, stats, total_time, tool)
+        #     stop_docker_container()
+        #     time.sleep(10)  # Waits for the container to stop
 
-        num_funcs = 16
+        num_funcs = 1
 
         for i in range(num_experiments):
             print(f"NUM FUNCS: {num_funcs}")
