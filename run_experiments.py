@@ -14,41 +14,41 @@ logging.basicConfig(filename='experiment.log',
 def select_tools_and_tests(num_tools):
     """Randomly selects a subset of tool names and their corresponding test names."""
     tool_names = [
-        #"time_route",
+        "time_route",
         "lat_long_route",
-        # "last_letter_route",
-        # "divide_two_route",
-        # "get_day_of_week_route",
-        # "format_phone_number_route",
-        # "compress_whitespace_route",
-        # "capitalize_first_letter_route",
-        # "reverse_string_route",
-        # "generate_acronym_route",
-        # "get_vowel_count_route",
-        # "convert_to_binary_route",
-        # "get_ascii_value_route",
-        # "extract_domain_route",
-        # "count_words_route",
-        # "convert_to_uppercase_route",
+        "last_letter_route",
+        "divide_two_route",
+        "get_day_of_week_route",
+        "format_phone_number_route",
+        "compress_whitespace_route",
+        "capitalize_first_letter_route",
+        "reverse_string_route",
+        "generate_acronym_route",
+        "get_vowel_count_route",
+        "convert_to_binary_route",
+        "get_ascii_value_route",
+        "extract_domain_route",
+        "count_words_route",
+        "convert_to_uppercase_route",
     ]
 
     tests = [
-        #"get_time_test",
+        "get_time_test",
         "get_lat_long_test",
-        # "get_last_letter_test",
-        # "divide_by_two_test",
-        # "get_day_of_week_test",
-        # "format_phone_number_test",
-        # "compress_whitespace_test",
-        # "capitalize_first_letter_test",
-        # "reverse_string_test",
-        # "generate_acronym_test",
-        # "get_vowel_count_test",
-        # "convert_to_binary_test",
-        # "get_ascii_value_test",
-        # "extract_domain_test",
-        # "count_words_test",
-        # "convert_to_uppercase_test",
+        "get_last_letter_test",
+        "divide_by_two_test",
+        "get_day_of_week_test",
+        "format_phone_number_test",
+        "compress_whitespace_test",
+        "capitalize_first_letter_test",
+        "reverse_string_test",
+        "generate_acronym_test",
+        "get_vowel_count_test",
+        "convert_to_binary_test",
+        "get_ascii_value_test",
+        "extract_domain_test",
+        "count_words_test",
+        "convert_to_uppercase_test",
     ]
 
     selected_indices = random.sample(range(len(tool_names)), num_tools)
@@ -140,8 +140,6 @@ def run_tests():
         "total_requests": 0.0,
     }
 
-    # subprocess.run(["docker", "exec", "llm6", "python", "fn_call_tests.py"])
-
     try:
         subprocess.run(["docker", "exec", "llm6", "python", "fn_call_tests.py"],
                        check=True
@@ -174,12 +172,12 @@ def clear_or_create_log_file():
 
 def main():
     """Main function to run the experiments."""
-    num_experiments = 1
+    num_experiments = 2
     models = [
-        #"mistralai/Mistral-7B-Instruct-v0.2",
-        #"teknium/OpenHermes-2.5-Mistral-7B",
+        "mistralai/Mistral-7B-Instruct-v0.2",
+        "teknium/OpenHermes-2.5-Mistral-7B",
         #"microsoft/phi-2",
-        #"TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
+        "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
         "TheBloke/OpenHermes-2.5-Mistral-7B-GPTQ",
         #"TheBloke/Mixtral-8x7B-v0.1-GPTQ",
     ]
@@ -216,7 +214,7 @@ def main():
         #     stop_docker_container()
         #     time.sleep(10)  # Waits for the container to stop
 
-        num_funcs = 1
+        num_funcs = 16
 
         for i in range(num_experiments):
             print(f"NUM FUNCS: {num_funcs}")
