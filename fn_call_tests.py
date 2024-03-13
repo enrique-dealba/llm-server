@@ -52,6 +52,9 @@ def check_response(response, expected):
     else:
         double_check = False
     len_check = abs(len(response) - len(expected)) <= 5  # True if within 5 chars
+    print(f"1. Check: {check}")
+    print(f"2. Double Check: {double_check}")
+    print(f"3. Len Check: {len_check}")
     return (check or double_check) and len_check
 
 
