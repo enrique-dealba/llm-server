@@ -14,6 +14,9 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+# TODO: Generate requirements.txt with explicit versions, delete later
+RUN pip freeze > requirements_explicit.txt
+
 # Set environment variables for vLLM version and Python version
 # Prev: ENV VLLM_VERSION=0.2.4
 ENV VLLM_VERSION=0.3.0
@@ -35,6 +38,8 @@ RUN pip uninstall xformers -y && \
 # Copy .env file and other files
 COPY .env .env
 COPY . .
+# TODO: Also delete this later
+COPY requirements_explicit.txt requirements_explicit.txt
 
 # Make sure start.sh is executable
 RUN chmod +x start.sh
