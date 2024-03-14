@@ -1,0 +1,106 @@
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+config:
+  podLabels: {}
+
+adminServiceAccount:
+  create: false
+
+image:
+  repository:
+  # Minikube needs IfNotPresent, but EKS dev env should always pull. Set by helm CLI override.
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+imagePullSecrets: [] # Secrets set from command line
+nameOverride: ""
+fullnameOverride: ""
+
+persistentVolume:
+
+persistentVolumeClaim:
+
+rolebinding:
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+
+podAnnotations: {}
+
+podSecurityContext:
+  {}
+  # fsGroup: 2000
+
+securityContext:
+  {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+
+resources:
+  {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+imageRepository:
+
+allocatePv: false
+
+components:
+  llmserver:
+    image: llm-server
+    tag: mock
+    port: 5000
+
+    resources:
+      ## Uncomment for real llm-server, in particular gpu
+      # limits:
+      #   cpu: 500
+      #   memory: 1Gi
+      #   nvidia.com/gpu: 1
+
+    # securityContext:
+    #   runAsUser: 5001
+    #   runAsGroup: 5001
+    #   fsGroup: 5001
+
+    volume:
+      name: llm-server-volume
+      claimName: llm-server-pvc
+      mountPath: /home/appuser/.cache/huggingface
+      accessMode: ReadWriteOnce
+      # Update storage appropriately for real llm-server, i.e. 64Gi
+      storage: 10Gi
+      storageClassName: ""

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "machina.fullname" . }}-test-connection"
+  labels:
+    {{- include "machina.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['llm-server:{{ .Values.service.port }}']
+  restartPolicy: Never
