@@ -39,7 +39,7 @@ RUN pip uninstall xformers -y && \
 COPY .env .env
 COPY . .
 # TODO: Also delete this later
-COPY requirements_explicit.txt requirements_explicit.txt
+RUN cp requirements_explicit.txt /app/requirements_explicit.txt
 
 # Make sure start.sh is executable
 RUN chmod +x start.sh
