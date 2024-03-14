@@ -11,6 +11,7 @@ USER root
 # Set the working directory in the container
 WORKDIR /app
 
+# TODO: Add LLM server Dockerfile
 # Copy the necessary directory contents into the container at /app
 COPY requirements.txt /app/requirements.txt
 
@@ -23,7 +24,7 @@ RUN curl -LsSf https://astral.sh/uv/install.sh | sh \
 
 COPY server.py /app/server.py
 
-# Use the ironbank Python base image
+# Use the ironbank Python base image (Stage 2)
 FROM 029514540576.dkr.ecr.us-gov-west-1.amazonaws.com/ironbank/python39-pipenv:2023.3.20
 
 # Make sure we are root to create user
