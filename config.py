@@ -6,7 +6,7 @@ from pydantic_settings import BaseSettings
 # ----- Config Settings -----
 class Settings(BaseSettings):
     # ----- LLM -----
-    DEFAULT_MODEL: str = "mistralai/Mistral-7B-Instruct-v0.2"
+    DEFAULT_MODEL: str = "NousResearch/Hermes-2-Pro-Mistral-7B"
 
     # ----- Constants -----
     NUM_GPUS: int = 1
@@ -53,6 +53,7 @@ class LLM:
     HERMES_2_5 = "teknium/OpenHermes-2.5-Mistral-7B"
     HERMES_AWQ = "TheBloke/OpenHermes-2.5-Mistral-7B-AWQ"
     HERMES_GPTQ = "TheBloke/OpenHermes-2.5-Mistral-7B-GPTQ"
+    HERMES_PRO = "NousResearch/Hermes-2-Pro-Mistral-7B"
     YARN_64K = "NousResearch/Yarn-Mistral-7b-64k"
     YARN_128K = "NousResearch/Yarn-Mistral-7b-128k"
     PHI_2 = "microsoft/phi-2"
