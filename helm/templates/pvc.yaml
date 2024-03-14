@@ -1,0 +1,12 @@
+# templates/pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.components.llmserver.volume.claimName }}
+spec:
+  accessModes:
+    - {{ .Values.components.llmserver.volume.accessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.components.llmserver.volume.storage }}
+  storageClassName: {{ .Values.components.llmserver.volume.storageClassName }}

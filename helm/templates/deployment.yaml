@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: llm-server
+  labels:
+    {{- include "machina.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "machina.llmserver.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "machina.llmserver.selectorLabels" . | nindent 8 }}
+        {{- include "machina.podLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "machina.serviceAccountName" . }}
+      volumes:
+      - name: {{ .Values.components.llmserver.volume.name }}
+        persistentVolumeClaim:
+          claimName: {{ .Values.components.llmserver.volume.claimName }}
+      initContainers:
+      - name: volume-permission
+        image: busybox
+        command: ["sh", "-c", "chown -R 5001:5001 {{ .Values.components.llmserver.volume.mountPath }}"]
+        volumeMounts:
+        - name: {{ .Values.components.llmserver.volume.name }}
+          mountPath: {{ .Values.components.llmserver.volume.mountPath }}
+        securityContext:
+          runAsUser: 0
+      containers:
+      - name: {{ .Chart.Name }}
+        volumeMounts:
+        - name: {{ .Values.components.llmserver.volume.name }}
+          mountPath: {{ .Values.components.llmserver.volume.mountPath }}
+        image: {{ include "machina.llmserver.image" . }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+          - name: http
+            containerPort: {{ .Values.components.llmserver.port }}
+            protocol: TCP
+        resources:
+          {{- toYaml .Values.components.llmserver.resources | nindent 12 }}
+        env:
+        - name: PORT
+          value: "{{ .Values.components.llmserver.port }}"
+        livenessProbe:
+          tcpSocket:
+            port: {{ .Values.components.llmserver.port }}
+          initialDelaySeconds: 15
+          periodSeconds: 10
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
