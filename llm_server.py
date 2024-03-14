@@ -91,16 +91,8 @@ async def generate(request: Request, llm: VLLM = Depends(get_llm)):
     try:
         request_data = await request.json()
         query = GenerateRequest(**request_data).text
-        response = llm.generate([query] * 4)
-        #return JSONResponse({"text": response})
-        serialized_response = [
-            {
-                "_type": "LLMResult",
-                "text": result.text
-            }
-            for result in response
-        ]
-        return JSONResponse(content=serialized_response)
+        response = llm(query)
+        return JSONResponse({"text": response})
     except Exception as e:
         raise HTTPException(
             status_code=400, detail=f"Error processing user request: {e}"
