@@ -97,11 +97,11 @@ class VLLMAdapter(BaseLLM):
         schema: {function_schema}
         Result:
         """
-        hermes_pro_prompt =  f"""
+        hermes_pro_prompt = f"""
         <|im_start|>system
         You are a helpful assistant designed to output JSON.
         Given the following function schema
-        <tools> {function_schema} </tools>
+        << {function_schema} >>
         and query
         << {query} >>
         extract the parameters values from the query, in a valid JSON format.
@@ -116,31 +116,20 @@ class VLLMAdapter(BaseLLM):
             "output": "<class 'str'>",
         }}
 
-        Result:
-        <tool_call>
-        {{
-            "arguments": {{
-                "location": "Hawaii",
-                "degree": "International"
-                }},
-            "name": "get_weather"
+        Result: {{
+            "location": "London",
+            "degree": "Celsius",
         }}
-        </tool_call>
+        <|im_end|>
 
+        <|im_start|>user
         Input:
         query: {query}
-        schema:
-        <tools>
-        {function_schema}
-        </tools>
-        Result:
-        <tool_call>
-        {{
-            "arguments": {{}},
-            "name": ""
-        }}
-        </tool_call>
+        schema: {function_schema}
         <|im_end|>
+        
+        <|im_start|>assistant
+        Result:
         """
         prompt = hermes_pro_prompt
         llm_input = [Message(role="user", content=prompt)]
