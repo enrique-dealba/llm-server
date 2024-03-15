@@ -172,13 +172,13 @@ def clear_or_create_log_file():
 
 def main():
     """Main function to run the experiments."""
-    num_experiments = 2
+    num_experiments = 3
     models = [
-        "mistralai/Mistral-7B-Instruct-v0.2",
-        "teknium/OpenHermes-2.5-Mistral-7B",
-        "microsoft/phi-2",
-        "NousResearch/Hermes-2-Pro-Mistral-7B",
-        "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
+        # "mistralai/Mistral-7B-Instruct-v0.2",
+        # "teknium/OpenHermes-2.5-Mistral-7B",
+        # "microsoft/phi-2",
+        # "NousResearch/Hermes-2-Pro-Mistral-7B",
+        # "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
         "TheBloke/OpenHermes-2.5-Mistral-7B-GPTQ",
         "TheBloke/Mixtral-8x7B-v0.1-GPTQ",
     ]

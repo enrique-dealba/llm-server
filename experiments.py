@@ -1036,7 +1036,29 @@ h4_gptq_funcs16 = [
     .94,
 ]
 
+## BELOW ARE FROM HERMES 2 NEW PROMPTING
+
 h_pro_funcs16 = [
     .95,
     .95,
+    .95,
+    .95,
 ]
+
+m5_gptq_funcs16 = [
+    0.0,
+    0.0,
+]
+
+# phi-2 gets 0.0 for everything still
+
+h5_funcs16 = [
+    .96,
+    .96,
+]
+
+m5_funcs16 = [
+    0.0,
+    0.0,
+]
+
