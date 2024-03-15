@@ -83,7 +83,7 @@ def function_call(
             except Exception as e:
                 logging.error(f"LLM failed to generate text: {e}")
 
-            # print(f"Raw Response: {response}")
+            print(f"Raw Response: {response}")
 
             if response and "text" in response:
                 # TODO: More elegant way to check str type
@@ -102,11 +102,11 @@ def function_call(
                 total_correct += int(correct)  # Adds 1 if correct
 
                 # if i == 0:  # We only print these out during first iter.
-                # print(f"Prompt: {prompt}")
-                # print(f"Response: {response}")
-                # print(f"Actual: {expected_response}")
-                # print(f"Check: {correct}")
-                # print(f"TPS: {tps:.2f}\n")
+                print(f"Prompt: {prompt}")
+                print(f"Response: {response}")
+                print(f"Actual: {expected_response}")
+                print(f"Check: {correct}")
+                print(f"TPS: {tps:.2f}\n")
             else:
                 total_requests += 1
                 # print(f"\nFailed to get response for prompt: {prompt}")
