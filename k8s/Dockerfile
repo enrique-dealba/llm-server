@@ -11,13 +11,13 @@ USER root
 # Set the working directory in the container
 WORKDIR /app
 
-# LLM Server Dockerfile
-
-# Install system dependencies for llama-cpp-python
-RUN apt-get update && apt-get install -y \
-    build-essential \
+# Install system dependencies for llama-cpp-python using yum
+RUN yum update -y && yum install -y \
+    gcc \
+    gcc-c++ \
+    make \
     cmake \
-    && rm -rf /var/lib/apt/lists/*
+    && yum clean all
 
 # Copy requirements file and install dependencies
 COPY requirements.txt .
