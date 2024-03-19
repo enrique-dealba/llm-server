@@ -81,26 +81,19 @@ allocatePv: false
 components:
   llmserver:
     image: llm-server
-    tag: mock
-    port: 5000
+    tag: latest
+    port: 8888
 
     resources:
-      ## Uncomment for real llm-server, in particular gpu
-      # limits:
-      #   cpu: 500
-      #   memory: 1Gi
-      #   nvidia.com/gpu: 1
-
-    # securityContext:
-    #   runAsUser: 5001
-    #   runAsGroup: 5001
-    #   fsGroup: 5001
+      limits:
+        cpu: "4"
+        memory: 8Gi
+        nvidia.com/gpu: 1
 
     volume:
       name: llm-server-volume
       claimName: llm-server-pvc
-      mountPath: /home/appuser/.cache/huggingface
+      mountPath: /root/.cache/huggingface
       accessMode: ReadWriteOnce
-      # Update storage appropriately for real llm-server, i.e. 64Gi
-      storage: 10Gi
+      storage: 64Gi
       storageClassName: ""
