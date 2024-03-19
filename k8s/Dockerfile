@@ -19,24 +19,30 @@ RUN yum update -y && yum install -y \
     cmake \
     && yum clean all
 
-# Copy requirements file and install dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy llm_requirements.txt file
+COPY llm_requirements.txt .
+
+# Install uv and Python dependencies
+ENV VIRTUAL_ENV /usr/local/
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh \
+    && source ${HOME}/.cargo/env \
+    && uv pip install --no-cache -r llm_requirements.txt \
+    --extra-index-url https://${NEXUS_USER}:${NEXUS_TOKEN}@nexus.dso-prod.machina.space/repository/pypi-all/simple
 
 # Set environment variables for vLLM version and Python version
 ENV VLLM_VERSION=0.3.0
 ENV PYTHON_VERSION=39
 
 # Install vLLM with CUDA 11.8
-RUN pip install https://github.com/vllm-project/vllm/releases/download/v${VLLM_VERSION}/vllm-${VLLM_VERSION}+cu118-cp${PYTHON_VERSION}-cp${PYTHON_VERSION}-manylinux1_x86_64.whl
+RUN uv pip install https://github.com/vllm-project/vllm/releases/download/v${VLLM_VERSION}/vllm-${VLLM_VERSION}+cu118-cp${PYTHON_VERSION}-cp${PYTHON_VERSION}-manylinux1_x86_64.whl
 
 # Re-install PyTorch with CUDA 11.8
-RUN pip uninstall torch -y && \
-    pip install torch==2.1.2 --index-url https://download.pytorch.org/whl/cu118
+RUN uv pip uninstall torch -y && \
+    uv pip install torch==2.1.2 --index-url https://download.pytorch.org/whl/cu118
 
 # Re-install xFormers with CUDA 11.8
-RUN pip uninstall xformers -y && \
-    pip install xformers==0.0.23.post1 --index-url https://download.pytorch.org/whl/cu118
+RUN uv pip uninstall xformers -y && \
+    uv pip install xformers==0.0.23.post1 --index-url https://download.pytorch.org/whl/cu118
 
 # Copy .env file and other files
 COPY .env .env
