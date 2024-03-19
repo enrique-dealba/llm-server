@@ -54,7 +54,7 @@ spec:
           limits:
             cpu: "{{ .Values.components.llmserver.resources.limits.cpu }}"
             memory: "{{ .Values.components.llmserver.resources.limits.memory }}"
-            "nvidia.com/gpu": "{{ .Values.components.llmserver.resources.limits.nvidia.com/gpu }}"
+            "nvidia.com/gpu": "{{ index .Values.components.llmserver.resources.limits "nvidia.com/gpu" }}"
         env:
         - name: PORT
           value: "{{ .Values.components.llmserver.port }}"
