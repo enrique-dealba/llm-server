@@ -11,18 +11,42 @@ USER root
 # Set the working directory in the container
 WORKDIR /app
 
-# TODO: Add LLM server Dockerfile
-# Copy the necessary directory contents into the container at /app
-COPY requirements.txt /app/requirements.txt
+# LLM Server Dockerfile
 
-# Install requirements
-ENV VIRTUAL_ENV /usr/local/
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh \
-    && source ${HOME}/.cargo/env \
-    && uv pip install --no-cache -r requirements.txt \
-    --extra-index-url https://${NEXUS_USER}:${NEXUS_TOKEN}@nexus.dso-prod.machina.space/repository/pypi-all/simple
+# Install system dependencies for llama-cpp-python
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    cmake \
+    && rm -rf /var/lib/apt/lists/*
 
-COPY server.py /app/server.py
+# Copy requirements file and install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Set environment variables for vLLM version and Python version
+ENV VLLM_VERSION=0.3.0
+ENV PYTHON_VERSION=39
+
+# Install vLLM with CUDA 11.8
+RUN pip install https://github.com/vllm-project/vllm/releases/download/v${VLLM_VERSION}/vllm-${VLLM_VERSION}+cu118-cp${PYTHON_VERSION}-cp${PYTHON_VERSION}-manylinux1_x86_64.whl
+
+# Re-install PyTorch with CUDA 11.8
+RUN pip uninstall torch -y && \
+    pip install torch==2.1.2 --index-url https://download.pytorch.org/whl/cu118
+
+# Re-install xFormers with CUDA 11.8
+RUN pip uninstall xformers -y && \
+    pip install xformers==0.0.23.post1 --index-url https://download.pytorch.org/whl/cu118
+
+# Copy .env file and other files
+COPY .env .env
+COPY . .
+
+# Make sure start.sh is executable
+RUN chmod +x start.sh
+
+# Expose port 8888
+EXPOSE 8888
 
 # Use the ironbank Python base image (Stage 2)
 FROM 029514540576.dkr.ecr.us-gov-west-1.amazonaws.com/ironbank/python39-pipenv:2023.3.20
@@ -52,4 +76,4 @@ ENV WORKERS 1
 ENV PYTHONPATH .
 
 # Define entrypoint to run the server when the container launches
-ENTRYPOINT uvicorn server:app --host 0.0.0.0 --port ${PORT} --workers=${WORKERS}
+ENTRYPOINT ["sh", "./start.sh"]
