@@ -40,9 +40,8 @@ RUN pip uninstall torch -y && \
 RUN pip uninstall xformers -y && \
     pip install xformers==0.0.23.post1 --index-url https://download.pytorch.org/whl/cu118
 
-# Copy .env file and other files
-COPY .env .env
-COPY . .
+# Copy all files from the parent directory
+COPY ../ .
 
 # Make sure start.sh is executable
 RUN chmod +x start.sh
