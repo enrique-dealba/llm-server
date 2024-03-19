@@ -51,7 +51,10 @@ spec:
             containerPort: {{ .Values.components.llmserver.port }}
             protocol: TCP
         resources:
-          {{- toYaml .Values.components.llmserver.resources | nindent 12 }}
+          limits:
+            cpu: "{{ .Values.components.llmserver.resources.limits.cpu }}"
+            memory: "{{ .Values.components.llmserver.resources.limits.memory }}"
+            nvidia.com/gpu: "{{ .Values.components.llmserver.resources.limits.nvidia.com/gpu }}"
         env:
         - name: PORT
           value: "{{ .Values.components.llmserver.port }}"
