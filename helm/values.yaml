@@ -89,8 +89,6 @@ components:
         cpu: "4"
         memory: 8Gi
         nvidia.com/gpu: 1
-        # memory: "8Gi"
-        # "nvidia.com/gpu": "1"
 
     volume:
       name: llm-server-volume
@@ -98,5 +96,4 @@ components:
       mountPath: /root/.cache/huggingface
       accessMode: ReadWriteOnce
       storage: 64Gi
-      # storage: "64Gi"
       storageClassName: ""

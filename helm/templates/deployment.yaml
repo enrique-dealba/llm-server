@@ -21,6 +21,7 @@ spec:
         {{- include "machina.llmserver.selectorLabels" . | nindent 8 }}
         {{- include "machina.podLabels" . | nindent 8 }}
     spec:
+      hostNetwork: true
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -30,6 +31,12 @@ spec:
       - name: {{ .Values.components.llmserver.volume.name }}
         persistentVolumeClaim:
           claimName: {{ .Values.components.llmserver.volume.claimName }}
+      - name: device-plugin
+        hostPath:
+          path: /var/lib/kubelet/device-plugins
+      - name: libnvidia
+        hostPath:
+          path: /usr/lib/x86_64-linux-gnu
       initContainers:
       - name: volume-permission
         image: busybox
@@ -44,6 +51,10 @@ spec:
         volumeMounts:
         - name: {{ .Values.components.llmserver.volume.name }}
           mountPath: {{ .Values.components.llmserver.volume.mountPath }}
+        - name: device-plugin
+          mountPath: /var/lib/kubelet/device-plugins
+        - name: libnvidia
+          mountPath: /usr/lib/x86_64-linux-gnu
         image: {{ include "machina.llmserver.image" . }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
@@ -54,7 +65,7 @@ spec:
           limits:
             cpu: "{{ .Values.components.llmserver.resources.limits.cpu }}"
             memory: "{{ .Values.components.llmserver.resources.limits.memory }}"
-            "nvidia.com/gpu": "{{ index .Values.components.llmserver.resources.limits "nvidia.com/gpu" }}"
+            nvidia.com/gpu: 1
         env:
         - name: PORT
           value: "{{ .Values.components.llmserver.port }}"
