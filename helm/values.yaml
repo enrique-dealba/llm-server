@@ -96,4 +96,4 @@ components:
       mountPath: /root/.cache/huggingface
       accessMode: ReadWriteOnce
       storage: 64Gi
-      storageClassName: ""
+      storageClassName: "llm-hostpath"
