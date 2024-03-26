@@ -20,7 +20,7 @@ RUN yum update -y && yum install -y \
     && yum clean all
 
 # Copy requirements.txt file
-COPY requirements.txt .
+COPY k8s/requirements.txt .
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt --extra-index-url https://${NEXUS_USER}:${NEXUS_TOKEN}@nexus.dso-prod.machina.space/repository/pypi-all/simple
