@@ -22,34 +22,33 @@ RUN yum update -y && yum install -y \
 # Copy requirements.txt file
 COPY requirements.txt .
 
-# Install Python dependencies with trusted hosts
 # Install Python dependencies
-RUN pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir -r requirements.txt --extra-index-url https://${NEXUS_USER}:${NEXUS_TOKEN}@nexus.dso-prod.machina.space/repository/pypi-all/simple
+# RUN pip install --no-cache-dir --upgrade pip \
+#     && pip install --no-cache-dir -r requirements.txt --extra-index-url https://${NEXUS_USER}:${NEXUS_TOKEN}@nexus.dso-prod.machina.space/repository/pypi-all/simple
 
 # Set environment variables for vLLM version and Python version
-ENV VLLM_VERSION=0.3.0
-ENV PYTHON_VERSION=39
+# ENV VLLM_VERSION=0.3.0
+# ENV PYTHON_VERSION=39
 
 # Install vLLM with CUDA 11.8
-RUN pip install https://github.com/vllm-project/vllm/releases/download/v${VLLM_VERSION}/vllm-${VLLM_VERSION}+cu118-cp${PYTHON_VERSION}-cp${PYTHON_VERSION}-manylinux1_x86_64.whl
+# RUN pip install https://github.com/vllm-project/vllm/releases/download/v${VLLM_VERSION}/vllm-${VLLM_VERSION}+cu118-cp${PYTHON_VERSION}-cp${PYTHON_VERSION}-manylinux1_x86_64.whl
 
 # Re-install PyTorch with CUDA 11.8
-RUN pip uninstall torch -y && \
-    pip install torch==2.1.2 --index-url https://download.pytorch.org/whl/cu118
+# RUN pip uninstall torch -y && \
+#     pip install torch==2.1.2 --index-url https://download.pytorch.org/whl/cu118
 
 # Re-install xFormers with CUDA 11.8
-RUN pip uninstall xformers -y && \
-    pip install xformers==0.0.23.post1 --index-url https://download.pytorch.org/whl/cu118
+# RUN pip uninstall xformers -y && \
+#     pip install xformers==0.0.23.post1 --index-url https://download.pytorch.org/whl/cu118
 
 # Copy all files from the parent directory
-COPY . .
+# COPY . .
 
 # Make sure start.sh is executable
-RUN chmod +x start.sh
+# RUN chmod +x start.sh
 
 # Expose port 8888
-EXPOSE 8888
+# EXPOSE 8888
 
 # Use the ironbank Python base image (Stage 2)
 FROM 029514540576.dkr.ecr.us-gov-west-1.amazonaws.com/ironbank/python39-pipenv:2023.3.20
@@ -73,6 +72,7 @@ WORKDIR /app
 # Define environment variables
 ENV PORT 5000
 ENV WORKERS 1
+
 # Set the Python path to recognize our server package since we do not install it
 ENV PYTHONPATH .
 
