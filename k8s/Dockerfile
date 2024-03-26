@@ -19,11 +19,15 @@ RUN yum update -y && yum install -y \
     cmake \
     && yum clean all
 
+# Update pip to the latest version
+RUN pip install --upgrade pip
+
 # Copy requirements.txt file
 COPY requirements.txt .
 
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt --extra-index-url https://${NEXUS_USER}:${NEXUS_TOKEN}@nexus.dso-prod.machina.space/repository/pypi-all/simple
+# Install Python dependencies with trusted hosts
+#RUN pip install --no-cache-dir -r requirements.txt --extra-index-url https://${NEXUS_USER}:${NEXUS_TOKEN}@nexus.dso-prod.machina.space/repository/pypi-all/simple
+RUN pip install --no-cache-dir --trusted-host pypi.org --trusted-host files.pythonhosted.org --trusted-host nexus.dso-prod.machina.space -r requirements.txt --extra-index-url https://${NEXUS_USER}:${NEXUS_TOKEN}@nexus.dso-prod.machina.space/repository/pypi-all/simple
 
 # Set environment variables for vLLM version and Python version
 ENV VLLM_VERSION=0.3.0
