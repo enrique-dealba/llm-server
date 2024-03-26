@@ -16,7 +16,8 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
-imagePullSecrets: [] # Secrets set from command line
+imagePullSecrets:
+  - name: my-registry-secret
 nameOverride: ""
 fullnameOverride: ""
 
