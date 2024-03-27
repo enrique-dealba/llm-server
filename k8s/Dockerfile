@@ -63,6 +63,9 @@ RUN useradd --create-home --system --uid 5001 --gid 5001 appuser
 # Change the ownership of the app files to the non-root user
 COPY --from=builder --chown=appuser:appuser /app /app
 
+# Copy the installed packages from the builder stage
+COPY --from=builder /usr/local/lib/python3.9/site-packages /usr/local/lib/python3.9/site-packages
+
 # Switch to the non-root user
 USER appuser
 
