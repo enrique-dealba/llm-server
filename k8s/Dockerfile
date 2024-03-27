@@ -26,6 +26,9 @@ COPY k8s/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt --extra-index-url https://${NEXUS_USER}:${NEXUS_TOKEN}@nexus.dso-prod.machina.space/repository/pypi-all/simple
 RUN pip install uvicorn
 
+# TODO: Delete after
+RUN pip list
+
 # Set environment variables for vLLM version and Python version
 ENV VLLM_VERSION=0.3.0
 ENV PYTHON_VERSION=39
@@ -65,6 +68,9 @@ COPY --from=builder --chown=appuser:appuser /app /app
 
 # Copy the installed packages from the builder stage
 COPY --from=builder /usr/local/lib/python3.9/site-packages /usr/local/lib/python3.9/site-packages
+
+# TODO: Delete after
+RUN pip list
 
 # Switch to the non-root user
 USER appuser
