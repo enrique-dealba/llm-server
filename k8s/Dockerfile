@@ -72,10 +72,10 @@ COPY --from=builder --chown=appuser:appuser /app /app
 # Copy the virtual environment from the builder stage
 COPY --from=builder /opt/venv /opt/venv
 
-# Create a symbolic link from /home/appuser/.cache to /root/.cache
-# TODO: Double check this, maybe not needed
+# Add this line after creating the appuser
+# TODO: Consider deleting this after
 RUN mkdir -p /home/appuser/.cache && \
-    ln -s /root/.cache /home/appuser/.cache
+    chown -R appuser:appuser /home/appuser/.cache
 
 # Activate the virtual environment
 ENV PATH="/opt/venv/bin:$PATH"
