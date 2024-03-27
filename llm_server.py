@@ -60,10 +60,10 @@ def create_llm(
 
 
 # Initialize configurations and dependencies
-quantization = os.environ.get("QUANTIZATION", "None")
-quantization = quantization if quantization != "None" else None
+# quantization = os.environ.get("QUANTIZATION", "None")
+# quantization = quantization if quantization != "None" else None
 
-llm = create_llm(quantization=quantization, use_agent=settings.USE_AGENT)
+llm = create_llm(quantization="gptq", use_agent=settings.USE_AGENT)
 
 app = FastAPI()
 
