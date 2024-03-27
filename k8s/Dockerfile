@@ -23,8 +23,8 @@ RUN yum update -y && yum install -y \
 COPY k8s/requirements.txt .
 
 # Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-# RUN pip install --no-cache-dir -r requirements.txt --extra-index-url https://${NEXUS_USER}:${NEXUS_TOKEN}@nexus.dso-prod.machina.space/repository/pypi-all/simple
+RUN pip install --no-cache-dir -r requirements.txt --extra-index-url https://${NEXUS_USER}:${NEXUS_TOKEN}@nexus.dso-prod.machina.space/repository/pypi-all/simple
+RUN pip install uvicorn
 
 # Set environment variables for vLLM version and Python version
 ENV VLLM_VERSION=0.3.0
