@@ -94,7 +94,8 @@ components:
     volume:
       name: llm-server-volume
       claimName: llm-server-pvc
-      mountPath: /root/.cache/huggingface
+      # mountPath: /root/.cache/huggingface
+      mountPath: /mnt/data/llm-server/.cache/huggingface
       accessMode: ReadWriteOnce
       storage: 64Gi
       storageClassName: "llm-hostpath"

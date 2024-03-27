@@ -11,4 +11,5 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: "llm-hostpath"
   hostPath:
-    path: /mnt/data/llm-server
+    # path: /mnt/data/llm-server
+    path: /mnt/data/llm-server/.cache/huggingface

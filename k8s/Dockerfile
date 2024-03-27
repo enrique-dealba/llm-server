@@ -32,9 +32,6 @@ COPY k8s/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt --extra-index-url https://${NEXUS_USER}:${NEXUS_TOKEN}@nexus.dso-prod.machina.space/repository/pypi-all/simple
 RUN pip install uvicorn
 
-# TODO: Delete after
-RUN pip list
-
 # Set environment variables for vLLM version and Python version
 ENV VLLM_VERSION=0.3.0
 ENV PYTHON_VERSION=39
@@ -75,8 +72,10 @@ COPY --from=builder --chown=appuser:appuser /app /app
 # Copy the virtual environment from the builder stage
 COPY --from=builder /opt/venv /opt/venv
 
-# TODO: Delete after
-RUN pip list
+# Create a symbolic link from /home/appuser/.cache to /root/.cache
+# TODO: Double check this, maybe not needed
+RUN mkdir -p /home/appuser/.cache && \
+    ln -s /root/.cache /home/appuser/.cache
 
 # Activate the virtual environment
 ENV PATH="/opt/venv/bin:$PATH"
