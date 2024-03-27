@@ -19,10 +19,16 @@ RUN yum update -y && yum install -y \
     cmake \
     && yum clean all
 
+# Create a virtual environment
+RUN python -m venv /opt/venv
+
+# Activate the virtual environment
+ENV PATH="/opt/venv/bin:$PATH"
+
 # Copy requirements.txt file
 COPY k8s/requirements.txt .
 
-# Install Python dependencies
+# Install Python dependencies within the virtual environment
 RUN pip install --no-cache-dir -r requirements.txt --extra-index-url https://${NEXUS_USER}:${NEXUS_TOKEN}@nexus.dso-prod.machina.space/repository/pypi-all/simple
 RUN pip install uvicorn
 
@@ -33,14 +39,14 @@ RUN pip list
 ENV VLLM_VERSION=0.3.0
 ENV PYTHON_VERSION=39
 
-# Install vLLM with CUDA 11.8
+# Install vLLM with CUDA 11.8 within the virtual environment
 RUN pip install https://github.com/vllm-project/vllm/releases/download/v${VLLM_VERSION}/vllm-${VLLM_VERSION}+cu118-cp${PYTHON_VERSION}-cp${PYTHON_VERSION}-manylinux1_x86_64.whl
 
-# Re-install PyTorch with CUDA 11.8
+# Re-install PyTorch with CUDA 11.8 within the virtual environment
 RUN pip uninstall torch -y && \
     pip install torch==2.1.2 --index-url https://download.pytorch.org/whl/cu118
 
-# Re-install xFormers with CUDA 11.8
+# Re-install xFormers with CUDA 11.8 within the virtual environment
 RUN pip uninstall xformers -y && \
     pip install xformers==0.0.23.post1 --index-url https://download.pytorch.org/whl/cu118
 
@@ -66,11 +72,14 @@ RUN useradd --create-home --system --uid 5001 --gid 5001 appuser
 # Change the ownership of the app files to the non-root user
 COPY --from=builder --chown=appuser:appuser /app /app
 
-# Copy the installed packages from the builder stage
-COPY --from=builder /usr/local/lib/python3.9/site-packages /usr/local/lib/python3.9/site-packages
+# Copy the virtual environment from the builder stage
+COPY --from=builder /opt/venv /opt/venv
 
 # TODO: Delete after
 RUN pip list
+
+# Activate the virtual environment
+ENV PATH="/opt/venv/bin:$PATH"
 
 # Switch to the non-root user
 USER appuser
