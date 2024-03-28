@@ -88,8 +88,10 @@ components:
     resources:
       limits:
         cpu: "4"
-        memory: 8Gi
+        memory: 16Gi
         nvidia.com/gpu: 1
+      requests:
+        memory: 16Gi
 
     volume:
       name: llm-server-volume
