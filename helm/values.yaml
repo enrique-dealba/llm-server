@@ -82,7 +82,7 @@ allocatePv: false
 components:
   llmserver:
     image: edealba2/llm-server
-    tag: latest
+    tag: v2
     port: 8888
 
     resources:
