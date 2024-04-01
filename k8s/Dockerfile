@@ -72,9 +72,10 @@ COPY --from=builder --chown=appuser:appuser /app /app
 # Copy the virtual environment from the builder stage
 COPY --from=builder /opt/venv /opt/venv
 
-# Create the /root/.cache directory and change its ownership to appuser
-RUN mkdir -p /root/.cache && \
-    chown -R appuser:appuser /root/.cache
+# Add this line after creating the appuser
+# TODO: Consider deleting this after
+RUN mkdir -p /home/appuser/.cache && \
+    chown -R appuser:appuser /home/appuser/.cache
 
 # Activate the virtual environment
 ENV PATH="/opt/venv/bin:$PATH"

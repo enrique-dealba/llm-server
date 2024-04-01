@@ -82,7 +82,7 @@ allocatePv: false
 components:
   llmserver:
     image: edealba2/llm-server
-    tag: v2
+    tag: latest
     port: 8888
 
     resources:
@@ -97,9 +97,6 @@ components:
       name: llm-server-volume
       claimName: llm-server-pvc
       mountPath: /root/.cache/huggingface
-      # mountPath: /home/appuser/.cache/huggingface
-      # mountPath: /home/appuser/.cache/huggingface/hub/models--TheBloke--OpenHermes-2.5-Mistral-7B-GPTQ
-      # mountPath: /home/appuser/.cache/huggingface/hub/models--TheBloke--OpenHermes-2.5-Mistral-7B-GPTQ/blobs
       accessMode: ReadWriteOnce
       storage: 64Gi
       storageClassName: "llm-hostpath"
