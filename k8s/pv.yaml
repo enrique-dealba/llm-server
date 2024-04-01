@@ -12,4 +12,6 @@ spec:
   storageClassName: "llm-hostpath"
   hostPath:
     # path: /mnt/data/llm-server
-    path: /mnt/data/llm-server/.cache/huggingface
+    # path: /mnt/data/llm-server/.cache/huggingface
+    path: /home/edealba/.cache/huggingface/hub/models--TheBloke--OpenHermes-2.5-Mistral-7B-GPTQ
+    # path: /home/edealba/.cache/huggingface/hub/models--TheBloke--OpenHermes-2.5-Mistral-7B-GPTQ/blobs

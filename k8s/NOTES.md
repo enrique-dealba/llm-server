@@ -4,7 +4,33 @@ Install the NVIDIA Device Plugin for Kubernetes if cluster uses NVIDIA GPUs. Thi
 kubectl create -f https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/master/nvidia-device-plugin.yml
 ```
 
-## Setting up and Running the LLM Server
+## Setting up and Running the Actual LLM Server
+
+### Step 1: Setting up the environment
+1.1. Commands to run
+```shell
+microk8s helm uninstall llm-server
+
+microk8s kubectl delete pvc llm-server-pvc
+microk8s kubectl delete pv llm-server-pv
+
+docker pull edealba2/llm-server:latest
+
+microk8s kubectl apply -f k8s/pv.yaml
+microk8s kubectl get pv
+
+microk8s helm install llm-server ./helm
+OR
+microk8s helm upgrade --install llm-server ./helm
+
+microk8s kubectl get pods
+microk8s kubectl logs -f <pod-name>
+microk8s kubectl describe pod <pod-name>
+
+microk8s helm uninstall llm-server
+```
+
+## Setting up and Running the Mock LLM Server
 
 ### Step 1: Setting up the environment
 1.1. Navigate to LLM server codebase directory
