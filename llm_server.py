@@ -136,8 +136,8 @@ class CatalogMaintenanceObjective(BaseModel):
     patience_minutes: int = Field(default=30)
     end_time_offset_minutes: int = Field(default=20)
     objective_name: str = Field(default="Catalog Maintenance Objective")
-    objective_start_time: datetime = Field(default_factory=datetime.now)
-    objective_end_time: datetime = Field(default_factory=datetime.now)
+    objective_start_time: datetime = Field(default_factory=datetime.datetime.now)
+    objective_end_time: datetime = Field(default_factory=datetime.datetime.now)
     priority: int = Field(default=10)
 
 
