@@ -1,15 +1,15 @@
 """FastAPI server for handling Large Language Model (LLM) requests."""
 
-from typing import List, Optional
-
+import datetime
 from enum import Enum
+from typing import Optional
 
 import vllm
 from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
 from langchain.llms import VLLM
 from outlines.serve.vllm import JSONLogitsProcessor
-from pydantic import BaseModel, constr
+from pydantic import BaseModel, Field, constr
 
 from config import Settings
 
@@ -121,7 +121,29 @@ class Character(BaseModel):
     strength: int
 
 
-logits_processor = JSONLogitsProcessor(Character, llm.client.llm_engine)
+class Marking(str, Enum):
+    unclassified = "U"
+    classified = "C"
+    secret = "S"
+    top_secret = "TS"
+    fouo = "U//FOUO"
+
+
+class CatalogMaintenanceObjective(BaseModel):
+    sensor_name: str
+    data_mode: str
+    classification_marking: Marking
+    patience_minutes: int = Field(default=30)
+    end_time_offset_minutes: int = Field(default=20)
+    objective_name: str = Field(default="Catalog Maintenance Objective")
+    objective_start_time: datetime = Field(default_factory=datetime.now)
+    objective_end_time: datetime = Field(default_factory=datetime.now)
+    priority: int = Field(default=10)
+
+
+logits_processor = JSONLogitsProcessor(
+    CatalogMaintenanceObjective, llm.client.llm_engine
+)
 
 
 @app.post("/generate")
