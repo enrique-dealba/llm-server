@@ -2,12 +2,14 @@
 
 from typing import List, Optional
 
+from enum import Enum
+
 import vllm
 from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
 from langchain.llms import VLLM
 from outlines.serve.vllm import JSONLogitsProcessor
-from pydantic import BaseModel
+from pydantic import BaseModel, constr
 
 from config import Settings
 
@@ -96,13 +98,30 @@ def get_llm():
 # sampler._apply_logits_processors = _patched_apply_logits_processors
 
 
-class ConceptsList(BaseModel):
-    """Proof of concept."""
+class Weapon(str, Enum):
+    sword = "sword"
+    axe = "axe"
+    mace = "mace"
+    spear = "spear"
+    bow = "bow"
+    crossbow = "crossbow"
 
-    concepts: List[str]
+
+class Armor(str, Enum):
+    leather = "leather"
+    chainmail = "chainmail"
+    plate = "plate"
 
 
-logits_processor = JSONLogitsProcessor(ConceptsList, llm.client.llm_engine)
+class Character(BaseModel):
+    name: constr(max_length=10)
+    age: int
+    armor: Armor
+    weapon: Weapon
+    strength: int
+
+
+logits_processor = JSONLogitsProcessor(Character, llm.client.llm_engine)
 
 
 @app.post("/generate")
@@ -115,7 +134,8 @@ async def generate(request: Request, llm: CustomVLLM = Depends(get_llm)):
         response = llm.generate(
             query,
             sampling_params=vllm.SamplingParams(
-                max_tokens=100, logits_processors=[logits_processor]
+                max_tokens=settings.MAX_TOKENS,
+                logits_processors=[logits_processor],
             ),
         )
         return JSONResponse({"text": response.generations[0][0].text})
