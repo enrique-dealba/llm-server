@@ -9,7 +9,8 @@ from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
 from langchain.llms import VLLM
 from outlines.serve.vllm import JSONLogitsProcessor
-from pydantic import BaseModel, Field, constr
+from pydantic import BaseModel, Field, ValidationError, constr
+from pydantic.fields import Annotated
 
 from config import Settings
 
@@ -128,15 +129,19 @@ def custom_datetime_schema():
     }
 
 
-BaseModel.schema_extra[datetime] = custom_datetime_schema
-
-
 class Marking(str, Enum):
     unclassified = "U"
     classified = "C"
     secret = "S"
     top_secret = "TS"
     fouo = "U//FOUO"
+
+
+def parse_datetime(value: str) -> datetime:
+    try:
+        return datetime.fromisoformat(value)
+    except ValueError as e:
+        raise ValidationError([str(e)])
 
 
 class CatalogMaintenanceObjective(BaseModel):
@@ -146,9 +151,12 @@ class CatalogMaintenanceObjective(BaseModel):
     patience_minutes: int = Field(default=30)
     end_time_offset_minutes: int = Field(default=20)
     objective_name: str = Field(default="Catalog Maintenance Objective")
-    objective_start_time: datetime = Field(default_factory=datetime.now)
-    objective_end_time: datetime = Field(default_factory=datetime.now)
+    objective_start_time: Annotated[datetime, Field(default_factory=datetime.now)]
+    objective_end_time: Annotated[datetime, Field(default_factory=datetime.now)]
     priority: int = Field(default=10)
+
+    _parse_objective_start_time = parse_datetime
+    _parse_objective_end_time = parse_datetime
 
 
 logits_processor = JSONLogitsProcessor(
