@@ -3,10 +3,11 @@
 from typing import List, Optional
 
 import vllm
+import vllm.model_executor.layers.sampler as sampler
 from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
 from langchain.llms import VLLM
-from outlines.serve.vllm import JSONLogitsProcessor
+from outlines.serve.vllm import JSONLogitsProcessor, _patched_apply_logits_processors
 from pydantic import BaseModel
 
 from config import Settings
@@ -27,12 +28,8 @@ class GenerateRequest(BaseModel):
 class CustomVLLM(VLLM):
     """Custom VLLM class with additional attributes and methods."""
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.llm_engine = self.client.llm_engine
-
     def generate(self, prompt, sampling_params):
-        return self.client.generate(prompt, sampling_params)
+        return self._generate([prompt], **sampling_params.dict())
 
 
 def create_llm(
@@ -97,14 +94,14 @@ def get_llm():
         raise HTTPException(status_code=500, detail=str(e))
 
 
-# sampler._apply_logits_processors = _patched_apply_logits_processors
+sampler._apply_logits_processors = _patched_apply_logits_processors
 
 
 class ConceptsList(BaseModel):
     concepts: List[str]
 
 
-logits_processor = JSONLogitsProcessor(ConceptsList, llm.llm_engine)
+logits_processor = JSONLogitsProcessor(ConceptsList, llm.client.llm_engine)
 
 
 @app.post("/generate")
@@ -120,7 +117,8 @@ async def generate(request: Request, llm: VLLM = Depends(get_llm)):
                 max_tokens=100, logits_processors=[logits_processor]
             ),
         )
-        return JSONResponse({"text": response})
+        return JSONResponse({"text": response.generations[0][0].text})
+        # return JSONResponse({"text": response})
     except Exception as e:
         raise HTTPException(
             status_code=400, detail=f"Error processing user request: {e}"
