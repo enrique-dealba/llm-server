@@ -1,11 +1,11 @@
 """FastAPI server for handling Large Language Model (LLM) requests."""
 
-import os
-from typing import Optional
+from typing import List, Optional
 
 from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
 from langchain.llms import VLLM
+from outlines.serve.vllm import JSONLogitsProcessor
 from pydantic import BaseModel
 
 from config import Settings
@@ -85,13 +85,29 @@ def get_llm():
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# sampler._apply_logits_processors = _patched_apply_logits_processors
+
+
+class ConceptsList(BaseModel):
+    concepts: List[str]
+
+
+logits_processor = JSONLogitsProcessor(ConceptsList, llm.llm_engine)
+
+
 @app.post("/generate")
 async def generate(request: Request, llm: VLLM = Depends(get_llm)):
     """Endpoint to generate text using LLM."""
     try:
         request_data = await request.json()
         query = GenerateRequest(**request_data).text
-        response = llm(query)
+        # response = llm(query)
+        response = llm.generate(
+            query,
+            sampling_params=VLLM.SamplingParams(
+                max_tokens=100, logits_processors=[logits_processor]
+            ),
+        )
         return JSONResponse({"text": response})
     except Exception as e:
         raise HTTPException(

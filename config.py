@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     NUM_GPUS: int = 1
     NUM_RESPONSES: int = 1
     MAX_TOKENS: int = 512
-    MAX_SEQ_LEN: int = 16384
+    MAX_SEQ_LEN: int = 8000
     TEMPERATURE: float = 0.2
     TOP_P: float = 0.95
     API_URL: str = "http://localhost:8888"
@@ -21,7 +21,7 @@ class Settings(BaseSettings):
     DEFAULT_GPU_UTIL: float = 0.30
     AWQ_GPU_UTIL: float = 0.50
     GPTQ_GPU_UTIL: float = 0.25
-    USE_AGENT: bool = True
+    USE_AGENT: bool = False
 
     # ----- Hugging Face Hub Settings -----
     HF_HUB_OFFLINE: bool = False
