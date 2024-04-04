@@ -65,6 +65,22 @@ def create_llm(
 
 llm = create_llm(quantization="gptq", use_agent=settings.USE_AGENT)
 
+# Print all attributes and methods of the VLLM instance
+for attr in dir(llm):
+    if not attr.startswith('__'):
+        # This filters out the magic methods/attributes
+        print(attr)
+
+# If you also want to see the values of these attributes, you can modify the loop to:
+for attr in dir(llm):
+    if not attr.startswith('__'):  # Skip magic methods and attributes
+        try:
+            # Attempt to get the value of the attribute
+            value = getattr(llm, attr)
+            print(f"{attr} = {value}")
+        except Exception as e:
+            print(f"{attr}: Could not retrieve value - {e}")
+
 app = FastAPI()
 
 
