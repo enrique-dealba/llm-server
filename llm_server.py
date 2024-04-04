@@ -1,6 +1,6 @@
 """FastAPI server for handling Large Language Model (LLM) requests."""
 
-import datetime
+from datetime import datetime
 from enum import Enum
 from typing import Optional
 
@@ -121,6 +121,16 @@ class Character(BaseModel):
     strength: int
 
 
+def custom_datetime_schema():
+    return {
+        "type": "string",
+        "format": "date-time",
+    }
+
+
+BaseModel.schema_extra[datetime] = custom_datetime_schema
+
+
 class Marking(str, Enum):
     unclassified = "U"
     classified = "C"
@@ -136,8 +146,8 @@ class CatalogMaintenanceObjective(BaseModel):
     patience_minutes: int = Field(default=30)
     end_time_offset_minutes: int = Field(default=20)
     objective_name: str = Field(default="Catalog Maintenance Objective")
-    objective_start_time: datetime = Field(default_factory=datetime.datetime.now)
-    objective_end_time: datetime = Field(default_factory=datetime.datetime.now)
+    objective_start_time: datetime = Field(default_factory=datetime.now)
+    objective_end_time: datetime = Field(default_factory=datetime.now)
     priority: int = Field(default=10)
 
 
