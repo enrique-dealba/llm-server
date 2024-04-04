@@ -159,8 +159,46 @@ class CatalogMaintenanceObjective(BaseModel):
     _parse_objective_end_time = parse_datetime
 
 
+char_schema = '''{
+    "title": "Character",
+    "type": "object",
+    "properties": {
+        "name": {
+            "title": "Name",
+            "maxLength": 10,
+            "type": "string"
+        },
+        "age": {
+            "title": "Age",
+            "type": "integer"
+        },
+        "armor": {"$ref": "#/definitions/Armor"},
+        "weapon": {"$ref": "#/definitions/Weapon"},
+        "strength": {
+            "title": "Strength",
+            "type": "integer"
+        }
+    },
+    "required": ["name", "age", "armor", "weapon", "strength"],
+    "definitions": {
+        "Armor": {
+            "title": "Armor",
+            "description": "An enumeration.",
+            "enum": ["leather", "chainmail", "plate"],
+            "type": "string"
+        },
+        "Weapon": {
+            "title": "Weapon",
+            "description": "An enumeration.",
+            "enum": ["sword", "axe", "mace", "spear", "bow", "crossbow"],
+            "type": "string"
+        }
+    }
+}'''
+
+
 logits_processor = JSONLogitsProcessor(
-    CatalogMaintenanceObjective, llm.client.llm_engine
+    char_schema, llm.client.llm_engine
 )
 
 
