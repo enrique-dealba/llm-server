@@ -196,9 +196,65 @@ char_schema = '''{
     }
 }'''
 
+cmo_schema = '''{
+  "title": "CatalogMaintenanceObjective",
+  "type": "object",
+  "properties": {
+    "sensor_name": {
+      "title": "Sensor Name",
+      "type": "string"
+    },
+    "data_mode": {
+      "title": "Data Mode",
+      "type": "string"
+    },
+    "classification_marking": {"$ref": "#/definitions/Marking"},
+    "patience_minutes": {
+      "title": "Patience Minutes",
+      "type": "integer",
+      "default": 30
+    },
+    "end_time_offset_minutes": {
+      "title": "End Time Offset Minutes",
+      "type": "integer",
+      "default": 20
+    },
+    "objective_name": {
+      "title": "Objective Name",
+      "type": "string",
+      "default": "Catalog Maintenance Objective"
+    },
+    "objective_start_time": {
+      "title": "Objective Start Time",
+      "type": "string",
+      "format": "date-time",
+      "default": "CURRENT_DATETIME"
+    },
+    "objective_end_time": {
+      "title": "Objective End Time",
+      "type": "string",
+      "format": "date-time",
+      "default": "CURRENT_DATETIME"
+    },
+    "priority": {
+      "title": "Priority",
+      "type": "integer",
+      "default": 10
+    }
+  },
+  "required": ["sensor_name", "data_mode", "classification_marking", "patience_minutes", "end_time_offset_minutes", "objective_name", "objective_start_time", "objective_end_time", "priority"],
+  "definitions": {
+    "Marking": {
+      "title": "Marking",
+      "description": "An enumeration of classification markings.",
+      "enum": ["U", "C", "S", "TS", "U//FOUO"],
+      "type": "string"
+    }
+  }
+}'''
 
 logits_processor = JSONLogitsProcessor(
-    char_schema, llm.client.llm_engine
+    cmo_schema, llm.client.llm_engine
 )
 
 
