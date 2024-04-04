@@ -10,7 +10,7 @@ from fastapi.responses import JSONResponse
 from langchain.llms import VLLM
 from outlines.serve.vllm import JSONLogitsProcessor
 from pydantic import BaseModel, Field, ValidationError, constr
-from pydantic.fields import Annotated
+from typing_extensions import Annotated
 
 from config import Settings
 
