@@ -2,6 +2,7 @@
 
 from typing import List, Optional
 
+import vllm
 from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
 from langchain.llms import VLLM
@@ -23,6 +24,17 @@ class GenerateRequest(BaseModel):
     text: str
 
 
+class CustomVLLM(VLLM):
+    """Custom VLLM class with additional attributes and methods."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.llm_engine = self.client.llm_engine
+
+    def generate(self, prompt, sampling_params):
+        return self.client.generate(prompt, sampling_params)
+
+
 def create_llm(
     quantization: Optional[str] = None, use_agent: Optional[bool] = False
 ) -> VLLM:
@@ -37,7 +49,7 @@ def create_llm(
         dtype_value = "half" if quantization in ["awq", "gptq"] else "bfloat16"
 
     try:
-        llm = VLLM(
+        llm = CustomVLLM(
             model=settings.DEFAULT_MODEL,
             temperature=settings.TEMPERATURE,
             use_beam_search=False,
@@ -64,22 +76,6 @@ def create_llm(
 # quantization = quantization if quantization != "None" else None
 
 llm = create_llm(quantization="gptq", use_agent=settings.USE_AGENT)
-
-# Print all attributes and methods of the VLLM instance
-for attr in dir(llm):
-    if not attr.startswith('__'):
-        # This filters out the magic methods/attributes
-        print(attr)
-
-# If you also want to see the values of these attributes, you can modify the loop to:
-for attr in dir(llm):
-    if not attr.startswith('__'):  # Skip magic methods and attributes
-        try:
-            # Attempt to get the value of the attribute
-            value = getattr(llm, attr)
-            print(f"{attr} = {value}")
-        except Exception as e:
-            print(f"{attr}: Could not retrieve value - {e}")
 
 app = FastAPI()
 
@@ -120,7 +116,7 @@ async def generate(request: Request, llm: VLLM = Depends(get_llm)):
         # response = llm(query)
         response = llm.generate(
             query,
-            sampling_params=VLLM.SamplingParams(
+            sampling_params=vllm.SamplingParams(
                 max_tokens=100, logits_processors=[logits_processor]
             ),
         )
