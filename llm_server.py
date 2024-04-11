@@ -2,7 +2,7 @@
 
 from datetime import datetime
 from enum import Enum
-from typing import Optional
+from typing import Optional, Union
 
 import vllm
 from fastapi import Depends, FastAPI, HTTPException, Request
@@ -113,6 +113,14 @@ class Armor(str, Enum):
     chainmail = "chainmail"
     plate = "plate"
 
+class Color(str, Enum):
+    red = "red"
+    green = "green"
+    blue = "blue"
+    black = "black"
+    white = "white"
+    brown = "brown"
+
 
 class Character(BaseModel):
     name: constr(max_length=10)
@@ -120,6 +128,26 @@ class Character(BaseModel):
     armor: Armor
     weapon: Weapon
     strength: int
+
+class BoyCharacter(BaseModel):
+    name: constr(max_length=10)
+    age: int
+    armor: Armor
+    weapon: Weapon
+    strength: int
+
+
+class GirlCharacter(BaseModel):
+    name: constr(max_length=10)
+    age: int
+    armor: Armor
+    weapon: Weapon
+    strength: int
+    shoe_color: Color
+    hair_color: Color
+
+class MainCharacter(BaseModel):
+    character: Union[BoyCharacter, GirlCharacter]
 
 
 def custom_datetime_schema():
@@ -196,6 +224,87 @@ char_schema = '''{
     }
 }'''
 
+main_char_schema = '''{
+  "title": "MainCharacter",
+  "type": "object",
+  "properties": {
+    "character": {
+      "title": "Character",
+      "anyOf": [
+        {"$ref": "#/definitions/BoyCharacter"},
+        {"$ref": "#/definitions/GirlCharacter"}
+      ]
+    }
+  },
+  "required": ["character"],
+  "definitions": {
+    "BoyCharacter": {
+      "title": "BoyCharacter",
+      "type": "object",
+      "properties": {
+        "name": {
+          "title": "Name",
+          "maxLength": 10,
+          "type": "string"
+        },
+        "age": {
+          "title": "Age",
+          "type": "integer"
+        },
+        "armor": {"$ref": "#/definitions/Armor"},
+        "weapon": {"$ref": "#/definitions/Weapon"},
+        "strength": {
+          "title": "Strength",
+          "type": "integer"
+        }
+      },
+      "required": ["name", "age", "armor", "weapon", "strength"]
+    },
+    "GirlCharacter": {
+      "title": "GirlCharacter",
+      "type": "object",
+      "properties": {
+        "name": {
+          "title": "Name",
+          "maxLength": 10,
+          "type": "string"
+        },
+        "age": {
+          "title": "Age",
+          "type": "integer"
+        },
+        "armor": {"$ref": "#/definitions/Armor"},
+        "weapon": {"$ref": "#/definitions/Weapon"},
+        "strength": {
+          "title": "Strength",
+          "type": "integer"
+        },
+        "shoe_color": {"$ref": "#/definitions/Color"},
+        "hair_color": {"$ref": "#/definitions/Color"}
+      },
+      "required": ["name", "age", "armor", "weapon", "strength", "shoe_color", "hair_color"]
+    },
+    "Armor": {
+      "title": "Armor",
+      "description": "An enumeration.",
+      "enum": ["leather", "chainmail", "plate"],
+      "type": "string"
+    },
+    "Weapon": {
+      "title": "Weapon",
+      "description": "An enumeration.",
+      "enum": ["sword", "axe", "mace", "spear", "bow", "crossbow"],
+      "type": "string"
+    },
+    "Color": {
+      "title": "Color",
+      "description": "An enumeration.",
+      "enum": ["red", "green", "blue", "black", "white", "brown"],
+      "type": "string"
+    }
+  }
+}'''
+
 cmo_schema = '''{
   "title": "CatalogMaintenanceObjective",
   "type": "object",
@@ -254,7 +363,7 @@ cmo_schema = '''{
 }'''
 
 logits_processor = JSONLogitsProcessor(
-    char_schema, llm.client.llm_engine
+    main_char_schema, llm.client.llm_engine
 )
 
 
