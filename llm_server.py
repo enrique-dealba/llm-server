@@ -75,7 +75,7 @@ def create_llm(
 # quantization = quantization if quantization != "None" else None
 
 quantization = "gptq" if "GPTQ" in settings.DEFAULT_MODEL else "None"
-llm = create_llm(quantization="gptq", use_agent=settings.USE_AGENT)
+llm = create_llm(quantization=quantization, use_agent=settings.USE_AGENT)
 
 app = FastAPI()
 
