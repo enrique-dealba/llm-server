@@ -254,7 +254,7 @@ cmo_schema = '''{
 }'''
 
 logits_processor = JSONLogitsProcessor(
-    cmo_schema, llm.client.llm_engine
+    char_schema, llm.client.llm_engine
 )
 
 
