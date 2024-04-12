@@ -26,6 +26,9 @@ class Settings(BaseSettings):
     # ----- Hugging Face Hub Settings -----
     HF_HUB_OFFLINE: bool = False
 
+    # ----- Schema Settings -----
+    SCHEMA: str = "char_schema"  # Default schema
+
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
