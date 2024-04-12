@@ -14,6 +14,7 @@ from config import Settings
 # from llm_agent.llm_agent import LLMAgent
 # from llm_agent.llm_memory import MemoryLLM
 from llm_agent.llm_router import LLMRouter
+from schemas import schemas
 
 settings = Settings()
 
@@ -73,7 +74,10 @@ def create_llm(
 
 quantization = "gptq" if "GPTQ" in settings.DEFAULT_MODEL else None
 llm = create_llm(quantization=quantization, use_agent=settings.USE_AGENT)
-logits_processor = JSONLogitsProcessor(settings.SCHEMA, llm.client.llm_engine)
+
+logits_processor = JSONLogitsProcessor(
+    schemas.get(settings.SCHEMA), llm.client.llm_engine
+)
 
 app = FastAPI()
 

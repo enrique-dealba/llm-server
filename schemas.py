@@ -357,3 +357,10 @@ cmo_schema = """{
     }
   }
 }"""
+
+schemas = {
+    "char_schema": char_schema,
+    "main_char_schema": main_char_schema,
+    "main_char_schema2": main_char_schema2,
+    "cmo_schema": cmo_schema,
+}
