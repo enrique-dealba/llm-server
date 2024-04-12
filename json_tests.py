@@ -125,33 +125,29 @@ def function_call(stats: dict, num_tests: int = 3) -> Dict[str, float]:
 #         print("EXPERIMENT_TESTS environment variable not found.")
 
 if __name__ == "__main__":
-    experiment_tests_str = os.getenv("EXPERIMENT_TESTS")
-    if experiment_tests_str:
-        experiment_tests = experiment_tests_str.split(",")
-
-        stats = {
+    stats = {
             "total_tps": 0.0,
             "total_time": 0.0,
             "total_correct": 0.0,
             "successful_requests": 0.0,
             "total_requests": 0.0,
-        }
+    }
+    
+    t_0 = time.perf_counter()
 
-        t_0 = time.perf_counter()
+    stats = function_call(stats=stats, num_tests=3)
 
-        stats = function_call(stats=stats, num_tests=3)
+    t_1 = time.perf_counter()
+    total_time = t_1 - t_0
 
-        t_1 = time.perf_counter()
-        total_time = t_1 - t_0
+    num_requests = stats["successful_requests"]
+    if num_requests <= 0:
+        num_requests = 1
 
-        num_requests = stats["successful_requests"]
-        if num_requests <= 0:
-            num_requests = 1
-
-        print(f"Avg Tokens per Second (TPS): {stats['total_tps']/num_requests:.2f}")
-        print(f"Avg Time Elapsed Per Response: {stats['total_time']/num_requests:.2f}")
-        print(
-            f"Avg Correct Answers: {stats['total_correct']/stats['total_requests']:.2f}"
-        )
-        print(f"Total Correct Answers: {stats['total_correct']:.2f}")
-        print(f"\nTotal Benchmarking Time: {total_time}")
+    print(f"Avg Tokens per Second (TPS): {stats['total_tps']/num_requests:.2f}")
+    print(f"Avg Time Elapsed Per Response: {stats['total_time']/num_requests:.2f}")
+    print(
+        f"Avg Correct Answers: {stats['total_correct']/stats['total_requests']:.2f}"
+    )
+    print(f"Total Correct Answers: {stats['total_correct']:.2f}")
+    print(f"\nTotal Benchmarking Time: {total_time}")
