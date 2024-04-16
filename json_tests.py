@@ -25,7 +25,7 @@ args = parser.parse_args()
 prompts = json.loads(args.prompts)
 
 
-def function_call(stats: dict, num_tests: int = 10) -> Dict[str, float]:
+def function_call(stats: dict, num_tests: int = 5) -> Dict[str, float]:
     """Runs a series of prompts through the LLM router and benchmarks json parsing."""
     total_tps = 0.0
     total_time = 0.0

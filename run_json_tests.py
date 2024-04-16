@@ -119,16 +119,16 @@ def clear_or_create_log_file():
 def main():
     """Main function to run the experiments."""
     schema_prompts = {
-        # "char_schema": [
-        #     "Give me a character for Guts from Berserk",
-        #     "Give me a character for Shrek",
-        #     "Give me a character for Frodo from The Lord of the Rings",
-        #     "Give me the character for Harry Potter",
-        #     "Give me the character for Darth Vader from Star Wars",
-        #     "Give me the character for Batman",
-        #     "Give me the character for Sherlock Holmes",
-        #     "Give me the character for Elsa from Frozen",
-        # ],
+        "char_schema": [
+            "Give me a character for Guts from Berserk",
+            "Give me a character for Shrek",
+            "Give me a character for Frodo from The Lord of the Rings",
+            "Give me the character for Harry Potter",
+            "Give me the character for Darth Vader from Star Wars",
+            "Give me the character for Batman",
+            "Give me the character for Sherlock Holmes",
+            "Give me the character for Elsa from Frozen",
+        ],
         # "main_char_schema": [
         #     "main_char_schema example prompt A",
         #     "main_char_schema example prompt B",
@@ -137,22 +137,22 @@ def main():
         #     "main_char_schema2 example prompt A",
         #     "main_char_schema2 example prompt B",
         # ],
-        "cmo_schema": [
-            "Give me a catalog maintenance objective using sensor RME02 with a priority level of 5 and a 'U' classification marking, utilizing TEST data mode",
-            "Give me a catalog maintenance objective on sensor RME12, with a 60-minute patience window, starting now",
-            "Give me a catalog maintenance objective for sensor RME01 with an end time offset of 15 minutes and priority 8, using 'U' marking and TEST data mode",
-            "Give me a catalog maintenance objective for sensor RME03 with a start time now, an end time in 5 hrs, and a 'U' classification marking",
-            "Give me a catalog maintenance objective using sensor RME45, in TEST data mode, with a priority of 3, 40 minutes of patience, and a 25 min end time offset",
-            "Give me a catalog maintenance objective for sensor RME05 with 'U' marking, a priority of 7, starting now, and ending 5 hours from now",
-            "Give me a catalog maintenance objective for sensor UIO56 with a priority of 1, a 'R' classification marking, in TEST data mode, and a 50 min patience window",
-            "Give me a CatalogMaintenanceObjective using sensor RME02 with a priority level of 5 and a 'U' classification marking, utilizing TEST data mode",
-            "Give me a CatalogMaintenanceObjective on sensor RME12, with a 60-minute patience window, starting now",
-            "Give me a CatalogMaintenanceObjective for sensor RME01 with an end time offset of 15 minutes and priority 8, using 'U' marking and TEST data mode",
-            "Give me a CatalogMaintenanceObjective for sensor RME03 with a start time now, an end time in 5 hrs, and a 'U' classification marking",
-            "Give me a CatalogMaintenanceObjective using sensor RME45, in TEST data mode, with a priority of 3, 40 minutes of patience, and a 25 min end time offset",
-            "Give me a CatalogMaintenanceObjective for sensor RME05 with 'U' marking, a priority of 7, starting now, and ending 5 hours from now",
-            "Give me a CatalogMaintenanceObjective for sensor UIO56 with a priority of 1, a 'R' classification marking, in TEST data mode, and a 50 min patience window",
-        ],
+        # "cmo_schema": [
+        #     "Give me a catalog maintenance objective using sensor RME02 with a priority level of 5 and a 'U' classification marking, utilizing TEST data mode",
+        #     "Give me a catalog maintenance objective on sensor RME12, with a 60-minute patience window, starting now",
+        #     "Give me a catalog maintenance objective for sensor RME01 with an end time offset of 15 minutes and priority 8, using 'U' marking and TEST data mode",
+        #     "Give me a catalog maintenance objective for sensor RME03 with a start time now, an end time in 5 hrs, and a 'U' classification marking",
+        #     "Give me a catalog maintenance objective using sensor RME45, in TEST data mode, with a priority of 3, 40 minutes of patience, and a 25 min end time offset",
+        #     "Give me a catalog maintenance objective for sensor RME05 with 'U' marking, a priority of 7, starting now, and ending 5 hours from now",
+        #     "Give me a catalog maintenance objective for sensor UIO56 with a priority of 1, a 'R' classification marking, in TEST data mode, and a 50 min patience window",
+        #     "Give me a CatalogMaintenanceObjective using sensor RME02 with a priority level of 5 and a 'U' classification marking, utilizing TEST data mode",
+        #     "Give me a CatalogMaintenanceObjective on sensor RME12, with a 60-minute patience window, starting now",
+        #     "Give me a CatalogMaintenanceObjective for sensor RME01 with an end time offset of 15 minutes and priority 8, using 'U' marking and TEST data mode",
+        #     "Give me a CatalogMaintenanceObjective for sensor RME03 with a start time now, an end time in 5 hrs, and a 'U' classification marking",
+        #     "Give me a CatalogMaintenanceObjective using sensor RME45, in TEST data mode, with a priority of 3, 40 minutes of patience, and a 25 min end time offset",
+        #     "Give me a CatalogMaintenanceObjective for sensor RME05 with 'U' marking, a priority of 7, starting now, and ending 5 hours from now",
+        #     "Give me a CatalogMaintenanceObjective for sensor UIO56 with a priority of 1, a 'R' classification marking, in TEST data mode, and a 50 min patience window",
+        # ],
     }
 
     num_experiments = 1
