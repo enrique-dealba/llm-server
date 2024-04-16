@@ -133,7 +133,9 @@ def main():
             clear_or_create_log_file()
 
             run_docker_container(model)
-            time.sleep(25)  # Waits for the container to start
+            waiting_time = 60
+            print(f"Waiting {waiting_time} seconds for the server to start...")
+            time.sleep(waiting_time)  # Waits for the container to start
 
             start_time = time.time()
             stats = run_tests()
