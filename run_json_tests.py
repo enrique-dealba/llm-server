@@ -119,16 +119,16 @@ def clear_or_create_log_file():
 def main():
     """Main function to run the experiments."""
     schema_prompts = {
-        "char_schema": [
-            "Give me a character for Guts from Berserk",
-            "Give me a character for Shrek",
-            "Give me a character for Frodo from The Lord of the Rings",
-            "Give me the character for Harry Potter",
-            "Give me the character for Darth Vader from Star Wars",
-            "Give me the character for Batman",
-            "Give me the character for Sherlock Holmes",
-            "Give me the character for Elsa from Frozen",
-        ],
+        # "char_schema": [
+        #     "Give me a character for Guts from Berserk",
+        #     "Give me a character for Shrek",
+        #     "Give me a character for Frodo from The Lord of the Rings",
+        #     "Give me the character for Harry Potter",
+        #     "Give me the character for Darth Vader from Star Wars",
+        #     "Give me the character for Batman",
+        #     "Give me the character for Sherlock Holmes",
+        #     "Give me the character for Elsa from Frozen",
+        # ],
         # "main_char_schema": [
         #     "main_char_schema example prompt A",
         #     "main_char_schema example prompt B",
