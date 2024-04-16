@@ -1,3 +1,15 @@
+### JSON Testing
+
+# TODO: Fill these out
+
+mistral_v1 = []
+mistral_gptq_v1 = []
+open_v1 = []
+open_gtpq_v1 = []
+hermes_pro_v1 = []
+
+### Function Calling Experiments Below
+
 # OpenHermes-2.5-Mistral-7B Results
 
 funcs_16 = [
