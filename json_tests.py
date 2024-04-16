@@ -4,9 +4,9 @@ import os
 import time
 from typing import Dict
 
-import requests
-from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.util.retry import Retry
+# import requests
+# from requests.adapters import HTTPAdapter
+# from requests.packages.urllib3.util.retry import Retry
 
 from client import Client
 from text_processing import TextProcessing as tp
@@ -35,16 +35,16 @@ def function_call(stats: dict, num_tests: int = 3) -> Dict[str, float]:
     successful_requests = 0.0
     total_requests = 0.0
 
-    retry_strategy = Retry(
-        total=3,
-        backoff_factor=1,
-        status_forcelist=[500, 502, 503, 504],
-    )
-    
-    adapter = HTTPAdapter(max_retries=retry_strategy)
-    session = requests.Session()
-    session.mount("http://", adapter)
-    session.mount("https://", adapter)
+    # retry_strategy = Retry(
+    #     total=3,
+    #     backoff_factor=1,
+    #     status_forcelist=[500, 502, 503, 504],
+    # )
+
+    # adapter = HTTPAdapter(max_retries=retry_strategy)
+    # session = requests.Session()
+    # session.mount("http://", adapter)
+    # session.mount("https://", adapter)
 
     for _ in range(num_tests):
         for idx in range(len(prompts)):
