@@ -144,7 +144,7 @@ def main():
 
             log_experiment_results(i + 1, stats, total_time)
             stop_docker_container()
-            time.sleep(10)  # Waits for the container to stop
+            time.sleep(12)  # Waits for the container to stop
 
 
 if __name__ == "__main__":
