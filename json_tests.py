@@ -1,3 +1,4 @@
+import argparse
 import json
 import logging
 import os
@@ -17,10 +18,11 @@ def check_response(response: str) -> bool:
         return False
 
 
-prompts = [
-    "Give me a character for Guts from Berserk",
-    "Give me a character for Shrek",
-]
+parser = argparse.ArgumentParser()
+parser.add_argument("--prompts", type=str, required=True)
+args = parser.parse_args()
+
+prompts = json.loads(args.prompts)
 
 
 def function_call(stats: dict, num_tests: int = 3) -> Dict[str, float]:

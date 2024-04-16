@@ -11,7 +11,7 @@ logging.basicConfig(
 )
 
 
-def run_docker_container(model_name):
+def run_docker_container(model_name, schema):
     """Runs the Docker container with the specified model."""
     try:
         subprocess.run(["docker", "build", "-t", "my_llm_server", "."])
@@ -28,6 +28,7 @@ def run_docker_container(model_name):
                 "-v", f"{current_dir}:/app",
                 "-e", f"DEFAULT_MODEL={model_name}",
                 "-e", f"QUANTIZATION={quantization}",
+                "-e", f"SCHEMA={schema}",
                 "--gpus", "all",
                 "--name", "llm6",
                 "-p", "8888:8888",
@@ -73,7 +74,7 @@ def log_experiment_results(experiment_number, stats, total_time):
         log_file.write(log_entry)
 
 
-def run_tests():
+def run_tests(prompts):
     """Runs the tests."""
     stats = {
         "total_tps": 0.0,
@@ -85,7 +86,9 @@ def run_tests():
 
     try:
         subprocess.run(
-            ["docker", "exec", "llm6", "python", "json_tests.py"], check=True
+            ["docker", "exec", "llm6",
+             "python", "json_tests.py", f"--prompts={json.dumps(prompts)}"],
+             check=True
         )
 
         with open("json_tests_output.log") as file:
@@ -115,7 +118,26 @@ def clear_or_create_log_file():
 
 def main():
     """Main function to run the experiments."""
-    num_experiments = 2
+    schema_prompts = {
+        "char_schema": [
+            "Give me a character for Guts from Berserk",
+            "Give me a character for Shrek",
+        ],
+        # "main_char_schema": [
+        #     "main_char_schema example prompt A",
+        #     "main_char_schema example prompt B",
+        # ],
+        # "main_char_schema2": [
+        #     "main_char_schema2 example prompt A",
+        #     "main_char_schema2 example prompt B",
+        # ],
+        # "cmo_schema": [
+        #     "cmo example prompt A",
+        #     "cmo example prompt B",
+        # ],
+    }
+
+    num_experiments = 1
     models = [
         "mistralai/Mistral-7B-Instruct-v0.2",
         "teknium/OpenHermes-2.5-Mistral-7B",
@@ -127,23 +149,26 @@ def main():
     for model in models:
         print(f"Running experiments for model: {model}")
 
-        for i in range(num_experiments):
-            print(f"Running experiment {i+1}/{num_experiments}")
-            clear_or_create_log_file()
+        for schema, prompts in schema_prompts.items():
+            print(f"Running experiments for schema: {schema}")
 
-            run_docker_container(model)
-            waiting_time = 40
-            print(f"Waiting {waiting_time} seconds for the server to start...")
-            time.sleep(waiting_time)  # Waits for the container to start
+            for i in range(num_experiments):
+                print(f"Running experiment {i+1}/{num_experiments}")
+                clear_or_create_log_file()
 
-            start_time = time.time()
-            stats = run_tests()
-            end_time = time.time()
-            total_time = end_time - start_time
+                run_docker_container(model, schema)
+                waiting_time = 40
+                print(f"Waiting {waiting_time} seconds for the server to start...")
+                time.sleep(waiting_time)  # Waits for the container to start
 
-            log_experiment_results(i + 1, stats, total_time)
-            stop_docker_container()
-            time.sleep(12)  # Waits for the container to stop
+                start_time = time.time()
+                stats = run_tests(prompts)
+                end_time = time.time()
+                total_time = end_time - start_time
+
+                log_experiment_results(i + 1, stats, total_time)
+                stop_docker_container()
+                time.sleep(12)  # Waits for the container to stop
 
 
 if __name__ == "__main__":
