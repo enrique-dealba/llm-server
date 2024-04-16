@@ -6,7 +6,7 @@ from pydantic_settings import BaseSettings
 # ----- Config Settings -----
 class Settings(BaseSettings):
     # ----- LLM -----
-    DEFAULT_MODEL: str = "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ"
+    DEFAULT_MODEL: str = "teknium/OpenHermes-2.5-Mistral-7B"
 
     # ----- Constants -----
     NUM_GPUS: int = 1
