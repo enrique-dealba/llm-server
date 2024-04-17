@@ -1,7 +1,7 @@
 import argparse
 import json
 import logging
-import os
+import re
 import time
 from typing import Dict
 
@@ -12,10 +12,34 @@ from text_processing import TextProcessing as tp
 def check_response(response: str) -> bool:
     """Boolean logic to check if string text can be json parsed."""
     try:
-        json.loads(response)
+        json.loads(response, parse_int=lambda x: int(x) if x.isdigit() else x)
         return True
     except json.JSONDecodeError:
         return False
+
+
+def remove_extra_newlines_and_spaces(json_string):
+    """Removes extra newlines and spaces from the JSON string."""
+    return re.sub(r"\s+", " ", json_string).strip()
+
+
+def remove_backslashes_before_underscores(json_string):
+    """Removes the backslashes before underscores in the JSON string."""
+    return re.sub(r"\\_", "_", json_string)
+
+
+def add_quotes_to_unquoted_timestamps(json_string):
+    """Adds quotes to unquoted timestamp values in the JSON strings."""
+    pattern = re.compile(r"(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z)")
+    return pattern.sub(r'"\1"', json_string)
+
+
+def process_json_string(json_string):
+    """Applies string processing functions to the JSON string."""
+    processed_string = remove_extra_newlines_and_spaces(json_string)
+    processed_string = remove_backslashes_before_underscores(processed_string)
+    processed_string = add_quotes_to_unquoted_timestamps(processed_string)
+    return processed_string
 
 
 parser = argparse.ArgumentParser()
@@ -57,7 +81,7 @@ def function_call(stats: dict, num_tests: int = 5) -> Dict[str, float]:
                 successful_requests += 1
                 total_requests += 1
 
-                # response = tp.clean_mistral(response)  # TODO: Maybe remove this
+                response = process_json_string(response)
 
                 correct = check_response(response)
                 total_correct += int(correct)  # Adds 1 if correct
@@ -128,11 +152,11 @@ def function_call(stats: dict, num_tests: int = 5) -> Dict[str, float]:
 
 if __name__ == "__main__":
     stats = {
-            "total_tps": 0.0,
-            "total_time": 0.0,
-            "total_correct": 0.0,
-            "successful_requests": 0.0,
-            "total_requests": 0.0,
+        "total_tps": 0.0,
+        "total_time": 0.0,
+        "total_correct": 0.0,
+        "successful_requests": 0.0,
+        "total_requests": 0.0,
     }
 
     t_0 = time.perf_counter()
@@ -148,8 +172,6 @@ if __name__ == "__main__":
 
     print(f"Avg Tokens per Second (TPS): {stats['total_tps']/num_requests:.2f}")
     print(f"Avg Time Elapsed Per Response: {stats['total_time']/num_requests:.2f}")
-    print(
-        f"Avg Correct Answers: {stats['total_correct']/stats['total_requests']:.2f}"
-    )
+    print(f"Avg Correct Answers: {stats['total_correct']/stats['total_requests']:.2f}")
     print(f"Total Correct Answers: {stats['total_correct']:.2f}")
     print(f"\nTotal Benchmarking Time: {total_time}")

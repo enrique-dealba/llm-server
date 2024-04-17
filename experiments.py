@@ -8,6 +8,16 @@ open_v1 = [0.79, ]
 open_gtpq_v1 = [0.75, ]
 hermes_pro_v1 = [0.67, ]
 
+# HARD CMO TESTS
+mistral_v2 = [0.0, ]
+mistral_gptq_v2 = [0.0, ]
+open_v2 = [0.0, ]
+open_gtpq_v2 = [0.0, ]
+hermes_pro_v2 = [0.0, ]
+
+# TODO: Get non-zero scores
+
+
 ### Function Calling Experiments Below
 
 # OpenHermes-2.5-Mistral-7B Results
