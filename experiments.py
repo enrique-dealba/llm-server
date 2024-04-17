@@ -2,11 +2,11 @@
 
 # TODO: Fill these out
 
-mistral_v1 = []
-mistral_gptq_v1 = []
-open_v1 = []
-open_gtpq_v1 = []
-hermes_pro_v1 = []
+mistral_v1 = [0.62, ]
+mistral_gptq_v1 = [0.67, ]
+open_v1 = [0.79, ]
+open_gtpq_v1 = [0.75, ]
+hermes_pro_v1 = [0.67, ]
 
 ### Function Calling Experiments Below
 
