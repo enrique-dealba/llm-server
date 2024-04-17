@@ -15,6 +15,15 @@ open_v2 = [0.0, ]
 open_gtpq_v2 = [0.0, ]
 hermes_pro_v2 = [0.0, ]
 
+# Easy JSON tests redo
+
+mistral_v1 = [0.62, ]
+mistral_gptq_v1 = [0.67, ]
+open_v1 = [0.79, ]
+open_gtpq_v1 = [0.75, ]
+hermes_pro_v1 = [0.67, ]
+
+
 # TODO: Get non-zero scores
 
 
