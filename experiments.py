@@ -1,6 +1,6 @@
 ### JSON Testing
 
-# TODO: Fill these out
+# Easy JSON tests v1
 
 mistral_v1 = [0.62, ]
 mistral_gptq_v1 = [0.67, ]
@@ -8,24 +8,29 @@ open_v1 = [0.79, ]
 open_gtpq_v1 = [0.75, ]
 hermes_pro_v1 = [0.67, ]
 
-# HARD CMO TESTS
+# HARD CMO TESTS v1
+
 mistral_v2 = [0.0, ]
 mistral_gptq_v2 = [0.0, ]
 open_v2 = [0.0, ]
 open_gtpq_v2 = [0.0, ]
 hermes_pro_v2 = [0.0, ]
 
-# Easy JSON tests redo
+# Easy JSON tests v2
 
-mistral_v1 = [0.62, ]
-mistral_gptq_v1 = [0.67, ]
-open_v1 = [0.79, ]
-open_gtpq_v1 = [0.75, ]
-hermes_pro_v1 = [0.67, ]
+mistral_v3 = [0.62, ]
+mistral_gptq_v3 = [0.67, ]
+open_v3 = [0.79, ]
+open_gtpq_v3 = [0.75, ]
+hermes_pro_v3 = [0.67, ]
 
+# HARD CMO TESTS v2
 
-# TODO: Get non-zero scores
-
+mistral_v4 = [0.61, ]
+mistral_gptq_v4 = [0.52, ]
+open_v4 = [0.11, ]
+open_gtpq_v4 = [0.13, ]
+hermes_pro_v4 = [0.24, ]
 
 ### Function Calling Experiments Below
 
