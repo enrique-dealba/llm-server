@@ -32,6 +32,8 @@ RUN pip uninstall xformers -y && \
     pip install xformers==0.0.23.post1 --index-url https://download.pytorch.org/whl/cu118
     # pip install --upgrade xformers --index-url https://download.pytorch.org/whl/cu118
 
+RUN pip install pydantic==2.7.1 pydantic-core==2.18.2
+
 # Copy .env file and other files
 COPY .env .env
 COPY . .
