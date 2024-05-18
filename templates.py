@@ -1,13 +1,17 @@
 from datetime import datetime
 from enum import Enum
-from typing import Annotated
+from typing import Annotated, Optional
 
 from pydantic import BaseModel, Field, ValidationError
 
 
 class Foo(BaseModel):
-    foo_name: str
-    foo_id: str
+    foo_name: str =  Field(description="Name of the foo.")
+    foo_id: str = Field(description="ID of the foo, usually 3 digits.")
+
+class FooTemplate(BaseModel):
+    foo_name: Optional[str] =  None
+    foo_id: Optional[str] = None
 
 
 class Marking(str, Enum):

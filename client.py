@@ -5,7 +5,7 @@ import requests
 from dotenv import load_dotenv
 
 from config import Settings
-from templates import Foo
+from templates import Foo, FooTemplate
 from text_processing import TextProcessing as tp
 from utils import combine_jsons, get_model_fields_and_descriptions, is_json_like
 
@@ -90,7 +90,7 @@ def main():
                     json_strs.append(response)
             t_1 = time.perf_counter()
 
-            extracted_model = combine_jsons(json_strs, Foo)
+            extracted_model = combine_jsons(json_strs, FooTemplate)
 
             response = "\n".join(json_strs)
             cleaned_response = tp.clean_mistral(response)
