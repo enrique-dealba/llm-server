@@ -80,14 +80,30 @@ def main():
             t_0 = time.perf_counter()
             json_strs = []
             examples = ["Qwerty", "987"]
-            i = 0
-            for field_name, field_desc in foo_fields_and_descriptions:
-                response = extract_field_from_prompt(
-                    prompt, field_name, field_desc, example=examples[i]
+            max_tries = 3
+
+            if len(examples) != len(foo_fields_and_descriptions):
+                raise ValueError(
+                    "'examples' list must have same length as 'foo_fields'."
                 )
-                i += 1
-                if is_json_like(response):
-                    json_strs.append(response)
+
+            for (field_name, field_desc), example in zip(
+                foo_fields_and_descriptions, examples
+            ):
+                num_tries = 0
+                while num_tries < max_tries:
+                    response = extract_field_from_prompt(
+                        prompt, field_name, field_desc, example=example
+                    )
+                    if is_json_like(response):
+                        json_strs.append(response)
+                        break
+                    num_tries += 1
+                else:
+                    logging.warning(
+                        f"Failed to extract field '{field_name}' after {max_tries} attempts."
+                    )
+
             t_1 = time.perf_counter()
 
             if json_strs:

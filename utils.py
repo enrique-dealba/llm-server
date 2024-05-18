@@ -1,6 +1,4 @@
 import re
-import pydantic
-import pydantic_core
 from typing import Type
 
 from pydantic import BaseModel
@@ -49,9 +47,6 @@ def preprocess_json(json_str: str) -> str:
 
 def parse_partial_json(json_str: str, model_class: Type[BaseModel]) -> BaseModel:
     """Parses JSON string and returns in specified Pydantic format."""
-    print("*"*30)
-    print(f"pydantic_core: {pydantic_core.__version__}")
-    print(f"pydantic: {pydantic.__version__}")
     preprocessed_json = preprocess_json(json_str)
 
     partial_data = from_json(preprocessed_json, allow_partial=True)
