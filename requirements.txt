@@ -8,3 +8,4 @@ pydantic_settings==2.2.1
 skyfield==1.48
 geopy==2.4.1
 semantic-router[local]==0.0.20
+pydantic-core==2.18.2
