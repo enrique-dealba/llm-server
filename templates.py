@@ -17,11 +17,13 @@ class Marking(str, Enum):
     top_secret = "TS"
     fouo = "U//FOUO"
 
+
 def parse_datetime(value: str) -> datetime:
     try:
         return datetime.fromisoformat(value)
     except ValueError as e:
         raise ValidationError([str(e)])
+
 
 class CatalogMaintenanceObjective(BaseModel):
     sensor_name: str
@@ -36,15 +38,3 @@ class CatalogMaintenanceObjective(BaseModel):
 
     _parse_objective_start_time = parse_datetime
     _parse_objective_end_time = parse_datetime
-
-
-def get_model_fields_and_descriptions(model_class: BaseModel) -> list[tuple[str, str]]:
-    """Retrieves the fields and their descriptions from a Pydantic model."""
-    schema = model_class.schema()
-    fields_and_descriptions = []
-
-    for field_name, field_info in schema["properties"].items():
-        description = field_info.get("description", "")
-        fields_and_descriptions.append((field_name, description))
-
-    return fields_and_descriptions

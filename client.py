@@ -8,6 +8,8 @@ from config import Settings
 from text_processing import TextProcessing as tp
 from templates import Foo, get_model_fields_and_descriptions
 
+from utils import is_json_like, combine_jsons
+
 load_dotenv()
 settings = Settings()
 
@@ -167,10 +169,21 @@ def main():
             if not isinstance(response_2, str):
                 response = str(response_2)  # TODO: add try/catch block
 
+            responses = [response_1, response_2]
+            json_strs = []
+            for response in responses:
+                if is_json_like(response):
+                    json_strs.append(response)
+
+            extracted_model = combine_jsons(json_strs)
+
             response = response_1 + "\n" + response_2
 
             response = tp.clean_mistral(response)  # TODO: check DEFAULT_MODEL to choose
             print(f"\nLLM Response: {response}")
+
+            print("="*30)
+            print(f"EXTRACTED MODEL: {extracted_model}")
 
             # queries = result.get("queries")
             # if queries:
