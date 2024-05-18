@@ -5,15 +5,15 @@ import requests
 from dotenv import load_dotenv
 
 from config import Settings
-from text_processing import TextProcessing as tp
 from templates import Foo
-
-from utils import is_json_like, combine_jsons, get_model_fields_and_descriptions
+from text_processing import TextProcessing as tp
+from utils import combine_jsons, get_model_fields_and_descriptions, is_json_like
 
 load_dotenv()
 settings = Settings()
 
 foo_fields_and_descriptions = get_model_fields_and_descriptions(Foo)
+
 
 class Client:
     """Client for interacting with LLM server."""
@@ -31,7 +31,9 @@ class Client:
             raise
 
 
-def extract_field_from_prompt(prompt: str, field_name: str, field_desc: str, example: str) -> str:
+def extract_field_from_prompt(
+    prompt: str, field_name: str, field_desc: str, example: str
+) -> str:
     """Extracts a single field from the user prompt using the LLM."""
     json_prompt = f"""
     <|im_start|>system
@@ -65,55 +67,6 @@ def extract_field_from_prompt(prompt: str, field_name: str, field_desc: str, exa
     else:
         raise ValueError("Unexpected LLM response format")
 
-# json_prompt_1 = f"""
-# <|im_start|>system
-# You are a helpful assistant designed to output single JSON fields.
-# Given the following user prompt
-# << {user_prompt} >>
-# extract the following field:
-# << {field_1_name} >> with description: {field_1_desc} from the user prompt.
-# Example:
-# Input:
-# user_prompt: "Make a Foo with name Qwerty and ID 906 please."
-# Result: {{
-#     "{field_1_name}": "Qwerty",
-# }}
-# <|im_end|>
-
-# <|im_start|>user
-# Input:
-# user_prompt: {user_prompt}
-# <|im_end|>
-
-# <|im_start|>assistant
-# Result:
-# """
-
-# json_prompt_2 = f"""
-# <|im_start|>system
-# You are a helpful assistant designed to output single JSON fields.
-# Given the following user prompt
-# << {user_prompt} >>
-# extract the following field info:
-# << {field_1_name} >> with description: {field_1_desc} from the user prompt.
-# Example:
-# Input:
-# user_prompt: "Make a Foo with name Qwerty and ID 906 please."
-# field_info: Field name: << {field_1_name} >> with description: {field_1_desc}.
-# Result: {{
-#     "{field_1_name}": "Qwerty",
-# }}
-# <|im_end|>
-
-# <|im_start|>user
-# Input:
-# user_prompt: {user_prompt}
-# field_info: Field name: << {field_1_name} >> with description: {field_1_desc}.
-# <|im_end|>
-
-# <|im_start|>assistant
-# Result:
-# """
 
 def main():
     """Conversation loop with LLM server."""
@@ -126,8 +79,13 @@ def main():
         try:
             t_0 = time.perf_counter()
             json_strs = []
+            examples = ["Qwerty", "987"]
+            i = 0
             for field_name, field_desc in foo_fields_and_descriptions:
-                response = extract_field_from_prompt(prompt, field_name, field_desc)
+                response = extract_field_from_prompt(
+                    prompt, field_name, field_desc, example=examples[i]
+                )
+                i += 1
                 if is_json_like(response):
                     json_strs.append(response)
             t_1 = time.perf_counter()

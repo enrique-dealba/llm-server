@@ -38,3 +38,54 @@ class CatalogMaintenanceObjective(BaseModel):
 
     _parse_objective_start_time = parse_datetime
     _parse_objective_end_time = parse_datetime
+
+
+# json_prompt_1 = f"""
+# <|im_start|>system
+# You are a helpful assistant designed to output single JSON fields.
+# Given the following user prompt
+# << {user_prompt} >>
+# extract the following field:
+# << {field_1_name} >> with description: {field_1_desc} from the user prompt.
+# Example:
+# Input:
+# user_prompt: "Make a Foo with name Qwerty and ID 906 please."
+# Result: {{
+#     "{field_1_name}": "Qwerty",
+# }}
+# <|im_end|>
+
+# <|im_start|>user
+# Input:
+# user_prompt: {user_prompt}
+# <|im_end|>
+
+# <|im_start|>assistant
+# Result:
+# """
+
+# json_prompt_2 = f"""
+# <|im_start|>system
+# You are a helpful assistant designed to output single JSON fields.
+# Given the following user prompt
+# << {user_prompt} >>
+# extract the following field info:
+# << {field_1_name} >> with description: {field_1_desc} from the user prompt.
+# Example:
+# Input:
+# user_prompt: "Make a Foo with name Qwerty and ID 906 please."
+# field_info: Field name: << {field_1_name} >> with description: {field_1_desc}.
+# Result: {{
+#     "{field_1_name}": "Qwerty",
+# }}
+# <|im_end|>
+
+# <|im_start|>user
+# Input:
+# user_prompt: {user_prompt}
+# field_info: Field name: << {field_1_name} >> with description: {field_1_desc}.
+# <|im_end|>
+
+# <|im_start|>assistant
+# Result:
+# """
