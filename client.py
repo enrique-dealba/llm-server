@@ -90,7 +90,10 @@ def main():
                     json_strs.append(response)
             t_1 = time.perf_counter()
 
-            extracted_model = combine_jsons(json_strs, FooTemplate)
+            if json_strs:
+                extracted_model = combine_jsons(json_strs, FooTemplate)
+            else:
+                json_strs = ["JSON Parsing Failed!"]
 
             response = "\n".join(json_strs)
             cleaned_response = tp.clean_mistral(response)
