@@ -44,7 +44,7 @@ class CMO(BaseModel):
 class CMOTemplate(BaseModel):
     sensor_name: Optional[str] = None
     data_mode: Optional[str] = None
-    classification_marking: None
+    classification_marking: Optional[str] = None
     patience_minutes: Optional[int] = None
     end_time_offset_minutes: Optional[int] = None
     objective_name: Optional[str] = None
