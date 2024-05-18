@@ -29,6 +29,30 @@ def parse_datetime(value: str) -> datetime:
         raise ValidationError([str(e)])
 
 
+class CMO(BaseModel):
+    sensor_name: str = Field(description="String Names of Sensor to perform Catalog Maintenance with.")
+    data_mode: str = Field(description="String type for the Machina Common DataModeType being generated.")
+    classification_marking: str = Field(description="Classification level of objective intents. One of: 'U', 'C', 'S', 'TS', 'U//FOUO'")
+    patience_minutes: int = Field(description="default=30. Amount of time to wait until it's assumed a 'SENT' intent failed.")
+    end_time_offset_minutes: int = Field(description="default=20. Amount of minutes into the future to let astroplan schedule an intent.")
+    objective_name: str = Field(description="default='Catalog Maintenance Objective'. The common name for this objective.")
+    # objective_start_time: Annotated[datetime, Field(default_factory=datetime.now)]
+    # objective_end_time: Annotated[datetime, Field(default_factory=datetime.now)]
+    priority: int = Field(description="default=10. Astroplan Scheduler Priority.")
+
+
+class CMOTemplate(BaseModel):
+    sensor_name: Optional[str] = None
+    data_mode: Optional[str] = None
+    classification_marking: None
+    patience_minutes: Optional[int] = None
+    end_time_offset_minutes: Optional[int] = None
+    objective_name: Optional[str] = None
+    # objective_start_time: Annotated[datetime, Field(default_factory=datetime.now)]
+    # objective_end_time: Annotated[datetime, Field(default_factory=datetime.now)]
+    priority: Optional[int] = None
+
+
 class CatalogMaintenanceObjective(BaseModel):
     sensor_name: str
     data_mode: str

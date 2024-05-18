@@ -5,14 +5,14 @@ import requests
 from dotenv import load_dotenv
 
 from config import Settings
-from templates import Foo, FooTemplate
+from templates import Foo, FooTemplate, CMO, CMOTemplate
 from text_processing import TextProcessing as tp
 from utils import combine_jsons, get_model_fields_and_descriptions, is_json_like
 
 load_dotenv()
 settings = Settings()
 
-foo_fields_and_descriptions = get_model_fields_and_descriptions(Foo)
+foo_fields_and_descriptions = get_model_fields_and_descriptions(CMO)
 
 
 class Client:
@@ -79,7 +79,16 @@ def main():
         try:
             t_0 = time.perf_counter()
             json_strs = []
-            examples = ["Qwerty", "987"]
+            #examples = ["Qwerty", "987"]
+            examples = [
+                "RME00",
+                "TEST",
+                "TS",
+                30,
+                20,
+                "Catalog Maintenance Objective",
+                10,
+            ]
             max_tries = 3
 
             if len(examples) != len(foo_fields_and_descriptions):
@@ -107,7 +116,7 @@ def main():
             t_1 = time.perf_counter()
 
             if json_strs:
-                extracted_model = combine_jsons(json_strs, FooTemplate)
+                extracted_model = combine_jsons(json_strs, CMOTemplate)
             else:
                 json_strs = ["JSON Parsing Failed!"]
 
