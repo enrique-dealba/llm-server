@@ -90,7 +90,7 @@ def main():
                     json_strs.append(response)
             t_1 = time.perf_counter()
 
-            extracted_model = combine_jsons(json_strs)
+            extracted_model = combine_jsons(json_strs, Foo)
 
             response = "\n".join(json_strs)
             cleaned_response = tp.clean_mistral(response)
