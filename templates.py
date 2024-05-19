@@ -30,15 +30,15 @@ def parse_datetime(value: str) -> datetime:
 
 
 class CMO(BaseModel):
-    sensor_name: str = Field(description="String Names of Sensor to perform Catalog Maintenance with.")
-    data_mode: str = Field(description="String type for the Machina Common DataModeType being generated.")
-    classification_marking: str = Field(description="Classification level of objective intents. One of: 'U', 'C', 'S', 'TS', 'U//FOUO'")
-    patience_minutes: int = Field(description="default=30. Amount of time to wait until it's assumed a 'SENT' intent failed.")
-    end_time_offset_minutes: int = Field(description="default=20. Amount of minutes into the future to let astroplan schedule an intent.")
-    objective_name: str = Field(description="default='Catalog Maintenance Objective'. The common name for this objective.")
+    sensor_name: str = Field(description="sensor_name: String Name of Sensor to perform Catalog Maintenance with.")
+    data_mode: str = Field(description="data_mode: String type for the Machina Common DataModeType being generated. Either 'TEST' or 'REAL'.")
+    classification_marking: str = Field(description="classification_marking: Classification level of objective intents. One of: 'U', 'C', 'S', 'TS', 'U//FOUO'")
+    patience_minutes: int = Field(description="patience_minutes: default=30. Amount of time to wait until it is assumed that an intent failed.")
+    end_time_offset_minutes: int = Field(description="end_time_offset_minutes: default=20. Amount of minutes into the future to schedule this intent.")
+    objective_name: str = Field(description="objective_name: default='Catalog Maintenance Objective'. The common name for this objective.")
     # objective_start_time: Annotated[datetime, Field(default_factory=datetime.now)]
     # objective_end_time: Annotated[datetime, Field(default_factory=datetime.now)]
-    priority: int = Field(description="default=10. Astroplan Scheduler Priority.")
+    priority: int = Field(description="priority: default=10. Astroplan Scheduler Priority.")
 
 
 class CMOTemplate(BaseModel):

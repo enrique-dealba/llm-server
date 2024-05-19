@@ -30,6 +30,7 @@ class Client:
             logging.error(f"API request failed: {e}")
             raise
 
+user_example = "I need a new catalog maintenance for RME00 with TS markings and use TEST mode with a priority of 10 and set the patience to 30 minutes and end search after 20 minutes."
 
 def extract_field_from_prompt(
     prompt: str, field_name: str, field_desc: str, example: str
@@ -44,7 +45,7 @@ def extract_field_from_prompt(
     << {field_name} >> with description: {field_desc} from the user prompt.
     Example:
     Input:
-    user_prompt: "Make a Foo with name Qwerty and ID 906 please."
+    user_prompt: "{user_example}"
     Result: {{
         "{field_name}": "{example}",
     }}
@@ -81,13 +82,13 @@ def main():
             json_strs = []
             #examples = ["Qwerty", "987"]
             examples = [
-                "RME00",
-                "TEST",
-                "TS",
-                30,
-                20,
-                "Catalog Maintenance Objective",
-                10,
+                "RME00", # sensor_name
+                "TEST", # data_mode
+                "TS", # classification_marking
+                30, # patience_minutes
+                20, # end_time_offset_minutes
+                "Catalog Maintenance Objective", # objective_name
+                10, # priority
             ]
             max_tries = 3
 
