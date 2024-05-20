@@ -47,7 +47,7 @@ class CMOTemplate(BaseModel):
     classification_marking: Optional[str] = None
     patience_minutes: Optional[int] = None
     end_time_offset_minutes: Optional[int] = None
-    objective_name: Optional[str] = None
+    # objective_name: Optional[str] = None
     # objective_start_time: Annotated[datetime, Field(default_factory=datetime.now)]
     # objective_end_time: Annotated[datetime, Field(default_factory=datetime.now)]
     priority: Optional[int] = None

@@ -1,132 +1,70 @@
-# import argparse
-# import json
-# import logging
-# import re
-# import time
-# from typing import Dict
+import argparse
+import json
+import logging
+import time
+from typing import Dict
 
-# from client import Client
-# from text_processing import TextProcessing as tp
+from client import process_prompt
 
 
-# def check_response(response: str) -> bool:
-#     """Boolean logic to check if string text can be json parsed."""
-#     try:
-#         json.loads(response, parse_int=lambda x: int(x) if x.isdigit() else x)
-#         return True
-#     except json.JSONDecodeError:
-#         return False
+def function_call(stats: Dict, prompts: list, num_tests: int = 3) -> Dict[str, float]:
+    """Runs a series of prompts through the LLM router and benchmarks correctness."""
+    total_correctness = 0.0
+    total_time = 0.0
+    successful_requests = 0.0
+    total_requests = 0.0
+
+    for _ in range(num_tests):
+        for prompt in prompts:
+            try:
+                t_0 = time.perf_counter()
+                response, _, correctness = process_prompt(prompt)
+                t_1 = time.perf_counter()
+
+                if response:
+                    elapsed_time = t_1 - t_0
+                    total_time += elapsed_time
+                    successful_requests += 1
+                    total_requests += 1
+                    total_correctness += correctness
+
+            except Exception as e:
+                logging.error(f"Error processing prompt: {e}")
+                total_requests += 1
+
+    stats["total_correctness"] += total_correctness
+    stats["total_time"] += total_time
+    stats["successful_requests"] += successful_requests
+    stats["total_requests"] += total_requests
+
+    return stats
 
 
-# def remove_extra_newlines_and_spaces(json_string):
-#     """Removes extra newlines and spaces from the JSON string."""
-#     return re.sub(r"\s+", " ", json_string).strip()
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--prompts", type=str, required=True)
+    args = parser.parse_args()
 
+    prompts = json.loads(args.prompts)
 
-# def remove_backslashes_before_underscores(json_string):
-#     """Removes the backslashes before underscores in the JSON string."""
-#     return re.sub(r"\\_", "_", json_string)
+    stats = {
+        "total_correctness": 0.0,
+        "total_time": 0.0,
+        "successful_requests": 0.0,
+        "total_requests": 0.0,
+    }
 
+    t_0 = time.perf_counter()
 
-# def add_quotes_to_unquoted_timestamps(json_string):
-#     """Adds quotes to unquoted timestamp values in the JSON strings."""
-#     pattern = re.compile(r"(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z)")
-#     return pattern.sub(r'"\1"', json_string)
+    stats = function_call(stats=stats, prompts=prompts, num_tests=3)
 
+    t_1 = time.perf_counter()
+    total_time = t_1 - t_0
 
-# def process_json_string(json_string):
-#     """Applies string processing functions to the JSON string."""
-#     processed_string = remove_extra_newlines_and_spaces(json_string)
-#     processed_string = remove_backslashes_before_underscores(processed_string)
-#     processed_string = add_quotes_to_unquoted_timestamps(processed_string)
-#     return processed_string
+    num_requests = stats["successful_requests"]
+    if num_requests <= 0:
+        num_requests = 1
 
-
-# parser = argparse.ArgumentParser()
-# parser.add_argument("--prompts", type=str, required=True)
-# args = parser.parse_args()
-
-# prompts = json.loads(args.prompts)
-
-
-# def function_call(stats: dict, num_tests: int = 5) -> Dict[str, float]:
-#     """Runs a series of prompts through the LLM router and benchmarks json parsing."""
-#     total_tps = 0.0
-#     total_time = 0.0
-#     total_correct = 0.0
-#     successful_requests = 0.0
-#     total_requests = 0.0
-
-#     for _ in range(num_tests):
-#         for idx in range(len(prompts)):
-#             prompt = prompts[idx]
-#             response = None
-
-#             try:
-#                 t_0 = time.perf_counter()
-#                 response = Client.generate_text(prompt)
-#                 t_1 = time.perf_counter()
-#             except Exception as e:
-#                 logging.error(f"LLM failed to generate text: {e}")
-
-#             # print(f"Raw Response: {response}")
-
-#             if response and "text" in response:
-#                 # TODO: More elegant way to check str type
-#                 response = str(response["text"])
-#                 elapsed_time = t_1 - t_0
-#                 tps = tp.measure_performance(t_0, t_1, response)
-#                 total_tps += tps
-#                 total_time += elapsed_time
-#                 successful_requests += 1
-#                 total_requests += 1
-
-#                 response = process_json_string(response)
-
-#                 correct = check_response(response)
-#                 total_correct += int(correct)  # Adds 1 if correct
-
-#                 # if i == 0:  # We only print these out during first iter.
-#                 # print(f"Prompt: {prompt}")
-#                 # print(f"Response: {response}")
-#                 # print(f"Actual: {expected_response}")
-#                 # print(f"Check: {correct}")
-#                 # print(f"TPS: {tps:.2f}\n")
-#             else:
-#                 total_requests += 1
-#                 print(f"\nFailed to get response for prompt: {prompt}")
-
-#     stats["total_tps"] += total_tps
-#     stats["total_time"] += total_time
-#     stats["total_correct"] += total_correct
-#     stats["successful_requests"] += successful_requests
-#     stats["total_requests"] += total_requests
-
-#     return stats
-
-
-# if __name__ == "__main__":
-#     stats = {
-#         "total_tps": 0.0,
-#         "total_time": 0.0,
-#         "total_correct": 0.0,
-#         "successful_requests": 0.0,
-#         "total_requests": 0.0,
-#     }
-
-#     t_0 = time.perf_counter()
-
-#     stats = function_call(stats=stats, num_tests=3)
-
-#     t_1 = time.perf_counter()
-#     total_time = t_1 - t_0
-
-#     num_requests = stats["successful_requests"]
-#     if num_requests <= 0:
-#         num_requests = 1
-
-#     print(f"Avg Tokens per Second (TPS): {stats['total_tps']/num_requests:.2f}")
-#     print(f"Avg Time Elapsed Per Response: {stats['total_time']/num_requests:.2f}")
-#     print(f"Avg Correct Answers: {stats['total_correct']/stats['total_requests']:.2f}")
-#     print(f"Total Correct Answers: {stats['total_correct']:.2f}")
-#     print(f"\nTotal Benchmarking Time: {total_time}")
+    print(f"Avg Correctness: {stats['total_correctness']/num_requests:.2%}")
+    print(f"Avg Time Elapsed Per Response: {stats['total_time']/num_requests:.2f}")
+    print(f"\nTotal Benchmarking Time: {total_time}")

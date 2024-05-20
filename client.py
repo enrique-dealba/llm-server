@@ -83,7 +83,7 @@ def calculate_filling_percentage(model_instance: BaseModel) -> float:
     return filled_fields / total_fields
 
 
-def process_prompt(prompt: str) -> str:
+def process_prompt(prompt: str):
     """Process the given prompt and return the response."""
     try:
         t_0 = time.perf_counter()
@@ -137,7 +137,7 @@ def process_prompt(prompt: str) -> str:
         tps = tp.measure_performance(t_0, t_1, cleaned_response)
         print(f"Tokens per second: {tps} t/s")
 
-        return cleaned_response
+        return cleaned_response, extracted_model, correctness
 
     except requests.exceptions.RequestException as e:
         print(f"An error occurred: {e}")
@@ -152,7 +152,7 @@ def main():
             print("Exiting the conversation.")
             break
 
-        response = process_prompt(prompt)
+        response, _, _ = process_prompt(prompt)
         if response:
              print("Response confirmed!")
 
