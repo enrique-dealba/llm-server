@@ -35,7 +35,7 @@ class CMO(BaseModel):
     classification_marking: str = Field(description="classification_marking: Classification level of objective intents. One of: 'U', 'C', 'S', 'TS', 'U//FOUO'")
     patience_minutes: int = Field(description="patience_minutes: default=30. Amount of time to wait until it is assumed that an intent failed.")
     end_time_offset_minutes: int = Field(description="end_time_offset_minutes: default=20. Amount of minutes into the future to schedule this intent.")
-    objective_name: str = Field(description="objective_name: default='Catalog Maintenance Objective'. The common name for this objective. If can't find just use the default of 'Catalog Maintenance Objective'.")
+    # objective_name: str = Field(description="objective_name: default='Catalog Maintenance Objective'. The common name for this objective. If can't find just use the default of 'Catalog Maintenance Objective'.")
     # objective_start_time: Annotated[datetime, Field(default_factory=datetime.now)]
     # objective_end_time: Annotated[datetime, Field(default_factory=datetime.now)]
     priority: int = Field(description="priority: default=10. Scheduler Priority. If can't find just use the default of 10.")

@@ -3,9 +3,10 @@ import time
 
 import requests
 from dotenv import load_dotenv
+from pydantic import BaseModel
 
 from config import Settings
-from templates import Foo, FooTemplate, CMO, CMOTemplate
+from templates import CMO, CMOTemplate
 from text_processing import TextProcessing as tp
 from utils import combine_jsons, get_model_fields_and_descriptions, is_json_like
 
@@ -30,7 +31,9 @@ class Client:
             logging.error(f"API request failed: {e}")
             raise
 
+
 user_example = "I need a new catalog maintenance for RME00 with TS markings and use TEST mode with a priority of 10 and set the patience to 30 minutes and end search after 20 minutes."
+
 
 def extract_field_from_prompt(
     prompt: str, field_name: str, field_desc: str, example: str
@@ -69,6 +72,78 @@ def extract_field_from_prompt(
         raise ValueError("Unexpected LLM response format")
 
 
+def measure_model_correctness(model: BaseModel) -> float:
+    """Calculates percent of non-null/None fields in Pydantic model."""
+    total_fields = len(model.__fields__)
+    non_null_fields = sum(
+        1
+        for field in model.__fields__.values()
+        if getattr(model, field.name) is not None
+    )
+    return non_null_fields / total_fields
+
+
+def process_prompt(prompt: str) -> str:
+    """Process the given prompt and return the response."""
+    try:
+        t_0 = time.perf_counter()
+        json_strs = []
+
+        examples = [
+            "RME00",  # sensor_name
+            "TEST",  # data_mode
+            "TS",  # classification_marking
+            30,  # patience_minutes
+            20,  # end_time_offset_minutes
+            "Catalog Maintenance Objective",  # objective_name
+            10,  # priority
+        ]
+
+        max_tries = 3
+        if len(examples) != len(foo_fields_and_descriptions):
+            raise ValueError("'examples' list must have same length as 'foo_fields'.")
+
+        for (field_name, field_desc), example in zip(
+            foo_fields_and_descriptions, examples
+        ):
+            num_tries = 0
+            while num_tries < max_tries:
+                response = extract_field_from_prompt(
+                    prompt, field_name, field_desc, example=example
+                )
+                if is_json_like(response):
+                    json_strs.append(response)
+                    break
+                num_tries += 1
+            else:
+                logging.warning(
+                    f"Failed to extract field '{field_name}' after {max_tries} attempts."
+                )
+
+        correctness = 0.0
+        t_1 = time.perf_counter()
+        if json_strs:
+            extracted_model = combine_jsons(json_strs, CMOTemplate)
+            correctness = measure_model_correctness(extracted_model)
+        else:
+            json_strs = ["JSON Parsing Failed!"]
+
+        response = "\n".join(json_strs)
+        cleaned_response = tp.clean_mistral(response)
+        print(f"\nLLM Response: {cleaned_response}")
+        print("=" * 30)
+        print(f"EXTRACTED MODEL: {extracted_model}")
+        print(f"Model Correctness: {correctness:.2%}")
+        tps = tp.measure_performance(t_0, t_1, cleaned_response)
+        print(f"Tokens per second: {tps} t/s")
+
+        return cleaned_response
+
+    except requests.exceptions.RequestException as e:
+        print(f"An error occurred: {e}")
+        return None
+
+
 def main():
     """Conversation loop with LLM server."""
     while True:
@@ -77,61 +152,9 @@ def main():
             print("Exiting the conversation.")
             break
 
-        try:
-            t_0 = time.perf_counter()
-            json_strs = []
-            #examples = ["Qwerty", "987"]
-            examples = [
-                "RME00", # sensor_name
-                "TEST", # data_mode
-                "TS", # classification_marking
-                30, # patience_minutes
-                20, # end_time_offset_minutes
-                "Catalog Maintenance Objective", # objective_name
-                10, # priority
-            ]
-            max_tries = 3
-
-            if len(examples) != len(foo_fields_and_descriptions):
-                raise ValueError(
-                    "'examples' list must have same length as 'foo_fields'."
-                )
-
-            for (field_name, field_desc), example in zip(
-                foo_fields_and_descriptions, examples
-            ):
-                num_tries = 0
-                while num_tries < max_tries:
-                    response = extract_field_from_prompt(
-                        prompt, field_name, field_desc, example=example
-                    )
-                    if is_json_like(response):
-                        json_strs.append(response)
-                        break
-                    num_tries += 1
-                else:
-                    logging.warning(
-                        f"Failed to extract field '{field_name}' after {max_tries} attempts."
-                    )
-
-            t_1 = time.perf_counter()
-
-            if json_strs:
-                extracted_model = combine_jsons(json_strs, CMOTemplate)
-            else:
-                json_strs = ["JSON Parsing Failed!"]
-
-            response = "\n".join(json_strs)
-            cleaned_response = tp.clean_mistral(response)
-            print(f"\nLLM Response: {cleaned_response}")
-            print("=" * 30)
-            print(f"EXTRACTED MODEL: {extracted_model}")
-
-            tps = tp.measure_performance(t_0, t_1, cleaned_response)
-            print(f"Tokens per second: {tps} t/s")
-
-        except requests.exceptions.RequestException as e:
-            print(f"An error occurred: {e}")
+        response = process_prompt(prompt)
+        if response:
+            print(f"Response: {response}")
 
 
 if __name__ == "__main__":
