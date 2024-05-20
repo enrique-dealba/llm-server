@@ -132,10 +132,10 @@ def process_prompt(prompt: str):
         cleaned_response = tp.clean_mistral(response)
         # print(f"\nLLM Response: {cleaned_response}")
         # print("=" * 30)
-        print(f"EXTRACTED MODEL: {extracted_model}")
-        print(f"Model Correctness: {correctness:.2%}")
-        tps = tp.measure_performance(t_0, t_1, cleaned_response)
-        print(f"Tokens per second: {tps} t/s")
+        # print(f"EXTRACTED MODEL: {extracted_model}")
+        # print(f"Model Correctness: {correctness:.2%}")
+        # tps = tp.measure_performance(t_0, t_1, cleaned_response)
+        # print(f"Tokens per second: {tps} t/s")
 
         return cleaned_response, extracted_model, correctness
 
