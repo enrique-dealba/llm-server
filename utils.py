@@ -1,3 +1,4 @@
+import json
 import re
 from typing import Type
 
@@ -75,3 +76,27 @@ def is_json_like(json_str: str) -> bool:
         ):
             return True
     return False
+
+
+def extract_json_objective(input_string):
+    """Extracts Objective from LLM outputs."""
+    normalized_string = re.sub(r"\s+", " ", input_string.replace("\n", " ")).strip()
+
+    # Regex pattern to find the JSON-like substring
+    pattern = r'\{\s*"objective"\s*:\s*"(\w+)"\s*,?\s*\}'
+
+    try:
+        match = re.search(pattern, normalized_string)
+        if match:
+            json_str = match.group(0)
+            json_str = re.sub(r",\s*\}", " }", json_str)
+            json_obj = json.loads(json_str)
+
+            objective_value = json_obj["objective"]
+            return objective_value
+        else:
+            raise ValueError("No matching JSON substring found.")
+    except json.JSONDecodeError:
+        raise ValueError("Failed to decode JSON.")
+    except Exception as e:
+        raise ValueError(f"An error occurred: {str(e)}")

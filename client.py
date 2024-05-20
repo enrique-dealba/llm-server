@@ -8,7 +8,7 @@ from pydantic import BaseModel
 from config import Settings
 from templates import CMO, CMOTemplate, PRO, PROTemplate
 from text_processing import TextProcessing as tp
-from utils import combine_jsons, get_model_fields_and_descriptions, is_json_like
+from utils import combine_jsons, get_model_fields_and_descriptions, is_json_like, extract_json_objective
 
 load_dotenv()
 settings = Settings()
@@ -176,7 +176,8 @@ def process_prompt(prompt: str):
     try:
         t_0 = time.perf_counter()
 
-        objective = extract_objective(prompt)
+        objective_llm = extract_objective(prompt)
+        objective = extract_json_objective(objective_llm)
         print(f"EXTRACTED OBJECTIVE: {objective}")
 
         json_strs = []
