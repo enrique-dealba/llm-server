@@ -119,12 +119,12 @@ def main():
         "cmo_schema": [
             "Make a new catalog maintenance for sensor RME02 with U markings and TEST mode, with priority 12, and patience of 10 mins ending after 25 mins",
             "Schedule a new catalog task for sensor ABQ04 with REAL mode, classification marking S, priority 8, patience of 25 minutes, and an end time offset of 35 minutes.",
-            # "Configure catalog maintenance for sensor UKR07 in TEST mode, with classification marking C, priority 12, patience of 15 minutes, and concluding 40 minutes later.",
-            # "Set up a catalog entry for sensor RME12, operating in REAL mode, with a U classification, a high priority of 18, 30 minutes of patience, and completion after 45 minutes.",
-            # "Create a maintenance task for sensor LMNT05 in TEST mode, marked as TS, with a priority of 10, a 30-minute patience window, and an end time offset of 20 minutes.",
-            # "Plan a catalog operation for sensor LMNT11 using TEST mode, S classification, with a priority of 13, patience for 20 minutes, and finishing after 30 minutes.",
-            # "Make a new catalog job for sensor ABQ01 in REAL mode, marked as TS, with priority 11, 15 minutes of patience, and a finalization time 25 minutes later.",
-            # "Create a new catalog maintenance for sensor RME15 with REAL mode, U//FOUO marking, priority 14, patience of 50 minutes, and set to end after 70 minutes.",
+            "Configure catalog maintenance for sensor UKR07 in TEST mode, with classification marking C, priority 12, patience of 15 minutes, and concluding 40 minutes later.",
+            "Set up a catalog entry for sensor RME12, operating in REAL mode, with a U classification, a high priority of 18, 30 minutes of patience, and completion after 45 minutes.",
+            "Create a maintenance task for sensor LMNT05 in TEST mode, marked as TS, with a priority of 10, a 30-minute patience window, and an end time offset of 20 minutes.",
+            "Plan a catalog operation for sensor LMNT11 using TEST mode, S classification, with a priority of 13, patience for 20 minutes, and finishing after 30 minutes.",
+            "Make a new catalog job for sensor ABQ01 in REAL mode, marked as TS, with priority 11, 15 minutes of patience, and a finalization time 25 minutes later.",
+            "Create a new catalog maintenance for sensor RME15 with REAL mode, U//FOUO marking, priority 14, patience of 50 minutes, and set to end after 70 minutes.",
         ],
     }
 
