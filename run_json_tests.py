@@ -44,7 +44,7 @@ def run_docker_container(model_name):
 def stop_docker_container():
     """Stops the Docker container."""
     try:
-        subprocess.run(["docker", "stop", "llm7"], check=True)
+        subprocess.run(["docker", "stop", "llm6"], check=True)
     except subprocess.CalledProcessError as e:
         logging.warning(f"Failed to stop Docker container: {str(e)}")
 
@@ -83,7 +83,7 @@ def run_tests(prompts):
 
     try:
         subprocess.run(
-            ["docker", "exec", "llm7",
+            ["docker", "exec", "llm6",
              "python", "json_tests.py", f"--prompts={json.dumps(prompts)}"],
             check=True
         )
