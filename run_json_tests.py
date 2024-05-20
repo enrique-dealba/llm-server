@@ -131,10 +131,10 @@ def main():
     num_experiments = 1
     models = [
         # "mistralai/Mistral-7B-Instruct-v0.2",
-        # "teknium/OpenHermes-2.5-Mistral-7B",
+        "teknium/OpenHermes-2.5-Mistral-7B",
         # "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
         "TheBloke/OpenHermes-2.5-Mistral-7B-GPTQ",
-        # "NousResearch/Hermes-2-Pro-Mistral-7B",
+        "NousResearch/Hermes-2-Pro-Mistral-7B",
     ]
 
     for model in models:

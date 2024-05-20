@@ -115,10 +115,10 @@ def process_prompt(prompt: str):
                     json_strs.append(response)
                     break
                 num_tries += 1
-            else:
-                logging.warning(
-                    f"Failed to extract field '{field_name}' after {max_tries} attempts."
-                )
+            # else:
+            #     logging.warning(
+            #         f"Failed to extract field '{field_name}' after {max_tries} attempts."
+            #     )
 
         correctness = 0.0
         t_1 = time.perf_counter()
@@ -130,8 +130,8 @@ def process_prompt(prompt: str):
 
         response = "\n".join(json_strs)
         cleaned_response = tp.clean_mistral(response)
-        print(f"\nLLM Response: {cleaned_response}")
-        print("=" * 30)
+        # print(f"\nLLM Response: {cleaned_response}")
+        # print("=" * 30)
         print(f"EXTRACTED MODEL: {extracted_model}")
         print(f"Model Correctness: {correctness:.2%}")
         tps = tp.measure_performance(t_0, t_1, cleaned_response)
@@ -153,8 +153,8 @@ def main():
             break
 
         response, _, _ = process_prompt(prompt)
-        if response:
-             print("Response confirmed!")
+        # if response:
+        #      print("Response confirmed!")
 
 
 if __name__ == "__main__":
