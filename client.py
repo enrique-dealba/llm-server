@@ -152,9 +152,9 @@ def main():
             print("Exiting the conversation.")
             break
 
-        response = process_prompt(prompt)
-        if response:
-            print(f"Response: {response}")
+        # response = process_prompt(prompt)
+        # if response:
+        #     print(f"Response: {response}")
 
 
 if __name__ == "__main__":
