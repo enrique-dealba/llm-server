@@ -126,6 +126,10 @@ def main():
             "Make a new catalog job for sensor ABQ01 in REAL mode, marked as TS, with priority 11, 15 minutes of patience, and a finalization time 25 minutes later.",
             "Create a new catalog maintenance for sensor RME15 with REAL mode, U//FOUO marking, priority 14, patience of 50 minutes, and set to end after 70 minutes.",
         ],
+        "pro_schema": [
+            "Track object 44248 with sensor RME01, revisiting twice per hour for the next 36 hours using TEST mode, 'S' markings, and set priority to 2.",
+            "Track celestial object 21212 with sensor RME33 with REAL mode, revisiting four times per hour, starting execution with REAL mode for a 48-hour plan, marked as “U//FOUO, with priority set to 1.",
+        ],
     }
 
     num_experiments = 1

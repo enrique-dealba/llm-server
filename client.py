@@ -6,14 +6,14 @@ from dotenv import load_dotenv
 from pydantic import BaseModel
 
 from config import Settings
-from templates import CMO, CMOTemplate
+from templates import CMO, CMOTemplate, PRO, PROTemplate
 from text_processing import TextProcessing as tp
 from utils import combine_jsons, get_model_fields_and_descriptions, is_json_like
 
 load_dotenv()
 settings = Settings()
 
-foo_fields_and_descriptions = get_model_fields_and_descriptions(CMO)
+foo_fields_and_descriptions = get_model_fields_and_descriptions(PRO)
 
 
 class Client:
@@ -89,7 +89,7 @@ def process_prompt(prompt: str):
         t_0 = time.perf_counter()
         json_strs = []
 
-        examples = [
+        CMO_examples = [
             "RME00",  # sensor_name
             "TEST",  # data_mode
             "TS",  # classification_marking
@@ -98,6 +98,18 @@ def process_prompt(prompt: str):
             # "Catalog Maintenance Objective",  # objective_name
             10,  # priority
         ]
+
+        PRO_examples = [
+            12345, # target_id
+            "RME08", # sensor_name
+            "REAL", # data_mode
+            "S", # classification_marking
+            4, # revisits_per_hour
+            16, # hours_to_plan
+            2, # priority
+        ]
+
+        examples = PRO_examples
 
         max_tries = 3
         if len(examples) != len(foo_fields_and_descriptions):
@@ -119,23 +131,27 @@ def process_prompt(prompt: str):
             #     logging.warning(
             #         f"Failed to extract field '{field_name}' after {max_tries} attempts."
             #     )
-
-        correctness = 0.0
         t_1 = time.perf_counter()
+
+        extracted_model = None
+        correctness = 0.0
+        
         if json_strs:
-            extracted_model = combine_jsons(json_strs, CMOTemplate)
+            extracted_model = combine_jsons(json_strs, PROTemplate)
             correctness = calculate_filling_percentage(extracted_model)
         else:
             json_strs = ["JSON Parsing Failed!"]
 
         response = "\n".join(json_strs)
         cleaned_response = tp.clean_mistral(response)
-        # print(f"\nLLM Response: {cleaned_response}")
-        # print("=" * 30)
-        # print(f"EXTRACTED MODEL: {extracted_model}")
-        # print(f"Model Correctness: {correctness:.2%}")
-        # tps = tp.measure_performance(t_0, t_1, cleaned_response)
-        # print(f"Tokens per second: {tps} t/s")
+        
+        ## USE BELOW DURING DEBUGGING
+        print(f"\nLLM Response: {cleaned_response}")
+        print("=" * 30)
+        print(f"EXTRACTED MODEL: {extracted_model}")
+        print(f"Model Correctness: {correctness:.2%}")
+        tps = tp.measure_performance(t_0, t_1, cleaned_response)
+        print(f"Tokens per second: {tps} t/s")
 
         return cleaned_response, extracted_model, correctness
 

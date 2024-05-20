@@ -2,7 +2,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Annotated, Optional
 
-from pydantic import BaseModel, Field, ValidationError
+from pydantic import BaseModel, Field, ValidationError, StrictInt
 
 
 class Foo(BaseModel):
@@ -38,7 +38,7 @@ class CMO(BaseModel):
     # objective_name: str = Field(description="objective_name: default='Catalog Maintenance Objective'. The common name for this objective. If can't find just use the default of 'Catalog Maintenance Objective'.")
     # objective_start_time: Annotated[datetime, Field(default_factory=datetime.now)]
     # objective_end_time: Annotated[datetime, Field(default_factory=datetime.now)]
-    priority: int = Field(description="priority: default=10. Scheduler Priority. If can't find just use the default of 10.")
+    priority: int = Field(description="int: default=10. This is the set priority, defaults to 10 (11th highest priority).")
 
 
 class CMOTemplate(BaseModel):
@@ -50,6 +50,33 @@ class CMOTemplate(BaseModel):
     # objective_name: Optional[str] = None
     # objective_start_time: Annotated[datetime, Field(default_factory=datetime.now)]
     # objective_end_time: Annotated[datetime, Field(default_factory=datetime.now)]
+    priority: Optional[int] = None
+
+
+class PRO(BaseModel):
+    # objective_def_name: str = Field(default="PeriodicRevisitObjective", description="Exact name of Objective definition.")
+    target_id: StrictInt = Field(description="StrictInt: 5 Digit RSO satcat id.")
+    sensor_name: str = Field(description="sensor_name: String Name of Sensor to perform Revisits with. Usually in the format 'RME..', 'LMNT..', 'ABQ..', 'UKR...', for example: RME99.")
+    data_mode: str = Field(description="data_mode: String type for the Machina Common DataModeType being generated. Either 'TEST' or 'REAL'.")
+    classification_marking: str = Field(description="classification_marking: Classification level of objective intents. One of: 'U', 'C', 'S', 'TS', 'U//FOUO'")
+    revisits_per_hour: int = Field(default=1, description="int: default=1. Desired number of times to revisit and observe each target per hour.")
+    hours_to_plan: int = Field(default=24, description="int: default=24. Maximum hours to plan.")
+    # objective_name: str = Field(default="Periodic Revisit Objective", description="Name for this objective.")
+    # objective_start_time: Optional[Union[datetime, str]] = Field(default=None, description="The earliest time when the objective should begin execution.")
+    # objective_end_time: Optional[Union[datetime, str]] = Field(default=None, description="The earliest time when the objective should end execution.")
+    priority: int = Field(default=2, description="int: default=2. This is the set priority, defaults to 2 (3rd highest priority).")
+
+class PROTemplate(BaseModel):
+    objective_def_name: Optional[str] = None
+    target_id: Optional[StrictInt] = None
+    sensor_name: Optional[str] = None
+    data_mode: Optional[str] = None
+    classification_marking: Optional[str] = None
+    revisits_per_hour: Optional[int] = None
+    hours_to_plan: Optional[int] = None
+    # objective_name: Optional[str] = None
+    # objective_start_time: Optional[Union[datetime, str]] = None
+    # objective_end_time: Optional[Union[datetime, str]] = None
     priority: Optional[int] = None
 
 
