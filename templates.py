@@ -2,7 +2,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Annotated, Optional
 
-from pydantic import BaseModel, Field, ValidationError, StrictInt
+from pydantic import BaseModel, Field, ValidationError
 
 
 class Foo(BaseModel):
@@ -55,7 +55,7 @@ class CMOTemplate(BaseModel):
 
 class PRO(BaseModel):
     # objective_def_name: str = Field(default="PeriodicRevisitObjective", description="Exact name of Objective definition.")
-    target_id: StrictInt = Field(description="StrictInt: 5 Digit RSO satcat id.")
+    target_id: int = Field(description="int: 5 Digit RSO satcat id.")
     sensor_name: str = Field(description="sensor_name: String Name of Sensor to perform Revisits with. Usually in the format 'RME..', 'LMNT..', 'ABQ..', 'UKR...', for example: RME99.")
     data_mode: str = Field(description="data_mode: String type for the Machina Common DataModeType being generated. Either 'TEST' or 'REAL'.")
     classification_marking: str = Field(description="classification_marking: Classification level of objective intents. One of: 'U', 'C', 'S', 'TS', 'U//FOUO'")
@@ -68,7 +68,7 @@ class PRO(BaseModel):
 
 class PROTemplate(BaseModel):
     objective_def_name: Optional[str] = None
-    target_id: Optional[StrictInt] = None
+    target_id: Optional[int] = None
     sensor_name: Optional[str] = None
     data_mode: Optional[str] = None
     classification_marking: Optional[str] = None
