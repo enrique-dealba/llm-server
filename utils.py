@@ -5,6 +5,9 @@ from typing import Type
 from pydantic import BaseModel
 from pydantic_core import from_json
 
+from client import Client
+from objectives import cmo_info, objectives, pro_info
+
 
 def get_model_fields_and_descriptions(model_class: BaseModel) -> list[tuple[str, str]]:
     """Retrieves the fields and their descriptions from a Pydantic model."""
@@ -100,3 +103,100 @@ def extract_json_objective(input_string):
         raise ValueError("Failed to decode JSON.")
     except Exception as e:
         raise ValueError(f"An error occurred: {str(e)}")
+
+
+def extract_objective(prompt: str) -> str:
+    """Extracts objective definition from the user prompt using LLM."""
+    json_prompt = f"""
+    <|im_start|>system
+    You are a helpful assistant designed to output single JSON fields.
+    Given the following user prompt
+    << {prompt} >>
+    extract the objective definition category that the prompt is most associated with.
+    The 'objective' should be one of 'CMO', 'PRO', with the following descriptions:
+    {cmo_info['example']}: Description: {cmo_info['description']}
+    {pro_info['example']}: Description: {pro_info['description']}
+    Examples:
+    Input:
+    user_prompt: "{cmo_info['prompt']}"
+    Result: {{
+        "objective": "{cmo_info['example']}",
+    }}
+    Input:
+    user_prompt: "{pro_info['prompt']}"
+    Result: {{
+        "objective": "{pro_info['example']}",
+    }}
+    <|im_end|>
+
+    <|im_start|>user
+    Input:
+    user_prompt: {prompt}
+    <|im_end|>
+
+    <|im_start|>assistant
+    Result:
+    """
+
+    result = Client.generate_text(json_prompt)
+    if "text" in result:
+        return result["text"]
+    elif "detail" in result:
+        return result["detail"]
+    else:
+        raise ValueError("Unexpected LLM response format")
+
+
+def extract_field_from_prompt(
+    prompt: str,
+    field_name: str,
+    field_desc: str,
+    example: str,
+    obj: str,
+) -> str:
+    """Extracts a single field from the user prompt using the LLM."""
+    obj_info = objectives[obj]
+    user_example = obj_info["prompt"]
+
+    json_prompt = f"""
+    <|im_start|>system
+    You are a helpful assistant designed to output single JSON fields.
+    Given the following user prompt
+    << {prompt} >>
+    extract the following field:
+    << {field_name} >> with description: {field_desc} from the user prompt.
+    Example:
+    Input:
+    user_prompt: "{user_example}"
+    Result: {{
+        "{field_name}": "{example}",
+    }}
+    <|im_end|>
+
+    <|im_start|>user
+    Input:
+    user_prompt: {prompt}
+    <|im_end|>
+
+    <|im_start|>assistant
+    Result:
+    """
+
+    result = Client.generate_text(json_prompt)
+    if "text" in result:
+        return result["text"]
+    elif "detail" in result:
+        return result["detail"]
+    else:
+        raise ValueError("Unexpected LLM response format")
+
+
+def calculate_filling_percentage(model_instance: BaseModel) -> float:
+    """Calculates the percentage of filled fields in Pydantic model."""
+    total_fields = len(model_instance.__fields__)
+    filled_fields = sum(
+        1 for _, value in model_instance.__dict__.items() if value is not None
+    )
+    if total_fields == 0:
+        return 0.0
+    return filled_fields / total_fields
