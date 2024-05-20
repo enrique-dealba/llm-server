@@ -72,15 +72,15 @@ def extract_field_from_prompt(
         raise ValueError("Unexpected LLM response format")
 
 
-def measure_model_correctness(model: BaseModel) -> float:
-    """Calculates percent of non-null/None fields in Pydantic model."""
-    total_fields = len(model.__fields__)
-    non_null_fields = sum(
-        1
-        for field in model.__fields__.values()
-        if getattr(model, field.name) is not None
+def calculate_filling_percentage(model_instance: BaseModel) -> float:
+    """Calculates the percentage of filled fields in Pydantic model."""
+    total_fields = len(model_instance.__fields__)
+    filled_fields = sum(
+        1 for _, value in model_instance.__dict__.items() if value is not None
     )
-    return non_null_fields / total_fields
+    if total_fields == 0:
+        return 0.0
+    return filled_fields / total_fields
 
 
 def process_prompt(prompt: str) -> str:
@@ -124,7 +124,7 @@ def process_prompt(prompt: str) -> str:
         t_1 = time.perf_counter()
         if json_strs:
             extracted_model = combine_jsons(json_strs, CMOTemplate)
-            correctness = measure_model_correctness(extracted_model)
+            correctness = calculate_filling_percentage(extracted_model)
         else:
             json_strs = ["JSON Parsing Failed!"]
 
