@@ -67,7 +67,7 @@ class PRO(BaseModel):
     priority: int = Field(default=2, description="int: default=2. This is the set priority, defaults to 2 (3rd highest priority).")
 
 class PROTemplate(BaseModel):
-    objective_def_name: Optional[str] = None
+    # objective_def_name: Optional[str] = None
     target_id: Optional[int] = None
     sensor_name: Optional[str] = None
     data_mode: Optional[str] = None
