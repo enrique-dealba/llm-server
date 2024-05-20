@@ -95,7 +95,7 @@ def process_prompt(prompt: str) -> str:
             "TS",  # classification_marking
             30,  # patience_minutes
             20,  # end_time_offset_minutes
-            "Catalog Maintenance Objective",  # objective_name
+            # "Catalog Maintenance Objective",  # objective_name
             10,  # priority
         ]
 
