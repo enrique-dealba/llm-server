@@ -5,7 +5,6 @@ from typing import Type
 from pydantic import BaseModel
 from pydantic_core import from_json
 
-from client import Client
 from objectives import cmo_info, objectives, pro_info
 
 
@@ -105,7 +104,7 @@ def extract_json_objective(input_string):
         raise ValueError(f"An error occurred: {str(e)}")
 
 
-def extract_objective(prompt: str) -> str:
+def extract_objective(prompt: str, client) -> str:
     """Extracts objective definition from the user prompt using LLM."""
     json_prompt = f"""
     <|im_start|>system
@@ -138,7 +137,7 @@ def extract_objective(prompt: str) -> str:
     Result:
     """
 
-    result = Client.generate_text(json_prompt)
+    result = client.generate_text(json_prompt)
     if "text" in result:
         return result["text"]
     elif "detail" in result:
@@ -148,11 +147,7 @@ def extract_objective(prompt: str) -> str:
 
 
 def extract_field_from_prompt(
-    prompt: str,
-    field_name: str,
-    field_desc: str,
-    example: str,
-    obj: str,
+    prompt: str, field_name: str, field_desc: str, example: str, obj: str, client
 ) -> str:
     """Extracts a single field from the user prompt using the LLM."""
     obj_info = objectives[obj]
@@ -182,7 +177,7 @@ def extract_field_from_prompt(
     Result:
     """
 
-    result = Client.generate_text(json_prompt)
+    result = client.generate_text(json_prompt)
     if "text" in result:
         return result["text"]
     elif "detail" in result:

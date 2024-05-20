@@ -37,12 +37,12 @@ class Client:
             raise
 
 
-def process_prompt(prompt: str):
+def process_prompt(prompt: str, client: Client):
     """Process the given prompt and return the response."""
     try:
         t_0 = time.perf_counter()
 
-        objective_llm = extract_objective(prompt)
+        objective_llm = extract_objective(prompt, client)
         objective = extract_json_objective(objective_llm)
         print(f"EXTRACTED OBJECTIVE: {objective}")
 
@@ -70,7 +70,12 @@ def process_prompt(prompt: str):
             num_tries = 0
             while num_tries < max_tries:
                 response = extract_field_from_prompt(
-                    prompt, field_name, field_desc, example=example, obj=objective
+                    prompt,
+                    field_name,
+                    field_desc,
+                    example=example,
+                    obj=objective,
+                    client=client,
                 )
                 if is_json_like(response):
                     json_strs.append(response)
@@ -112,13 +117,14 @@ def process_prompt(prompt: str):
 
 def main():
     """Conversation loop with LLM server."""
+    client = Client()
     while True:
         prompt = input("Prompt: ")
         if prompt.lower() in ["quit", "exit"]:
             print("Exiting the conversation.")
             break
 
-        response, _, _ = process_prompt(prompt)
+        response, _, _ = process_prompt(prompt, client)
         # if response:
         #      print("Response confirmed!")
 
