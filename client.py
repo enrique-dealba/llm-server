@@ -73,6 +73,9 @@ def process_prompt(prompt: str, client: Client):
         for (field_name, field_desc), example in zip(
             fields_and_descriptions, obj_info["example_fields"]
         ):
+            if field_name in ["objective_start_time", "objective_end_time"]:
+                continue
+
             num_tries = 0
             while num_tries < max_tries:
                 response = extract_field_from_prompt(
@@ -92,32 +95,32 @@ def process_prompt(prompt: str, client: Client):
             #         f"Failed to extract field '{field_name}' after {max_tries} attempts."
             #     )
 
-        # time_model = get_model_fields_and_descriptions(ObjectiveTime)
-        # for field_name, field_desc in time_model:
-        #     num_tries = 0
-        #     while num_tries < max_tries:
-        #         response = extract_time_from_prompt(
-        #             prompt,
-        #             field_name,
-        #             field_desc,
-        #             client=client,
-        #         )
+        time_model = get_model_fields_and_descriptions(ObjectiveTime)
+        for field_name, field_desc in time_model:
+            num_tries = 0
+            while num_tries < max_tries:
+                response = extract_time_from_prompt(
+                    prompt,
+                    field_name,
+                    field_desc,
+                    client=client,
+                )
 
-        #         cleaned_response = clean_json_str(response)
-        #         if is_json_like(cleaned_response):
-        #             time_strs.append(cleaned_response)
-        #             break
-        #         elif is_json_like(response):
-        #             time_strs.append(response)
-        #             break
-        #         else:
-        #             print("WARNING: NOT JSON-LIKE")
-        #             print(f"Raw LLM response at attempt={num_tries}: {response}")
-        #         num_tries += 1
-        #     else:
-        #         logging.warning(
-        #             f"Failed to extract time field '{field_name}' after {max_tries} attempts."
-        #         )
+                cleaned_response = clean_json_str(response)
+                if is_json_like(cleaned_response):
+                    time_strs.append(cleaned_response)
+                    break
+                elif is_json_like(response):
+                    time_strs.append(response)
+                    break
+                else:
+                    print("WARNING: NOT JSON-LIKE")
+                    print(f"Raw LLM response at attempt={num_tries}: {response}")
+                num_tries += 1
+            else:
+                logging.warning(
+                    f"Failed to extract time field '{field_name}' after {max_tries} attempts."
+                )
 
         t_1 = time.perf_counter()
 
@@ -128,7 +131,7 @@ def process_prompt(prompt: str, client: Client):
 
         if json_strs:
             extracted_model = combine_jsons(json_strs, obj_info["template"])
-            correctness = calculate_filling_percentage(extracted_model)
+            # correctness = calculate_filling_percentage(extracted_model)
         else:
             json_strs = ["JSON Parsing Failed!"]
 
@@ -138,20 +141,26 @@ def process_prompt(prompt: str, client: Client):
         else:
             time_strs = ["TIME Parsing Failed!"]
 
+        # Combines the extracted time fields with the objective model
+        if extracted_model and extracted_time:
+            extracted_model.objective_start_time = extracted_time.objective_start_time
+            extracted_model.objective_end_time = extracted_time.objective_end_time
+
+        correctness = calculate_filling_percentage(extracted_model)
 
         response = "\n".join(json_strs)
         cleaned_response = tp.clean_mistral(response)
 
         # USE BELOW DURING DEBUGGING
-        # print(f"\nLLM Response: {cleaned_response}")
-        # print("=" * 30)
-        # print(f"EXTRACTED OBJECTIVE MODEL: {extracted_model}")
-        # print(f"EXTRACTED TIME MODEL: {extracted_time}")
-        # print(f"Objective Model Correctness: {correctness:.2%}")
-        # print(f"Time Correctness: {time_correctness:.2%}")
+        print(f"\nLLM Response: {cleaned_response}")
+        print("=" * 30)
+        print(f"EXTRACTED OVERALL OBJECTIVE MODEL: {extracted_model}")
+        print(f"EXTRACTED TIME MODEL: {extracted_time}")
+        print(f"Objective Model Correctness: {correctness:.2%}")
+        print(f"Time Correctness: {time_correctness:.2%}")
 
-        # tps = tp.measure_performance(t_0, t_1, cleaned_response)
-        # print(f"Tokens per second: {tps} t/s")
+        tps = tp.measure_performance(t_0, t_1, cleaned_response)
+        print(f"Tokens per second: {tps} t/s")
 
         return cleaned_response, extracted_model, correctness, objective
 
