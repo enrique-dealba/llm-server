@@ -21,7 +21,10 @@ PRO_examples = [
 ]
 
 cmo_info = {
-    "prompt": "I need a new catalog maintenance for RME00 with TS markings and use TEST mode with a priority of 10 and set the patience to 30 minutes and end search after 20 minutes.",
+    "prompts": [
+        "I need a new catalog maintenance for RME00 with TS markings and use TEST mode with a priority of 10 and set the patience to 30 minutes and end search after 20 minutes.",
+        "Make a new catalog job for sensor ABQ01 in REAL mode, marked as TS, with priority 11, 15 minutes of patience, and a finalization time 25 minutes later.",
+    ],
     "example": "CMO",
     "description": """The CMO class represents a scheduling objective for catalog 
 maintenance using a specific sensor and algorithm, related to astronomical observations or 
@@ -37,7 +40,10 @@ or tracking environment. CMO is useful for satellite or astronomical observation
 }
 
 pro_info = {
-    "prompt": "Track object 12345 with sensor RME08, revisiting four times per hour for the next 16 hours using REAL mode, 'S' markings, and set priority to 2.",
+    "prompts": [
+        "Track object 12345 with sensor RME08, revisiting four times per hour for the next 16 hours using REAL mode, 'S' markings, and set priority to 2.",
+        "Monitor object 96284 with sensor UKR44 in REAL mode, plan for two revisits per hour, begin with a 12-hour outline, marked as 'TS', priority set at 3",
+    ],
     "example": "PRO",
     "description": """The PRO class is designed to create a specific observation 
 objective for a given target, with parameters to configure the observation process 

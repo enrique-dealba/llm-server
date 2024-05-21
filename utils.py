@@ -117,12 +117,21 @@ def extract_objective(prompt: str, client) -> str:
     {pro_info['example']}: Description: {pro_info['description']}
     Examples:
     Input:
-    user_prompt: "{cmo_info['prompt']}"
+    user_prompt: "{cmo_info['prompts'][0]}"
     Result: {{
         "objective": "{cmo_info['example']}",
     }}
     Input:
-    user_prompt: "{pro_info['prompt']}"
+    user_prompt: "{cmo_info['prompts'][1]}"
+    Result: {{
+        "objective": "{cmo_info['example']}",
+    }}
+    Input:
+    user_prompt: "{pro_info['prompts'][0]}"
+    Result: {{
+        "objective": "{pro_info['example']}",
+    }}
+    user_prompt: "{pro_info['prompts'][1]}"
     Result: {{
         "objective": "{pro_info['example']}",
     }}

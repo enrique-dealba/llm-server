@@ -1,3 +1,16 @@
+"""Objectives Testing."""
+
+# Single examples + descriptions
+# CMO avg correct, PRO avg correct:
+
+open_hermes_1 = [1.0, .5833]
+open_hermes_gptq_1 = [0.125, 0.042]
+hermes_pro_1 = [1.0, 0.4583]
+
+# Two examples + descriptions
+
+
+
 # OpenHermes-2.5-Mistral-7B Results
 
 funcs_16 = [

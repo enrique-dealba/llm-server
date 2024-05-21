@@ -44,7 +44,7 @@ def process_prompt(prompt: str, client: Client):
 
         objective_llm = extract_objective(prompt, client)
         objective = extract_json_objective(objective_llm)
-        print(f"EXTRACTED OBJECTIVE: {objective}")
+        # print(f"EXTRACTED OBJECTIVE: {objective}")
 
         json_strs = []
 
@@ -63,7 +63,7 @@ def process_prompt(prompt: str, client: Client):
 
         max_tries = 3
         if len(obj_info["example_fields"]) != len(fields_and_descriptions):
-            raise ValueError("'examples' list must have same length as 'foo_fields'.")
+            raise ValueError("'examples' list must have same length as objective fields.")
 
         for (field_name, field_desc), example in zip(
             fields_and_descriptions, obj_info["example_fields"]
