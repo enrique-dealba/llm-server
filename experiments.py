@@ -13,7 +13,11 @@ open_hermes_gptq_2 = [0.708, 0.50]
 hermes_pro_2 = [0.9306, 0.625]
 
 # Note: ONLY respond in JSON. added
+open_hermes_3 = [0.8968, 0.7732]
+open_hermes_gptq_3 = [0.1667, 0.3889]
+hermes_pro_3 = [0.7460, 0.6134]
 
+# Revert back to non-ONLY respond in JSON
 
 # OpenHermes-2.5-Mistral-7B Results
 

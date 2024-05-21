@@ -87,10 +87,10 @@ def process_prompt(prompt: str, client: Client):
                     json_strs.append(response)
                     break
                 num_tries += 1
-            else:
-                logging.warning(
-                    f"Failed to extract field '{field_name}' after {max_tries} attempts."
-                )
+            # else:
+            #     logging.warning(
+            #         f"Failed to extract field '{field_name}' after {max_tries} attempts."
+            #     )
 
         # time_model = get_model_fields_and_descriptions(ObjectiveTime)
         # for field_name, field_desc in time_model:
