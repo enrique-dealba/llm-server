@@ -10,6 +10,7 @@ from text_processing import TextProcessing as tp
 from utils import (
     calculate_filling_percentage,
     combine_jsons,
+    clean_json_str,
     extract_field_from_prompt,
     extract_time_from_prompt,
     extract_json_objective,
@@ -101,7 +102,12 @@ def process_prompt(prompt: str, client: Client):
                     field_desc,
                     client=client,
                 )
-                if is_json_like(response):
+
+                cleaned_response = clean_json_str(response)
+                if is_json_like(cleaned_response):
+                    time_strs.append(cleaned_response)
+                    break
+                elif is_json_like(response):
                     time_strs.append(response)
                     break
                 else:

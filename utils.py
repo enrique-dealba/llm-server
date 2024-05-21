@@ -75,6 +75,25 @@ def combine_jsons(json_str_list: list[str], model_class: Type[BaseModel]) -> Bas
     return combined_model
 
 
+def clean_json_str(json_str: str) -> str:
+    """Cleans JSON-like strings to make them more compatible with is_json_like."""
+    # Removes leading and trailing whitespace, including newlines and tabs
+    json_str = json_str.strip()
+
+    # Removes comments (single-line and multi-line)
+    json_str = re.sub(r"//.*", "", json_str)
+    json_str = re.sub(r"/\*.*?\*/", "", json_str, flags=re.DOTALL)
+
+    # Removes trailing commas after the last key-value pair
+    json_str = re.sub(r",\s*}", "}", json_str)
+
+    # Makes string starts with "{"
+    if not json_str.startswith("{"):
+        json_str = "{" + json_str
+
+    return json_str
+
+
 def is_json_like(json_str: str) -> bool:
     """Checks if str is JSON-like."""
     # Checks if the string starts with "{" and ends with "}" or ","
