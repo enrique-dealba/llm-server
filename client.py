@@ -134,7 +134,7 @@ def process_prompt(prompt: str, client: Client):
 
         if time_strs:
             extracted_time = combine_jsons(time_strs, ObjectiveTimeTemplate)
-            time_correctness = calculate_filling_percentage(extracted_model)
+            time_correctness = calculate_filling_percentage(extracted_time)
         else:
             time_strs = ["TIME Parsing Failed!"]
 
