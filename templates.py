@@ -72,8 +72,8 @@ class CMOTemplate(BaseModel):
     patience_minutes: Optional[int] = None
     end_time_offset_minutes: Optional[int] = None
     # objective_name: Optional[str] = None
-    # objective_start_time: Annotated[datetime, Field(default_factory=datetime.now)]
-    # objective_end_time: Annotated[datetime, Field(default_factory=datetime.now)]
+    objective_start_time: Optional[Union[datetime, str]] = None
+    objective_end_time: Optional[Union[datetime, str]] = None
     priority: Optional[int] = None
 
 
@@ -99,8 +99,8 @@ class PROTemplate(BaseModel):
     revisits_per_hour: Optional[int] = None
     hours_to_plan: Optional[int] = None
     # objective_name: Optional[str] = None
-    # objective_start_time: Optional[Union[datetime, str]] = None
-    # objective_end_time: Optional[Union[datetime, str]] = None
+    objective_start_time: Optional[Union[datetime, str]] = None
+    objective_end_time: Optional[Union[datetime, str]] = None
     priority: Optional[int] = None
 
 
