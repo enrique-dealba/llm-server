@@ -246,6 +246,7 @@ def extract_time_from_prompt(
     Result: {{
         "{field_name}": "{example}",
     }}
+    Note: ONLY respond in JSON.
     <|im_end|>
 
     <|im_start|>user
