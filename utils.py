@@ -160,7 +160,7 @@ def extract_field_from_prompt(
 ) -> str:
     """Extracts a single field from the user prompt using the LLM."""
     obj_info = objectives[obj]
-    user_example = obj_info["prompt"]
+    user_example = obj_info["prompts"][0]
 
     json_prompt = f"""
     <|im_start|>system
