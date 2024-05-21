@@ -104,6 +104,9 @@ def process_prompt(prompt: str, client: Client):
                 if is_json_like(response):
                     time_strs.append(response)
                     break
+                else:
+                    print("WARNING: NOT JSON-LIKE")
+                    print(f"Raw LLM response at attempt={num_tries}: {response}")
                 num_tries += 1
             else:
                 logging.warning(
@@ -140,7 +143,7 @@ def process_prompt(prompt: str, client: Client):
         print(f"EXTRACTED TIME MODEL: {extracted_time}")
         print(f"Objective Model Correctness: {correctness:.2%}")
         print(f"Time Correctness: {time_correctness:.2%}")
-        
+
         tps = tp.measure_performance(t_0, t_1, cleaned_response)
         print(f"Tokens per second: {tps} t/s")
 
