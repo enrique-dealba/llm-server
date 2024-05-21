@@ -81,16 +81,17 @@ def clean_json_str(json_str: str) -> str:
     json_str = json_str.strip()
 
     # Removes comments (single-line and multi-line)
-    json_str = re.sub(r"//.*", "", json_str)
-    json_str = re.sub(r"/\*.*?\*/", "", json_str, flags=re.DOTALL)
+    json_str = re.sub(r'//.*', '', json_str)
+    json_str = re.sub(r'/\*.*?\*/', '', json_str, flags=re.DOTALL)
 
     # Removes trailing commas after the last key-value pair
-    json_str = re.sub(r",\s*}", "}", json_str)
+    json_str = re.sub(r',\s*}', '}', json_str)
 
-    # Makes string starts with "{"
-    if not json_str.startswith("{"):
-        json_str = "{" + json_str
+    # Removes any remaining dots (.) outside of quotes
+    json_str = re.sub(r'\.(?=(?:[^"]*"[^"]*")*[^"]*$)', '', json_str)
 
+    # Removes any remaining whitespace
+    json_str = json_str.strip() 
     return json_str
 
 
