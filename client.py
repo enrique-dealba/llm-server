@@ -114,7 +114,7 @@ def process_prompt(prompt: str, client: Client):
                     time_strs.append(response)
                     break
                 else:
-                    print("WARNING: NOT JSON-LIKE")
+                    print("WARNING: TIME FIELD NOT JSON-LIKE")
                     print(f"Raw LLM response at attempt={num_tries}: {response}")
                 num_tries += 1
             # else:

@@ -124,7 +124,7 @@ def extract_json_objective(input_string):
             objective_value = json_obj["objective"]
             return objective_value
         else:
-            raise ValueError("No matching JSON substring found.")
+            raise ValueError(f"No matching JSON substring found from LLM response: {input_string}")
     except json.JSONDecodeError:
         raise ValueError("Failed to decode JSON.")
     except Exception as e:

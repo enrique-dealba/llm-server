@@ -23,6 +23,15 @@ open_hermes_4 = [1.0, 0.8571]
 open_hermes_gptq_4 = [0.4561, 0.5820]
 hermes_pro_4 = [0.9365, 0.7868]
 
+# num_tests=1 with Time Fields (measuring field and objective correctness):
+# CMO fields, CMO obj (sussy), PRO fields, PRO obj
+open_hermes_5 = [0.9464, 1.0, .5873, 1.0]
+open_hermes_gptq_5 = [0.6250, 1.0, 0.0, 0.0]
+hermes_pro_5 = [1.0, 1.0, 0.8125, 0.8333]
+
+# num_tests=30 with Time Fields
+
+
 # OpenHermes-2.5-Mistral-7B Results
 
 funcs_16 = [
