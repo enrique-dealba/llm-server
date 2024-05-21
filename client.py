@@ -117,10 +117,10 @@ def process_prompt(prompt: str, client: Client):
                     print("WARNING: NOT JSON-LIKE")
                     print(f"Raw LLM response at attempt={num_tries}: {response}")
                 num_tries += 1
-            else:
-                logging.warning(
-                    f"Failed to extract time field '{field_name}' after {max_tries} attempts."
-                )
+            # else:
+            #     logging.warning(
+            #         f"Failed to extract time field '{field_name}' after {max_tries} attempts."
+            #     )
 
         t_1 = time.perf_counter()
 
@@ -152,15 +152,14 @@ def process_prompt(prompt: str, client: Client):
         cleaned_response = tp.clean_mistral(response)
 
         # USE BELOW DURING DEBUGGING
-        print(f"\nLLM Response: {cleaned_response}")
-        print("=" * 30)
-        print(f"EXTRACTED OVERALL OBJECTIVE MODEL: {extracted_model}")
-        print(f"EXTRACTED TIME MODEL: {extracted_time}")
-        print(f"Objective Model Correctness: {correctness:.2%}")
-        print(f"Time Correctness: {time_correctness:.2%}")
-
-        tps = tp.measure_performance(t_0, t_1, cleaned_response)
-        print(f"Tokens per second: {tps} t/s")
+        # print(f"\nLLM Response: {cleaned_response}")
+        # print("=" * 30)
+        # print(f"EXTRACTED OVERALL OBJECTIVE MODEL: {extracted_model}")
+        # print(f"EXTRACTED TIME MODEL: {extracted_time}")
+        # print(f"Objective Model Correctness: {correctness:.2%}")
+        # print(f"Time Correctness: {time_correctness:.2%}")
+        # tps = tp.measure_performance(t_0, t_1, cleaned_response)
+        # print(f"Tokens per second: {tps} t/s")
 
         return cleaned_response, extracted_model, correctness, objective
 
