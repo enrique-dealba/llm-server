@@ -108,7 +108,7 @@ def process_prompt(prompt: str, client: Client):
         tps = tp.measure_performance(t_0, t_1, cleaned_response)
         print(f"Tokens per second: {tps} t/s")
 
-        return cleaned_response, extracted_model, correctness
+        return cleaned_response, extracted_model, correctness, objective
 
     except requests.exceptions.RequestException as e:
         print(f"An error occurred: {e}")
@@ -124,7 +124,7 @@ def main():
             print("Exiting the conversation.")
             break
 
-        response, _, _ = process_prompt(prompt, client)
+        response, _, _, _ = process_prompt(prompt, client)
         # if response:
         #      print("Response confirmed!")
 

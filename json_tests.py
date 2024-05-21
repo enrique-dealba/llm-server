@@ -7,9 +7,12 @@ from typing import Dict
 from client import process_prompt
 
 
-def function_call(stats: Dict, prompts: list, num_tests: int = 3) -> Dict[str, float]:
+def function_call(
+    stats: Dict, prompts: list, objective: str, num_tests: int = 3
+) -> Dict[str, float]:
     """Runs a series of prompts through the LLM router and benchmarks correctness."""
     total_correctness = 0.0
+    obj_correctness = 0.0
     total_time = 0.0
     successful_requests = 0.0
     total_requests = 0.0
@@ -18,7 +21,7 @@ def function_call(stats: Dict, prompts: list, num_tests: int = 3) -> Dict[str, f
         for prompt in prompts:
             try:
                 t_0 = time.perf_counter()
-                response, _, correctness = process_prompt(prompt)
+                response, _, correctness, pred_obj = process_prompt(prompt)
                 t_1 = time.perf_counter()
 
                 if response:
@@ -27,12 +30,16 @@ def function_call(stats: Dict, prompts: list, num_tests: int = 3) -> Dict[str, f
                     successful_requests += 1
                     total_requests += 1
                     total_correctness += correctness
+                    # Checks if predicted objective matches ground truth
+                    if pred_obj == objective or objective in pred_obj:
+                        obj_correctness += 1
 
             except Exception as e:
                 logging.error(f"Error processing prompt: {e}")
                 total_requests += 1
 
     stats["total_correctness"] += total_correctness
+    stats["obj_correctness"] += obj_correctness
     stats["total_time"] += total_time
     stats["successful_requests"] += successful_requests
     stats["total_requests"] += total_requests
@@ -43,12 +50,15 @@ def function_call(stats: Dict, prompts: list, num_tests: int = 3) -> Dict[str, f
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--prompts", type=str, required=True)
+    parser.add_argument("--objective", type=str, required=True)
     args = parser.parse_args()
 
     prompts = json.loads(args.prompts)
+    objective = json.loads(args.objective)
 
     stats = {
         "total_correctness": 0.0,
+        "obj_correctness": 0.0,
         "total_time": 0.0,
         "successful_requests": 0.0,
         "total_requests": 0.0,
@@ -56,7 +66,9 @@ if __name__ == "__main__":
 
     t_0 = time.perf_counter()
 
-    stats = function_call(stats=stats, prompts=prompts, num_tests=3)
+    stats = function_call(
+        stats=stats, prompts=prompts, objective=objective, num_tests=3
+    )
 
     t_1 = time.perf_counter()
     total_time = t_1 - t_0
