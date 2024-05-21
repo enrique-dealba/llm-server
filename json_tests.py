@@ -4,13 +4,15 @@ import logging
 import time
 from typing import Dict
 
-from client import process_prompt
+from client import Client, process_prompt
 
 
 def function_call(
     stats: Dict, prompts: list, objective: str, num_tests: int = 3
 ) -> Dict[str, float]:
     """Runs a series of prompts through the LLM router and benchmarks correctness."""
+    client = Client()
+
     total_correctness = 0.0
     obj_correctness = 0.0
     total_time = 0.0
@@ -21,7 +23,7 @@ def function_call(
         for prompt in prompts:
             try:
                 t_0 = time.perf_counter()
-                response, _, correctness, pred_obj = process_prompt(prompt)
+                response, _, correctness, pred_obj = process_prompt(prompt, client)
                 t_1 = time.perf_counter()
 
                 if response:
