@@ -53,6 +53,7 @@ def process_prompt(prompt: str, client: Client):
                 if objective_name in objective:
                     objective = objective_name
         else:
+            print("Objective not found. Defaulting to CMO.")
             objective = "CMO"  # default
 
         obj_info = objectives[objective]
@@ -81,10 +82,10 @@ def process_prompt(prompt: str, client: Client):
                     json_strs.append(response)
                     break
                 num_tries += 1
-            else:
-                logging.warning(
-                    f"Failed to extract field '{field_name}' after {max_tries} attempts."
-                )
+            # else:
+            #     logging.warning(
+            #         f"Failed to extract field '{field_name}' after {max_tries} attempts."
+            #     )
 
         t_1 = time.perf_counter()
 
@@ -101,12 +102,12 @@ def process_prompt(prompt: str, client: Client):
         cleaned_response = tp.clean_mistral(response)
 
         ## USE BELOW DURING DEBUGGING
-        print(f"\nLLM Response: {cleaned_response}")
-        print("=" * 30)
-        print(f"EXTRACTED MODEL: {extracted_model}")
-        print(f"Model Correctness: {correctness:.2%}")
-        tps = tp.measure_performance(t_0, t_1, cleaned_response)
-        print(f"Tokens per second: {tps} t/s")
+        # print(f"\nLLM Response: {cleaned_response}")
+        # print("=" * 30)
+        # print(f"EXTRACTED MODEL: {extracted_model}")
+        # print(f"Model Correctness: {correctness:.2%}")
+        # tps = tp.measure_performance(t_0, t_1, cleaned_response)
+        # print(f"Tokens per second: {tps} t/s")
 
         return cleaned_response, extracted_model, correctness, objective
 

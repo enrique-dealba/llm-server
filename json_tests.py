@@ -79,6 +79,7 @@ if __name__ == "__main__":
     if num_requests <= 0:
         num_requests = 1
 
-    print(f"Avg Correctness: {stats['total_correctness']/num_requests:.2%}")
+    print(f"Avg Model Correctness: {stats['total_correctness']/num_requests:.2%}")
+    print(f"Avg Objective Correctness: {stats['obj_correctness']/num_requests:.2%}")
     print(f"Avg Time Elapsed Per Response: {stats['total_time']/num_requests:.2f}")
     print(f"\nTotal Benchmarking Time: {total_time}")
