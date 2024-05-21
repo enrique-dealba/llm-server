@@ -126,7 +126,7 @@ def main():
             "Set up a catalog entry for sensor RME12, operating in REAL mode, with a U classification, a high priority of 18, 30 minutes of patience, and completion after 45 minutes",
             "Create a maintenance task for sensor LMNT05 in TEST mode, marked as TS, with a priority of 10, a 30-minute patience window, and an end time offset of 20 minutes.",
             "Plan a catalog operation for sensor LMNT11 using TEST mode, S classification, with a priority of 13, patience for 20 minutes, and finishing after 30 minutes",
-            "Make a new catalog job for sensor ABQ01 in REAL mode, marked as TS, with priority 11, 15 minutes of patience, and a finalization time 25 minutes later.",
+            # "Make a new catalog job for sensor ABQ01 in REAL mode, marked as TS, with priority 11, 15 minutes of patience, and a finalization time 25 minutes later.",
             "Create a new catalog maintenance for sensor RME15 with REAL mode, U//FOUO marking, priority 14, patience of 50 minutes, and set to end after 70 minutes.",
         ],
         "PRO": [
@@ -136,7 +136,7 @@ def main():
             "Monitor celestial object 20394 with sensor UKR88 in REAL mode, configure five revisits per hour, begin with a 42-hour schedule, classified as 'U//FOUO', priority level 3",
             "Observe object 31705 with sensor LMNT33 in REAL mode, perform three revisits per hour, initiate with a 24-hour strategy, marked as 'S', with priority level 1",
             "Follow object 84123 using sensor RME02 in TEST mode, schedule six revisits per hour, start a 12-hour timeline, classified as 'C', with a priority of 2",
-            "Monitor object 96284 with sensor UKR44 in REAL mode, plan for two revisits per hour, begin with a 12-hour outline, marked as 'TS', priority set at 3",
+            # "Monitor object 96284 with sensor UKR44 in REAL mode, plan for two revisits per hour, begin with a 12-hour outline, marked as 'TS', priority set at 3",
             "Track 43567 using sensor ABQ42 in TEST mode, schedule one revisit per hour, initiate with a 30-hour plan, marked as 'C', with priority set to 5",
         ],
     }

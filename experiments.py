@@ -8,8 +8,9 @@ open_hermes_gptq_1 = [0.125, 0.042]
 hermes_pro_1 = [1.0, 0.4583]
 
 # Two examples + descriptions
-
-
+open_hermes_2 = [1.0, 0.7083]
+open_hermes_gptq_2 = [0.708, 0.50]
+hermes_pro_2 = [0.9306, 0.625]
 
 # OpenHermes-2.5-Mistral-7B Results
 

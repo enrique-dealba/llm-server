@@ -1,11 +1,18 @@
 import json
 import re
+from datetime import datetime, timezone
 from typing import Type
 
 from pydantic import BaseModel
 from pydantic_core import from_json
 
 from objectives import cmo_info, objectives, pro_info
+from templates import time_desciption
+
+
+def get_current_time() -> str:
+    """Gets current time."""
+    return str(datetime.now(timezone.utc))
 
 
 def get_model_fields_and_descriptions(model_class: BaseModel) -> list[tuple[str, str]]:
@@ -187,6 +194,50 @@ def extract_field_from_prompt(
     """
 
     result = client.generate_text(json_prompt)
+    if "text" in result:
+        return result["text"]
+    elif "detail" in result:
+        return result["detail"]
+    else:
+        raise ValueError("Unexpected LLM response format")
+
+
+def extract_time_from_prompt(
+    prompt: str, field_name: str, field_desc: str, client
+) -> str:
+    """Extracts the time fields from the user prompt using the LLM."""
+    current_time = get_current_time()
+
+    time_example = "Start the objective at 2024-05-21 19:22:22.650000+00:00"
+    example = "2024-05-21 19:22:22.650000+00:00"
+
+    time_prompt = f"""
+    <|im_start|>system
+    You are a helpful assistant designed to output single JSON fields for times.
+    Important note: The current time is {current_time} with the following description:
+    {time_desciption}
+    Given the following user prompt
+    << {prompt} >>
+    extract the following time field:
+    << {field_name} >> with description: {field_desc} from the user prompt.
+    Example:
+    Input:
+    user_prompt: "{time_example}"
+    Result: {{
+        "{field_name}": "{example}",
+    }}
+    <|im_end|>
+
+    <|im_start|>user
+    Input:
+    user_prompt: {prompt}
+    <|im_end|>
+
+    <|im_start|>assistant
+    Result:
+    """
+
+    result = client.generate_text(time_prompt)
     if "text" in result:
         return result["text"]
     elif "detail" in result:

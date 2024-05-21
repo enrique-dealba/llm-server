@@ -1,13 +1,37 @@
 from datetime import datetime
 from enum import Enum
-from typing import Annotated, Optional
+from typing import Annotated, Optional, Union
 
 from pydantic import BaseModel, Field, ValidationError
+
+
+time_desciption = """The general structure of the datetime format is:
+YYYY-MM-DD HH:MM:SS.ssssss+HH:MM
+where:
+YYYY is the year
+MM is the month
+DD is the day
+HH is the hour (24-hour format)
+MM is the minutes
+SS is the seconds
+ssssss is the microseconds
++HH:MM is the UTC offset (+ for positive offset, - for negative offset)"""
+
+
+class ObjectiveTime(BaseModel):
+    objective_start_time: Union[datetime, str] = Field(default=None, description="The earliest time when objective should begin execution. In 'YYYY-MM-DD HH:MM:SS.ssssss+HH:MM' format")
+    objective_end_time: Union[datetime, str] = Field(default=None, description="The time when the objective should end execution. In 'YYYY-MM-DD HH:MM:SS.ssssss+HH:MM' format")
+
+
+class ObjectiveTimeTemplate(BaseModel):
+    objective_start_time: Optional[Union[datetime, str]] = None
+    objective_end_time: Optional[Union[datetime, str]] = None
 
 
 class Foo(BaseModel):
     foo_name: str =  Field(description="Name of the foo.")
     foo_id: str = Field(description="ID of the foo, usually 3 digits.")
+
 
 class FooTemplate(BaseModel):
     foo_name: Optional[str] =  None
