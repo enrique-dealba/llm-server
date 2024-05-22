@@ -32,6 +32,18 @@ class ObjectiveTimeTemplate(BaseModel):
     objective_end_time: Optional[Union[datetime, str]] = None
 
 
+class ObjectiveList(BaseModel):
+    rso_id_list: list[str] = Field(description="list[str]: List of UUIDs of RSO to keep track of.")
+    sensor_name_list: list[str] = Field(description="list[str]: List of string names of Sensors to perform Objective with. Usually in the format 'RME..', 'LMNT..', 'ABQ..', 'UKR...', for example: RME99.")
+    target_id_list: list[str] = Field(description="list[str]: List of belief state UUID's of Targets.")
+
+
+class ObjectiveListTemplate(BaseModel):
+    rso_id_list: Optional[list[str]] = None
+    sensor_name_list: Optional[list[str]] = None
+    target_id_list: Optional[list[str]] = None
+
+
 class Foo(BaseModel):
     foo_name: str =  Field(description="Name of the foo.")
     foo_id: str = Field(description="ID of the foo, usually 3 digits.")
@@ -59,8 +71,8 @@ def parse_datetime(value: str) -> datetime:
 
 class CatalogMaintenanceObjective(BaseModel):
     classification_marking: str = Field(description="classification_marking: Classification level of objective intents. One of: 'U', 'C', 'S', 'TS', 'U//FOUO'")
-    rso_id_list: list[str] = Field(description="list[str]: List of UUIDs of RSO to keep track of.")
-    sensor_name_list: list[str] = Field(description="sensor_name: String Name of Sensor to perform Catalog Maintenance with. Usually in the format 'RME..', 'LMNT..', 'ABQ..', 'UKR...', for example: RME99.")
+    # rso_id_list: list[str] = Field(description="list[str]: List of UUIDs of RSO to keep track of.")
+    # sensor_name_list: list[str] = Field(description="sensor_name: String Name of Sensor to perform Catalog Maintenance with. Usually in the format 'RME..', 'LMNT..', 'ABQ..', 'UKR...', for example: RME99.")
     data_mode: str = Field(description="data_mode: String type for the Machina Common DataModeType being generated. One of: 'TEST', 'REAL', 'SIMULATED', 'EXERCISE'.")
     collect_request_type: str = Field(description="str: Collect request type of tracking type. Defaults to 'RATE_TRACK_SIDEREAL'. One of: 'RATE_TRACK', 'SIDEREAL', 'RATE_TRACK_SIDEREAL'.")
     orbital_regime: str = Field(description="str: String enum of orbital regime for this catalog maintenance objective. One of: 'LEO', 'MEO', 'GEO', 'XGEO'.")
@@ -111,8 +123,8 @@ class CMOTemplate(BaseModel):
 
 class PeriodicRevisitObjective(BaseModel):
     classification_marking: str = Field(description="classification_marking: Classification level of objective intents. One of: 'U', 'C', 'S', 'TS', 'U//FOUO'")
-    target_id_list: list[str] = Field(description="list[str]: List of belief state UUID's of Targets.")
-    sensor_name_list: list[str] = Field(description="list[str]: List of sensor(s) name(s) to perform periodic revisit with. Usually in the format 'RME..', 'LMNT..', 'ABQ..', 'UKR...', for example: RME99.")
+    # target_id_list: list[str] = Field(description="list[str]: List of belief state UUID's of Targets.")
+    # sensor_name_list: list[str] = Field(description="list[str]: List of sensor(s) name(s) to perform periodic revisit with. Usually in the format 'RME..', 'LMNT..', 'ABQ..', 'UKR...', for example: RME99.")
     data_mode: str = Field(description="data_mode: String type for the Machina Common DataModeType being generated. One of: 'TEST', 'REAL', 'SIMULATED', 'EXERCISE'.")
     collect_request_type: str = Field(description="str: Collect request type of tracking type. Defaults to 'RATE_TRACK_SIDEREAL'. One of: 'RATE_TRACK', 'SIDEREAL', 'RATE_TRACK_SIDEREAL'.")
     patience_minutes: int = Field(description="patience_minutes: default=30. Amount of time to wait until it is assumed that an intent failed.")

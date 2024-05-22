@@ -315,6 +315,48 @@ def extract_field_from_prompt(
         return result["detail"]
     else:
         raise ValueError("Unexpected LLM response format")
+    
+
+def extract_list_from_prompt(
+    prompt: str, field_name: str, field_desc: str, client
+) -> str:
+    """Extracts the time fields from the user prompt using the LLM."""
+    list_prompt = "Make an objective with RME01 and LMNT01."
+    example = "['RME01', 'LMNT01']"
+    field_example = "sensor_name_list"
+
+    list_prompt = f"""
+    <|im_start|>system
+    You are a helpful assistant designed to output single JSON fields for lists of strings (list[str]).
+    Given the following user prompt
+    << {prompt} >>
+    extract the following time field:
+    << {field_name} >> with description: {field_desc} from the user prompt.
+    Example:
+    Input:
+    user_prompt: "{list_prompt}"
+    Result: {{
+        "{field_example}": "{example}",
+    }}
+    Note: ONLY respond in JSON.
+    <|im_end|>
+
+    <|im_start|>user
+    Input:
+    user_prompt: {prompt}
+    <|im_end|>
+
+    <|im_start|>assistant
+    Result:
+    """
+
+    result = client.generate_text(list_prompt)
+    if "text" in result:
+        return result["text"]
+    elif "detail" in result:
+        return result["detail"]
+    else:
+        raise ValueError("Unexpected LLM response format")
 
 
 def extract_time_from_prompt(

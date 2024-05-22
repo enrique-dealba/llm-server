@@ -67,8 +67,8 @@ from templates import (
 
 cmo_examples = [
     "U",  # classification_marking
-    [],  # rso_id_list
-    "RME02",  # sensor_name_list
+    # [],  # rso_id_list
+    # "['RME02', 'LMNT01']",  # sensor_name_list
     "TEST",  # data_mode
     "RATE_TRACK_SIDEREAL",  # collect_request_type
     "LEO",  # orbital_regime
@@ -98,8 +98,8 @@ or tracking environment. CMO is useful for satellite or astronomical observation
 
 pro_examples = [
     "S",  # classification_marking
-    ["44248"],  # target_id_list
-    ["RME01", "LMNT45"],  # sensor_name_list
+    # ["44248"],  # target_id_list
+    # ["RME01", "LMNT45"],  # sensor_name_list
     "TEST",  # data_mode
     "RATE_TRACK_SIDEREAL",  # collect_request_type
     30,  # patience_minutes

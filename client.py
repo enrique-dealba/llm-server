@@ -13,6 +13,7 @@ from utils import (
     clean_field_response,
     clean_json_str,
     extract_field_from_prompt,
+    extract_list_from_prompt,
     extract_time_from_prompt,
     extract_json_objective,
     extract_objective,
@@ -20,7 +21,7 @@ from utils import (
     is_json_like,
 )
 
-from templates import ObjectiveTime, ObjectiveTimeTemplate
+from templates import ObjectiveTime, ObjectiveTimeTemplate, ObjectiveList, ObjectiveListTemplate
 
 load_dotenv()
 settings = Settings()
@@ -49,10 +50,11 @@ def process_prompt(prompt: str, client: Client):
 
         objective_llm = extract_objective(prompt, client)
         objective = extract_json_objective(objective_llm)
-        # print(f"EXTRACTED OBJECTIVE: {objective}")
+        print(f"EXTRACTED OBJECTIVE: {objective}")
 
         json_strs = []
         time_strs = []
+        list_strs = []
 
         if objective:
             for objective_name in objectives.keys():
@@ -99,10 +101,37 @@ def process_prompt(prompt: str, client: Client):
                     print("WARNING: MODEL FIELD NOT JSON-LIKE")
                     print(f"Raw LLM response at attempt={num_tries}: {response}")
                 num_tries += 1
-            # else:
-            #     logging.warning(
-            #         f"Failed to extract field '{field_name}' after {max_tries} attempts."
-            #     )
+            else:
+                logging.warning(
+                    f"Failed to extract field '{field_name}' after {max_tries} attempts."
+                )
+
+        list_model = get_model_fields_and_descriptions(ObjectiveList)
+        for field_name, field_desc in list_model:
+            num_tries = 0
+            while num_tries < max_tries:
+                response = extract_list_from_prompt(
+                    prompt,
+                    field_name,
+                    field_desc,
+                    client=client,
+                )
+
+                cleaned_response = clean_field_response(response)
+                if is_json_like(response):
+                    list_strs.append(response)
+                    break
+                elif is_json_like(cleaned_response):
+                    list_strs.append(cleaned_response)
+                    break
+                else:
+                    print("WARNING: MODEL FIELD NOT JSON-LIKE")
+                    print(f"Raw LLM response at attempt={num_tries}: {response}")
+                num_tries += 1
+            else:
+                logging.warning(
+                    f"Failed to extract time field '{field_name}' after {max_tries} attempts."
+                )
 
         time_model = get_model_fields_and_descriptions(ObjectiveTime)
         for field_name, field_desc in time_model:
@@ -123,13 +152,13 @@ def process_prompt(prompt: str, client: Client):
                     time_strs.append(response)
                     break
                 else:
-                    print("WARNING: TIME FIELD NOT JSON-LIKE")
+                    print("WARNING: LIST FIELD NOT JSON-LIKE")
                     print(f"Raw LLM response at attempt={num_tries}: {response}")
                 num_tries += 1
-            # else:
-            #     logging.warning(
-            #         f"Failed to extract time field '{field_name}' after {max_tries} attempts."
-            #     )
+            else:
+                logging.warning(
+                    f"Failed to extract time field '{field_name}' after {max_tries} attempts."
+                )
 
         t_1 = time.perf_counter()
 
@@ -144,6 +173,11 @@ def process_prompt(prompt: str, client: Client):
         else:
             json_strs = ["JSON Parsing Failed!"]
 
+        if list_strs:
+            extracted_list = combine_jsons(list_strs, ObjectiveListTemplate)
+        else:
+            list_strs = ["LIST Parsing Failed!"]
+
         if time_strs:
             extracted_time = combine_jsons(time_strs, ObjectiveTimeTemplate)
             time_correctness = calculate_filling_percentage(extracted_time)
@@ -155,20 +189,27 @@ def process_prompt(prompt: str, client: Client):
             extracted_model.objective_start_time = extracted_time.objective_start_time
             extracted_model.objective_end_time = extracted_time.objective_end_time
 
+        if extracted_model.rso_id_list:
+            extracted_model.rso_id_list = extracted_list.rso_id_list
+        if extracted_model.sensor_name_list:
+            extracted_model.sensor_name_list = extracted_list.sensor_name_list
+        if extracted_model.target_id_list:
+            extracted_model.target_id_list = extracted_list.target_id_list
+
         correctness = calculate_filling_percentage(extracted_model)
 
         response = "\n".join(json_strs)
         cleaned_response = tp.clean_mistral(response)
 
         # USE BELOW DURING DEBUGGING
-        # print(f"\nLLM Response: {cleaned_response}")
-        # print("=" * 30)
-        # print(f"EXTRACTED OVERALL OBJECTIVE MODEL: {extracted_model}")
-        # print(f"EXTRACTED TIME MODEL: {extracted_time}")
-        # print(f"Objective Model Correctness: {correctness:.2%}")
-        # print(f"Time Correctness: {time_correctness:.2%}")
-        # tps = tp.measure_performance(t_0, t_1, cleaned_response)
-        # print(f"Tokens per second: {tps} t/s")
+        print(f"\nLLM Response: {cleaned_response}")
+        print("=" * 30)
+        print(f"EXTRACTED OVERALL OBJECTIVE MODEL: {extracted_model}")
+        print(f"EXTRACTED TIME MODEL: {extracted_time}")
+        print(f"Objective Model Correctness: {correctness:.2%}")
+        print(f"Time Correctness: {time_correctness:.2%}")
+        tps = tp.measure_performance(t_0, t_1, cleaned_response)
+        print(f"Tokens per second: {tps} t/s")
 
         return cleaned_response, extracted_model, correctness, objective
 

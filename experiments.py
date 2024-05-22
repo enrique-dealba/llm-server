@@ -61,7 +61,9 @@ hermes_pro_11 = [1.0, 1.0, 0.9857, 0.8857]
 
 # num_tests=5: After major Objective definitions update for CMO and PRO
 # CMO fields, CMO obj (sussy), PRO fields, PRO obj
-
+open_hermes_12 = [0.7443, 1.0, 0.2908, 1.0]
+open_hermes_gptq_12 = [0.4091, 1.0, 0.3686, 0.8571]
+hermes_pro_12 = [0.9922, 1.0, 0.6405, 1.0]
 
 # OpenHermes-2.5-Mistral-7B Results
 
