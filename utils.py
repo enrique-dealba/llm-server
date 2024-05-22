@@ -120,16 +120,12 @@ def has_json_field(json_str: str, field: str) -> bool:
 
 def is_list_string(value: str) -> bool:
     """Check if a string represents a list."""
-    return value.startswith("[") and value.endswith("]")
+    return "," in value
 
 
 def parse_list_string(value: str) -> list:
-    """Parses a string representation of a list into an actual list."""
-    try:
-        return json.loads(value)
-    except json.JSONDecodeError:
-        # Removes outer quotes and splitting by comma
-        return value.strip("'\"").split(",")
+    """Parses string representation of a list into an actual list."""
+    return [item.strip().strip("'\"") for item in value.split(",")]
 
 
 def preprocess_field(field_value: Union[str, list]) -> Union[str, list]:
@@ -141,7 +137,9 @@ def preprocess_field(field_value: Union[str, list]) -> Union[str, list]:
 
 def parse_partial_json(json_str: str, model_class: Type[BaseModel]) -> BaseModel:
     """Parses JSON string and returns in specified Pydantic format."""
+    print(f"FIELD JSON BEFORE: {json_str}")
     preprocessed_json = preprocess_json(json_str)
+    print(f"FIELD JSON AFTER: {preprocessed_json}")
     partial_data = from_json(preprocessed_json, allow_partial=True)
 
     # Preprocess each field value
