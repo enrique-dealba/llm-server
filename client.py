@@ -10,6 +10,7 @@ from text_processing import TextProcessing as tp
 from utils import (
     calculate_filling_percentage,
     combine_jsons,
+    clean_field_response,
     clean_json_str,
     extract_field_from_prompt,
     extract_time_from_prompt,
@@ -86,8 +87,13 @@ def process_prompt(prompt: str, client: Client):
                     obj=objective,
                     client=client,
                 )
+
+                cleaned_response = clean_field_response(response)
                 if is_json_like(response):
                     json_strs.append(response)
+                    break
+                elif is_json_like(cleaned_response):
+                    json_strs.append(cleaned_response)
                     break
                 else:
                     print("WARNING: MODEL FIELD NOT JSON-LIKE")

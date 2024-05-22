@@ -50,6 +50,11 @@ open_hermes_gptq_9 = [0.3611, 1.0, 0.3333, 1.0]
 hermes_pro_9 = [0.9895, 1.0, 0.8434, 0.9036]
 
 # num_tests=5 with Time Fields (RUN 3, after fixing Objectives field extractions)
+open_hermes_10 = [0.91, 1.0, 0.6127, 0.9429]
+open_hermes_gptq_10 = [0.3450, 1.0, 0.3157, 0.0909]
+hermes_pro_10 = [0.9929, 1.0, 0.8544, 0.8571]
+
+# num_tests=5 with Time Fields (RUN 4, after fixing Model field extractions)
 
 
 

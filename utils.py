@@ -84,6 +84,34 @@ def remove_after_comma(input_string: str) -> str:
     return processed_string
 
 
+def remove_after_right_curly(input_string: str) -> str:
+    """Removes text from string after the first right-curly '}' character."""
+    # Finds the index of the first comma
+    curly_index = input_string.find("}")
+    
+    if curly_index != -1:
+        # Extracts substring from start until the first comma
+        processed_string = input_string[:curly_index + 1]
+    else:
+        # If no comma is found, returns the original string
+        processed_string = input_string
+    
+    return processed_string
+
+
+def clean_field_response(input_str: str) -> str:
+    """Cleans fields responses from LLM outputs."""
+    if is_json_like(input_str):
+        return input_str
+    clean_str = remove_above_curly(input_str)
+    if '}' in clean_str:
+        clean_str = remove_after_right_curly(clean_str)
+    elif ',' in clean_str:
+        clean_str = remove_after_comma(clean_str)
+    # TODO: Add 'if is_json_like(clean_str):' logic
+    return clean_str
+
+
 def has_json_field(json_str: str, field: str) -> bool:
     """Checks if field str is in JSON-like string."""
     # Checks if the string contains the specified field
