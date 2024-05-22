@@ -32,10 +32,15 @@ hermes_pro_5 = [1.0, 1.0, 0.8125, 0.8333]
 # num_tests=30 with Time Fields
 open_hermes_6 = [0.9024, 1.0, .6149, .9760]
 open_hermes_gptq_6 = [0.3542, 1.0, .2889, 1.0]
-hermes_pro_6 = [0.9898, 1.0, ]
-hermes_pro_6_v2 = [0.9881, 1.0, 0.8383, 0.8798]
+hermes_pro_6 = [0.9881, 1.0, 0.8383, 0.8798]
 
 # num_tests=30 with Time Fields + "ONLY respond in JSON"
+open_hermes_7 = [0.8137, 1.0, 0.6104, 0.9807]
+open_hermes_gptq_7 = [0.3073, 1.0, 0.3256, 0.5556]
+hermes_pro_7 = [0.9274, 1.0, 0.7564, 0.9714]
+
+# num_tests=12 with Time Fields + Note: ONLY respond in JSON with the single field << "objective" >> / << {field_name} >>
+
 
 
 

@@ -162,7 +162,7 @@ def extract_objective(prompt: str, client) -> str:
     Result: {{
         "objective": "{pro_info['example']}",
     }}
-    Note: ONLY respond in JSON.
+    Note: ONLY respond in JSON with the single field << "objective" >>
     <|im_end|>
 
     <|im_start|>user
@@ -203,7 +203,7 @@ def extract_field_from_prompt(
     Result: {{
         "{field_name}": "{example}",
     }}
-    Note: ONLY respond in JSON.
+    Note: ONLY respond in JSON with the single field << {field_name} >>
     <|im_end|>
 
     <|im_start|>user
@@ -248,7 +248,7 @@ def extract_time_from_prompt(
     Result: {{
         "{field_name}": "{example}",
     }}
-    Note: ONLY respond in JSON.
+    Note: ONLY respond in JSON with the single field << {field_name} >>
     <|im_end|>
 
     <|im_start|>user
