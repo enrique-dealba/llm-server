@@ -40,7 +40,11 @@ open_hermes_gptq_7 = [0.3073, 1.0, 0.3256, 0.5556]
 hermes_pro_7 = [0.9274, 1.0, 0.7564, 0.9714]
 
 # num_tests=12 with Time Fields + Note: ONLY respond in JSON with the single field << "objective" >> / << {field_name} >>
+open_hermes_8 = [0.6116, 1.0, 0.4907, 0.6795]
+open_hermes_gptq_8 = [0.2703, 1.0, 0.2361, 0.6667]
+hermes_pro_8 = [1.0, 1.0, 0.9426, 0.8690]
 
+# num_tests=15 with Time Fields (RUN 2, expecting sim to before)
 
 
 
