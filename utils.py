@@ -120,7 +120,9 @@ def has_json_field(json_str: str, field: str) -> bool:
 
 def parse_partial_json(json_str: str, model_class: Type[BaseModel]) -> BaseModel:
     """Parses JSON string and returns in specified Pydantic format."""
+    print(f"FIELD JSON BEFORE: {json_str}")
     preprocessed_json = preprocess_json(json_str)
+    print(f"FIELD JSON AFTER: {preprocessed_json}")
 
     partial_data = from_json(preprocessed_json, allow_partial=True)
 
