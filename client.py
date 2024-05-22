@@ -59,8 +59,8 @@ def process_prompt(prompt: str, client: Client):
                 if objective_name in objective:
                     objective = objective_name
         else:
-            print("Objective not found. Defaulting to CMO.")
-            objective = "CMO"  # default
+            print("Objective not found. Defaulting to CatalogMaintenanceObjective.")
+            objective = "CatalogMaintenanceObjective"  # default
 
         obj_info = objectives[objective]
         fields_and_descriptions = get_model_fields_and_descriptions(
