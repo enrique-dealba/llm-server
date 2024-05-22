@@ -1,13 +1,13 @@
 import json
 import re
 from datetime import datetime, timezone
-from typing import Type
+from typing import Type, Optional
 
 from pydantic import BaseModel
 from pydantic_core import from_json
 
 from objectives import cmo_info, objectives, pro_info
-from templates import time_desciption
+from templates import time_desciption, ObjectiveModel
 
 
 def get_current_time() -> str:
@@ -55,6 +55,41 @@ def preprocess_json(json_str: str) -> str:
     return new_json
 
 
+def remove_above_curly(input_string: str) -> str:
+    """Removes text from string above left curly '{' character."""
+    # Splits string into lines
+    lines = input_string.split('\n')
+    
+    # Finds index of the line containing the opening brace "{"
+    start_index = next((i for i, line in enumerate(lines) if "{" in line), 0)
+    
+    # Joins lines starting from the line with the opening brace
+    processed_string = '\n'.join(lines[start_index:])
+    
+    return processed_string
+
+
+def remove_after_comma(input_string: str) -> str:
+    """Removes text from string after the first comma ',' character."""
+    # Finds the index of the first comma
+    comma_index = input_string.find(",")
+    
+    if comma_index != -1:
+        # Extracts substring from start until the first comma
+        processed_string = input_string[:comma_index + 1]
+    else:
+        # If no comma is found, returns the original string
+        processed_string = input_string
+    
+    return processed_string
+
+
+def has_json_field(json_str: str, field: str) -> bool:
+    """Checks if field str is in JSON-like string."""
+    # Checks if the string contains the specified field
+    return re.search(rf"\"{field}\"", json_str) is not None
+
+
 def parse_partial_json(json_str: str, model_class: Type[BaseModel]) -> BaseModel:
     """Parses JSON string and returns in specified Pydantic format."""
     preprocessed_json = preprocess_json(json_str)
@@ -62,6 +97,20 @@ def parse_partial_json(json_str: str, model_class: Type[BaseModel]) -> BaseModel
     partial_data = from_json(preprocessed_json, allow_partial=True)
 
     return model_class.model_validate(partial_data)
+
+def get_partial_json(json_str: str, model_class: Type[BaseModel]) -> Optional[BaseModel]:
+    """Gets JSON string and returns in specified Pydantic format.
+    
+    (Tested on ObjectiveModel)
+    """
+    try:
+        # Removes trailing commas and add closing curly brace if missing
+        json_str = re.sub(r",\s*\}", "}", json_str)
+        json_str = re.sub(r",\s*$", "}", json_str, flags=re.DOTALL)
+        partial_data = json.loads(json_str)
+        return model_class(**partial_data)
+    except (json.JSONDecodeError, TypeError, ValueError):
+        return None
 
 
 def combine_jsons(json_str_list: list[str], model_class: Type[BaseModel]) -> BaseModel:
@@ -107,28 +156,17 @@ def is_json_like(json_str: str) -> bool:
     return False
 
 
-def extract_json_objective(input_string):
+def extract_json_objective(input_string: str) -> Optional[str]:
     """Extracts Objective from LLM outputs."""
+    input_string = remove_above_curly(input_string)
+    input_string = remove_after_comma(input_string)
     normalized_string = re.sub(r"\s+", " ", input_string.replace("\n", " ")).strip()
-
-    # Regex pattern to find the JSON-like substring
-    pattern = r'\{\s*"objective"\s*:\s*"(\w+)"\s*,?\s*\}'
-
-    try:
-        match = re.search(pattern, normalized_string)
-        if match:
-            json_str = match.group(0)
-            json_str = re.sub(r",\s*\}", " }", json_str)
-            json_obj = json.loads(json_str)
-
-            objective_value = json_obj["objective"]
-            return objective_value
-        else:
-            raise ValueError(f"No matching JSON substring found from LLM response: {input_string}")
-    except json.JSONDecodeError:
-        raise ValueError("Failed to decode JSON.")
-    except Exception as e:
-        raise ValueError(f"An error occurred: {str(e)}")
+    cleaned_string = clean_json_str(normalized_string)
+    if has_json_field(cleaned_string, field="objective"):
+        json_obj = get_partial_json(cleaned_string, ObjectiveModel)
+        if json_obj:
+            return json_obj.objective
+    return None
 
 
 def extract_objective(prompt: str, client) -> str:

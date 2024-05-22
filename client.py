@@ -89,6 +89,9 @@ def process_prompt(prompt: str, client: Client):
                 if is_json_like(response):
                     json_strs.append(response)
                     break
+                else:
+                    print("WARNING: MODEL FIELD NOT JSON-LIKE")
+                    print(f"Raw LLM response at attempt={num_tries}: {response}")
                 num_tries += 1
             # else:
             #     logging.warning(

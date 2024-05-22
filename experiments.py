@@ -29,7 +29,7 @@ open_hermes_5 = [0.9464, 1.0, .5873, 1.0]
 open_hermes_gptq_5 = [0.6250, 1.0, 0.0, 0.0]
 hermes_pro_5 = [1.0, 1.0, 0.8125, 0.8333]
 
-# num_tests=30 with Time Fields
+# num_tests=30 with Time Fields (compare to v9)
 open_hermes_6 = [0.9024, 1.0, .6149, .9760]
 open_hermes_gptq_6 = [0.3542, 1.0, .2889, 1.0]
 hermes_pro_6 = [0.9881, 1.0, 0.8383, 0.8798]
@@ -44,7 +44,12 @@ open_hermes_8 = [0.6116, 1.0, 0.4907, 0.6795]
 open_hermes_gptq_8 = [0.2703, 1.0, 0.2361, 0.6667]
 hermes_pro_8 = [1.0, 1.0, 0.9426, 0.8690]
 
-# num_tests=15 with Time Fields (RUN 2, expecting sim to before)
+# num_tests=12 with Time Fields (RUN 2, expecting sim to before)
+open_hermes_9 = [0.8973, 1.0, 0.6194, 0.9524]
+open_hermes_gptq_9 = [0.3611, 1.0, 0.3333, 1.0]
+hermes_pro_9 = [0.9895, 1.0, 0.8434, 0.9036]
+
+# num_tests=5 with Time Fields (RUN 3, after fixing Objectives field extractions)
 
 
 

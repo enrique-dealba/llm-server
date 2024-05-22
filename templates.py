@@ -18,6 +18,10 @@ ssssss is the microseconds
 +HH:MM is the UTC offset (+ for positive offset, - for negative offset)"""
 
 
+class ObjectiveModel(BaseModel):
+    objective: str
+
+
 class ObjectiveTime(BaseModel):
     objective_start_time: Union[datetime, str] = Field(default=None, description="The earliest time when objective should begin execution. In 'YYYY-MM-DD HH:MM:SS.ssssss+HH:MM' format")
     objective_end_time: Union[datetime, str] = Field(default=None, description="The time when the objective should end execution. In 'YYYY-MM-DD HH:MM:SS.ssssss+HH:MM' format")
@@ -103,20 +107,29 @@ class PROTemplate(BaseModel):
     objective_end_time: Optional[Union[datetime, str]] = None
     priority: Optional[int] = None
 
+class SearchObjective(BaseModel):
+    pass
 
-class CatalogMaintenanceObjective(BaseModel):
-    sensor_name: str
-    data_mode: str
-    classification_marking: Marking
-    patience_minutes: int = Field(default=30)
-    end_time_offset_minutes: int = Field(default=20)
-    objective_name: str = Field(default="Catalog Maintenance Objective")
-    objective_start_time: Annotated[datetime, Field(default_factory=datetime.now)]
-    objective_end_time: Annotated[datetime, Field(default_factory=datetime.now)]
-    priority: int = Field(default=10)
+class SearchObjectiveTemplate(BaseModel):
+    pass
 
-    _parse_objective_start_time = parse_datetime
-    _parse_objective_end_time = parse_datetime
+class DataEnrichmentObjective(BaseModel):
+    pass
+
+class DataEnrichmentObjectiveTemplate(BaseModel):
+    pass
+
+class SpectralClearingObjective(BaseModel):
+    pass
+
+class SpectralClearingObjectiveTemplate(BaseModel):
+    pass
+
+class SingleIntentObjective(BaseModel):
+    pass
+
+class SingleIntentObjectiveTemplate(BaseModel):
+    pass
 
 
 # json_prompt_1 = f"""
