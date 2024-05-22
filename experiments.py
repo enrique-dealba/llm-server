@@ -30,7 +30,9 @@ open_hermes_gptq_5 = [0.6250, 1.0, 0.0, 0.0]
 hermes_pro_5 = [1.0, 1.0, 0.8125, 0.8333]
 
 # num_tests=30 with Time Fields
-
+open_hermes_6 = [0.9024, 1.0, .6149, .9760]
+open_hermes_gptq_6 = [0.3542, 1.0, .2889, 1.0]
+hermes_pro_6 = [0.9898, 1.0, ]
 
 # OpenHermes-2.5-Mistral-7B Results
 
