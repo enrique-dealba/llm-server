@@ -120,12 +120,15 @@ def has_json_field(json_str: str, field: str) -> bool:
 
 def is_list_string(value: str) -> bool:
     """Check if a string represents a list."""
-    return "," in value
+    return value.startswith("[") and value.endswith("]") or "," in value
 
 
 def parse_list_string(value: str) -> list:
-    """Parses string representation of a list into an actual list."""
-    return [item.strip().strip("'\"") for item in value.split(",")]
+    """Parse a string representation of a list into an actual list."""
+    if value.startswith("[") and value.endswith("]"):
+        # Removes the outer square brackets and single quotes
+        value = value[1:-1].replace("'", "")
+    return [item.strip() for item in value.split(",")]
 
 
 def preprocess_field(field_value: Union[str, list]) -> Union[str, list]:
@@ -146,6 +149,9 @@ def parse_partial_json(json_str: str, model_class: Type[BaseModel]) -> BaseModel
     for field_name, field_value in partial_data.items():
         partial_data[field_name] = preprocess_field(field_value)
 
+    print("\n==============================")
+    print(f"FIELD MODEL VALUE: {partial_data}")
+    print("\n")
     return model_class.model_validate(partial_data)
 
 
