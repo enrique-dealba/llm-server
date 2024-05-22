@@ -189,12 +189,14 @@ def process_prompt(prompt: str, client: Client):
             extracted_model.objective_start_time = extracted_time.objective_start_time
             extracted_model.objective_end_time = extracted_time.objective_end_time
 
-        if extracted_model.rso_id_list:
-            extracted_model.rso_id_list = extracted_list.rso_id_list
-        if extracted_model.sensor_name_list:
-            extracted_model.sensor_name_list = extracted_list.sensor_name_list
-        if extracted_model.target_id_list:
-            extracted_model.target_id_list = extracted_list.target_id_list
+        model_fields = get_model_fields_and_descriptions(obj_info["template"])
+        for field_name, _ in model_fields:
+            if field_name == "rso_id_list":
+                extracted_model.rso_id_list = extracted_list.rso_id_list
+            elif field_name == "sensor_name_list":
+                extracted_model.sensor_name_list = extracted_list.sensor_name_list
+            elif field_name == "target_id_list":
+                extracted_model.target_id_list = extracted_list.target_id_list
 
         correctness = calculate_filling_percentage(extracted_model)
 
