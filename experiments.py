@@ -67,6 +67,12 @@ hermes_pro_12 = [0.9922, 1.0, 0.6405, 1.0]
 
 # num_tests=3: After major Objective definitions update for CMO and PRO
 # After ObjectiveList implementation (dis-entanglement)
+open_hermes_13 = [0.7965, 1.0, 0.3214, 1.0]
+open_hermes_gptq_13 = [0.6263, 1.0, 0.4762, 1.0]
+hermes_pro_13 = [1.0, 1.0, 0.6905, 1.0]
+
+# num_tests=12: After major Objective definitions update for CMO and PRO
+
 
 # OpenHermes-2.5-Mistral-7B Results
 
