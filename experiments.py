@@ -65,6 +65,9 @@ open_hermes_12 = [0.7443, 1.0, 0.2908, 1.0]
 open_hermes_gptq_12 = [0.4091, 1.0, 0.3686, 0.8571]
 hermes_pro_12 = [0.9922, 1.0, 0.6405, 1.0]
 
+# num_tests=3: After major Objective definitions update for CMO and PRO
+# After ObjectiveList implementation (dis-entanglement)
+
 # OpenHermes-2.5-Mistral-7B Results
 
 funcs_16 = [

@@ -50,7 +50,7 @@ def process_prompt(prompt: str, client: Client):
 
         objective_llm = extract_objective(prompt, client)
         objective = extract_json_objective(objective_llm)
-        print(f"EXTRACTED OBJECTIVE: {objective}")
+        # print(f"EXTRACTED OBJECTIVE: {objective}")
 
         json_strs = []
         time_strs = []
@@ -97,14 +97,14 @@ def process_prompt(prompt: str, client: Client):
                 elif is_json_like(cleaned_response):
                     json_strs.append(cleaned_response)
                     break
-                else:
-                    print("WARNING: MODEL FIELD NOT JSON-LIKE")
-                    print(f"Raw LLM response at attempt={num_tries}: {response}")
+                # else:
+                #     print("WARNING: MODEL FIELD NOT JSON-LIKE")
+                #     print(f"Raw LLM response at attempt={num_tries}: {response}")
                 num_tries += 1
-            else:
-                logging.warning(
-                    f"Failed to extract field '{field_name}' after {max_tries} attempts."
-                )
+            # else:
+            #     logging.warning(
+            #         f"Failed to extract field '{field_name}' after {max_tries} attempts."
+            #     )
 
         list_model = get_model_fields_and_descriptions(ObjectiveList)
         for field_name, field_desc in list_model:
@@ -124,14 +124,14 @@ def process_prompt(prompt: str, client: Client):
                 elif is_json_like(cleaned_response):
                     list_strs.append(cleaned_response)
                     break
-                else:
-                    print("WARNING: MODEL FIELD NOT JSON-LIKE")
-                    print(f"Raw LLM response at attempt={num_tries}: {response}")
+                # else:
+                #     print("WARNING: LIST FIELD NOT JSON-LIKE")
+                #     print(f"Raw LLM response at attempt={num_tries}: {response}")
                 num_tries += 1
-            else:
-                logging.warning(
-                    f"Failed to extract time field '{field_name}' after {max_tries} attempts."
-                )
+            # else:
+            #     logging.warning(
+            #         f"Failed to extract time field '{field_name}' after {max_tries} attempts."
+            #     )
 
         time_model = get_model_fields_and_descriptions(ObjectiveTime)
         for field_name, field_desc in time_model:
@@ -151,14 +151,14 @@ def process_prompt(prompt: str, client: Client):
                 elif is_json_like(response):
                     time_strs.append(response)
                     break
-                else:
-                    print("WARNING: LIST FIELD NOT JSON-LIKE")
-                    print(f"Raw LLM response at attempt={num_tries}: {response}")
+                # else:
+                #     print("WARNING: TIME FIELD NOT JSON-LIKE")
+                #     print(f"Raw LLM response at attempt={num_tries}: {response}")
                 num_tries += 1
-            else:
-                logging.warning(
-                    f"Failed to extract time field '{field_name}' after {max_tries} attempts."
-                )
+            # else:
+            #     logging.warning(
+            #         f"Failed to extract time field '{field_name}' after {max_tries} attempts."
+            #     )
 
         t_1 = time.perf_counter()
 
@@ -204,14 +204,14 @@ def process_prompt(prompt: str, client: Client):
         cleaned_response = tp.clean_mistral(response)
 
         # USE BELOW DURING DEBUGGING
-        print(f"\nLLM Response: {cleaned_response}")
-        print("=" * 30)
-        print(f"EXTRACTED OVERALL OBJECTIVE MODEL: {extracted_model}")
-        print(f"EXTRACTED TIME MODEL: {extracted_time}")
-        print(f"Objective Model Correctness: {correctness:.2%}")
-        print(f"Time Correctness: {time_correctness:.2%}")
-        tps = tp.measure_performance(t_0, t_1, cleaned_response)
-        print(f"Tokens per second: {tps} t/s")
+        # print(f"\nLLM Response: {cleaned_response}")
+        # print("=" * 30)
+        # print(f"EXTRACTED OVERALL OBJECTIVE MODEL: {extracted_model}")
+        # print(f"EXTRACTED TIME MODEL: {extracted_time}")
+        # print(f"Objective Model Correctness: {correctness:.2%}")
+        # print(f"Time Correctness: {time_correctness:.2%}")
+        # tps = tp.measure_performance(t_0, t_1, cleaned_response)
+        # print(f"Tokens per second: {tps} t/s")
 
         return cleaned_response, extracted_model, correctness, objective
 
