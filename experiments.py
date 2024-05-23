@@ -100,6 +100,9 @@ hermes_pro_15 = [
     0.9083, 0.0, # SCO
 ]
 
+# num_tests=5: Complete Objectives + fixed Obj extraction prompt
+# CMO, PRO, SO, DEO, SCO
+
 # OpenHermes-2.5-Mistral-7B Results
 
 funcs_16 = [
