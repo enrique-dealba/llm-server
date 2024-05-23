@@ -72,7 +72,12 @@ open_hermes_gptq_13 = [0.6263, 1.0, 0.4762, 1.0]
 hermes_pro_13 = [1.0, 1.0, 0.6905, 1.0]
 
 # num_tests=12: After major Objective definitions update for CMO and PRO
+open_hermes_14 = [0.7857, 1.0, 0.3819, 1.0]
+open_hermes_gptq_14 = [0.6077, 1.0, 0.4784, 0.6471]
+hermes_pro_14 = [1.0, 1.0, 0.6994, 1.0]
 
+# num_tests=1: Complete Objectives:
+# CMO, PRO, SO, DEO, SCO
 
 # OpenHermes-2.5-Mistral-7B Results
 
