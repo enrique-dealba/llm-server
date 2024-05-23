@@ -6,7 +6,7 @@ from typing import Type, Optional, Union
 from pydantic import BaseModel
 from pydantic_core import from_json
 
-from objectives import cmo_info, objectives, pro_info
+from objectives import cmo_info, objectives, pro_info, so_info, deo_info, sco_info
 from templates import time_desciption, ObjectiveModel
 
 
@@ -234,17 +234,17 @@ def extract_objective(prompt: str, client) -> str:
     Given the following user prompt
     << {prompt} >>
     extract the objective definition category that the prompt is most associated with.
-    The 'objective' should be one of 'CMO', 'PRO', with the following descriptions:
+    The 'objective' should be one of:
+    'CatalogMaintenanceObjective', 'PeriodicRevisitObjective', 'SearchObjective', 'DataEnrichmentObjective', 'SpectralClearingObjective',
+    with the following descriptions:
     {cmo_info['example']}: Description: {cmo_info['description']}
     {pro_info['example']}: Description: {pro_info['description']}
+    {so_info['example']}: Description: {so_info['description']}
+    {deo_info['example']}: Description: {deo_info['description']}
+    {sco_info['example']}: Description: {sco_info['description']}
     Examples:
     Input:
     user_prompt: "{cmo_info['prompts'][0]}"
-    Result: {{
-        "objective": "{cmo_info['example']}",
-    }}
-    Input:
-    user_prompt: "{cmo_info['prompts'][1]}"
     Result: {{
         "objective": "{cmo_info['example']}",
     }}
@@ -253,9 +253,20 @@ def extract_objective(prompt: str, client) -> str:
     Result: {{
         "objective": "{pro_info['example']}",
     }}
-    user_prompt: "{pro_info['prompts'][1]}"
+    Input:
+    user_prompt: "{so_info['prompts'][0]}"
     Result: {{
-        "objective": "{pro_info['example']}",
+        "objective": "{so_info['example']}",
+    }}
+    Input:
+    user_prompt: "{deo_info['prompts'][0]}"
+    Result: {{
+        "objective": "{deo_info['example']}",
+    }}
+    Input:
+    user_prompt: "{sco_info['prompts'][0]}"
+    Result: {{
+        "objective": "{sco_info['example']}",
     }}
     <|im_end|>
 

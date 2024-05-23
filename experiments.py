@@ -78,6 +78,27 @@ hermes_pro_14 = [1.0, 1.0, 0.6994, 1.0]
 
 # num_tests=1: Complete Objectives:
 # CMO, PRO, SO, DEO, SCO
+open_hermes_15 = [
+    0.7792, 1.0, # CMO
+    0.3571, 1.0, # PRO
+    0.7898, 0.0, # SO
+    0.0, 0.0, # DEO
+    0.7848, 0.0, # SCO
+]
+open_hermes_gptq_15 = [
+    0.6667, 1.0, # CMO
+    0.4329, 0.6667, # PRO
+    0.4196, 0.0, # SO
+    0.4535, 0.0, # DEO
+    0.3961, 0.0, # SCO
+]
+hermes_pro_15 = [
+    1.0, 1.0, # CMO
+    0.6786, 1.0, # PRO
+    0.9619, 0.0, # SO
+    0.8653, 0.0, # DEO
+    0.9083, 0.0, # SCO
+]
 
 # OpenHermes-2.5-Mistral-7B Results
 
