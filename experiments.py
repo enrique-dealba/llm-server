@@ -76,6 +76,30 @@ open_hermes_14 = [0.7857, 1.0, 0.3819, 1.0]
 open_hermes_gptq_14 = [0.6077, 1.0, 0.4784, 0.6471]
 hermes_pro_14 = [1.0, 1.0, 0.6994, 1.0]
 
+"""
+open_hermes_15 = [
+    AAA, AAA, # CMO
+    AAA, AAA, # PRO
+    AAA, AAA, # SO
+    AAA, AAA, # DEO
+    AAA, AAA, # SCO
+]
+open_hermes_gptq_15 = [
+    AAA, AAA, # CMO
+    AAA, AAA, # PRO
+    AAA, AAA, # SO
+    AAA, AAA, # DEO
+    AAA, AAA, # SCO
+]
+hermes_pro_15 = [
+    AAA, AAA, # CMO
+    AAA, AAA, # PRO
+    AAA, AAA, # SO
+    AAA, AAA, # DEO
+    AAA, AAA, # SCO
+]
+"""
+
 # num_tests=1: Complete Objectives:
 # CMO, PRO, SO, DEO, SCO
 open_hermes_15 = [
@@ -102,6 +126,27 @@ hermes_pro_15 = [
 
 # num_tests=5: Complete Objectives + fixed Obj extraction prompt
 # CMO, PRO, SO, DEO, SCO
+open_hermes_16 = [
+    0.7844, 1.0, # CMO
+    0.3512, 1.0, # PRO
+    0.7391, 1.0, # SO
+    0.6068, 1.0, # DEO
+    0.5344, 1.0, # SCO
+]
+open_hermes_gptq_16 = [
+    0.500, 1.0, # CMO
+    0.445, 0.0, # PRO
+    0.274, 1.0, # SO
+    0.4918, 0.8974, # DEO
+    0.3959, 0.8696, # SCO
+]
+hermes_pro_16 = [
+    1.0, 1.0, # CMO
+    0.7266, 0.900, # PRO
+    0.9119, 0.9750, # SO
+    0.9705, 0.750, # DEO
+    0.9797, 0.900, # SCO
+]
 
 # OpenHermes-2.5-Mistral-7B Results
 

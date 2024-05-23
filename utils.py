@@ -1,13 +1,20 @@
 import json
 import re
 from datetime import datetime, timezone
-from typing import Type, Optional, Union
+from typing import Optional, Type, Union
 
 from pydantic import BaseModel
 from pydantic_core import from_json
 
-from objectives import cmo_info, objectives, pro_info, so_info, deo_info, sco_info
-from templates import time_desciption, ObjectiveModel
+from objectives import cmo_info, deo_info, objectives, pro_info, sco_info, so_info
+from templates import (
+    ObjectiveList,
+    ObjectiveListTemplate,
+    ObjectiveModel,
+    ObjectiveTime,
+    ObjectiveTimeTemplate,
+    time_desciption,
+)
 
 
 def get_current_time() -> str:
@@ -58,14 +65,14 @@ def preprocess_json(json_str: str) -> str:
 def remove_above_curly(input_string: str) -> str:
     """Removes text from string above left curly '{' character."""
     # Splits string into lines
-    lines = input_string.split('\n')
-    
+    lines = input_string.split("\n")
+
     # Finds index of the line containing the opening brace "{"
     start_index = next((i for i, line in enumerate(lines) if "{" in line), 0)
-    
+
     # Joins lines starting from the line with the opening brace
-    processed_string = '\n'.join(lines[start_index:])
-    
+    processed_string = "\n".join(lines[start_index:])
+
     return processed_string
 
 
@@ -73,14 +80,14 @@ def remove_after_comma(input_string: str) -> str:
     """Removes text from string after the first comma ',' character."""
     # Finds the index of the first comma
     comma_index = input_string.find(",")
-    
+
     if comma_index != -1:
         # Extracts substring from start until the first comma
-        processed_string = input_string[:comma_index + 1]
+        processed_string = input_string[: comma_index + 1]
     else:
         # If no comma is found, returns the original string
         processed_string = input_string
-    
+
     return processed_string
 
 
@@ -88,14 +95,14 @@ def remove_after_right_curly(input_string: str) -> str:
     """Removes text from string after the first right-curly '}' character."""
     # Finds the index of the first comma
     curly_index = input_string.find("}")
-    
+
     if curly_index != -1:
         # Extracts substring from start until the first comma
-        processed_string = input_string[:curly_index + 1]
+        processed_string = input_string[: curly_index + 1]
     else:
         # If no comma is found, returns the original string
         processed_string = input_string
-    
+
     return processed_string
 
 
@@ -104,9 +111,9 @@ def clean_field_response(input_str: str) -> str:
     if is_json_like(input_str):
         return input_str
     clean_str = remove_above_curly(input_str)
-    if '}' in clean_str:
+    if "}" in clean_str:
         clean_str = remove_after_right_curly(clean_str)
-    elif ',' in clean_str:
+    elif "," in clean_str:
         clean_str = remove_after_comma(clean_str)
     # TODO: Add 'if is_json_like(clean_str):' logic
     return clean_str
@@ -155,9 +162,11 @@ def parse_partial_json(json_str: str, model_class: Type[BaseModel]) -> BaseModel
     return model_class.model_validate(partial_data)
 
 
-def get_partial_json(json_str: str, model_class: Type[BaseModel]) -> Optional[BaseModel]:
+def get_partial_json(
+    json_str: str, model_class: Type[BaseModel]
+) -> Optional[BaseModel]:
     """Gets JSON string and returns in specified Pydantic format.
-    
+
     (Tested on ObjectiveModel)
     """
     try:
@@ -187,17 +196,17 @@ def clean_json_str(json_str: str) -> str:
     json_str = json_str.strip()
 
     # Removes comments (single-line and multi-line)
-    json_str = re.sub(r'//.*', '', json_str)
-    json_str = re.sub(r'/\*.*?\*/', '', json_str, flags=re.DOTALL)
+    json_str = re.sub(r"//.*", "", json_str)
+    json_str = re.sub(r"/\*.*?\*/", "", json_str, flags=re.DOTALL)
 
     # Removes trailing commas after the last key-value pair
-    json_str = re.sub(r',\s*}', '}', json_str)
+    json_str = re.sub(r",\s*}", "}", json_str)
 
     # Removes any remaining dots (.) outside of quotes
-    json_str = re.sub(r'\.(?=(?:[^"]*"[^"]*")*[^"]*$)', '', json_str)
+    json_str = re.sub(r'\.(?=(?:[^"]*"[^"]*")*[^"]*$)', "", json_str)
 
     # Removes any remaining whitespace
-    json_str = json_str.strip() 
+    json_str = json_str.strip()
     return json_str
 
 
@@ -326,7 +335,7 @@ def extract_field_from_prompt(
         return result["detail"]
     else:
         raise ValueError("Unexpected LLM response format")
-    
+
 
 def extract_list_from_prompt(
     prompt: str, field_name: str, field_desc: str, client
@@ -424,3 +433,180 @@ def calculate_filling_percentage(model_instance: BaseModel) -> float:
     if total_fields == 0:
         return 0.0
     return filled_fields / total_fields
+
+
+def process_fields(prompt: str, objective: str, client):
+    json_strs = []
+    obj_info = objectives[objective]
+
+    fields_and_descriptions = get_model_fields_and_descriptions(obj_info["base_model"])
+
+    max_tries = 3
+    if len(obj_info["example_fields"]) != len(fields_and_descriptions):
+        raise ValueError("'examples' list must have same length as objective fields.")
+
+    for (field_name, field_desc), example in zip(
+        fields_and_descriptions, obj_info["example_fields"]
+    ):
+        if field_name in ["objective_start_time", "objective_end_time"]:
+            continue
+
+        num_tries = 0
+        while num_tries < max_tries:
+            response = extract_field_from_prompt(
+                prompt,
+                field_name,
+                field_desc,
+                example=example,
+                obj=objective,
+                client=client,
+            )
+
+            cleaned_response = clean_field_response(response)
+            if is_json_like(response):
+                json_strs.append(response)
+                break
+            elif is_json_like(cleaned_response):
+                json_strs.append(cleaned_response)
+                break
+            # else:
+            #     print("WARNING: MODEL FIELD NOT JSON-LIKE")
+            #     print(f"Raw LLM response at attempt={num_tries}: {response}")
+            num_tries += 1
+        # else:
+        #     logging.warning(
+        #         f"Failed to extract field '{field_name}' after {max_tries} attempts."
+        #     )
+
+    return json_strs
+
+
+def process_lists(prompt: str, client):
+    """Extracts list[str] fields (rso_id_list, sensor_name_list, etc) from prompt."""
+    list_strs = []
+
+    list_model = get_model_fields_and_descriptions(ObjectiveList)
+    max_tries = 3
+    for field_name, field_desc in list_model:
+        num_tries = 0
+        while num_tries < max_tries:
+            response = extract_list_from_prompt(
+                prompt,
+                field_name,
+                field_desc,
+                client=client,
+            )
+
+            cleaned_response = clean_field_response(response)
+            if is_json_like(response):
+                list_strs.append(response)
+                break
+            elif is_json_like(cleaned_response):
+                list_strs.append(cleaned_response)
+                break
+            # else:
+            #     print("WARNING: LIST FIELD NOT JSON-LIKE")
+            #     print(f"Raw LLM response at attempt={num_tries}: {response}")
+            num_tries += 1
+        # else:
+        #     logging.warning(
+        #         f"Failed to extract time field '{field_name}' after {max_tries} attempts."
+        #     )
+
+    return list_strs
+
+
+def process_times(prompt: str, client):
+    """Extracts time fields (objective_start_time, objective_end_time) from prompt."""
+    time_strs = []
+
+    time_model = get_model_fields_and_descriptions(ObjectiveTime)
+
+    max_tries = 3
+    for field_name, field_desc in time_model:
+        num_tries = 0
+        while num_tries < max_tries:
+            response = extract_time_from_prompt(
+                prompt,
+                field_name,
+                field_desc,
+                client=client,
+            )
+
+            cleaned_response = clean_json_str(response)
+            if is_json_like(cleaned_response):
+                time_strs.append(cleaned_response)
+                break
+            elif is_json_like(response):
+                time_strs.append(response)
+                break
+            # else:
+            #     print("WARNING: TIME FIELD NOT JSON-LIKE")
+            #     print(f"Raw LLM response at attempt={num_tries}: {response}")
+            num_tries += 1
+        # else:
+        #     logging.warning(
+        #         f"Failed to extract time field '{field_name}' after {max_tries} attempts."
+        #     )
+
+    return time_strs
+
+
+def process_objective(prompt: str, client):
+    """Extracts Objective name from a user prompt."""
+    # TODO: Use 3 max tries to extract Objective
+    objective_llm = extract_objective(prompt, client)
+    objective = extract_json_objective(objective_llm)
+    # print(f"EXTRACTED OBJECTIVE: {objective}")
+
+    if objective:
+        for objective_name in objectives.keys():
+            if objective_name in objective:
+                objective = objective_name
+    else:
+        print("Objective not found. Defaulting to CatalogMaintenanceObjective.")
+        objective = "CatalogMaintenanceObjective"  # default
+
+    return objective
+
+
+def extract_model(obj_info: dict, json_strs: list, list_strs: list, time_strs: list):
+    """Extracts Objective model based on previous field extractions."""
+    extracted_model = None
+    extracted_list = None
+    extracted_time = None
+    correctness = 0.0
+    time_correctness = 0.0
+
+    if json_strs:
+        extracted_model = combine_jsons(json_strs, obj_info["template"])
+        # correctness = calculate_filling_percentage(extracted_model)
+    else:
+        json_strs = ["JSON Parsing Failed!"]
+
+    if list_strs:
+        extracted_list = combine_jsons(list_strs, ObjectiveListTemplate)
+    else:
+        list_strs = ["LIST Parsing Failed!"]
+
+    if time_strs:
+        extracted_time = combine_jsons(time_strs, ObjectiveTimeTemplate)
+        time_correctness = calculate_filling_percentage(extracted_time)
+    else:
+        time_strs = ["TIME Parsing Failed!"]
+
+    # Combines the extracted time fields with the objective model
+    if extracted_model and extracted_time:
+        extracted_model.objective_start_time = extracted_time.objective_start_time
+        extracted_model.objective_end_time = extracted_time.objective_end_time
+
+    model_fields = get_model_fields_and_descriptions(obj_info["template"])
+    for field_name, _ in model_fields:
+        if field_name == "rso_id_list":
+            extracted_model.rso_id_list = extracted_list.rso_id_list
+        elif field_name == "sensor_name_list":
+            extracted_model.sensor_name_list = extracted_list.sensor_name_list
+        elif field_name == "target_id_list":
+            extracted_model.target_id_list = extracted_list.target_id_list
+
+    return extracted_model

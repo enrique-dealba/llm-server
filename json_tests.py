@@ -69,7 +69,7 @@ if __name__ == "__main__":
     t_0 = time.perf_counter()
 
     stats = function_call(
-        stats=stats, prompts=prompts, objective=objective, num_tests=5
+        stats=stats, prompts=prompts, objective=objective, num_tests=1
     )
 
     t_1 = time.perf_counter()
