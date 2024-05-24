@@ -171,6 +171,9 @@ hermes_pro_17 = [
     0.9659, 0.6250, # SCO
 ]
 
+# num_tests=15: Base vs. GPTQ vs. AWQ for OpenHermes 2.5
+
+
 
 # OpenHermes-2.5-Mistral-7B Results
 

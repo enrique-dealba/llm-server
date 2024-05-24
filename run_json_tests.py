@@ -198,7 +198,8 @@ def main():
         # "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
         "teknium/OpenHermes-2.5-Mistral-7B",
         "TheBloke/OpenHermes-2.5-Mistral-7B-GPTQ",
-        "NousResearch/Hermes-2-Pro-Mistral-7B",
+        "TheBloke/OpenHermes-2.5-Mistral-7B-AWQ",
+        # "NousResearch/Hermes-2-Pro-Mistral-7B",
     ]
 
     for model in models:
