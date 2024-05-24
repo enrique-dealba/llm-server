@@ -20,6 +20,7 @@ def run_docker_container(model_name):
         current_dir = os.path.abspath(os.path.dirname(__file__))
 
         quantization = "gptq" if "GPTQ" in model_name else "None"
+        quantization = "awq" if "AWQ" in model_name else "None"
 
         subprocess.run(
             [

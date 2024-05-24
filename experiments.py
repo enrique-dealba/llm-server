@@ -148,6 +148,30 @@ hermes_pro_16 = [
     0.9797, 0.900, # SCO
 ]
 
+# num_tests=1: Code refactor + try/except logic for fields + Optional[Union[type, str]]
+open_hermes_17 = [
+    0.7792, 1.0, # CMO
+    0.4714, 1.0, # PRO
+    0.7422, 1.0, # SO
+    0.6023, 1.0, # DEO
+    0.5385, 1.0, # SCO
+]
+open_hermes_gptq_17 = [
+    0.6727, 1.0, # CMO
+    0.4946, 0.3333, # PRO
+    0.25, 1.0, # SO
+    0.4675, 0.7143, # DEO
+    0.4098, 0.600, # SCO
+]
+hermes_pro_17 = [
+    1.0, 1.0, # CMO
+    0.7449, 1.0, # PRO
+    0.9219, 1.0, # SO
+    0.9773, 0.75, # DEO
+    0.9659, 0.6250, # SCO
+]
+
+
 # OpenHermes-2.5-Mistral-7B Results
 
 funcs_16 = [
