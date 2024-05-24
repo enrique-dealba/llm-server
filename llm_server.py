@@ -36,6 +36,9 @@ def create_llm(
         )
         dtype_value = "half" if quantization in ["awq", "gptq"] else "bfloat16"
 
+    print("quantization:", quantization)
+    print("dtype_value:", dtype_value)
+
     try:
         llm = VLLM(
             model=settings.DEFAULT_MODEL,
