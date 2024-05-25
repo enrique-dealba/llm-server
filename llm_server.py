@@ -27,7 +27,6 @@ def create_llm(
     quantization: Optional[str] = None, use_agent: Optional[bool] = False
 ) -> VLLM:
     """Creates and returns VLLM instance based on current configuration."""
-    print(f"2. quantization={quantization}")
     if quantization is None:
         gpu_utilization = settings.DEFAULT_GPU_UTIL
         dtype_value = "bfloat16"
@@ -61,7 +60,6 @@ def create_llm(
 
 
 # Initialize configurations and dependencies
-
 quantization = os.environ.get("QUANTIZATION", "None")
 if "GPTQ" in settings.DEFAULT_MODEL:
     quantization = "gptq"
@@ -69,10 +67,6 @@ elif "AWQ" in settings.DEFAULT_MODEL:
     quantization = "awq"
 else:
     quantization = None
-
-print(f"1. quantization={quantization}")
-
-# quantization = quantization if quantization != "None" else None
 
 llm = create_llm(quantization=quantization, use_agent=settings.USE_AGENT)
 
