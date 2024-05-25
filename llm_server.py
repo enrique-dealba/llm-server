@@ -61,12 +61,14 @@ def create_llm(
 
 
 # Initialize configurations and dependencies
-# quantization = "gptq" if "GPTQ" in settings.DEFAULT_MODEL else "None"
-# quantization = "awq" if "AWQ" in settings.DEFAULT_MODEL else "None"
 
 quantization = os.environ.get("QUANTIZATION", "None")
-quantization = "gptq" if "GPTQ" in settings.DEFAULT_MODEL else "None"
-quantization = "awq" if "AWQ" in settings.DEFAULT_MODEL else "None"
+if "GPTQ" in settings.DEFAULT_MODEL:
+    quantization = "gptq"
+elif "AWQ" in settings.DEFAULT_MODEL:
+    quantization = "awq"
+else:
+    quantization = None
 
 print(f"1. quantization={quantization}")
 
