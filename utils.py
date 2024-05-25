@@ -186,6 +186,7 @@ def combine_jsons(json_str_list: list[str], model_class: Type[BaseModel]) -> Bas
     """Combines JSONs into single Pydantic model."""
     models = []
     for json_str in json_str_list:
+        print(f"About to process json_str: {json_str}")
         partial_model = parse_partial_json(json_str, model_class)
         models.append(partial_model)
 
@@ -554,6 +555,7 @@ def calculate_filling_percentage(model_instance: BaseModel) -> float:
 
 
 def process_fields(prompt: str, objective: str, client):
+    """Extracts all basic str, int , float fields from prompt."""
     json_strs = []
     obj_info = objectives[objective]
 
