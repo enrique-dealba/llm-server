@@ -172,7 +172,27 @@ hermes_pro_17 = [
 ]
 
 # num_tests=15: Base vs. GPTQ vs. AWQ for OpenHermes 2.5
-
+# base_openhermes_1 = [
+#     None, None, # CMO
+#     AAA, AAA, # PRO
+#     AAA, AAA, # SO
+#     AAA, AAA, # DEO
+#     AAA, AAA, # SCO
+# ]
+# gptq_openhermes_1 = [
+#     AAA, AAA, # CMO
+#     AAA, AAA, # PRO
+#     AAA, AAA, # SO
+#     AAA, AAA, # DEO
+#     AAA, AAA, # SCO
+# ]
+awq_openheres_1 = [
+    0.6762, 1.0, # CMO
+    0.3793, 1.0, # PRO
+    0.4595, 1.0, # SO
+    0.6346, 1.0, # DEO
+    0.4576, 1.0, # SCO
+]
 
 
 # OpenHermes-2.5-Mistral-7B Results
