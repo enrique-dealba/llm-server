@@ -242,6 +242,8 @@ awq_openheres_3 = [
     0.4615, 1.0, 5.86, # SCO
 ]
 
+# Mistral (AWQ,GPTQ) vs. OpenHermes (AWQ,GPTQ) @num_tests=15
+
 
 # OpenHermes-2.5-Mistral-7B Results
 
