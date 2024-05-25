@@ -27,7 +27,7 @@ class Settings(BaseSettings):
     HF_HUB_OFFLINE: bool = False
 
     # ----- IF USING MISTRAL MODELS -----
-    USE_MISTRAL = bool("mistral" in DEFAULT_MODEL.lower())
+    USE_MISTRAL: bool = bool("mistral" in DEFAULT_MODEL.lower())
 
     class Config:
         env_file = ".env"
