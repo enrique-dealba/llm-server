@@ -3,7 +3,6 @@ import re
 from datetime import datetime, timezone
 from typing import Optional, Type, Union
 
-from client import Client
 from pydantic import BaseModel
 from pydantic_core import from_json
 
@@ -243,7 +242,7 @@ def format_prompt_mistral(user_prompt: str, system_prompt: str = ""):
     return f"[INST] {user_prompt} [/INST]"
 
 
-def extract_objective(prompt: str, client: Client, use_mistral: bool) -> str:
+def extract_objective(prompt: str, use_mistral: bool, client) -> str:
     """Extracts objective definition from the user prompt using LLM."""
     json_prompt = f"""
     <|im_start|>system
@@ -351,7 +350,13 @@ def extract_objective(prompt: str, client: Client, use_mistral: bool) -> str:
 
 
 def extract_field_from_prompt(
-    prompt: str, field_name: str, field_desc: str, example: str, obj: str, client: Client, use_mistral: bool
+    prompt: str,
+    field_name: str,
+    field_desc: str,
+    example: str,
+    obj: str,
+    use_mistral: bool,
+    client,
 ) -> str:
     """Extracts a single field from the user prompt using the LLM."""
     obj_info = objectives[obj]
@@ -409,7 +414,7 @@ def extract_field_from_prompt(
 
 
 def extract_list_from_prompt(
-    prompt: str, field_name: str, field_desc: str, client: Client, use_mistral: bool
+    prompt: str, field_name: str, field_desc: str, use_mistral: bool, client
 ) -> str:
     """Extracts the time fields from the user prompt using the LLM."""
     list_prompt = "Make an objective with RME01 and LMNT01."
@@ -470,7 +475,7 @@ def extract_list_from_prompt(
 
 
 def extract_time_from_prompt(
-    prompt: str, field_name: str, field_desc: str, client: Client, use_mistral: bool
+    prompt: str, field_name: str, field_desc: str, use_mistral: bool, client
 ) -> str:
     """Extracts the time fields from the user prompt using the LLM."""
     current_time = get_current_time()
@@ -546,7 +551,7 @@ def calculate_filling_percentage(model_instance: BaseModel) -> float:
     return filled_fields / total_fields
 
 
-def process_fields(prompt: str, objective: str, client: Client, use_mistral: bool):
+def process_fields(prompt: str, objective: str, use_mistral: bool, client):
     json_strs = []
     obj_info = objectives[objective]
 
@@ -593,7 +598,7 @@ def process_fields(prompt: str, objective: str, client: Client, use_mistral: boo
     return json_strs
 
 
-def process_lists(prompt: str, client: Client, use_mistral: bool):
+def process_lists(prompt: str, use_mistral: bool, client):
     """Extracts list[str] fields (rso_id_list, sensor_name_list, etc) from prompt."""
     list_strs = []
 
@@ -629,7 +634,7 @@ def process_lists(prompt: str, client: Client, use_mistral: bool):
     return list_strs
 
 
-def process_times(prompt: str, client: Client, use_mistral: bool):
+def process_times(prompt: str, use_mistral: bool, client):
     """Extracts time fields (objective_start_time, objective_end_time) from prompt."""
     time_strs = []
 
@@ -666,7 +671,7 @@ def process_times(prompt: str, client: Client, use_mistral: bool):
     return time_strs
 
 
-def process_objective(prompt: str, client: Client, use_mistral: bool):
+def process_objective(prompt: str, use_mistral: bool, client):
     """Extracts Objective name from a user prompt."""
     # TODO: Use 3 max tries to extract Objective
     objective_llm = extract_objective(prompt, client, use_mistral)
@@ -724,7 +729,9 @@ def extract_model(obj_info: dict, json_strs: list, list_strs: list, time_strs: l
             elif field_name == "target_id_list":
                 extracted_model.target_id_list = extracted_list.target_id_list
             elif field_name == "objective_start_time":
-                extracted_model.objective_start_time = extracted_time.objective_start_time
+                extracted_model.objective_start_time = (
+                    extracted_time.objective_start_time
+                )
             elif field_name == "objective_end_time":
                 extracted_model.objective_end_time = extracted_time.objective_end_time
 

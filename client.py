@@ -41,7 +41,7 @@ def process_prompt(prompt: str, client: Client):
     use_mistral = False
     if "mistral" in settings.DEFAULT_MODEL.lower():
         use_mistral = True
-    
+
     try:
         t_0 = time.perf_counter()
 
