@@ -38,13 +38,17 @@ class Client:
 
 def process_prompt(prompt: str, client: Client):
     """Process the given prompt and return the response."""
+    use_mistral = False
+    if "mistral" in settings.DEFAULT_MODEL:
+        use_mistral = True
+    
     try:
         t_0 = time.perf_counter()
 
-        objective = process_objective(prompt, client)
-        json_strs = process_fields(prompt, objective, client)
-        list_strs = process_lists(prompt, client)
-        time_strs = process_times(prompt, client)
+        objective = process_objective(prompt, client, use_mistral)
+        json_strs = process_fields(prompt, objective, client, use_mistral)
+        list_strs = process_lists(prompt, client, use_mistral)
+        time_strs = process_times(prompt, client, use_mistral)
 
         t_1 = time.perf_counter()
 
@@ -58,14 +62,12 @@ def process_prompt(prompt: str, client: Client):
         cleaned_response = tp.clean_mistral(response)
 
         # USE BELOW DURING DEBUGGING
-        # print(f"\nLLM Response: {cleaned_response}")
-        # print("=" * 30)
-        # print(f"EXTRACTED OVERALL OBJECTIVE MODEL: {extracted_model}")
-        # print(f"EXTRACTED TIME MODEL: {extracted_time}")
-        # print(f"Objective Model Correctness: {correctness:.2%}")
-        # print(f"Time Correctness: {time_correctness:.2%}")
-        # tps = tp.measure_performance(t_0, t_1, cleaned_response)
-        # print(f"Tokens per second: {tps} t/s")
+        print(f"\nLLM Response: {cleaned_response}")
+        print("=" * 30)
+        print(f"EXTRACTED OVERALL OBJECTIVE MODEL: {extracted_model}")
+        print(f"Objective Model Correctness: {correctness:.2%}")
+        tps = tp.measure_performance(t_0, t_1, cleaned_response)
+        print(f"Tokens per second: {tps} t/s")
 
         return cleaned_response, extracted_model, correctness, objective
 

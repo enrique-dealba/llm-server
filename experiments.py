@@ -218,6 +218,30 @@ awq_openheres_2 = [
     0.4750, 1.0, 5.78, # SCO
 ]
 
+# RUN=2: Field %, obj %, avg completion time per response (seconds)
+
+base_openhermes_3 = [
+    0.8009, 1.0, 4.77, # CMO
+    0.4537, 1.0, 4.78, # PRO
+    0.7244, 1.0, 6.05, # SO
+    0.6104, 1.0, 5.03, # DEO
+    0.5229, 1.0, 4.94, # SCO
+]
+gptq_openhermes_3 = [
+    0.6122, 1.0, 5.99, # CMO
+    0.5404, 0.2473, 5.58, # PRO
+    0.2836, 0.92, 4.99, # SO
+    0.4811, 0.8230, 4.71, # DEO
+    0.4296, 0.7692, 4.15, # SCO
+]
+awq_openheres_3 = [
+    0.6797, 1.0, 7.53, # CMO
+    0.3801, 1.0, 5.96, # PRO
+    0.4448, 1.0, 6.87, # SO
+    0.6347, 0.9909, 7.50, # DEO
+    0.4615, 1.0, 5.86, # SCO
+]
+
 
 # OpenHermes-2.5-Mistral-7B Results
 

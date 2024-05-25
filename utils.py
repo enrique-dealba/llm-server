@@ -3,6 +3,7 @@ import re
 from datetime import datetime, timezone
 from typing import Optional, Type, Union
 
+from client import Client
 from pydantic import BaseModel
 from pydantic_core import from_json
 
@@ -235,7 +236,14 @@ def extract_json_objective(input_string: str) -> Optional[str]:
     return None
 
 
-def extract_objective(prompt: str, client) -> str:
+def format_prompt_mistral(user_prompt: str, system_prompt: str = ""):
+    """Formats prompts for Mistral models."""
+    if system_prompt.strip():
+        return f"[INST] {system_prompt} {user_prompt} [/INST]"
+    return f"[INST] {user_prompt} [/INST]"
+
+
+def extract_objective(prompt: str, client: Client, use_mistral: bool) -> str:
     """Extracts objective definition from the user prompt using LLM."""
     json_prompt = f"""
     <|im_start|>system
@@ -287,6 +295,51 @@ def extract_objective(prompt: str, client) -> str:
     <|im_start|>assistant
     Result:
     """
+    if use_mistral:
+        system_prompt = f"""You are a helpful assistant designed to output single JSON fields.
+    Given the following user prompt
+    << {prompt} >>
+    extract the objective definition category that the prompt is most associated with.
+    The 'objective' should be one of:
+    'CatalogMaintenanceObjective', 'PeriodicRevisitObjective', 'SearchObjective', 'DataEnrichmentObjective', 'SpectralClearingObjective',
+    with the following descriptions:
+    {cmo_info['example']}: Description: {cmo_info['description']}
+    {pro_info['example']}: Description: {pro_info['description']}
+    {so_info['example']}: Description: {so_info['description']}
+    {deo_info['example']}: Description: {deo_info['description']}
+    {sco_info['example']}: Description: {sco_info['description']}
+    Examples:
+    Input:
+    user_prompt: "{cmo_info['prompts'][0]}"
+    Result: {{
+        "objective": "{cmo_info['example']}",
+    }}
+    Input:
+    user_prompt: "{pro_info['prompts'][0]}"
+    Result: {{
+        "objective": "{pro_info['example']}",
+    }}
+    Input:
+    user_prompt: "{so_info['prompts'][0]}"
+    Result: {{
+        "objective": "{so_info['example']}",
+    }}
+    Input:
+    user_prompt: "{deo_info['prompts'][0]}"
+    Result: {{
+        "objective": "{deo_info['example']}",
+    }}
+    Input:
+    user_prompt: "{sco_info['prompts'][0]}"
+    Result: {{
+        "objective": "{sco_info['example']}",
+    }}
+    """
+        user_prompt = f"""Input:
+    user_prompt: {prompt}
+    Result:
+    """
+        json_prompt = format_prompt_mistral(user_prompt, system_prompt)
 
     result = client.generate_text(json_prompt)
     if "text" in result:
@@ -298,7 +351,7 @@ def extract_objective(prompt: str, client) -> str:
 
 
 def extract_field_from_prompt(
-    prompt: str, field_name: str, field_desc: str, example: str, obj: str, client
+    prompt: str, field_name: str, field_desc: str, example: str, obj: str, client: Client, use_mistral: bool
 ) -> str:
     """Extracts a single field from the user prompt using the LLM."""
     obj_info = objectives[obj]
@@ -327,6 +380,24 @@ def extract_field_from_prompt(
     <|im_start|>assistant
     Result:
     """
+    if use_mistral:
+        system_prompt = f"""You are a helpful assistant designed to output single JSON fields.
+    Given the following user prompt
+    << {prompt} >>
+    extract the following field:
+    << {field_name} >> with description: {field_desc} from the user prompt.
+    Example:
+    Input:
+    user_prompt: "{user_example}"
+    Result: {{
+        "{field_name}": "{example}",
+    }}
+    """
+        user_prompt = f"""Input:
+    user_prompt: {prompt}
+    Result:
+    """
+        json_prompt = format_prompt_mistral(user_prompt, system_prompt)
 
     result = client.generate_text(json_prompt)
     if "text" in result:
@@ -338,7 +409,7 @@ def extract_field_from_prompt(
 
 
 def extract_list_from_prompt(
-    prompt: str, field_name: str, field_desc: str, client
+    prompt: str, field_name: str, field_desc: str, client: Client, use_mistral: bool
 ) -> str:
     """Extracts the time fields from the user prompt using the LLM."""
     list_prompt = "Make an objective with RME01 and LMNT01."
@@ -369,6 +440,25 @@ def extract_list_from_prompt(
     <|im_start|>assistant
     Result:
     """
+    if use_mistral:
+        system_prompt = f"""You are a helpful assistant designed to output single JSON fields for lists of strings (list[str]).
+    Given the following user prompt
+    << {prompt} >>
+    extract the following time field:
+    << {field_name} >> with description: {field_desc} from the user prompt.
+    Example:
+    Input:
+    user_prompt: "{list_prompt}"
+    Result: {{
+        "{field_example}": "{example}",
+    }}
+    Note: ONLY respond in JSON.
+    """
+        user_prompt = f"""Input:
+    user_prompt: {prompt}
+    Result:
+    """
+        list_prompt = format_prompt_mistral(user_prompt, system_prompt)
 
     result = client.generate_text(list_prompt)
     if "text" in result:
@@ -380,7 +470,7 @@ def extract_list_from_prompt(
 
 
 def extract_time_from_prompt(
-    prompt: str, field_name: str, field_desc: str, client
+    prompt: str, field_name: str, field_desc: str, client: Client, use_mistral: bool
 ) -> str:
     """Extracts the time fields from the user prompt using the LLM."""
     current_time = get_current_time()
@@ -414,6 +504,27 @@ def extract_time_from_prompt(
     <|im_start|>assistant
     Result:
     """
+    if use_mistral:
+        system_prompt = f"""You are a helpful assistant designed to output single JSON fields for times.
+    Important note: The current time is {current_time} with the following description:
+    {time_desciption}
+    Given the following user prompt
+    << {prompt} >>
+    extract the following time field:
+    << {field_name} >> with description: {field_desc} from the user prompt.
+    Example:
+    Input:
+    user_prompt: "{time_example}"
+    Result: {{
+        "{field_name}": "{example}",
+    }}
+    Note: ONLY respond in JSON.
+    """
+        user_prompt = f"""Input:
+    user_prompt: {prompt}
+    Result:
+    """
+        time_prompt = format_prompt_mistral(user_prompt, system_prompt)
 
     result = client.generate_text(time_prompt)
     if "text" in result:
@@ -435,7 +546,7 @@ def calculate_filling_percentage(model_instance: BaseModel) -> float:
     return filled_fields / total_fields
 
 
-def process_fields(prompt: str, objective: str, client):
+def process_fields(prompt: str, objective: str, client: Client, use_mistral: bool):
     json_strs = []
     obj_info = objectives[objective]
 
@@ -460,6 +571,7 @@ def process_fields(prompt: str, objective: str, client):
                 example=example,
                 obj=objective,
                 client=client,
+                use_mistral=use_mistral,
             )
 
             cleaned_response = clean_field_response(response)
@@ -481,7 +593,7 @@ def process_fields(prompt: str, objective: str, client):
     return json_strs
 
 
-def process_lists(prompt: str, client):
+def process_lists(prompt: str, client: Client, use_mistral: bool):
     """Extracts list[str] fields (rso_id_list, sensor_name_list, etc) from prompt."""
     list_strs = []
 
@@ -495,6 +607,7 @@ def process_lists(prompt: str, client):
                 field_name,
                 field_desc,
                 client=client,
+                use_mistral=use_mistral,
             )
 
             cleaned_response = clean_field_response(response)
@@ -516,7 +629,7 @@ def process_lists(prompt: str, client):
     return list_strs
 
 
-def process_times(prompt: str, client):
+def process_times(prompt: str, client: Client, use_mistral: bool):
     """Extracts time fields (objective_start_time, objective_end_time) from prompt."""
     time_strs = []
 
@@ -531,6 +644,7 @@ def process_times(prompt: str, client):
                 field_name,
                 field_desc,
                 client=client,
+                use_mistral=use_mistral,
             )
 
             cleaned_response = clean_json_str(response)
@@ -552,10 +666,10 @@ def process_times(prompt: str, client):
     return time_strs
 
 
-def process_objective(prompt: str, client):
+def process_objective(prompt: str, client: Client, use_mistral: bool):
     """Extracts Objective name from a user prompt."""
     # TODO: Use 3 max tries to extract Objective
-    objective_llm = extract_objective(prompt, client)
+    objective_llm = extract_objective(prompt, client, use_mistral)
     objective = extract_json_objective(objective_llm)
     # print(f"EXTRACTED OBJECTIVE: {objective}")
 
