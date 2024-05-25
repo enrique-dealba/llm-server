@@ -26,6 +26,9 @@ class Settings(BaseSettings):
     # ----- Hugging Face Hub Settings -----
     HF_HUB_OFFLINE: bool = False
 
+    # ----- IF USING MISTRAL MODELS -----
+    USE_MISTRAL = bool("mistral" in DEFAULT_MODEL.lower())
+
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"

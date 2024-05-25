@@ -38,17 +38,13 @@ class Client:
 
 def process_prompt(prompt: str, client: Client):
     """Process the given prompt and return the response."""
-    use_mistral = False
-    if "mistral" in settings.DEFAULT_MODEL.lower():
-        use_mistral = True
-
     try:
         t_0 = time.perf_counter()
 
-        objective = process_objective(prompt, client, use_mistral)
-        json_strs = process_fields(prompt, objective, client, use_mistral)
-        list_strs = process_lists(prompt, client, use_mistral)
-        time_strs = process_times(prompt, client, use_mistral)
+        objective = process_objective(prompt, client)
+        json_strs = process_fields(prompt, objective, client)
+        list_strs = process_lists(prompt, client)
+        time_strs = process_times(prompt, client)
 
         t_1 = time.perf_counter()
 
