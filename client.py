@@ -39,7 +39,7 @@ class Client:
 def process_prompt(prompt: str, client: Client):
     """Process the given prompt and return the response."""
     use_mistral = False
-    if "mistral" in settings.DEFAULT_MODEL:
+    if "mistral" in settings.DEFAULT_MODEL.lower():
         use_mistral = True
     
     try:
