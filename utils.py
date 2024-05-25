@@ -181,12 +181,20 @@ def get_partial_json(
     except (json.JSONDecodeError, TypeError, ValueError):
         return None
 
+def remove_slashes(text: str) -> str:
+    """Removes /'s (slashes) from strings."""
+    return text.replace('\\', '').replace('/', '')
+
 
 def combine_jsons(json_str_list: list[str], model_class: Type[BaseModel]) -> BaseModel:
     """Combines JSONs into single Pydantic model."""
     models = []
     for json_str in json_str_list:
-        print(f"About to process json_str: {json_str}")
+
+        print(f"BEFORE: About to process json_str: {json_str}")
+        if settings.USE_MISTRAL:
+            json_str = remove_slashes(json_str)
+        print(f"AFTER: {json_str}")
         partial_model = parse_partial_json(json_str, model_class)
         models.append(partial_model)
 
