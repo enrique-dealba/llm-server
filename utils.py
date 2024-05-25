@@ -190,11 +190,8 @@ def combine_jsons(json_str_list: list[str], model_class: Type[BaseModel]) -> Bas
     """Combines JSONs into single Pydantic model."""
     models = []
     for json_str in json_str_list:
-
-        print(f"BEFORE: About to process json_str: {json_str}")
         if settings.USE_MISTRAL:
             json_str = remove_slashes(json_str)
-        print(f"AFTER: {json_str}")
         partial_model = parse_partial_json(json_str, model_class)
         models.append(partial_model)
 
