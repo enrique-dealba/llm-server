@@ -582,6 +582,9 @@ def extract_time_from_prompt(
 
 def calculate_filling_percentage(model_instance: BaseModel) -> float:
     """Calculates the percentage of filled fields in Pydantic model."""
+    if model_instance is None:
+        return 0.0
+    
     total_fields = len(model_instance.__fields__)
     filled_fields = sum(
         1 for _, value in model_instance.__dict__.items() if value is not None
