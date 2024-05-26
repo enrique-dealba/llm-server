@@ -350,7 +350,11 @@ def extract_objective(prompt: str, client) -> str:
     """
         json_prompt = format_prompt_mistral(user_prompt, system_prompt)
 
+    t_start = time.perf_counter()
     result = client.generate_text(json_prompt)
+    t_end = time.perf_counter()
+    print(f"extract_objective: client.generate_text took: {t_end - t_start:.4f} seconds")
+
     if "text" in result:
         return result["text"]
     elif "detail" in result:
@@ -719,8 +723,11 @@ def process_times(prompt: str, client):
 def process_objective(prompt: str, client):
     """Extracts Objective name from a user prompt."""
     # TODO: Use 3 max tries to extract Objective
+    t_start = time.perf_counter()
     objective_llm = extract_objective(prompt, client)
     objective = extract_json_objective(objective_llm)
+    t_end = time.perf_counter()
+    print(f"process_objective (part 1 total): {t_end - t_start:.4f} seconds")
     print(f"EXTRACTED OBJECTIVE: {objective}")
 
     if objective:

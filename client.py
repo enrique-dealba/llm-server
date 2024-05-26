@@ -33,6 +33,7 @@ class Client:
             response = requests.post(f"{settings.API_URL}/generate", json=payload)
             t_end = time.perf_counter()
             print(f"client.generate_text took: {t_end - t_start:.4f} seconds")
+            print(f"PROMPT: {prompt}")
             return response.json()
         except requests.exceptions.RequestException as e:
             logging.error(f"API request failed: {e}")
