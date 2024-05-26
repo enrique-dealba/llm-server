@@ -682,7 +682,7 @@ def process_objective(prompt: str, client):
     # TODO: Use 3 max tries to extract Objective
     objective_llm = extract_objective(prompt, client)
     objective = extract_json_objective(objective_llm)
-    # print(f"EXTRACTED OBJECTIVE: {objective}")
+    print(f"EXTRACTED OBJECTIVE: {objective}")
 
     if objective:
         for objective_name in objectives.keys():
