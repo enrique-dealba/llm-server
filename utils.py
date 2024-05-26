@@ -749,17 +749,16 @@ def process_objective(prompt: str, client):
     return objective
 
 
-def extract_model(obj_info: dict, json_strs: list, list_strs: list, time_strs: list):
+def extract_model(
+    obj_info: dict, json_strs: list, list_strs: list, time_strs: list
+) -> Optional[ObjectiveModel]:
     """Extracts Objective model based on previous field extractions."""
     extracted_model = None
     extracted_list = None
     extracted_time = None
-    correctness = 0.0
-    # time_correctness = 0.0
 
     if json_strs:
         extracted_model = combine_jsons(json_strs, obj_info["template"])
-        # correctness = calculate_filling_percentage(extracted_model)
     else:
         json_strs = ["JSON Parsing Failed!"]
 
@@ -770,41 +769,31 @@ def extract_model(obj_info: dict, json_strs: list, list_strs: list, time_strs: l
 
     if time_strs:
         extracted_time = combine_jsons(time_strs, ObjectiveTimeTemplate)
-        # time_correctness = calculate_filling_percentage(extracted_time)
     else:
         time_strs = ["TIME Parsing Failed!"]
 
-    # # Combines the extracted time fields with the objective model
-    # if extracted_model and extracted_time:
-    #     extracted_model.objective_start_time = extracted_time.objective_start_time
-    #     extracted_model.objective_end_time = extracted_time.objective_end_time
+    if extracted_model is None:
+        return None
 
     model_fields = get_model_fields_and_descriptions(obj_info["template"])
     for field_name, _ in model_fields:
-        try:
-            if field_name == "rso_id_list":
-                extracted_model.rso_id_list = extracted_list.rso_id_list
-            elif field_name == "sensor_name_list":
-                extracted_model.sensor_name_list = extracted_list.sensor_name_list
-            elif field_name == "target_id_list":
-                extracted_model.target_id_list = extracted_list.target_id_list
-            elif field_name == "objective_start_time":
-                extracted_model.objective_start_time = (
-                    extracted_time.objective_start_time
-                )
-            elif field_name == "objective_end_time":
-                extracted_model.objective_end_time = extracted_time.objective_end_time
-
-        except AttributeError:
-            if field_name == "rso_id_list":
-                extracted_model.rso_id_list = []
-            elif field_name == "sensor_name_list":
-                extracted_model.sensor_name_list = []
-            elif field_name == "target_id_list":
-                extracted_model.target_id_list = []
-            elif field_name == "objective_start_time":
-                extracted_model.objective_start_time = "None"
-            elif field_name == "objective_end_time":
-                extracted_model.objective_end_time = "None"
+        if field_name == "rso_id_list":
+            extracted_model.rso_id_list = getattr(extracted_list, "rso_id_list", [])
+        elif field_name == "sensor_name_list":
+            extracted_model.sensor_name_list = getattr(
+                extracted_list, "sensor_name_list", []
+            )
+        elif field_name == "target_id_list":
+            extracted_model.target_id_list = getattr(
+                extracted_list, "target_id_list", []
+            )
+        elif field_name == "objective_start_time":
+            extracted_model.objective_start_time = getattr(
+                extracted_time, "objective_start_time", "None"
+            )
+        elif field_name == "objective_end_time":
+            extracted_model.objective_end_time = getattr(
+                extracted_time, "objective_end_time", "None"
+            )
 
     return extracted_model
