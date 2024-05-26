@@ -1,6 +1,5 @@
 import json
 import re
-import time
 from datetime import datetime, timezone
 from typing import Optional, Type, Union
 
@@ -351,12 +350,7 @@ def extract_objective(prompt: str, client) -> str:
     """
         json_prompt = format_prompt_mistral(user_prompt, system_prompt)
 
-    t_start = time.perf_counter()
     result = client.generate_text(json_prompt)
-    t_end = time.perf_counter()
-    print(
-        f"extract_objective: client.generate_text took: {t_end - t_start:.4f} seconds"
-    )
 
     if "text" in result:
         return result["text"]
@@ -375,19 +369,9 @@ def extract_field_from_prompt(
     client,
 ) -> str:
     """Extracts a single field from the user prompt using the LLM."""
-    """
-    t_start = time.perf_counter()
-    json_strs = process_fields(prompt, objective, client)
-    t_end = time.perf_counter()
-    print(f"process_fields took: {t_end - t_start:.4f} seconds")
-    """
-    t_start = time.perf_counter()
     obj_info = objectives[obj]
     user_example = obj_info["prompts"][0]
-    t_end = time.perf_counter()
-    print(f"extract_field_from_prompt (part 1) took: {t_end - t_start:.4f} seconds")
 
-    t_start = time.perf_counter()
     json_prompt = f"""
     <|im_start|>system
     You are a helpful assistant designed to output single JSON fields.
@@ -411,11 +395,6 @@ def extract_field_from_prompt(
     <|im_start|>assistant
     Result:
     """
-    t_end = time.perf_counter()
-    print(f"extract_field_from_prompt (part 2) took: {t_end - t_start:.4f} seconds")
-
-    t_start = time.perf_counter()
-
     if settings.USE_MISTRAL:
         system_prompt = f"""You are a helpful assistant designed to output single JSON fields.
     Given the following user prompt
@@ -434,16 +413,8 @@ def extract_field_from_prompt(
     Result:
     """
         json_prompt = format_prompt_mistral(user_prompt, system_prompt)
-    t_end = time.perf_counter()
-    print(f"extract_field_from_prompt (part 3) took: {t_end - t_start:.4f} seconds")
-
-    t_start = time.perf_counter()
 
     result = client.generate_text(json_prompt)
-    t_end = time.perf_counter()
-    print(
-        f"extract_field_from_prompt - client.generate_text (part 4) took: {t_end - t_start:.4f} seconds"
-    )
 
     if "text" in result:
         return result["text"]
@@ -584,7 +555,7 @@ def calculate_filling_percentage(model_instance: BaseModel) -> float:
     """Calculates the percentage of filled fields in Pydantic model."""
     if model_instance is None:
         return 0.0
-    
+
     total_fields = len(model_instance.__fields__)
     filled_fields = sum(
         1 for _, value in model_instance.__dict__.items() if value is not None
@@ -596,19 +567,10 @@ def calculate_filling_percentage(model_instance: BaseModel) -> float:
 
 def process_fields(prompt: str, objective: str, client):
     """Extracts all basic str, int , float fields from prompt."""
-    """
-    t_start = time.perf_counter()
-    json_strs = process_fields(prompt, objective, client)
-    t_end = time.perf_counter()
-    print(f"process_fields took: {t_end - t_start:.4f} seconds")
-    """
-    t_start = time.perf_counter()
     json_strs = []
     obj_info = objectives[objective]
 
     fields_and_descriptions = get_model_fields_and_descriptions(obj_info["base_model"])
-    t_end = time.perf_counter()
-    print(f"process_fields part 1 (setup) took: {t_end - t_start:.4f} seconds")
 
     max_tries = 3
     if len(obj_info["example_fields"]) != len(fields_and_descriptions):
@@ -622,7 +584,6 @@ def process_fields(prompt: str, objective: str, client):
 
         num_tries = 0
         while num_tries < max_tries:
-            t_start = time.perf_counter()
             response = extract_field_from_prompt(
                 prompt,
                 field_name,
@@ -631,12 +592,6 @@ def process_fields(prompt: str, objective: str, client):
                 obj=objective,
                 client=client,
             )
-            t_end = time.perf_counter()
-            print(
-                f"process_fields part 2 (extract_field_from_prompt TOTAL) took: {t_end - t_start:.4f} seconds"
-            )
-
-            t_start = time.perf_counter()
             cleaned_response = clean_field_response(response)
             if is_json_like(response):
                 json_strs.append(response)
@@ -648,10 +603,7 @@ def process_fields(prompt: str, objective: str, client):
             #     print("WARNING: MODEL FIELD NOT JSON-LIKE")
             #     print(f"Raw LLM response at attempt={num_tries}: {response}")
             num_tries += 1
-            t_end = time.perf_counter()
-            print(
-                f"process_fields part 3 (end of loop) took: {t_end - t_start:.4f} seconds"
-            )
+
         # else:
         #     logging.warning(
         #         f"Failed to extract field '{field_name}' after {max_tries} attempts."
@@ -734,12 +686,8 @@ def process_times(prompt: str, client):
 def process_objective(prompt: str, client):
     """Extracts Objective name from a user prompt."""
     # TODO: Use 3 max tries to extract Objective
-    t_start = time.perf_counter()
     objective_llm = extract_objective(prompt, client)
     objective = extract_json_objective(objective_llm)
-    t_end = time.perf_counter()
-    print(f"process_objective (part 1 total): {t_end - t_start:.4f} seconds")
-    print(f"EXTRACTED OBJECTIVE: {objective}")
 
     if objective:
         for objective_name in objectives.keys():
