@@ -29,7 +29,10 @@ class Client:
         prompt = tp.preprocess_prompt(prompt)
         payload = {"text": prompt}
         try:
+            t_start = time.perf_counter()
             response = requests.post(f"{settings.API_URL}/generate", json=payload)
+            t_end = time.perf_counter()
+            print(f"client.generate_text took: {t_end - t_start:.4f} seconds")
             return response.json()
         except requests.exceptions.RequestException as e:
             logging.error(f"API request failed: {e}")

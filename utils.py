@@ -368,9 +368,19 @@ def extract_field_from_prompt(
     client,
 ) -> str:
     """Extracts a single field from the user prompt using the LLM."""
+    """
+    t_start = time.perf_counter()
+    json_strs = process_fields(prompt, objective, client)
+    t_end = time.perf_counter()
+    print(f"process_fields took: {t_end - t_start:.4f} seconds")
+    """
+    t_start = time.perf_counter()
     obj_info = objectives[obj]
     user_example = obj_info["prompts"][0]
+    t_end = time.perf_counter()
+    print(f"extract_field_from_prompt (part 1) took: {t_end - t_start:.4f} seconds")
 
+    t_start = time.perf_counter()
     json_prompt = f"""
     <|im_start|>system
     You are a helpful assistant designed to output single JSON fields.
@@ -394,6 +404,11 @@ def extract_field_from_prompt(
     <|im_start|>assistant
     Result:
     """
+    t_end = time.perf_counter()
+    print(f"extract_field_from_prompt (part 2) took: {t_end - t_start:.4f} seconds")
+
+    t_start = time.perf_counter()
+
     if settings.USE_MISTRAL:
         system_prompt = f"""You are a helpful assistant designed to output single JSON fields.
     Given the following user prompt
@@ -412,8 +427,15 @@ def extract_field_from_prompt(
     Result:
     """
         json_prompt = format_prompt_mistral(user_prompt, system_prompt)
+    t_end = time.perf_counter()
+    print(f"extract_field_from_prompt (part 3) took: {t_end - t_start:.4f} seconds")
+    
+    t_start = time.perf_counter()
 
     result = client.generate_text(json_prompt)
+    t_end = time.perf_counter()
+    print(f"extract_field_from_prompt - client.generate_text (part 4) took: {t_end - t_start:.4f} seconds")
+
     if "text" in result:
         return result["text"]
     elif "detail" in result:
@@ -599,7 +621,7 @@ def process_fields(prompt: str, objective: str, client):
                 client=client,
             )
             t_end = time.perf_counter()
-            print(f"process_fields part 2 (extract_field_from_prompt) took: {t_end - t_start:.4f} seconds")
+            print(f"process_fields part 2 (extract_field_from_prompt TOTAL) took: {t_end - t_start:.4f} seconds")
 
             t_start = time.perf_counter()
             cleaned_response = clean_field_response(response)
