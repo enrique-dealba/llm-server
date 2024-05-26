@@ -182,9 +182,10 @@ def get_partial_json(
     except (json.JSONDecodeError, TypeError, ValueError):
         return None
 
+
 def remove_slashes(text: str) -> str:
     """Removes /'s (slashes) from strings."""
-    return text.replace('\\', '').replace('/', '')
+    return text.replace("\\", "").replace("/", "")
 
 
 def combine_jsons(json_str_list: list[str], model_class: Type[BaseModel]) -> BaseModel:
@@ -353,7 +354,9 @@ def extract_objective(prompt: str, client) -> str:
     t_start = time.perf_counter()
     result = client.generate_text(json_prompt)
     t_end = time.perf_counter()
-    print(f"extract_objective: client.generate_text took: {t_end - t_start:.4f} seconds")
+    print(
+        f"extract_objective: client.generate_text took: {t_end - t_start:.4f} seconds"
+    )
 
     if "text" in result:
         return result["text"]
@@ -433,12 +436,14 @@ def extract_field_from_prompt(
         json_prompt = format_prompt_mistral(user_prompt, system_prompt)
     t_end = time.perf_counter()
     print(f"extract_field_from_prompt (part 3) took: {t_end - t_start:.4f} seconds")
-    
+
     t_start = time.perf_counter()
 
     result = client.generate_text(json_prompt)
     t_end = time.perf_counter()
-    print(f"extract_field_from_prompt - client.generate_text (part 4) took: {t_end - t_start:.4f} seconds")
+    print(
+        f"extract_field_from_prompt - client.generate_text (part 4) took: {t_end - t_start:.4f} seconds"
+    )
 
     if "text" in result:
         return result["text"]
@@ -602,7 +607,6 @@ def process_fields(prompt: str, objective: str, client):
     t_end = time.perf_counter()
     print(f"process_fields part 1 (setup) took: {t_end - t_start:.4f} seconds")
 
-
     max_tries = 3
     if len(obj_info["example_fields"]) != len(fields_and_descriptions):
         raise ValueError("'examples' list must have same length as objective fields.")
@@ -625,7 +629,9 @@ def process_fields(prompt: str, objective: str, client):
                 client=client,
             )
             t_end = time.perf_counter()
-            print(f"process_fields part 2 (extract_field_from_prompt TOTAL) took: {t_end - t_start:.4f} seconds")
+            print(
+                f"process_fields part 2 (extract_field_from_prompt TOTAL) took: {t_end - t_start:.4f} seconds"
+            )
 
             t_start = time.perf_counter()
             cleaned_response = clean_field_response(response)
@@ -640,7 +646,9 @@ def process_fields(prompt: str, objective: str, client):
             #     print(f"Raw LLM response at attempt={num_tries}: {response}")
             num_tries += 1
             t_end = time.perf_counter()
-            print(f"process_fields part 3 (end of loop) took: {t_end - t_start:.4f} seconds")
+            print(
+                f"process_fields part 3 (end of loop) took: {t_end - t_start:.4f} seconds"
+            )
         # else:
         #     logging.warning(
         #         f"Failed to extract field '{field_name}' after {max_tries} attempts."

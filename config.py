@@ -27,7 +27,9 @@ class Settings(BaseSettings):
     HF_HUB_OFFLINE: bool = False
 
     # ----- IF USING MISTRAL MODELS -----
-    USE_MISTRAL: bool = bool("mistral" in DEFAULT_MODEL.lower())
+    USE_MISTRAL: bool = bool(
+        "mistral" in DEFAULT_MODEL.lower() and "openhermes" not in DEFAULT_MODEL.lower()
+    )
 
     class Config:
         env_file = ".env"
@@ -61,6 +63,6 @@ class LLM:
     YARN_128K = "NousResearch/Yarn-Mistral-7b-128k"
     PHI_2 = "microsoft/phi-2"
     PHI_2_GPTQ = "TheBloke/phi-2-GPTQ"
-    DOLPHIN_26_PHI = "cognitivecomputations/dolphin-2_6-phi-2" # doesn't work with vLLM
+    DOLPHIN_26_PHI = "cognitivecomputations/dolphin-2_6-phi-2"  # doesn't work with vLLM
     DOLPHIN_26_PHI_GPTQ = "TheBloke/dolphin-2_6-phi-2-GPTQ"  # doesn't work with vLLM
-    PHI_2_ORANGE = "rhysjones/phi-2-orange" # doesn't work with vLLM
+    PHI_2_ORANGE = "rhysjones/phi-2-orange"  # doesn't work with vLLM
