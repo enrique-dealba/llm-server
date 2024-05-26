@@ -1,5 +1,6 @@
 import json
 import re
+import time
 from datetime import datetime, timezone
 from typing import Optional, Type, Union
 
@@ -561,10 +562,20 @@ def calculate_filling_percentage(model_instance: BaseModel) -> float:
 
 def process_fields(prompt: str, objective: str, client):
     """Extracts all basic str, int , float fields from prompt."""
+    """
+    t_start = time.perf_counter()
+    json_strs = process_fields(prompt, objective, client)
+    t_end = time.perf_counter()
+    print(f"process_fields took: {t_end - t_start:.4f} seconds")
+    """
+    t_start = time.perf_counter()
     json_strs = []
     obj_info = objectives[objective]
 
     fields_and_descriptions = get_model_fields_and_descriptions(obj_info["base_model"])
+    t_end = time.perf_counter()
+    print(f"process_fields part 1 (setup) took: {t_end - t_start:.4f} seconds")
+
 
     max_tries = 3
     if len(obj_info["example_fields"]) != len(fields_and_descriptions):
@@ -578,6 +589,7 @@ def process_fields(prompt: str, objective: str, client):
 
         num_tries = 0
         while num_tries < max_tries:
+            t_start = time.perf_counter()
             response = extract_field_from_prompt(
                 prompt,
                 field_name,
@@ -586,7 +598,10 @@ def process_fields(prompt: str, objective: str, client):
                 obj=objective,
                 client=client,
             )
+            t_end = time.perf_counter()
+            print(f"process_fields part 2 (extract_field_from_prompt) took: {t_end - t_start:.4f} seconds")
 
+            t_start = time.perf_counter()
             cleaned_response = clean_field_response(response)
             if is_json_like(response):
                 json_strs.append(response)
@@ -598,6 +613,8 @@ def process_fields(prompt: str, objective: str, client):
             #     print("WARNING: MODEL FIELD NOT JSON-LIKE")
             #     print(f"Raw LLM response at attempt={num_tries}: {response}")
             num_tries += 1
+            t_end = time.perf_counter()
+            print(f"process_fields part 3 (end of loop) took: {t_end - t_start:.4f} seconds")
         # else:
         #     logging.warning(
         #         f"Failed to extract field '{field_name}' after {max_tries} attempts."
