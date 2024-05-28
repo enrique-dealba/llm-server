@@ -33,7 +33,10 @@ class Client:
             t_0 = time.perf_counter()
             response = requests.post(f"{settings.API_URL}/generate", json=payload)
             t_1 = time.perf_counter()
-            print(f"Elapsed time: {t_1 - t_0} seconds")
+            print("="*30)
+            print("="*30)
+            print(f"PROMPT time: {t_1 - t_0} seconds")
+            print("="*30)
 
             return response.json()
         except requests.exceptions.RequestException as e:
@@ -45,17 +48,35 @@ def process_prompt(prompt: str, client: Client):
     """Process the given prompt and return the response."""
     try:
         t_0 = time.perf_counter()
-
+        
+        t_start = time.perf_counter()
         objective = process_objective(prompt, client)
+        t_end = time.perf_counter()
+        print(f"Elapsed time: {t_end - t_start} seconds")
+
+        t_start = time.perf_counter()
         json_strs = process_fields(prompt, objective, client)
+        t_end = time.perf_counter()
+        print(f"Elapsed time: {t_end - t_start} seconds")
+
+        t_start = time.perf_counter()
         list_strs = process_lists(prompt, client)
+        t_end = time.perf_counter()
+        print(f"Elapsed time: {t_end - t_start} seconds")
+
+        t_start = time.perf_counter()
         time_strs = process_times(prompt, client)
+        t_end = time.perf_counter()
+        print(f"Elapsed time: {t_end - t_start} seconds")
 
         t_1 = time.perf_counter()
 
         obj_info = objectives[objective]
 
+        t_start = time.perf_counter()
         extracted_model = extract_model(obj_info, json_strs, list_strs, time_strs)
+        t_end = time.perf_counter()
+        print(f"Elapsed time: {t_end - t_start} seconds")
 
         correctness = calculate_filling_percentage(extracted_model)
         response = "\n".join(json_strs)
