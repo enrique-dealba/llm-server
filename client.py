@@ -28,12 +28,12 @@ class Client:
         """Sends text generation request to LLM server."""
         prompt = tp.preprocess_prompt(prompt)
         payload = {"text": prompt}
-        print(f"Prompt: {prompt}")
+        # print(f"Prompt: {prompt}")
         try:
             t_0 = time.perf_counter()
             response = requests.post(f"{settings.API_URL}/generate", json=payload)
             t_1 = time.perf_counter()
-            print("="*30)
+            # print("="*30)
             print("="*30)
             print(f"PROMPT time: {t_1 - t_0} seconds")
             print("="*30)
