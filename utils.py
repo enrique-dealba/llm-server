@@ -1,5 +1,6 @@
 import json
 import re
+import time
 from datetime import datetime, timezone
 from typing import Optional, Type, Union
 
@@ -476,7 +477,11 @@ def extract_list_from_prompt(
     """
         list_prompt = format_prompt_mistral(user_prompt, system_prompt)
 
+    t_start = time.perf_counter()
     result = client.generate_text(list_prompt)
+    t_end = time.perf_counter()
+    print(f"client.generate_text(list_prompt) - time: {t_end - t_start} seconds")
+
     if "text" in result:
         return result["text"]
     elif "detail" in result:
@@ -620,6 +625,7 @@ def process_lists(prompt: str, client):
     max_tries = 3
     for field_name, field_desc in list_model:
         num_tries = 0
+        t_start = time.perf_counter()
         while num_tries < max_tries:
             response = extract_list_from_prompt(
                 prompt,
@@ -631,13 +637,19 @@ def process_lists(prompt: str, client):
             cleaned_response = clean_field_response(response)
             if is_json_like(response):
                 list_strs.append(response)
+                t_end = time.perf_counter()
+                print(f"is_json_like(response) PASSED - time: {t_end - t_start} seconds")
                 break
             elif is_json_like(cleaned_response):
                 list_strs.append(cleaned_response)
+                t_end = time.perf_counter()
+                print(f"is_json_like(cleaned_response) PASSED - time: {t_end - t_start} seconds")
                 break
             # else:
             #     print("WARNING: LIST FIELD NOT JSON-LIKE")
             #     print(f"Raw LLM response at attempt={num_tries}: {response}")
+            t_end = time.perf_counter()
+            print(f"process_lists FAILED at try={num_tries} - time: {t_end - t_start} seconds")
             num_tries += 1
         # else:
         #     logging.warning(
