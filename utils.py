@@ -481,6 +481,7 @@ def extract_list_from_prompt(
     result = client.generate_text(list_prompt)
     t_end = time.perf_counter()
     print(f"client.generate_text(list_prompt) - time: {t_end - t_start} seconds")
+    print(f"list_prompt: {list_prompt}")
 
     if "text" in result:
         return result["text"]
