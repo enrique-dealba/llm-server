@@ -30,10 +30,10 @@ class Client:
         payload = {"text": prompt}
         print(f"Prompt: {prompt}")
         try:
-            t_0 = time.perf_counter()
+            # t_0 = time.perf_counter()
             response = requests.post(f"{settings.API_URL}/generate", json=payload)
-            t_1 = time.perf_counter()
-            print(f"Elapsed time: {t_1 - t_0} seconds")
+            # t_1 = time.perf_counter()
+            # print(f"Elapsed time: {t_1 - t_0} seconds")
 
             return response.json()
         except requests.exceptions.RequestException as e:
@@ -63,12 +63,12 @@ def process_prompt(prompt: str, client: Client):
         cleaned_response = tp.clean_mistral(response)
 
         # USE BELOW DURING DEBUGGING
-        print(f"\nLLM Response: {cleaned_response}")
-        print("=" * 30)
-        print(f"EXTRACTED OVERALL OBJECTIVE MODEL: {extracted_model}")
-        print(f"Objective Model Correctness: {correctness:.2%}")
-        tps = tp.measure_performance(t_0, t_1, cleaned_response)
-        print(f"Tokens per second: {tps} t/s")
+        # print(f"\nLLM Response: {cleaned_response}")
+        # print("=" * 30)
+        # print(f"EXTRACTED OVERALL OBJECTIVE MODEL: {extracted_model}")
+        # print(f"Objective Model Correctness: {correctness:.2%}")
+        # tps = tp.measure_performance(t_0, t_1, cleaned_response)
+        # print(f"Tokens per second: {tps} t/s")
 
         return cleaned_response, extracted_model, correctness, objective
 
