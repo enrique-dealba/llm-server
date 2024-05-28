@@ -90,6 +90,7 @@ def process_prompt(prompt: str, client: Client):
         print(f"Objective Model Correctness: {correctness:.2%}")
         tps = tp.measure_performance(t_0, t_1, cleaned_response)
         print(f"Tokens per second: {tps} t/s")
+        print(f"TOTAL TIME: {t_1 - t_0} seconds")
 
         return cleaned_response, extracted_model, correctness, objective
 
