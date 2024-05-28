@@ -27,9 +27,15 @@ class Settings(BaseSettings):
     HF_HUB_OFFLINE: bool = False
 
     # ----- IF USING MISTRAL MODELS -----
-    USE_MISTRAL: bool = bool(
-        "mistral" in DEFAULT_MODEL.lower() and "openhermes" not in DEFAULT_MODEL.lower()
-    )
+    MISTRAL_MODELS: list[str] = [
+        "mistralai/Mistral-7B-Instruct-v0.2",
+        "TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
+        "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
+        "mistralai/Mistral-7B-Instruct-v0.1",
+        "TheBloke/Mistral-7B-Instruct-v0.1-AWQ",
+        "TheBloke/Mistral-7B-v0.1-GPTQ",
+    ]
+    USE_MISTRAL: bool = bool(DEFAULT_MODEL in MISTRAL_MODELS)
 
     class Config:
         env_file = ".env"

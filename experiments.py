@@ -273,35 +273,36 @@ awq_openhermes_1 = [
 ]
 
 # Mistral (AWQ,GPTQ) vs. OpenHermes (AWQ,GPTQ) @num_tests=10
+# After prompt fix for OpenHermes
 
-# gptq_mistral_1 = [
-#     None, None, # CMO
-#     AAA, AAA, # PRO
-#     AAA, AAA, # SO
-#     AAA, AAA, # DEO
-#     AAA, AAA, # SCO
-# ]
-# awq_mistral_1 = [
-#     AAA, AAA, # CMO
-#     AAA, AAA, # PRO
-#     AAA, AAA, # SO
-#     AAA, AAA, # DEO
-#     AAA, AAA, # SCO
-# ]
-# gptq_openhermes_1 = [
-#     None, None, # CMO
-#     AAA, AAA, # PRO
-#     AAA, AAA, # SO
-#     AAA, AAA, # DEO
-#     AAA, AAA, # SCO
-# ]
-# awq_openhermes_1 = [
-#     AAA, AAA, # CMO
-#     AAA, AAA, # PRO
-#     AAA, AAA, # SO
-#     AAA, AAA, # DEO
-#     AAA, AAA, # SCO
-# ]
+gptq_mistral_2 = [
+    0.9909, 1.0, 6.27, # CMO
+    0.9572, 0.0169, 8.03, # PRO
+    0.9444, 0.4545, 8.48, # SO
+    0.9758, 0.800, 6.84, # DEO
+    0.9961, 0.8857, 7.66, # SCO
+]
+awq_mistral_2 = [
+    0.9613, 1.0, 13.04, # CMO
+    0.9955, 0.0, 13.62, # PRO
+    0.9683, 0.1053, 13.10, # SO
+    0.9981, 0.2857, 15.42, # DEO
+    0.9719, 0.2055, 11.73, # SCO
+]
+gptq_openhermes_2 = [
+    0.5967, 1.0, 5.85, # CMO
+    0.5175, 0.300, 5.75, # PRO
+    0.3035, 0.8824, 4.71, # SO
+    0.4958, 0.8533, 4.78, # DEO
+    0.4071, 0.8060, 4.23, # SCO
+]
+awq_openhermes_2 = [
+    0.6792, 1.0, 7.70, # CMO
+    0.3872, 1.0, 5.94, # PRO
+    0.4538, 1.0, 6.93, # SO
+    0.6258, 1.0, 7.11, # DEO
+    0.4657, 1.0, 5.72, # SCO
+]
 
 # OpenHermes-2.5-Mistral-7B Results
 
