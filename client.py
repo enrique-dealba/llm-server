@@ -34,9 +34,9 @@ class Client:
             response = requests.post(f"{settings.API_URL}/generate", json=payload)
             t_1 = time.perf_counter()
             # print("="*30)
-            print("="*30)
+            print("=" * 30)
             print(f"PROMPT time: {t_1 - t_0} seconds")
-            print("="*30)
+            print("=" * 30)
 
             return response.json()
         except requests.exceptions.RequestException as e:
@@ -48,7 +48,7 @@ def process_prompt(prompt: str, client: Client):
     """Process the given prompt and return the response."""
     try:
         t_0 = time.perf_counter()
-        
+
         t_start = time.perf_counter()
         objective = process_objective(prompt, client)
         t_end = time.perf_counter()
@@ -60,7 +60,7 @@ def process_prompt(prompt: str, client: Client):
         print(f"process_fields - time: {t_end - t_start} seconds")
 
         t_start = time.perf_counter()
-        list_strs = process_lists(prompt, client)
+        list_strs = process_lists(prompt, objective, client)
         t_end = time.perf_counter()
         print(f"process_lists - time: {t_end - t_start} seconds")
 

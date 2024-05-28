@@ -55,6 +55,34 @@ class ObjectiveListTemplate(BaseModel):
     target_id_list: Optional[list[str]] = None
 
 
+class CMO_ObjectiveList(BaseModel):
+    target_id_list: list[str] = Field(
+        description="list[str]: List of belief state UUID's of Targets."
+    )
+    sensor_name_list: list[str] = Field(
+        description="list[str]: List of string names of Sensors to perform Objective with. Usually in the format 'RME..', 'LMNT..', 'ABQ..', 'UKR...', for example: RME99."
+    )
+
+
+class CMO_ObjectiveListTemplate(BaseModel):
+    target_id_list: Optional[list[str]] = None
+    sensor_name_list: Optional[list[str]] = None
+
+
+class PRO_ObjectiveList(BaseModel):
+    target_id_list: list[str] = Field(
+        description="list[str]: List of belief state UUID's of Targets."
+    )
+    sensor_name_list: list[str] = Field(
+        description="list[str]: List of string names of Sensors to perform Objective with. Usually in the format 'RME..', 'LMNT..', 'ABQ..', 'UKR...', for example: RME99."
+    )
+
+
+class PRO_ObjectiveListTemplate(BaseModel):
+    target_id_list: Optional[list[str]] = None
+    sensor_name_list: Optional[list[str]] = None
+
+
 class Foo(BaseModel):
     foo_name: str = Field(description="Name of the foo.")
     foo_id: str = Field(description="ID of the foo, usually 3 digits.")

@@ -1,10 +1,14 @@
 from templates import (
     CatalogMaintenanceObjective,
     CatalogMaintenanceObjectiveTemplate,
+    CMO_ObjectiveList,
+    CMO_ObjectiveListTemplate,
     DataEnrichmentObjective,
     DataEnrichmentObjectiveTemplate,
     PeriodicRevisitObjective,
     PeriodicRevisitObjectiveTemplate,
+    PRO_ObjectiveList,
+    PRO_ObjectiveListTemplate,
     SearchObjective,
     SearchObjectiveTemplate,
     SpectralClearingObjective,
@@ -100,6 +104,8 @@ or tracking environment. CMO is useful for satellite or astronomical observation
     "example_fields": cmo_examples,
     "base_model": CatalogMaintenanceObjective,
     "template": CatalogMaintenanceObjectiveTemplate,
+    "list_fields": CMO_ObjectiveList,
+    "list_fields_template": CMO_ObjectiveListTemplate,
 }
 
 pro_examples = [
@@ -135,6 +141,8 @@ and periodic observations.
     "example_fields": pro_examples,
     "base_model": PeriodicRevisitObjective,
     "template": PeriodicRevisitObjectiveTemplate,
+    "list_fields": PRO_ObjectiveList,
+    "list_fields_template": PRO_ObjectiveListTemplate,
 }
 
 so_examples = [
@@ -164,6 +172,8 @@ so_info = {
     "example_fields": so_examples,
     "base_model": SearchObjective,
     "template": SearchObjectiveTemplate,
+    "list_fields": None,
+    "list_fields_template": None,
 }
 
 deo_examples = [
@@ -187,6 +197,8 @@ deo_info = {
     "example_fields": deo_examples,
     "base_model": DataEnrichmentObjective,
     "template": DataEnrichmentObjectiveTemplate,
+    "list_fields": PRO_ObjectiveList,
+    "list_fields_template": PRO_ObjectiveListTemplate,
 }
 
 sco_examples = [
@@ -212,6 +224,8 @@ sco_info = {
     "example_fields": sco_examples,
     "base_model": SpectralClearingObjective,
     "template": SpectralClearingObjectiveTemplate,
+    "list_fields": PRO_ObjectiveList,
+    "list_fields_template": PRO_ObjectiveListTemplate,
 }
 
 objectives = {

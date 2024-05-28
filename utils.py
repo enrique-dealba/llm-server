@@ -10,8 +10,6 @@ from pydantic_core import from_json
 from config import Settings
 from objectives import cmo_info, deo_info, objectives, pro_info, sco_info, so_info
 from templates import (
-    ObjectiveList,
-    ObjectiveListTemplate,
     ObjectiveModel,
     ObjectiveTime,
     ObjectiveTimeTemplate,
@@ -618,11 +616,12 @@ def process_fields(prompt: str, objective: str, client):
     return json_strs
 
 
-def process_lists(prompt: str, client):
+def process_lists(prompt: str, objective: str, client):
     """Extracts list[str] fields (rso_id_list, sensor_name_list, etc) from prompt."""
     list_strs = []
+    obj_info = objectives[objective]
 
-    list_model = get_model_fields_and_descriptions(ObjectiveList)
+    list_model = get_model_fields_and_descriptions(obj_info["list_fields"])
     max_tries = 3
     for field_name, field_desc in list_model:
         num_tries = 0
@@ -639,18 +638,24 @@ def process_lists(prompt: str, client):
             if is_json_like(response):
                 list_strs.append(response)
                 t_end = time.perf_counter()
-                print(f"is_json_like(response) PASSED - time: {t_end - t_start} seconds")
+                print(
+                    f"is_json_like(response) PASSED - time: {t_end - t_start} seconds"
+                )
                 break
             elif is_json_like(cleaned_response):
                 list_strs.append(cleaned_response)
                 t_end = time.perf_counter()
-                print(f"is_json_like(cleaned_response) PASSED - time: {t_end - t_start} seconds")
+                print(
+                    f"is_json_like(cleaned_response) PASSED - time: {t_end - t_start} seconds"
+                )
                 break
             # else:
             #     print("WARNING: LIST FIELD NOT JSON-LIKE")
             #     print(f"Raw LLM response at attempt={num_tries}: {response}")
             t_end = time.perf_counter()
-            print(f"process_lists FAILED at try={num_tries} - time: {t_end - t_start} seconds")
+            print(
+                f"process_lists FAILED at try={num_tries} - time: {t_end - t_start} seconds"
+            )
             num_tries += 1
         # else:
         #     logging.warning(
@@ -696,7 +701,7 @@ def process_times(prompt: str, client):
     return time_strs
 
 
-def process_objective(prompt: str, client):
+def process_objective(prompt: str, client) -> str:
     """Extracts Objective name from a user prompt."""
     # TODO: Use 3 max tries to extract Objective
     objective_llm = extract_objective(prompt, client)
@@ -727,7 +732,7 @@ def extract_model(
         json_strs = ["JSON Parsing Failed!"]
 
     if list_strs:
-        extracted_list = combine_jsons(list_strs, ObjectiveListTemplate)
+        extracted_list = combine_jsons(list_strs, obj_info["list_fields_template"])
     else:
         list_strs = ["LIST Parsing Failed!"]
 
