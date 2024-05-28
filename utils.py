@@ -620,6 +620,8 @@ def process_lists(prompt: str, objective: str, client):
     """Extracts list[str] fields (rso_id_list, sensor_name_list, etc) from prompt."""
     list_strs = []
     obj_info = objectives[objective]
+    if obj_info["list_fields"] is None:
+        return []
 
     list_model = get_model_fields_and_descriptions(obj_info["list_fields"])
     max_tries = 3
@@ -731,7 +733,7 @@ def extract_model(
     else:
         json_strs = ["JSON Parsing Failed!"]
 
-    if list_strs:
+    if list_strs and obj_info["list_fields_template"] is not None:
         extracted_list = combine_jsons(list_strs, obj_info["list_fields_template"])
     else:
         list_strs = ["LIST Parsing Failed!"]

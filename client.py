@@ -30,13 +30,13 @@ class Client:
         payload = {"text": prompt}
         # print(f"Prompt: {prompt}")
         try:
-            t_0 = time.perf_counter()
+            # t_0 = time.perf_counter()
             response = requests.post(f"{settings.API_URL}/generate", json=payload)
-            t_1 = time.perf_counter()
+            # t_1 = time.perf_counter()
             # print("="*30)
-            print("=" * 30)
-            print(f"PROMPT time: {t_1 - t_0} seconds")
-            print("=" * 30)
+            # print("=" * 30)
+            # print(f"PROMPT time: {t_1 - t_0} seconds")
+            # print("=" * 30)
 
             return response.json()
         except requests.exceptions.RequestException as e:
@@ -49,34 +49,34 @@ def process_prompt(prompt: str, client: Client):
     try:
         t_0 = time.perf_counter()
 
-        t_start = time.perf_counter()
+        # t_start = time.perf_counter()
         objective = process_objective(prompt, client)
-        t_end = time.perf_counter()
-        print(f"process_objective - Elapsed time: {t_end - t_start} seconds")
+        # t_end = time.perf_counter()
+        # print(f"process_objective - Elapsed time: {t_end - t_start} seconds")
 
-        t_start = time.perf_counter()
+        # t_start = time.perf_counter()
         json_strs = process_fields(prompt, objective, client)
-        t_end = time.perf_counter()
-        print(f"process_fields - time: {t_end - t_start} seconds")
+        # t_end = time.perf_counter()
+        # print(f"process_fields - time: {t_end - t_start} seconds")
 
-        t_start = time.perf_counter()
+        # t_start = time.perf_counter()
         list_strs = process_lists(prompt, objective, client)
-        t_end = time.perf_counter()
-        print(f"process_lists - time: {t_end - t_start} seconds")
+        # t_end = time.perf_counter()
+        # print(f"process_lists - time: {t_end - t_start} seconds")
 
-        t_start = time.perf_counter()
+        # t_start = time.perf_counter()
         time_strs = process_times(prompt, client)
-        t_end = time.perf_counter()
-        print(f"process_times - time: {t_end - t_start} seconds")
+        # t_end = time.perf_counter()
+        # print(f"process_times - time: {t_end - t_start} seconds")
 
         t_1 = time.perf_counter()
 
         obj_info = objectives[objective]
 
-        t_start = time.perf_counter()
+        # t_start = time.perf_counter()
         extracted_model = extract_model(obj_info, json_strs, list_strs, time_strs)
-        t_end = time.perf_counter()
-        print(f"extract_model - time: {t_end - t_start} seconds")
+        # t_end = time.perf_counter()
+        # print(f"extract_model - time: {t_end - t_start} seconds")
 
         correctness = calculate_filling_percentage(extracted_model)
         response = "\n".join(json_strs)
@@ -84,13 +84,13 @@ def process_prompt(prompt: str, client: Client):
         cleaned_response = tp.clean_mistral(response)
 
         # USE BELOW DURING DEBUGGING
-        print(f"\nLLM Response: {cleaned_response}")
-        print("=" * 30)
-        print(f"EXTRACTED OVERALL OBJECTIVE MODEL: {extracted_model}")
-        print(f"Objective Model Correctness: {correctness:.2%}")
-        tps = tp.measure_performance(t_0, t_1, cleaned_response)
-        print(f"Tokens per second: {tps} t/s")
-        print(f"TOTAL TIME: {t_1 - t_0} seconds")
+        # print(f"\nLLM Response: {cleaned_response}")
+        # print("=" * 30)
+        # print(f"EXTRACTED OVERALL OBJECTIVE MODEL: {extracted_model}")
+        # print(f"Objective Model Correctness: {correctness:.2%}")
+        # tps = tp.measure_performance(t_0, t_1, cleaned_response)
+        # print(f"Tokens per second: {tps} t/s")
+        # print(f"TOTAL TIME: {t_1 - t_0} seconds")
 
         return cleaned_response, extracted_model, correctness, objective
 
