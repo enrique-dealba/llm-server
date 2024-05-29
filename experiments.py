@@ -304,6 +304,40 @@ awq_openhermes_2 = [
     0.4657, 1.0, 5.72, # SCO
 ]
 
+## AWQ vs. GPTQ Testing V2 (Changed ObjectiveLists logic) @num_tests=10
+
+# base_openhermes_1 = [
+#     None, None, # CMO
+#     AAA, AAA, # PRO
+#     AAA, AAA, # SO
+#     AAA, AAA, # DEO
+#     AAA, AAA, # SCO
+# ]
+# gptq_openhermes_1 = [
+#     AAA, AAA, # CMO
+#     AAA, AAA, # PRO
+#     AAA, AAA, # SO
+#     AAA, AAA, # DEO
+#     AAA, AAA, # SCO
+# ]
+
+# base_openhermes_1 = [
+#     None, None, # CMO
+#     AAA, AAA, # PRO
+#     AAA, AAA, # SO
+#     AAA, AAA, # DEO
+#     AAA, AAA, # SCO
+# ]
+# gptq_openhermes_1 = [
+#     AAA, AAA, # CMO
+#     AAA, AAA, # PRO
+#     AAA, AAA, # SO
+#     AAA, AAA, # DEO
+#     AAA, AAA, # SCO
+# ]
+
+######### BELOW IS PREVIOUS FUNC CALL / TOOL EXPERIMENTS
+
 # OpenHermes-2.5-Mistral-7B Results
 
 funcs_16 = [
