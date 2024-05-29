@@ -19,6 +19,7 @@ from utils import (
 load_dotenv()
 settings = Settings()
 
+check = True
 
 class Client:
     """Client for interacting with LLM server."""
@@ -28,15 +29,17 @@ class Client:
         """Sends text generation request to LLM server."""
         prompt = tp.preprocess_prompt(prompt)
         payload = {"text": prompt}
-        print(f"Prompt: {prompt}")
+        if check:
+            print(f"Prompt: {prompt}")
+            check = False
         try:
             t_0 = time.perf_counter()
             response = requests.post(f"{settings.API_URL}/generate", json=payload)
             t_1 = time.perf_counter()
-            print("="*30)
-            print("=" * 30)
-            print(f"PROMPT time: {t_1 - t_0} seconds")
-            print("=" * 30)
+            # print("="*30)
+            # print("=" * 30)
+            # print(f"PROMPT time: {t_1 - t_0} seconds")
+            # print("=" * 30)
 
             return response.json()
         except requests.exceptions.RequestException as e:
@@ -91,8 +94,8 @@ def process_prompt(prompt: str, client: Client):
         print(f"Objective Model Correctness: {correctness:.2%}")
         # tps = tp.measure_performance(t_0, t_1, cleaned_response)
         # print(f"Tokens per second: {tps} t/s")
-        print(f"TOTAL TIME: {t_1 - t_0} seconds")
-        print("=" * 30)
+        # print(f"TOTAL TIME: {t_1 - t_0} seconds")
+        # print("=" * 30)
 
         return cleaned_response, extracted_model, correctness, objective
 
