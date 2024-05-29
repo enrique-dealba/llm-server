@@ -306,35 +306,34 @@ awq_openhermes_2 = [
 
 ## AWQ vs. GPTQ Testing V2 (Changed ObjectiveLists logic) @num_tests=10
 
-# base_openhermes_1 = [
-#     None, None, # CMO
-#     AAA, AAA, # PRO
-#     AAA, AAA, # SO
-#     AAA, AAA, # DEO
-#     AAA, AAA, # SCO
-# ]
-# gptq_openhermes_1 = [
-#     AAA, AAA, # CMO
-#     AAA, AAA, # PRO
-#     AAA, AAA, # SO
-#     AAA, AAA, # DEO
-#     AAA, AAA, # SCO
-# ]
-
-# base_openhermes_1 = [
-#     None, None, # CMO
-#     AAA, AAA, # PRO
-#     AAA, AAA, # SO
-#     AAA, AAA, # DEO
-#     AAA, AAA, # SCO
-# ]
-# gptq_openhermes_1 = [
-#     AAA, AAA, # CMO
-#     AAA, AAA, # PRO
-#     AAA, AAA, # SO
-#     AAA, AAA, # DEO
-#     AAA, AAA, # SCO
-# ]
+gptq_mistral_3 = [
+    1.0, 1.0, 2.52, # CMO
+    1.0, 0.5, 3.61, # PRO
+    0.9375, 1.0, 3.04, # SO
+    1.0, 1.0, 2.72, # DEO
+    1.0, 1.0, 3.01, # SCO
+]
+awq_mistral_3 = [
+    1.0, 1.0, 5.27, # CMO
+    1.0, 0.2, 6.13, # PRO
+    0.9375, 1.0, 4.79, # SO
+    1.0, 1.0, 4.09, # DEO
+    1.0, 1.0, 4.67, # SCO
+]
+gptq_openhermes_3 = [
+    0.7116, 1.0, 11.39, # CMO
+    0.7313, 0.0, 8.85, # PRO
+    0.7886, 0.0, 14.56, # SO
+    0.7216, 0.0, 17.03, # DEO
+    0.8011, 0.0, 9.47, # SCO
+]
+awq_openhermes_3 = [
+    0.7769, 1.0, 26.61, # CMO
+    0.6616, 0.1846, 26.75, # PRO
+    0.6070, 0.2250, 24.27, # SO
+    0.7733, 0.2533, 27.40, # DEO
+    0.6946, 0.3418, 31.13, # SCO
+]
 
 ######### BELOW IS PREVIOUS FUNC CALL / TOOL EXPERIMENTS
 
