@@ -28,15 +28,15 @@ class Client:
         """Sends text generation request to LLM server."""
         prompt = tp.preprocess_prompt(prompt)
         payload = {"text": prompt}
-        # print(f"Prompt: {prompt}")
+        print(f"Prompt: {prompt}")
         try:
-            # t_0 = time.perf_counter()
+            t_0 = time.perf_counter()
             response = requests.post(f"{settings.API_URL}/generate", json=payload)
-            # t_1 = time.perf_counter()
-            # print("="*30)
-            # print("=" * 30)
-            # print(f"PROMPT time: {t_1 - t_0} seconds")
-            # print("=" * 30)
+            t_1 = time.perf_counter()
+            print("="*30)
+            print("=" * 30)
+            print(f"PROMPT time: {t_1 - t_0} seconds")
+            print("=" * 30)
 
             return response.json()
         except requests.exceptions.RequestException as e:
@@ -51,6 +51,7 @@ def process_prompt(prompt: str, client: Client):
 
         t_start = time.perf_counter()
         objective = process_objective(prompt, client)
+        print(f"EXTRACTED OBJECTIVE: {objective}")
         t_end = time.perf_counter()
         print(f"process_objective - Elapsed time: {t_end - t_start} seconds")
 

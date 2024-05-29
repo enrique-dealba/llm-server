@@ -207,43 +207,19 @@ class PeriodicRevisitObjectiveTemplate(BaseModel):
 
 
 class SearchObjective(BaseModel):
-    classification_marking: str = Field(
-        description="classification_marking: Classification level of objective intents. One of: 'U', 'C', 'S', 'TS', 'U//FOUO'"
-    )
+    classification_marking: str = Field(description="classification_marking: Classification level of objective intents. One of: 'U', 'C', 'S', 'TS', 'U//FOUO'")
     target_id: str = Field(description="str: 5 Digit integer RSO satcat id.")
-    sensor_name: str = Field(
-        description="sensor_name: string name of sensor to perform search with. Usually in the format 'RME..', 'LMNT..', 'ABQ..', 'UKR...', for example: RME99."
-    )
-    data_mode: str = Field(
-        description="data_mode: String type for the Machina Common DataModeType being generated. One of: 'TEST', 'REAL', 'SIMULATED', 'EXERCISE'."
-    )
-    collect_request_type: str = Field(
-        description="str: Collect request type of tracking type. Defaults to 'RATE_TRACK_SIDEREAL'. One of: 'RATE_TRACK', 'SIDEREAL', 'RATE_TRACK_SIDEREAL'."
-    )
-    initial_offset: int = Field(
-        description="int: Amount of time before the RSO's current state to start the search at (s). Defaults to 30. Max is 1800."
-    )
-    final_offset: int = Field(
-        description="int: Amount of time after the RSO's current state to start the search at (s). Defaults to 30. Max is 1800."
-    )
-    # objective_name: str = Field(description="XXX")
-    frame_overlap_percentage: float = Field(
-        description="float: Percentage of frames that will overlap from one to the next. Defaults to 50."
-    )
-    number_of_frames: int = Field(
-        description="int: amount of frames per intent. Defaults to None."
-    )
-    integration_time: int = Field(
-        description="int: Seconds of integration time per frame. Defaults to None."
-    )
+    sensor_name: str = Field(description="sensor_name: string name of sensor to perform search with. Usually in the format 'RME..', 'LMNT..', 'ABQ..', 'UKR...', for example: RME99.")
+    data_mode: str = Field(description="data_mode: String type for the Machina Common DataModeType being generated. One of: 'TEST', 'REAL', 'SIMULATED', 'EXERCISE'.")
+    collect_request_type: str = Field(description="str: Collect request type of tracking type. Defaults to 'RATE_TRACK_SIDEREAL'. One of: 'RATE_TRACK', 'SIDEREAL', 'RATE_TRACK_SIDEREAL'.")
+    initial_offset: int = Field(description="int: Amount of time before the RSO's current state to start the search at (s). Defaults to 30. Max is 1800.")
+    final_offset: int = Field(description="int: Amount of time after the RSO's current state to start the search at (s). Defaults to 30. Max is 1800.")
+    frame_overlap_percentage: float = Field(description="float: Percentage of frames that will overlap from one to the next. Defaults to 50.")
+    number_of_frames: int = Field(description="int: amount of frames per intent. Defaults to None.")
+    integration_time: int = Field(description="int: Seconds of integration time per frame. Defaults to None.")
     binning: int = Field(description="int: camera binning. Defaults to 1.")
-    priority: int = Field(
-        default=1,
-        description="int: default=10. This is the set priority, defaults to 1 (2nd highest priority).",
-    )
-    end_time_offset_minutes: int = Field(
-        description="int: amount of minutes into the future to let astroplan schedule an intent. Defaults to 20 minutes."
-    )
+    priority: int = Field(default=1,description="int: default=10. This is the set priority, defaults to 1 (2nd highest priority).")
+    end_time_offset_minutes: int = Field(description="int: amount of minutes into the future to let astroplan schedule an intent. Defaults to 20 minutes.")
 
 
 class SearchObjectiveTemplate(BaseModel):
