@@ -19,8 +19,6 @@ from utils import (
 load_dotenv()
 settings = Settings()
 
-check = True
-
 class Client:
     """Client for interacting with LLM server."""
 
@@ -29,9 +27,7 @@ class Client:
         """Sends text generation request to LLM server."""
         prompt = tp.preprocess_prompt(prompt)
         payload = {"text": prompt}
-        if check:
-            print(f"Prompt: {prompt}")
-            check = False
+        print(f"Prompt: {prompt}")
         try:
             t_0 = time.perf_counter()
             response = requests.post(f"{settings.API_URL}/generate", json=payload)
