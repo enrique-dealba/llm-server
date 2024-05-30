@@ -51,7 +51,7 @@ def process_prompt(prompt: str, client: Client):
 
         # t_start = time.perf_counter()
         objective = process_objective(prompt, client)
-        print(f"Extracted Objective: {objective}")
+        print(f"\nExtracted Objective: {objective}")
         # t_end = time.perf_counter()
         # print(f"process_objective - Elapsed time: {t_end - t_start} seconds")
 
@@ -89,7 +89,7 @@ def process_prompt(prompt: str, client: Client):
         # USE BELOW DURING DEBUGGING
         # print(f"\nLLM Response: {cleaned_response}")
         # print("=" * 30)
-        print(f"{objective}: {model_json}")
+        print(f"\n{objective}: {model_json}")
         print(f"% Correct Fields: {correctness:.2%}")
         # tps = tp.measure_performance(t_0, t_1, cleaned_response)
         # print(f"Tokens per second: {tps} t/s")
