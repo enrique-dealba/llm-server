@@ -10,6 +10,7 @@ from text_processing import TextProcessing as tp
 from utils import (
     calculate_filling_percentage,
     extract_model,
+    model_to_json,
     process_fields,
     process_lists,
     process_objective,
@@ -32,10 +33,10 @@ class Client:
             t_0 = time.perf_counter()
             response = requests.post(f"{settings.API_URL}/generate", json=payload)
             t_1 = time.perf_counter()
-            # print("="*30)
-            # print("=" * 30)
-            # print(f"PROMPT time: {t_1 - t_0} seconds")
-            # print("=" * 30)
+            print("="*30)
+            print("=" * 30)
+            print(f"PROMPT time: {t_1 - t_0} seconds")
+            print("=" * 30)
 
             return response.json()
         except requests.exceptions.RequestException as e:
@@ -78,6 +79,8 @@ def process_prompt(prompt: str, client: Client):
         t_end = time.perf_counter()
         print(f"extract_model - time: {t_end - t_start} seconds")
 
+        model_json = model_to_json(extracted_model)
+
         correctness = calculate_filling_percentage(extracted_model)
         response = "\n".join(json_strs)
 
@@ -86,7 +89,7 @@ def process_prompt(prompt: str, client: Client):
         # USE BELOW DURING DEBUGGING
         # print(f"\nLLM Response: {cleaned_response}")
         # print("=" * 30)
-        # print(f"EXTRACTED OVERALL OBJECTIVE MODEL: {extracted_model}")
+        print(f"MODEL: {model_json}")
         print(f"Objective Model Correctness: {correctness:.2%}")
         # tps = tp.measure_performance(t_0, t_1, cleaned_response)
         # print(f"Tokens per second: {tps} t/s")

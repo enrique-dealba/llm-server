@@ -1,6 +1,5 @@
 import json
 import re
-import time
 from datetime import datetime, timezone
 from typing import Optional, Type, Union
 
@@ -768,3 +767,9 @@ def extract_model(
             )
 
     return extracted_model
+
+
+def model_to_json(model: BaseModel) -> str:
+    """Converts Pydantic model to JSON string."""
+    json_str = model.json(exclude_unset=True, exclude_none=True, by_alias=True)
+    return json.dumps(json.loads(json_str), indent=2)
