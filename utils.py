@@ -148,18 +148,16 @@ def preprocess_field(field_value: Union[str, list]) -> Union[str, list]:
 
 def parse_partial_json(json_str: str, model_class: Type[BaseModel]) -> BaseModel:
     """Parses JSON string and returns in specified Pydantic format."""
-    # print(f"FIELD JSON BEFORE: {json_str}")
     preprocessed_json = preprocess_json(json_str)
-    # print(f"FIELD JSON AFTER: {preprocessed_json}")
     partial_data = from_json(preprocessed_json, allow_partial=True)
 
     # Preprocess each field value
     for field_name, field_value in partial_data.items():
-        partial_data[field_name] = preprocess_field(field_value)
+        if field_value == "None":
+            partial_data[field_name] = None
+        else:
+            partial_data[field_name] = preprocess_field(field_value)
 
-    # print("\n==============================")
-    # print(f"FIELD MODEL VALUE: {partial_data}")
-    # print("\n")
     return model_class.model_validate(partial_data)
 
 

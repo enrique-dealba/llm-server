@@ -142,12 +142,12 @@ class CatalogMaintenanceObjectiveTemplate(BaseModel):
     data_mode: Optional[str] = None
     collect_request_type: Optional[str] = None
     orbital_regime: Optional[str] = None
-    patience_minutes: Optional[int] = None
-    end_time_offset_minutes: Optional[int] = None
+    patience_minutes: Optional[Union[int, str]] = None
+    end_time_offset_minutes: Optional[Union[int, str]] = None
     # objective_name: Optional[str] = None
     objective_start_time: Optional[Union[datetime, str]] = None
     objective_end_time: Optional[Union[datetime, str]] = None
-    priority: Optional[int] = None
+    priority: Optional[Union[int, str]] = None
 
 
 class PeriodicRevisitObjective(BaseModel):
@@ -192,18 +192,16 @@ class PeriodicRevisitObjectiveTemplate(BaseModel):
     sensor_name_list: Optional[list[str]] = None
     data_mode: Optional[str] = None
     collect_request_type: Optional[str] = None
-    patience_minutes: Optional[int] = None
-    revisits_per_hour: Optional[float] = None
-    hours_to_plan: Optional[float] = None
-    number_of_frames: Optional[int] = None
-    # TODO: Check if this works for None/"None" default fields.
-    # Changed integration_time from Optional[float] ->  Optional[Union[float, str]]
+    patience_minutes: Optional[Union[int, str]] = None
+    revisits_per_hour: Optional[Union[float, str]] = None
+    hours_to_plan: Optional[Union[float, str]] = None
+    number_of_frames: Optional[Union[int, str]] = None
     integration_time: Optional[Union[float, str]] = None
-    binning: Optional[int] = None
+    binning: Optional[Union[int, str]] = None
     # objective_name: Optional[str] = None
     objective_start_time: Optional[Union[datetime, str]] = None
     objective_end_time: Optional[Union[datetime, str]] = None
-    priority: Optional[int] = None
+    priority: Optional[Union[int, str]] = None
 
 
 class SearchObjective(BaseModel):
@@ -229,16 +227,16 @@ class SearchObjectiveTemplate(BaseModel):
     data_mode: Optional[str] = None
     collect_request_type: Optional[str] = None
     initial_offset: Optional[int] = None
-    final_offset: Optional[int] = None
+    final_offset: Optional[Union[int, str]] = None
     objective_name: Optional[str] = None
-    frame_overlap_percentage: Optional[float] = None
+    frame_overlap_percentage: Optional[Union[float, str]] = None
     objective_start_time: Optional[Union[datetime, str]] = None
     objective_end_time: Optional[Union[datetime, str]] = None
-    number_of_frames: Optional[int] = None
-    integration_time: Optional[int] = None
-    binning: Optional[int] = None
-    priority: Optional[int] = None
-    end_time_offset_minutes: Optional[int] = None
+    number_of_frames: Optional[Union[int, str]] = None
+    integration_time: Optional[Union[int, str]] = None
+    binning: Optional[Union[int, str]] = None
+    priority: Optional[Union[int, str]] = None
+    end_time_offset_minutes: Optional[Union[int, str]] = None
 
 
 class DataEnrichmentObjective(BaseModel):
@@ -275,13 +273,13 @@ class DataEnrichmentObjectiveTemplate(BaseModel):
     sensor_name_list: Optional[list[str]] = None
     data_mode: Optional[str] = None
     collect_request_type: Optional[str] = None
-    max_rso_to_observe: Optional[int] = None
-    revisits_per_hour: Optional[float] = None
-    hours_to_plan: Optional[float] = None
+    max_rso_to_observe: Optional[Union[int, str]] = None
+    revisits_per_hour: Optional[Union[float, str]] = None
+    hours_to_plan: Optional[Union[float, str]] = None
     # objective_name: Optional[str] = None
     objective_start_time: Optional[Union[datetime, str]] = None
     objective_end_time: Optional[Union[datetime, str]] = None
-    priority: Optional[int] = None
+    priority: Optional[Union[int, str]] = None
 
 
 class SpectralClearingObjective(BaseModel):
@@ -323,15 +321,15 @@ class SpectralClearingObjectiveTemplate(BaseModel):
     sensor_name_list: Optional[list[str]] = None
     data_mode: Optional[str] = None
     collect_request_type: Optional[str] = None
-    patience_minutes: Optional[int] = None
-    target_total_obs: Optional[int] = None
-    number_of_frames: Optional[int] = None
-    integration_time: Optional[float] = None
-    binning: Optional[int] = None
+    patience_minutes: Optional[Union[int, str]] = None
+    target_total_obs: Optional[Union[int, str]] = None
+    number_of_frames: Optional[Union[int, str]] = None
+    integration_time: Optional[Union[float, str]] = None
+    binning: Optional[Union[int, str]] = None
     # objective_name: Optional[str] = None
     objective_start_time: Optional[Union[datetime, str]] = None
     objective_end_time: Optional[Union[datetime, str]] = None
-    priority: Optional[int] = None
+    priority: Optional[Union[int, str]] = None
 
 
 # class SingleIntentObjective(BaseModel):
