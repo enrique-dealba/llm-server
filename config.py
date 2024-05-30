@@ -6,7 +6,7 @@ from pydantic_settings import BaseSettings
 # ----- Config Settings -----
 class Settings(BaseSettings):
     # ----- LLM -----
-    DEFAULT_MODEL: str = "TheBloke/Mistral-7B-v0.1-GPTQ"
+    DEFAULT_MODEL: str = "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ"
 
     # ----- Constants -----
     NUM_GPUS: int = 1
@@ -51,10 +51,10 @@ class LLM:
     """
 
     OPT_125M = "facebook/opt-125m"
-    MISTRAL_7B = "mistralai/Mistral-7B-Instruct-v0.1"
-    MISTRAL_CPU = "TheBloke/Mistral-7B-Instruct-v0.1-GGUF"  # Has issues
-    MISTRAL_AWQ = "TheBloke/Mistral-7B-Instruct-v0.1-AWQ"
-    MISTRAL_GPTQ = "TheBloke/Mistral-7B-v0.1-GPTQ"
+    # MISTRAL_7B = "mistralai/Mistral-7B-Instruct-v0.1"
+    # MISTRAL_CPU = "TheBloke/Mistral-7B-Instruct-v0.1-GGUF"  # Has issues
+    # MISTRAL_AWQ = "TheBloke/Mistral-7B-Instruct-v0.1-AWQ"
+    # MISTRAL_GPTQ = "TheBloke/Mistral-7B-v0.1-GPTQ"
     MISTRAL_V2 = "mistralai/Mistral-7B-Instruct-v0.2"
     MISTRAL_V2_AWQ = "TheBloke/Mistral-7B-Instruct-v0.2-AWQ"
     MISTRAL_V2_GPTQ = "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ"
