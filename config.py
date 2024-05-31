@@ -20,7 +20,7 @@ class Settings(BaseSettings):
     # ----- GPU Utilization Settings -----
     DEFAULT_GPU_UTIL: float = 0.30
     AWQ_GPU_UTIL: float = 0.60 # before: 0.50
-    GPTQ_GPU_UTIL: float = 0.25 # before: 0.25
+    GPTQ_GPU_UTIL: float = 0.45 # before: 0.25
     USE_AGENT: bool = True
 
     # ----- Hugging Face Hub Settings -----
