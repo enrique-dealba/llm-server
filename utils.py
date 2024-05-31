@@ -25,7 +25,7 @@ def get_current_time() -> str:
 
 def get_model_fields_and_descriptions(model_class: BaseModel) -> list[tuple[str, str]]:
     """Retrieves the fields and their descriptions from a Pydantic model."""
-    schema = model_class.schema()
+    schema = model_class.model_json_schema()
     fields_and_descriptions = []
 
     for field_name, field_info in schema["properties"].items():
@@ -37,8 +37,11 @@ def get_model_fields_and_descriptions(model_class: BaseModel) -> list[tuple[str,
 
 def combine_models(model_instances: list[BaseModel]) -> BaseModel:
     """Combines multiple instances of Pydantic model into single unified instance."""
+    if not model_instances:
+        raise ValueError("model_instances list is empty")
+
     model_class = type(model_instances[0])
-    combined_instance = model_class()
+    combined_instance = model_class.model_construct()
 
     fields_and_descriptions = get_model_fields_and_descriptions(model_class)
 
