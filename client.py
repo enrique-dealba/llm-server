@@ -101,6 +101,37 @@ def process_prompt(prompt: str, client: Client):
     except requests.exceptions.RequestException as e:
         print(f"An error occurred: {e}")
         return None
+    
+def send_prompt(prompt: str, client: Client):
+    try:
+            t_0 = time.perf_counter()  # better than time.time()
+            result = client.generate_text(prompt)
+            t_1 = time.perf_counter()
+
+            # print(f"Raw Response: {result}")
+
+            if "text" in result:
+                response = result["text"]
+            elif "detail" in result:
+                response = result["detail"]
+
+            if not response:
+                raise ValueError("Empty LLM response content")
+            if not isinstance(response, str):
+                response = str(response)  # TODO: add try/catch block
+
+            response = tp.clean_mistral(response)  # TODO: check DEFAULT_MODEL to choose
+            print(f"\nLLM Response: {response}")
+
+            # queries = result.get("queries")
+            # if queries:
+            #     print(f"\nPrevious Queries: {queries}")
+
+            tps = tp.measure_performance(t_0, t_1, response)
+            print(f"Tokens per second: {tps} t/s")
+
+    except requests.exceptions.RequestException as e:
+        print(f"An error occurred: {e}")
 
 
 def main():
@@ -112,7 +143,8 @@ def main():
             print("Exiting the conversation.")
             break
 
-        response, _, _, _ = process_prompt(prompt, client)
+        # response, _, _, _ = process_prompt(prompt, client)
+        send_prompt(prompt, client)
         # if response:
         #      print("Response confirmed!")
 
