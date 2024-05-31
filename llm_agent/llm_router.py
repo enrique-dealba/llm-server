@@ -55,7 +55,7 @@ class LLMRouter:
         #         if tool.name in response.name:
         #             response = tool.function(**response.function_call)
         #             break
-        if response == 'objective':
+        if response.name and response.name == 'objective':
             response = "OBJECTIVE FOUND!"
         else:
             response = self.llm(prompt)
