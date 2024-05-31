@@ -37,7 +37,7 @@ class LLMRouter:
         """Sets up the semantic router for the LLM."""
         # routes = [tool.route for tool in self.tools]
         # routes += [general_route]
-        routes += [objective_route]
+        routes = [objective_route]
 
         encoder = HuggingFaceEncoder()
 
