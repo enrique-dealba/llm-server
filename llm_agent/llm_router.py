@@ -27,6 +27,7 @@ class LLMRouter:
         self.vllm = VLLMAdapter(vllm_instance=llm, name="vllm")
         # self.tools = load_used_tools_from_file()
         self.route_layer = None
+        self.objective_found = False
 
     def __call__(self, prompt):
         """Allows LLMRouter to be called directly with a prompt."""
@@ -55,10 +56,12 @@ class LLMRouter:
         #             response = tool.function(**response.function_call)
         #             break
         # TODO: add logic to avoid after doing this once already...
-        if response.name and response.name == 'objective':
+        if (response.name and response.name) and not self.objective_found == 'objective':
             print("OBJECTIVE FOUND!")
             response = "objective"
+            self.objective_found = True
         elif response.name and response.name == 'extraction':
+            print("EXTRACTION FOUND!")
             response = self.llm(prompt)
         else:
             response = self.llm(prompt)
