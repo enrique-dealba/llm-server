@@ -129,9 +129,11 @@ def send_prompt(prompt: str, client: Client):
 
             tps = tp.measure_performance(t_0, t_1, response)
             print(f"Tokens per second: {tps} t/s")
+            return response
 
     except requests.exceptions.RequestException as e:
         print(f"An error occurred: {e}")
+        return None
 
 
 def main():
@@ -144,7 +146,10 @@ def main():
             break
 
         # response, _, _, _ = process_prompt(prompt, client)
-        send_prompt(prompt, client)
+        check = send_prompt(prompt, client)
+        print(f"Router: {check}")
+        if check in ['objective']:
+            response, _, _, _ = process_prompt(prompt, client)
         # if response:
         #      print("Response confirmed!")
 
