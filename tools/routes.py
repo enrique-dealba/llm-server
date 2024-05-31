@@ -378,6 +378,7 @@ objective_route = Route(
         "Schedule a new catalog task for sensor X with properties",
         "Start an objective at timestamp X and end at Y",
         "Set priority, markings, tracking type, and orbital regime for objective",
+        "Track RSO target...",
     ],
 )
 
