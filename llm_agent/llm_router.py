@@ -56,7 +56,7 @@ class LLMRouter:
         #             response = tool.function(**response.function_call)
         #             break
         # TODO: add logic to avoid after doing this once already...
-        if (response.name and response.name) and not self.objective_found:
+        if (response.name and response.name == 'objective') and not self.objective_found:
             print("OBJECTIVE FOUND!")
             response = "objective"
             self.objective_found = True
