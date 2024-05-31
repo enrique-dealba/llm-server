@@ -5,7 +5,7 @@ from semantic_router import RouteLayer
 from semantic_router.encoders import HuggingFaceEncoder
 
 from llm_agent.llm_adapter import VLLMAdapter
-from tools.routes import routes
+from tools.routes import routes, objective_route
 
 
 def load_used_tools_from_file():
@@ -26,7 +26,7 @@ class LLMRouter:
         """Initializes LLMRouter with a specified LLM."""
         self.llm = llm
         self.vllm = VLLMAdapter(vllm_instance=llm, name="vllm")
-        self.tools = load_used_tools_from_file()
+        # self.tools = load_used_tools_from_file()
         self.route_layer = None
 
     def __call__(self, prompt):
@@ -35,8 +35,10 @@ class LLMRouter:
 
     def setup_router(self):
         """Sets up the semantic router for the LLM."""
-        routes = [tool.route for tool in self.tools]
+        # routes = [tool.route for tool in self.tools]
         # routes += [general_route]
+        routes += [objective_route]
+
         encoder = HuggingFaceEncoder()
 
         self.route_layer = RouteLayer(encoder=encoder, routes=routes, llm=self.vllm)
@@ -47,11 +49,13 @@ class LLMRouter:
             self.setup_router()
 
         response = self.route_layer(prompt)
-        if response.function_call and response.name:
-            for tool in self.tools:
-                if tool.name in response.name:
-                    response = tool.function(**response.function_call)
-                    break
+        # if response.function_call and response.name:
+        #     for tool in self.tools:
+        #         if tool.name in response.name:
+        #             response = tool.function(**response.function_call)
+        #             break
+        if response == 'objective':
+            response = "OBJECTIVE FOUND!"
         else:
             response = self.llm(prompt)
         print(f"LLM Router Response: {response}, dtype={type(response)}")

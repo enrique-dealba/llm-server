@@ -360,21 +360,28 @@ general_route = Route(
     ],
 )
 
+objective_route = Route(
+    name="objective",
+    utterances=[
+        "Create a new objective for target 123 using sensors Y",
+        "Generate a search objective for target 567 with these parameters",
+        "Make a data enrichment objective for multiple targets using sensors",
+        "Set up a catalog entry for sensor X with properties",
+        "Track object 12345 with sensors Y, revisiting Z times hourly",
+        "Configure catalog maintenance for sensor X in mode Y with",
+        "Initiate a spectral clearing objective for targets X using sensors",
+        "Plan a catalog operation for sensor X using mode Y",
+        "Observe object 98765 with sensors Y in mode Z, performing",
+        "Monitor celestial object X with sensors Y in mode Z",
+        "Follow object X using sensors Y in mode Z, scheduling",
+        "Prepare a data enrichment for targets X using sensors Y",
+        "Schedule a new catalog task for sensor X with properties",
+        "Start an objective at timestamp X and end at Y",
+        "Set priority, markings, tracking type, and orbital regime for objective",
+    ],
+)
+
+
 routes = {
-        "time_route": time_route,
-        "lat_long_route": lat_long_route,
-        "last_letter_route": last_letter_route,
-        "divide_two_route": divide_two_route,
-        "get_day_of_week_route": get_day_of_week_route,
-        "format_phone_number_route": format_phone_number_route,
-        "compress_whitespace_route": compress_whitespace_route,
-        "capitalize_first_letter_route": capitalize_first_letter_route,
-        "reverse_string_route": reverse_string_route,
-        "generate_acronym_route": generate_acronym_route,
-        "get_vowel_count_route": get_vowel_count_route,
-        "convert_to_binary_route": convert_to_binary_route,
-        "get_ascii_value_route": get_ascii_value_route,
-        "extract_domain_route": extract_domain_route,
-        "count_words_route": count_words_route,
-        "convert_to_uppercase_route": convert_to_uppercase_route,
+        "objective_route": objective_route,
 }
