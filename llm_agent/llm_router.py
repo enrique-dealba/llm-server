@@ -7,6 +7,8 @@ from semantic_router.encoders import HuggingFaceEncoder
 from llm_agent.llm_adapter import VLLMAdapter
 from tools.routes import routes, objective_route
 
+from client import process_prompt, Client
+
 
 def load_used_tools_from_file():
     try:
@@ -48,6 +50,8 @@ class LLMRouter:
         if not self.route_layer:
             self.setup_router()
 
+        client = Client()
+
         response = self.route_layer(prompt)
         print(f"self.route_layer(prompt) = {response}")
         # if response.function_call and response.name:
@@ -56,7 +60,8 @@ class LLMRouter:
         #             response = tool.function(**response.function_call)
         #             break
         if response.name and response.name == 'objective':
-            response = "OBJECTIVE FOUND!"
+            print("OBJECTIVE FOUND!")
+            response, _, _, _ = process_prompt(prompt, client)
         else:
             response = self.llm(prompt)
         print(f"LLM Router Response: {response}, dtype={type(response)}")
