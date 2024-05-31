@@ -37,7 +37,7 @@ class LLMRouter:
         """Sets up the semantic router for the LLM."""
         # routes = [tool.route for tool in self.tools]
         # routes += [general_route]
-        routes = [objective_route]
+        routes = [objective_route, extraction_route]
 
         encoder = HuggingFaceEncoder()
 
@@ -64,6 +64,7 @@ class LLMRouter:
             print("EXTRACTION FOUND!")
             response = self.llm(prompt)
         else:
+            print("WARNING: NEITHER OBJECTIVE NOR EXTRACTION FOUND")
             response = self.llm(prompt)
         print(f"LLM Router Response: {response}, dtype={type(response)}")
         return response
