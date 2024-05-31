@@ -382,7 +382,20 @@ objective_route = Route(
     ],
 )
 
+extraction_route = Route(
+    name="extraction",
+    utterances=[
+        "<|im_start|>system You are a helpful assistant designed to output single JSON fields.",
+        "You are a helpful assistant designed to output single JSON fields."
+        "You are a helpful assistant designed to output single JSON fields for lists of strings",
+        "<|im_start|>system You are a helpful assistant designed to output single JSON fields for lists of strings",
+        "You are a helpful assistant designed to output single JSON fields for times.",
+        "<|im_start|>system You are a helpful assistant designed to output single JSON fields for times.",
+    ],
+)
+
 
 routes = {
         "objective_route": objective_route,
+        "extraction_route": extraction_route,
 }

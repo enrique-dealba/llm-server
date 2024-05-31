@@ -5,7 +5,7 @@ from semantic_router import RouteLayer
 from semantic_router.encoders import HuggingFaceEncoder
 
 from llm_agent.llm_adapter import VLLMAdapter
-from tools.routes import routes, objective_route
+from tools.routes import routes, objective_route, extraction_route
 
 def load_used_tools_from_file():
     try:
@@ -54,9 +54,12 @@ class LLMRouter:
         #         if tool.name in response.name:
         #             response = tool.function(**response.function_call)
         #             break
+        # TODO: add logic to avoid after doing this once already...
         if response.name and response.name == 'objective':
             print("OBJECTIVE FOUND!")
             response = "objective"
+        elif response.name and response.name == 'extraction':
+            response = self.llm(prompt)
         else:
             response = self.llm(prompt)
         print(f"LLM Router Response: {response}, dtype={type(response)}")
