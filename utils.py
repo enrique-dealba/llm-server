@@ -1,7 +1,7 @@
 import json
 import re
 from datetime import datetime, timezone
-from typing import Optional, Type, Union
+from typing import Optional, Type, Union, get_args, get_origin
 
 from pydantic import BaseModel
 from pydantic_core import from_json
@@ -720,6 +720,35 @@ def process_objective(prompt: str, client) -> str:
     return objective
 
 
+def convert_field(
+    field_value: Optional[Union[int, float, str]],
+) -> Optional[Union[int, float]]:
+    """If applicable, converts optional string fields to either a float or int."""
+    if field_value is None:
+        return None
+    if isinstance(field_value, int | float):
+        return field_value
+    try:
+        return int(field_value)
+    except ValueError:
+        try:
+            return float(field_value)
+        except ValueError:
+            return None
+
+
+def post_process_model(model: BaseModel) -> BaseModel:
+    """Post-processes Pydantic model with Optional[Union[str,...]] fields."""
+    for field_name, field_type in model.__annotations__.items():
+        if get_origin(field_type) == Union:
+            union_types = get_args(field_type)
+            if str in union_types and (int in union_types or float in union_types):
+                field_value = getattr(model, field_name, None)
+                converted_value = convert_field(field_value)
+                setattr(model, field_name, converted_value)
+    return model
+
+
 def extract_model(
     obj_info: dict, json_strs: list, list_strs: list, time_strs: list
 ) -> Optional[ObjectiveModel]:
@@ -770,7 +799,7 @@ def extract_model(
             # TODO: obj_info["base_model"] vs. extracted_model
             extracted_model.objective_name = str(extracted_model.__class__.__name__)
 
-    return extracted_model
+    return post_process_model(extracted_model)
 
 
 def model_to_json(model: BaseModel) -> str:

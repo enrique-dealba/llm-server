@@ -1,7 +1,7 @@
 import json
 import unittest
 from datetime import datetime, timezone
-from typing import Optional
+from typing import Optional, Union
 from unittest.mock import patch
 
 from pydantic import BaseModel, Field
@@ -24,6 +24,7 @@ from utils import (
     is_json_like,
     model_to_json,
     parse_partial_json,
+    post_process_model,
     preprocess_json,
     process_fields,
     process_lists,
@@ -1082,6 +1083,70 @@ class TestModelToJson(unittest.TestCase):
         model = FooTemplate()
         expected_json = json.dumps({}, indent=2)
         self.assertEqual(model_to_json(model), expected_json)
+
+
+class TesObjective(BaseModel):
+    patience_minutes: Optional[Union[int, str]] = None
+    revisits_per_hour: Optional[Union[float, str]] = None
+    hours_to_plan: Optional[Union[float, str]] = None
+    number_of_frames: Optional[Union[int, str]] = None
+    integration_time: Optional[Union[float, str]] = None
+    binning: Optional[Union[int, str]] = None
+    priority: Optional[Union[int, str]] = None
+
+
+class TestPostProcessModel(unittest.TestCase):
+    def test_post_process_model_with_valid_int_str(self):
+        """Test post-process of int Pydantic model."""
+        model = TesObjective(
+            patience_minutes="10",
+            number_of_frames="5",
+            binning="2",
+            priority="1",
+        )
+        processed_model = post_process_model(model)
+        assert processed_model.patience_minutes == 10
+        assert processed_model.number_of_frames == 5
+        assert processed_model.binning == 2
+        assert processed_model.priority == 1
+
+    def test_post_process_model_with_valid_float_str(self):
+        """Test post-process of float Pydantic model."""
+        model = TesObjective(
+            revisits_per_hour="2.5",
+            hours_to_plan="3.7",
+            integration_time="1.5",
+        )
+        processed_model = post_process_model(model)
+        assert processed_model.revisits_per_hour == 2.5
+        assert processed_model.hours_to_plan == 3.7
+        assert processed_model.integration_time == 1.5
+
+    def test_post_process_model_with_invalid_str(self):
+        """Test post-process of invalid Pydantic model."""
+        model = TesObjective(
+            patience_minutes="invalid",
+            number_of_frames="not_a_number",
+            binning="invalid_binning",
+            priority="high",
+        )
+        processed_model = post_process_model(model)
+        assert processed_model.patience_minutes is None
+        assert processed_model.number_of_frames is None
+        assert processed_model.binning is None
+        assert processed_model.priority is None
+
+    def test_post_process_model_with_none_values(self):
+        """Test post-process of Pydantic model with Nones."""
+        model = TesObjective()
+        processed_model = post_process_model(model)
+        assert processed_model.patience_minutes is None
+        assert processed_model.revisits_per_hour is None
+        assert processed_model.hours_to_plan is None
+        assert processed_model.number_of_frames is None
+        assert processed_model.integration_time is None
+        assert processed_model.binning is None
+        assert processed_model.priority is None
 
 
 if __name__ == "__main__":
