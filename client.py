@@ -79,7 +79,7 @@ def process_prompt(prompt: str, client: Client):
         # t_end = time.perf_counter()
         # print(f"extract_model - time: {t_end - t_start} seconds")
 
-        # model_json = model_to_json(extracted_model)
+        model_json = model_to_json(extracted_model)
 
         correctness = calculate_filling_percentage(extracted_model)
         response = "\n".join(json_strs)
@@ -89,14 +89,47 @@ def process_prompt(prompt: str, client: Client):
         # USE BELOW DURING DEBUGGING
         # print(f"\nLLM Response: {cleaned_response}")
         # print("=" * 30)
-        # print(f"\n{objective}: {model_json}")
-        # print(f"% Correct Fields: {correctness:.2%}")
+        print(f"\n{objective}: {model_json}")
+        print(f"% Correct Fields: {correctness:.2%}")
         # tps = tp.measure_performance(t_0, t_1, cleaned_response)
         # print(f"Tokens per second: {tps} t/s")
-        # print(f"Elapsed Time: {t_1 - t_0} seconds")
+        print(f"Elapsed Time: {t_1 - t_0} seconds")
         # print("=" * 30)
 
         return cleaned_response, extracted_model, correctness, objective
+
+    except requests.exceptions.RequestException as e:
+        print(f"An error occurred: {e}")
+        return None
+    
+def send_prompt(prompt: str, client: Client):
+    try:
+            t_0 = time.perf_counter()  # better than time.time()
+            result = client.generate_text(prompt)
+            t_1 = time.perf_counter()
+
+            # print(f"Raw Response: {result}")
+
+            if "text" in result:
+                response = result["text"]
+            elif "detail" in result:
+                response = result["detail"]
+
+            if not response:
+                raise ValueError("Empty LLM response content")
+            if not isinstance(response, str):
+                response = str(response)  # TODO: add try/catch block
+
+            response = tp.clean_mistral(response)  # TODO: check DEFAULT_MODEL to choose
+            print(f"\nLLM Response: {response}")
+
+            # queries = result.get("queries")
+            # if queries:
+            #     print(f"\nPrevious Queries: {queries}")
+
+            tps = tp.measure_performance(t_0, t_1, response)
+            print(f"Tokens per second: {tps} t/s")
+            return response
 
     except requests.exceptions.RequestException as e:
         print(f"An error occurred: {e}")
@@ -112,7 +145,11 @@ def main():
             print("Exiting the conversation.")
             break
 
-        response, _, _, _ = process_prompt(prompt, client)
+        # response, _, _, _ = process_prompt(prompt, client)
+        check = send_prompt(prompt, client)
+        print(f"Router: {check}")
+        if check in ['objective']:
+            response, _, _, _ = process_prompt(prompt, client)
         # if response:
         #      print("Response confirmed!")
 

@@ -53,7 +53,9 @@ def create_llm(
         )
 
         if use_agent:
+            print("Using LLMRouter!")
             return LLMRouter(llm=llm)
+        print("NOT Using LLMRouter!")
         return llm
     except Exception as e:
         raise RuntimeError(f"Failed to initialize LLM: {e}")

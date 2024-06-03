@@ -5,8 +5,7 @@ from semantic_router import RouteLayer
 from semantic_router.encoders import HuggingFaceEncoder
 
 from llm_agent.llm_adapter import VLLMAdapter
-from tools.routes import routes
-
+from tools.routes import routes, objective_route, extraction_route
 
 def load_used_tools_from_file():
     try:
@@ -26,8 +25,9 @@ class LLMRouter:
         """Initializes LLMRouter with a specified LLM."""
         self.llm = llm
         self.vllm = VLLMAdapter(vllm_instance=llm, name="vllm")
-        self.tools = load_used_tools_from_file()
+        # self.tools = load_used_tools_from_file()
         self.route_layer = None
+        self.objective_found = False
 
     def __call__(self, prompt):
         """Allows LLMRouter to be called directly with a prompt."""
@@ -35,8 +35,10 @@ class LLMRouter:
 
     def setup_router(self):
         """Sets up the semantic router for the LLM."""
-        routes = [tool.route for tool in self.tools]
+        # routes = [tool.route for tool in self.tools]
         # routes += [general_route]
+        routes = [objective_route, extraction_route]
+
         encoder = HuggingFaceEncoder()
 
         self.route_layer = RouteLayer(encoder=encoder, routes=routes, llm=self.vllm)
@@ -45,14 +47,24 @@ class LLMRouter:
         """Processes prompt via semantic routing and returns LLM response."""
         if not self.route_layer:
             self.setup_router()
-
+        
         response = self.route_layer(prompt)
-        if response.function_call and response.name:
-            for tool in self.tools:
-                if tool.name in response.name:
-                    response = tool.function(**response.function_call)
-                    break
+        print(f"self.route_layer(prompt) = {response}")
+        # if response.function_call and response.name:
+        #     for tool in self.tools:
+        #         if tool.name in response.name:
+        #             response = tool.function(**response.function_call)
+        #             break
+        # TODO: add logic to avoid after doing this once already...
+        if (response.name and response.name == 'objective') and not self.objective_found:
+            print("OBJECTIVE FOUND!")
+            response = "objective"
+            self.objective_found = True
+        elif response.name and response.name == 'extraction':
+            print("EXTRACTION FOUND!")
+            response = self.llm(prompt)
         else:
+            print("WARNING: NEITHER OBJECTIVE NOR EXTRACTION FOUND")
             response = self.llm(prompt)
         print(f"LLM Router Response: {response}, dtype={type(response)}")
         return response
