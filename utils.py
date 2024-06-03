@@ -1,7 +1,7 @@
 import json
 import re
 from datetime import datetime, timezone
-from typing import Optional, Type, Union, get_args, get_origin
+from typing import Any, Optional, Type, Union, get_args, get_origin
 
 from pydantic import BaseModel
 from pydantic_core import from_json
@@ -723,7 +723,7 @@ def process_objective(prompt: str, client) -> str:
 def convert_field(
     field_value: Optional[Union[int, float, str]],
 ) -> Optional[Union[int, float]]:
-    """If applicable, converts optional string fields to either a float or int."""
+    """If applicable, converts Optional str fields to either a float or int."""
     if field_value is None:
         return None
     if isinstance(field_value, int | float):
@@ -800,6 +800,44 @@ def extract_model(
             extracted_model.objective_name = str(extracted_model.__class__.__name__)
 
     return post_process_model(extracted_model)
+
+
+def calculate_matching_percentage(
+    output_model: BaseModel, target_model: BaseModel
+) -> float:
+    """Calculates percentage of fields that match between two Pydantic BaseModels."""
+    if output_model is None or target_model is None:
+        return 0.0
+
+    output_fields = output_model.__fields__
+    target_fields = target_model.__fields__
+
+    total_fields = len(target_fields)
+    if total_fields == 0:
+        return 0.0
+
+    matching_fields = sum(
+        1
+        for field_name in target_fields
+        if field_name in output_fields
+        and _compare_field_values(
+            getattr(output_model, field_name), getattr(target_model, field_name)
+        )
+    )
+
+    return matching_fields / total_fields
+
+
+def _compare_field_values(output_value: Any, target_value: Any) -> bool:
+    """Compares the values of two fields for equality."""
+    if isinstance(output_value, BaseModel) and isinstance(target_value, BaseModel):
+        return calculate_matching_percentage(output_value, target_value) == 1.0
+    elif isinstance(output_value, list) and isinstance(target_value, list):
+        return len(output_value) == len(target_value) and all(
+            _compare_field_values(o, t) for o, t in zip(output_value, target_value)
+        )
+    else:
+        return output_value == target_value
 
 
 def model_to_json(model: BaseModel) -> str:

@@ -6,9 +6,11 @@ from dotenv import load_dotenv
 
 from config import Settings
 from objectives import objectives
+from templates import PeriodicRevisitObjectiveTemplate
 from text_processing import TextProcessing as tp
 from utils import (
     calculate_filling_percentage,
+    calculate_matching_percentage,
     extract_model,
     model_to_json,
     process_fields,
@@ -81,7 +83,25 @@ def process_prompt(prompt: str, client: Client):
 
         model_json = model_to_json(extracted_model)
 
-        correctness = calculate_filling_percentage(extracted_model)
+        pro_check = PeriodicRevisitObjectiveTemplate(
+            classification_marking="U",
+            target_id_list=["28884"],
+            sensor_name_list=["RME01", "RME02"],
+            data_mode="TEST",
+            collect_request_type="RATE_TRACK_SIDEREAL",
+            patience_minutes=30,
+            revisits_per_hour=4.0,
+            hours_to_plan=36.0,
+            number_of_frames=None,
+            integration_time=None,
+            binning=1,
+            objective_start_time="2024-05-25 17:30:00.500000+00:00",
+            objective_end_time="2024-05-26 22:30:00.250000+00:00",
+            priority=3,
+        )
+
+        # correctness = calculate_filling_percentage(extracted_model)
+        correctness = calculate_matching_percentage(extracted_model, pro_check)
         response = "\n".join(json_strs)
 
         cleaned_response = tp.clean_mistral(response)
@@ -90,7 +110,7 @@ def process_prompt(prompt: str, client: Client):
         # print(f"\nLLM Response: {cleaned_response}")
         # print("=" * 30)
         print(f"\n{objective}: {model_json}")
-        print(f"% Correct Fields: {correctness:.2%}")
+        print(f"% Matching Fields: {correctness:.2%}")
         # tps = tp.measure_performance(t_0, t_1, cleaned_response)
         # print(f"Tokens per second: {tps} t/s")
         print(f"Elapsed Time: {t_1 - t_0} seconds")

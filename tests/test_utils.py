@@ -10,6 +10,7 @@ from client import Client
 from templates import ObjectiveTime
 from utils import (
     calculate_filling_percentage,
+    calculate_matching_percentage,
     clean_json_str,
     combine_jsons,
     combine_models,
@@ -1086,6 +1087,8 @@ class TestModelToJson(unittest.TestCase):
 
 
 class TesObjective(BaseModel):
+    """Testing Objective model."""
+
     patience_minutes: Optional[Union[int, str]] = None
     revisits_per_hour: Optional[Union[float, str]] = None
     hours_to_plan: Optional[Union[float, str]] = None
@@ -1096,6 +1099,8 @@ class TesObjective(BaseModel):
 
 
 class TestPostProcessModel(unittest.TestCase):
+    """Testing post_process_model function."""
+
     def test_post_process_model_with_valid_int_str(self):
         """Test post-process of int Pydantic model."""
         model = TesObjective(
@@ -1147,6 +1152,146 @@ class TestPostProcessModel(unittest.TestCase):
         assert processed_model.integration_time is None
         assert processed_model.binning is None
         assert processed_model.priority is None
+
+
+class RevisitObjective(BaseModel):
+    """Based on Periodic Revisit Objective."""
+
+    classification_marking: Optional[str] = None
+    target_id_list: Optional[list[str]] = None
+    sensor_name_list: Optional[list[str]] = None
+    data_mode: Optional[str] = None
+    collect_request_type: Optional[str] = None
+    patience_minutes: Optional[Union[int, str]] = None
+    revisits_per_hour: Optional[Union[float, str]] = None
+    hours_to_plan: Optional[Union[float, str]] = None
+    number_of_frames: Optional[Union[int, str]] = None
+    integration_time: Optional[Union[float, str]] = None
+    binning: Optional[Union[int, str]] = None
+    objective_name: Optional[str] = None
+    objective_start_time: Optional[Union[datetime, str]] = None
+    objective_end_time: Optional[Union[datetime, str]] = None
+    priority: Optional[Union[int, str]] = None
+
+
+class TestCalculateMatchingPercentage(unittest.TestCase):
+    """Testing calculate_matching_percentage function."""
+
+    def test_identical_models(self):
+        """Test two identical RevisitObjective models."""
+        model1 = RevisitObjective(
+            classification_marking="UNCLASSIFIED",
+            target_id_list=["target1", "target2"],
+            sensor_name_list=["sensor1", "sensor2"],
+            data_mode="DATA_MODE",
+            collect_request_type="REQUEST_TYPE",
+            patience_minutes=10,
+            revisits_per_hour=2.5,
+            hours_to_plan=8,
+            number_of_frames=5,
+            integration_time=1.5,
+            binning=2,
+            objective_name="Objective 1",
+            objective_start_time=datetime(2023, 6, 1, 9, 0),
+            objective_end_time=datetime(2023, 6, 1, 17, 0),
+            priority=1,
+        )
+        model2 = RevisitObjective(
+            classification_marking="UNCLASSIFIED",
+            target_id_list=["target1", "target2"],
+            sensor_name_list=["sensor1", "sensor2"],
+            data_mode="DATA_MODE",
+            collect_request_type="REQUEST_TYPE",
+            patience_minutes=10,
+            revisits_per_hour=2.5,
+            hours_to_plan=8,
+            number_of_frames=5,
+            integration_time=1.5,
+            binning=2,
+            objective_name="Objective 1",
+            objective_start_time=datetime(2023, 6, 1, 9, 0),
+            objective_end_time=datetime(2023, 6, 1, 17, 0),
+            priority=1,
+        )
+        self.assertEqual(calculate_matching_percentage(model1, model2), 1.0)
+
+    def test_different_models(self):
+        """Test two different RevisitObjective models."""
+        model1 = RevisitObjective(
+            classification_marking="UNCLASSIFIED",
+            target_id_list=["target1", "target2"],
+            sensor_name_list=["sensor1", "sensor2"],
+            data_mode="DATA_MODE",
+            collect_request_type="REQUEST_TYPE",
+            patience_minutes=10,
+            revisits_per_hour=2.5,
+            hours_to_plan=8,
+            number_of_frames=5,
+            integration_time=1.5,
+            binning=2,
+            objective_name="Objective 1",
+            objective_start_time=datetime(2023, 6, 1, 9, 0),
+            objective_end_time=datetime(2023, 6, 1, 17, 0),
+            priority=1,
+        )
+        model2 = RevisitObjective(
+            classification_marking="CLASSIFIED",
+            target_id_list=["target3", "target4"],
+            sensor_name_list=["sensor3", "sensor4"],
+            data_mode="DIFFERENT_DATA_MODE",
+            collect_request_type="DIFFERENT_REQUEST_TYPE",
+            patience_minutes=20,
+            revisits_per_hour=1.5,
+            hours_to_plan=6,
+            number_of_frames=3,
+            integration_time=2.0,
+            binning=4,
+            objective_name="Objective 2",
+            objective_start_time=datetime(2023, 6, 2, 10, 0),
+            objective_end_time=datetime(2023, 6, 2, 16, 0),
+            priority=2,
+        )
+        self.assertEqual(calculate_matching_percentage(model1, model2), 0.0)
+
+    def test_partial_match(self):
+        """Test two partially similar RevisitObjective models."""
+        model1 = RevisitObjective(
+            classification_marking="UNCLASSIFIED",
+            target_id_list=["target1", "target2"],
+            sensor_name_list=["sensor1", "sensor2"],
+            data_mode="DATA_MODE",
+            collect_request_type="REQUEST_TYPE",
+            patience_minutes=10,
+            revisits_per_hour=2.5,
+            hours_to_plan=8,
+            number_of_frames=5,
+            integration_time=1.5,
+            binning=2,
+            objective_name="Objective 1",
+            objective_start_time=datetime(2023, 6, 1, 9, 0),
+            objective_end_time=datetime(2023, 6, 1, 17, 0),
+            priority=1,
+        )
+        model2 = RevisitObjective(
+            classification_marking="UNCLASSIFIED",
+            target_id_list=["target1", "target2"],
+            sensor_name_list=["sensor1", "sensor2"],
+            data_mode="DATA_MODE",
+            collect_request_type="REQUEST_TYPE",
+            patience_minutes=10,
+            revisits_per_hour=2.5,
+            hours_to_plan=8,
+            number_of_frames=5,
+            integration_time=1.5,
+            binning=2,
+            objective_name="Objective 1",
+            objective_start_time=datetime(2023, 6, 1, 9, 0),
+            objective_end_time=datetime(2023, 6, 1, 18, 0),  # Different end time
+            priority=2,  # Different priority
+        )
+        self.assertAlmostEqual(
+            calculate_matching_percentage(model1, model2), 0.8666, places=2
+        )
 
 
 if __name__ == "__main__":
