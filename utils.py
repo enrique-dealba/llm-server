@@ -766,6 +766,9 @@ def extract_model(
             extracted_model.objective_end_time = getattr(
                 extracted_time, "objective_end_time", "None"
             )
+        elif field_name == "objective_name":
+            # TODO: obj_info["base_model"] vs. extracted_model
+            extracted_model.objective_name = str(extracted_model.__class__.__name__)
 
     return extracted_model
 

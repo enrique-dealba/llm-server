@@ -144,7 +144,7 @@ class CatalogMaintenanceObjectiveTemplate(BaseModel):
     orbital_regime: Optional[str] = None
     patience_minutes: Optional[Union[int, str]] = None
     end_time_offset_minutes: Optional[Union[int, str]] = None
-    # objective_name: Optional[str] = None
+    objective_name: Optional[str] = None
     objective_start_time: Optional[Union[datetime, str]] = None
     objective_end_time: Optional[Union[datetime, str]] = None
     priority: Optional[Union[int, str]] = None
@@ -177,7 +177,6 @@ class PeriodicRevisitObjective(BaseModel):
         description="float: Seconds of integration time per frame. Defaults to None."
     )
     binning: int = Field(default=1, description="int: camera binning. Defaults to 1.")
-    # objective_name: Optional[str] = None
     # objective_start_time: datetime = None,
     # objective_end_time: datetime = None,
     priority: int = Field(
@@ -198,7 +197,7 @@ class PeriodicRevisitObjectiveTemplate(BaseModel):
     number_of_frames: Optional[Union[int, str]] = None
     integration_time: Optional[Union[float, str]] = None
     binning: Optional[Union[int, str]] = None
-    # objective_name: Optional[str] = None
+    objective_name: Optional[str] = None
     objective_start_time: Optional[Union[datetime, str]] = None
     objective_end_time: Optional[Union[datetime, str]] = None
     priority: Optional[Union[int, str]] = None
@@ -276,7 +275,7 @@ class DataEnrichmentObjectiveTemplate(BaseModel):
     max_rso_to_observe: Optional[Union[int, str]] = None
     revisits_per_hour: Optional[Union[float, str]] = None
     hours_to_plan: Optional[Union[float, str]] = None
-    # objective_name: Optional[str] = None
+    objective_name: Optional[str] = None
     objective_start_time: Optional[Union[datetime, str]] = None
     objective_end_time: Optional[Union[datetime, str]] = None
     priority: Optional[Union[int, str]] = None
@@ -326,7 +325,7 @@ class SpectralClearingObjectiveTemplate(BaseModel):
     number_of_frames: Optional[Union[int, str]] = None
     integration_time: Optional[Union[float, str]] = None
     binning: Optional[Union[int, str]] = None
-    # objective_name: Optional[str] = None
+    objective_name: Optional[str] = None
     objective_start_time: Optional[Union[datetime, str]] = None
     objective_end_time: Optional[Union[datetime, str]] = None
     priority: Optional[Union[int, str]] = None
@@ -360,52 +359,139 @@ class SpectralClearingObjectiveTemplate(BaseModel):
 #     priority: Optional[int] = None
 
 
-# json_prompt_1 = f"""
-# <|im_start|>system
-# You are a helpful assistant designed to output single JSON fields.
-# Given the following user prompt
-# << {user_prompt} >>
-# extract the following field:
-# << {field_1_name} >> with description: {field_1_desc} from the user prompt.
-# Example:
-# Input:
-# user_prompt: "Make a Foo with name Qwerty and ID 906 please."
-# Result: {{
-#     "{field_1_name}": "Qwerty",
-# }}
-# <|im_end|>
+# Prompt 1
+maintenance_1 = CatalogMaintenanceObjectiveTemplate(
+    classification_marking='U',
+    data_mode='TEST',
+    collect_request_type='RATE_TRACK_SIDEREAL',
+    orbital_regime='LEO',
+    patience_minutes=10,
+    end_time_offset_minutes=25,
+    priority=12,
+    sensor_ids=['RME02', 'LMNT01'],
+    objective_start_time=datetime.fromisoformat('2024-05-21T19:20:00.150000+00:00'),
+    objective_end_time=datetime.fromisoformat('2024-05-21T22:30:00.250000+00:00')
+)
 
-# <|im_start|>user
-# Input:
-# user_prompt: {user_prompt}
-# <|im_end|>
+# Prompt 2
+maintenance_2 = CatalogMaintenanceObjectiveTemplate(
+    classification_marking='S',
+    data_mode='REAL',
+    collect_request_type='RATE_TRACK',
+    orbital_regime='GEO',
+    patience_minutes=25,
+    end_time_offset_minutes=35,
+    priority=8,
+    sensor_ids=['ABQ04', 'UKR05'],
+    objective_start_time=datetime.fromisoformat('2024-05-21T19:20:00.150000+00:00'),
+    objective_end_time=datetime.fromisoformat('2024-05-21T22:30:00.250000+00:00')
+)
 
-# <|im_start|>assistant
-# Result:
-# """
+# Prompt 3
+maintenance_3 = CatalogMaintenanceObjectiveTemplate(
+    classification_marking='C',
+    data_mode='TEST',
+    collect_request_type='SIDEREAL',
+    orbital_regime='MEO',
+    patience_minutes=15,
+    end_time_offset_minutes=40,
+    priority=12,
+    sensor_ids=['UKR07', 'RME04'],
+    objective_start_time=datetime.fromisoformat('2024-05-21T19:20:00.150000+00:00'),
+    objective_end_time=datetime.fromisoformat('2024-05-21T22:30:00.250000+00:00')
+)
 
-# json_prompt_2 = f"""
-# <|im_start|>system
-# You are a helpful assistant designed to output single JSON fields.
-# Given the following user prompt
-# << {user_prompt} >>
-# extract the following field info:
-# << {field_1_name} >> with description: {field_1_desc} from the user prompt.
-# Example:
-# Input:
-# user_prompt: "Make a Foo with name Qwerty and ID 906 please."
-# field_info: Field name: << {field_1_name} >> with description: {field_1_desc}.
-# Result: {{
-#     "{field_1_name}": "Qwerty",
-# }}
-# <|im_end|>
+# Prompt 4
+maintenance_4 = CatalogMaintenanceObjectiveTemplate(
+    classification_marking='U',
+    data_mode='REAL',
+    collect_request_type='RATE_TRACK_SIDEREAL',
+    orbital_regime='XGEO',
+    patience_minutes=30,
+    end_time_offset_minutes=45,
+    priority=18,
+    sensor_ids=['RME12', 'ABQ09'],
+    objective_start_time=datetime.fromisoformat('2024-05-21T19:20:00.150000+00:00'),
+    objective_end_time=datetime.fromisoformat('2024-05-21T22:30:00.250000+00:00')
+)
 
-# <|im_start|>user
-# Input:
-# user_prompt: {user_prompt}
-# field_info: Field name: << {field_1_name} >> with description: {field_1_desc}.
-# <|im_end|>
+# Prompt 5
+maintenance_5 = CatalogMaintenanceObjectiveTemplate(
+    classification_marking='TS',
+    data_mode='TEST',
+    collect_request_type='RATE_TRACK',
+    orbital_regime='LEO',
+    patience_minutes=30,
+    end_time_offset_minutes=20,
+    priority=10,
+    sensor_ids=['LMNT05', 'LMNT06'],
+    objective_start_time=datetime.fromisoformat('2024-05-21T19:20:00.150000+00:00'),
+    objective_end_time=datetime.fromisoformat('2024-05-21T22:30:00.250000+00:00')
+)
 
-# <|im_start|>assistant
-# Result:
-# """
+# Prompt 6
+maintenance_6 = CatalogMaintenanceObjectiveTemplate(
+    classification_marking='S',
+    data_mode='TEST',
+    collect_request_type='RATE_TRACK_SIDEREAL',
+    orbital_regime='GEO',
+    patience_minutes=20,
+    end_time_offset_minutes=30,
+    priority=13,
+    sensor_ids=['LMNT11', 'RME16'],
+    objective_start_time=datetime.fromisoformat('2024-05-21T19:20:00.150000+00:00'),
+    objective_end_time=datetime.fromisoformat('2024-05-21T22:30:00.250000+00:00')
+)
+
+# Prompt 7
+maintenance_7 = CatalogMaintenanceObjectiveTemplate(
+    classification_marking='U//FOUO',
+    data_mode='REAL',
+    collect_request_type='SIDEREAL',
+    orbital_regime='MEO',
+    patience_minutes=50,
+    end_time_offset_minutes=70,
+    priority=14,
+    sensor_ids=['RME15', 'UKR03'],
+    objective_start_time=datetime.fromisoformat('2024-05-21T19:20:00.150000+00:00'),
+    objective_end_time=datetime.fromisoformat('2024-05-21T22:30:00.250000+00:00')
+)
+
+# Prompt 1
+
+
+# Prompt 2
+
+
+# Prompt 3
+
+
+# Prompt 4
+
+
+# Prompt 5
+
+
+# Prompt 6
+
+
+# Prompt 7
+
+
+# Prompt 8
+
+
+# Prompt 9
+
+
+
+gt_catalog_maintenace = [
+    maintenance_1,
+    maintenance_2,
+    maintenance_3,
+    maintenance_4,
+    maintenance_5,
+    maintenance_6,
+    maintenance_7,
+]
+
