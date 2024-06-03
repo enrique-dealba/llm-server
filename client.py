@@ -95,6 +95,7 @@ def process_prompt(prompt: str, client: Client):
             number_of_frames=None,
             integration_time=None,
             binning=1,
+            objective_name="PeriodicRevisitObjectiveTemplate",
             objective_start_time="2024-05-25 17:30:00.500000+00:00",
             objective_end_time="2024-05-26 22:30:00.250000+00:00",
             priority=3,

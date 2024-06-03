@@ -802,7 +802,9 @@ def extract_model(
     return post_process_model(extracted_model)
 
 
-def calculate_matching_percentage(output_model: BaseModel, target_model: BaseModel) -> float:
+def calculate_matching_percentage(
+    output_model: BaseModel, target_model: BaseModel
+) -> float:
     """Calculates percentage of fields that match between two Pydantic BaseModels."""
     if output_model is None or target_model is None:
         return 0.0
@@ -819,44 +821,22 @@ def calculate_matching_percentage(output_model: BaseModel, target_model: BaseMod
         for field_name in target_fields
         if field_name in output_fields
         and _compare_field_values(
-            getattr(output_model, field_name), getattr(target_model, field_name), field_name
+            getattr(output_model, field_name), getattr(target_model, field_name)
         )
     )
-
-    if matching_fields != total_fields:
-        print(f"Mismatch detected: {matching_fields} out of {total_fields} fields match.")
-        for field_name in target_fields:
-            if field_name not in output_fields:
-                print(f"Field '{field_name}' not found in output model.")
-            elif not _compare_field_values(
-                getattr(output_model, field_name), getattr(target_model, field_name), field_name
-            ):
-                print(f"Field '{field_name}' values do not match:")
-                print(f"  Output value: {getattr(output_model, field_name)}")
-                print(f"  Target value: {getattr(target_model, field_name)}")
 
     return matching_fields / total_fields
 
 
-def _compare_field_values(output_value: Any, target_value: Any, field_name: str) -> bool:
+def _compare_field_values(output_value: Any, target_value: Any) -> bool:
     """Compares the values of two fields for equality."""
     if isinstance(output_value, BaseModel) and isinstance(target_value, BaseModel):
         return calculate_matching_percentage(output_value, target_value) == 1.0
     elif isinstance(output_value, list) and isinstance(target_value, list):
-        if len(output_value) != len(target_value):
-            print(f"Field '{field_name}' has different list lengths:")
-            print(f"  Output list length: {len(output_value)}")
-            print(f"  Target list length: {len(target_value)}")
-            return False
-        for i, (o, t) in enumerate(zip(output_value, target_value)):
-            if not _compare_field_values(o, t, f"{field_name}[{i}]"):
-                return False
-        return True
+        return len(output_value) == len(target_value) and all(
+            _compare_field_values(o, t) for o, t in zip(output_value, target_value)
+        )
     else:
-        if output_value != target_value:
-            print(f"Field '{field_name}' values do not match:")
-            print(f"  Output value: {output_value}")
-            print(f"  Target value: {target_value}")
         return output_value == target_value
 
 
