@@ -111,7 +111,7 @@ def process_prompt(prompt: str, client: Client):
         print(f"\nLLM Response: {cleaned_response}")
         # print("=" * 30)
         print(f"\n{objective}: {model_json}")
-        print(f"% Matching Fields: {correctness:.2%}")
+        # print(f"% Matching Fields: {correctness:.2%}")
         # tps = tp.measure_performance(t_0, t_1, cleaned_response)
         # print(f"Tokens per second: {tps} t/s")
         print(f"Elapsed Time: {t_1 - t_0} seconds")

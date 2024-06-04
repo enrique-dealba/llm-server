@@ -36,15 +36,12 @@ def load_schemas(
     """Load schemas from a list of schema data."""
     loaded_schemas = []
     for schema_data in schemas_data:
-        print(f"Processing schema data: {schema_data}")  # Debug print
         if isinstance(schema_data, dict):
-            print(f"Schema data keys: {schema_data.keys()}")  # Debug print
             matching_classes = [
                 cls
                 for cls in schema_classes.values()
                 if set(cls.__fields__.keys()) == set(schema_data.keys())
             ]
-            print(f"Matching classes: {matching_classes}")  # Debug print
             if len(matching_classes) == 1:
                 model_class = matching_classes[0]
                 print(f"Instantiating model class: {model_class}")  # Debug print
@@ -77,8 +74,9 @@ def function_call(
     for _ in range(num_tests):
         for prompt, schema in zip(prompts, schemas):
             try:
-                print(f"Processing prompt: {prompt}")  # Debug print
-                print(f"Corresponding schema: {schema}")  # Debug print
+                print(f"Prompt: {prompt}")  # Debug print
+                print(f"Schema: {schema}")  # Debug print
+                print("&"*30)
 
                 t_0 = time.perf_counter()
 
@@ -88,6 +86,9 @@ def function_call(
                     logging.error(f"Empty response for prompt: {prompt}")
                     total_requests += 1
                     continue
+
+                print(f"LLM Response: {response}")  # Debug print
+                print(f"Extracted Model: {extracted_model}")  # Debug print
 
                 correctness = calculate_matching_percentage(extracted_model, schema)
 
@@ -101,6 +102,10 @@ def function_call(
                 # Checks if predicted objective matches ground truth
                 if pred_obj == objective or objective in pred_obj:
                     obj_correctness += 1
+
+                print(f"% Matching Fields: {correctness:.2%}")  # Debug print
+                # print(f"Elapsed Time: {elapsed_time} seconds")  # Debug print
+                print("=" * 30)  # Debug print
 
             except Exception as e:
                 logging.error(f"Error processing prompt: {prompt}. {str(e)}")
