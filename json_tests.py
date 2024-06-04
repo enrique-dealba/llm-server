@@ -70,7 +70,7 @@ def function_call(
                 correctness = calculate_matching_percentage(extracted_model, schema)
 
                 t_1 = time.perf_counter()
-                
+
                 if response:
                     elapsed_time = t_1 - t_0
                     total_time += elapsed_time
@@ -133,11 +133,8 @@ if __name__ == "__main__":
             schemas=schemas,
             num_tests=2,
         )
-    t_1 = time.perf_counter()
-    t_1 = time.perf_counter()
-    total_time = t_1 - t_0
+
         t_1 = time.perf_counter()
-    total_time = t_1 - t_0
 
         num_requests = stats["successful_requests"]
         if num_requests <= 0:
