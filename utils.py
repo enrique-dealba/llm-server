@@ -726,7 +726,7 @@ def convert_field(
     """If applicable, converts Optional str fields to either a float or int."""
     if field_value is None:
         return None
-    if isinstance(field_value, int | float):
+    if isinstance(field_value, (int, float)):
         return field_value
     try:
         return int(field_value)

@@ -14,6 +14,7 @@ ignore = [
     "UP006",
     "UP007",
     "UP035",
+    "UP038",
 ]
 
 [lint.pydocstyle]

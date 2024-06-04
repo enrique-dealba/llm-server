@@ -83,7 +83,7 @@ def function_call(
                 response, extracted_model, _, pred_obj = process_prompt(prompt, client)
 
                 if response is None:
-                    logging.error(f"Empty response for prompt: {prompt}")
+                    print(f"Empty response for prompt: {prompt}")
                     total_requests += 1
                     continue
 
@@ -123,7 +123,7 @@ if __name__ == "__main__":
     args = parse_arguments()
 
     prompts = json.loads(args.prompts)
-    objective = args.objective
+    objective = json.loads(args.objective)
 
     schema_classes = {
         "CatalogMaintenanceObjective": CatalogMaintenanceObjectiveTemplate,
