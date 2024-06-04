@@ -33,7 +33,7 @@ def run_docker_container(model_name):
                 "-e", f"DEFAULT_MODEL={model_name}",
                 "-e", f"QUANTIZATION={quantization}",
                 # "-e", f"SCHEMA={schema}",
-                "--gpus", "all",
+                "--gpus", "device=3",
                 "--name", "llm6",
                 "-p", "8889:8889",
                 "my_llm_server",
