@@ -217,6 +217,7 @@ def main():
                 time.sleep(waiting_time)  # Waits for the container to start
 
                 start_time = time.time()
+                print("Started!")
                 stats = run_tests(prompts, schemas, obj)
                 end_time = time.time()
                 total_time = end_time - start_time
