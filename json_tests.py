@@ -31,24 +31,28 @@ def parse_arguments() -> argparse.Namespace:
 
 
 def load_schemas(
-    schema_classes: Dict[str, Type[BaseModel]], schemas_data: Dict[str, Dict[str, Any]]
-) -> Dict[str, BaseModel]:
-    """Load schemas from a dictionary of schema data."""
-    loaded_schemas = {}
-    for schema_name, schema_data in schemas_data.items():
+    schema_classes: dict[str, Type[BaseModel]], schemas_data: list[dict[str, Any]]
+) -> list[BaseModel]:
+    """Load schemas from a list of schema data."""
+    loaded_schemas = []
+    for schema_data in schemas_data:
+        print(f"Processing schema data: {schema_data}")  # Debug print
         if isinstance(schema_data, dict):
+            print(f"Schema data keys: {schema_data.keys()}")  # Debug print
             matching_classes = [
                 cls
                 for cls in schema_classes.values()
                 if set(cls.__fields__.keys()) == set(schema_data.keys())
             ]
+            print(f"Matching classes: {matching_classes}")  # Debug print
             if len(matching_classes) == 1:
                 model_class = matching_classes[0]
-                loaded_schemas[schema_name] = model_class(**schema_data)
+                print(f"Instantiating model class: {model_class}")  # Debug print
+                loaded_schemas.append(model_class(**schema_data))
             else:
-                logging.warning(f"No matching class found for schema: {schema_data}")
+                print(f"No matching class found for schema: {schema_data}")
         else:
-            logging.warning(
+            print(
                 f"Invalid schema data type: {type(schema_data)}. Expected dict."
             )
     return loaded_schemas
@@ -56,9 +60,9 @@ def load_schemas(
 
 def function_call(
     stats: Dict[str, float],
-    prompts: Dict[str, str],
+    prompts: list[str],
     objective: str,
-    schemas: Dict[str, BaseModel],
+    schemas: list[BaseModel],
     num_tests: int = 3,
 ) -> Dict[str, float]:
     """Runs a series of prompts through the LLM router and benchmarks correctness."""
@@ -71,19 +75,17 @@ def function_call(
     total_requests = 0.0
 
     for _ in range(num_tests):
-        for prompt_name, prompt in prompts.items():
+        for prompt, schema in zip(prompts, schemas):
             try:
-                schema = schemas.get(prompt_name)
-                if schema is None:
-                    logging.warning(f"No schema found for prompt: {prompt_name}")
-                    continue
+                print(f"Processing prompt: {prompt}")  # Debug print
+                print(f"Corresponding schema: {schema}")  # Debug print
 
                 t_0 = time.perf_counter()
 
                 response, extracted_model, _, pred_obj = process_prompt(prompt, client)
 
                 if response is None:
-                    logging.error(f"Empty response for prompt: {prompt_name}")
+                    logging.error(f"Empty response for prompt: {prompt}")
                     total_requests += 1
                     continue
 
@@ -101,7 +103,7 @@ def function_call(
                     obj_correctness += 1
 
             except Exception as e:
-                logging.error(f"Error processing prompt: {prompt_name}. {str(e)}")
+                logging.error(f"Error processing prompt: {prompt}. {str(e)}")
                 total_requests += 1
 
     stats["total_correctness"] += total_correctness
