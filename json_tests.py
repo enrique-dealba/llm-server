@@ -2,7 +2,7 @@ import argparse
 import json
 import logging
 import time
-from typing import Dict, Type
+from typing import Dict, Type, Optional, Tuple, Any
 
 from pydantic import BaseModel
 
@@ -31,36 +31,34 @@ def parse_arguments() -> argparse.Namespace:
 
 
 def load_schemas(
-    schema_classes: dict[str, Type[BaseModel]], schemas_data: list[dict]
-) -> list[BaseModel]:
-    """Load schemas from a list of dictionaries."""
-    loaded_schemas = []
-    for schema_data in schemas_data:
-        print(f"Schema data: {schema_data}")  # Debug print
+    schema_classes: Dict[str, Type[BaseModel]], schemas_data: Dict[str, Dict[str, Any]]
+) -> Dict[str, BaseModel]:
+    """Load schemas from a dictionary of schema data."""
+    loaded_schemas = {}
+    for schema_name, schema_data in schemas_data.items():
         if isinstance(schema_data, dict):
-            print(f"Schema data keys: {schema_data.keys()}")  # Debug print
             matching_classes = [
                 cls
                 for cls in schema_classes.values()
                 if set(cls.__fields__.keys()) == set(schema_data.keys())
             ]
-            print(f"Matching classes: {matching_classes}")  # Debug print
             if len(matching_classes) == 1:
                 model_class = matching_classes[0]
-                print(f"Model class: {model_class}")  # Debug print
-                loaded_schemas.append(model_class(**schema_data))
+                loaded_schemas[schema_name] = model_class(**schema_data)
             else:
-                print(f"No matching class found for schema: {schema_data}")
+                logging.warning(f"No matching class found for schema: {schema_data}")
         else:
-            print(f"Invalid schema data type: {type(schema_data)}. Expected dict.")
+            logging.warning(
+                f"Invalid schema data type: {type(schema_data)}. Expected dict."
+            )
     return loaded_schemas
 
 
 def function_call(
-    stats: Dict,
-    prompts: list[str],
+    stats: Dict[str, float],
+    prompts: Dict[str, str],
     objective: str,
-    schemas: list[BaseModel],
+    schemas: Dict[str, BaseModel],
     num_tests: int = 3,
 ) -> Dict[str, float]:
     """Runs a series of prompts through the LLM router and benchmarks correctness."""
@@ -73,27 +71,37 @@ def function_call(
     total_requests = 0.0
 
     for _ in range(num_tests):
-        for prompt, schema in zip(prompts, schemas):
+        for prompt_name, prompt in prompts.items():
             try:
+                schema = schemas.get(prompt_name)
+                if schema is None:
+                    logging.warning(f"No schema found for prompt: {prompt_name}")
+                    continue
+
                 t_0 = time.perf_counter()
 
                 response, extracted_model, _, pred_obj = process_prompt(prompt, client)
+
+                if response is None:
+                    logging.error(f"Empty response for prompt: {prompt_name}")
+                    total_requests += 1
+                    continue
+
                 correctness = calculate_matching_percentage(extracted_model, schema)
 
                 t_1 = time.perf_counter()
 
-                if response:
-                    elapsed_time = t_1 - t_0
-                    total_time += elapsed_time
-                    successful_requests += 1
-                    total_requests += 1
-                    total_correctness += correctness
-                    # Checks if predicted objective matches ground truth
-                    if pred_obj == objective or objective in pred_obj:
-                        obj_correctness += 1
+                elapsed_time = t_1 - t_0
+                total_time += elapsed_time
+                successful_requests += 1
+                total_requests += 1
+                total_correctness += correctness
+                # Checks if predicted objective matches ground truth
+                if pred_obj == objective or objective in pred_obj:
+                    obj_correctness += 1
 
             except Exception as e:
-                logging.error(f"Error processing prompt: {e}")
+                logging.error(f"Error processing prompt: {prompt_name}. {str(e)}")
                 total_requests += 1
 
     stats["total_correctness"] += total_correctness
@@ -108,7 +116,7 @@ if __name__ == "__main__":
     args = parse_arguments()
 
     prompts = json.loads(args.prompts)
-    objective = json.loads(args.objective)
+    objective = args.objective
 
     schema_classes = {
         "CatalogMaintenanceObjective": CatalogMaintenanceObjectiveTemplate,
@@ -119,8 +127,6 @@ if __name__ == "__main__":
     }
 
     schemas_data = json.loads(args.schemas)
-    print(f"Schemas data: {schemas_data}")  # Debug print
-    print(f"Schemas data type: {type(schemas_data)}")  # Debug print
     schemas = load_schemas(schema_classes, schemas_data)
 
     stats = {
@@ -132,13 +138,6 @@ if __name__ == "__main__":
     }
 
     try:
-        prompts = json.loads(args.prompts)
-        print(f"Prompts: {prompts}")  # Debug print
-        objective = args.objective
-        print(f"Objective: {objective}")  # Debug print
-        schemas = load_schemas(schema_classes, schemas_data)
-        print(f"Loaded schemas: {schemas}")  # Debug print
-
         t_0 = time.perf_counter()
 
         stats = function_call(
@@ -155,10 +154,10 @@ if __name__ == "__main__":
         if num_requests <= 0:
             num_requests = 1
 
-        print(f"Avg Model Correctness: {stats['total_correctness']/num_requests:.2%}")
-        print(f"Avg Objective Correctness: {stats['obj_correctness']/num_requests:.2%}")
-        print(f"Avg Time Elapsed Per Response: {stats['total_time']/num_requests:.2f}")
+        print(f"Avg Model Correctness: {stats['total_correctness'] / num_requests:.2%}")
+        print(f"Avg Objective Correctness: {stats['obj_correctness'] / num_requests:.2%}")
+        print(f"Avg Time Elapsed Per Response: {stats['total_time'] / num_requests:.2f}")
         print(f"\nTotal Benchmarking Time: {t_1 - t_0}")
 
-    except ValueError as e:
-        logging.error(f"Error loading schemas: {e}")
+    except Exception as e:
+        logging.error(f"Error during benchmarking: {str(e)}")
