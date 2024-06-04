@@ -108,14 +108,14 @@ def process_prompt(prompt: str, client: Client):
         cleaned_response = tp.clean_mistral(response)
 
         # USE BELOW DURING DEBUGGING
-        print(f"\nLLM Response: {cleaned_response}")
+        # print(f"\nLLM Response: {cleaned_response}")
         # print("=" * 30)
         print(f"\n{objective}: {model_json}")
         # print(f"% Matching Fields: {correctness:.2%}")
         # tps = tp.measure_performance(t_0, t_1, cleaned_response)
         # print(f"Tokens per second: {tps} t/s")
         print(f"Elapsed Time: {t_1 - t_0} seconds")
-        print("=" * 30)
+        # print("=" * 30)
 
         return cleaned_response, extracted_model, correctness, objective
 

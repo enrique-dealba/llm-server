@@ -44,7 +44,6 @@ def load_schemas(
             ]
             if len(matching_classes) == 1:
                 model_class = matching_classes[0]
-                print(f"Instantiating model class: {model_class}")  # Debug print
                 loaded_schemas.append(model_class(**schema_data))
             else:
                 print(f"No matching class found for schema: {schema_data}")
@@ -74,10 +73,6 @@ def function_call(
     for _ in range(num_tests):
         for prompt, schema in zip(prompts, schemas):
             try:
-                print(f"Prompt: {prompt}")  # Debug print
-                print(f"Schema: {schema}")  # Debug print
-                print("&"*30)
-
                 t_0 = time.perf_counter()
 
                 response, extracted_model, _, pred_obj = process_prompt(prompt, client)
@@ -86,9 +81,6 @@ def function_call(
                     print(f"Empty response for prompt: {prompt}")
                     total_requests += 1
                     continue
-
-                print(f"LLM Response: {response}")  # Debug print
-                print(f"Extracted Model: {extracted_model}")  # Debug print
 
                 correctness = calculate_matching_percentage(extracted_model, schema)
 
@@ -103,7 +95,7 @@ def function_call(
                 if pred_obj == objective or objective in pred_obj:
                     obj_correctness += 1
 
-                print(f"% Matching Fields: {correctness:.2%}")  # Debug print
+                print(f"% GT Matching Fields: {correctness:.2%}")  # Debug print
                 # print(f"Elapsed Time: {elapsed_time} seconds")  # Debug print
                 print("=" * 30)  # Debug print
 
@@ -161,7 +153,7 @@ if __name__ == "__main__":
         if num_requests <= 0:
             num_requests = 1
 
-        print(f"Avg Model Correctness: {stats['total_correctness'] / num_requests:.2%}")
+        print(f"Avg GT Correctness: {stats['total_correctness'] / num_requests:.2%}")
         print(f"Avg Objective Correctness: {stats['obj_correctness'] / num_requests:.2%}")
         print(f"Avg Time Elapsed Per Response: {stats['total_time'] / num_requests:.2f}")
         print(f"\nTotal Benchmarking Time: {t_1 - t_0}")

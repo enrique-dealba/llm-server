@@ -227,6 +227,7 @@ def main():
 
         for (obj, prompts), (_, schemas) in zip(schema_prompts.items(), objective_to_schema.items()):
             print(f"Running experiments for objective: {obj}")
+            print(f"num prompts: {len(prompts)} == num schemas: {len(schemas)}")
 
             for i in range(num_experiments):
                 print(f"Running experiment {i+1}/{num_experiments}")
