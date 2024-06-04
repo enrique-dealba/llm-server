@@ -392,8 +392,8 @@ maintenance_1 = CatalogMaintenanceObjectiveTemplate(
     end_time_offset_minutes=25,
     priority=12,
     sensor_ids=["RME02", "LMNT01"],
-    objective_start_time=datetime.fromisoformat("2024-05-21T19:20:00.150000+00:00"),
-    objective_end_time=datetime.fromisoformat("2024-05-21T22:30:00.250000+00:00"),
+    objective_start_time="2024-05-21T19:20:00.150000+00:00",
+    objective_end_time="2024-05-21T22:30:00.250000+00:00",
 )
 
 # Prompt 2
@@ -406,8 +406,8 @@ maintenance_2 = CatalogMaintenanceObjectiveTemplate(
     end_time_offset_minutes=35,
     priority=8,
     sensor_ids=["ABQ04", "UKR05"],
-    objective_start_time=datetime.fromisoformat("2024-05-21T19:20:00.150000+00:00"),
-    objective_end_time=datetime.fromisoformat("2024-05-21T22:30:00.250000+00:00"),
+    objective_start_time="2024-05-21T19:20:00.150000+00:00",
+    objective_end_time="2024-05-21T22:30:00.250000+00:00",
 )
 
 # Prompt 3
@@ -420,8 +420,8 @@ maintenance_3 = CatalogMaintenanceObjectiveTemplate(
     end_time_offset_minutes=40,
     priority=12,
     sensor_ids=["UKR07", "RME04"],
-    objective_start_time=datetime.fromisoformat("2024-05-21T19:20:00.150000+00:00"),
-    objective_end_time=datetime.fromisoformat("2024-05-21T22:30:00.250000+00:00"),
+    objective_start_time="2024-05-21T19:20:00.150000+00:00",
+    objective_end_time="2024-05-21T22:30:00.250000+00:00",
 )
 
 # Prompt 4
@@ -434,8 +434,8 @@ maintenance_4 = CatalogMaintenanceObjectiveTemplate(
     end_time_offset_minutes=45,
     priority=18,
     sensor_ids=["RME12", "ABQ09"],
-    objective_start_time=datetime.fromisoformat("2024-05-21T19:20:00.150000+00:00"),
-    objective_end_time=datetime.fromisoformat("2024-05-21T22:30:00.250000+00:00"),
+    objective_start_time="2024-05-21T19:20:00.150000+00:00",
+    objective_end_time="2024-05-21T22:30:00.250000+00:00",
 )
 
 # Prompt 5
@@ -448,7 +448,7 @@ maintenance_5 = CatalogMaintenanceObjectiveTemplate(
     end_time_offset_minutes=20,
     priority=10,
     sensor_ids=["LMNT05", "LMNT06"],
-    objective_start_time=datetime.fromisoformat("2024-05-21T19:20:00.150000+00:00"),
+    objective_start_time="2024-05-21T19:20:00.150000+00:00",
     objective_end_time=datetime.fromisoformat("2024-05-21T22:30:00.250000+00:00"),
 )
 
@@ -462,8 +462,8 @@ maintenance_6 = CatalogMaintenanceObjectiveTemplate(
     end_time_offset_minutes=30,
     priority=13,
     sensor_ids=["LMNT11", "RME16"],
-    objective_start_time=datetime.fromisoformat("2024-05-21T19:20:00.150000+00:00"),
-    objective_end_time=datetime.fromisoformat("2024-05-21T22:30:00.250000+00:00"),
+    objective_start_time="2024-05-21T19:20:00.150000+00:00",
+    objective_end_time="2024-05-21T22:30:00.250000+00:00",
 )
 
 # Prompt 7
@@ -476,8 +476,8 @@ maintenance_7 = CatalogMaintenanceObjectiveTemplate(
     end_time_offset_minutes=70,
     priority=14,
     sensor_ids=["RME15", "UKR03"],
-    objective_start_time=datetime.fromisoformat("2024-05-21T19:20:00.150000+00:00"),
-    objective_end_time=datetime.fromisoformat("2024-05-21T22:30:00.250000+00:00"),
+    objective_start_time="2024-05-21T19:20:00.150000+00:00",
+    objective_end_time="2024-05-21T22:30:00.250000+00:00",
 )
 
 # Prompt 1 revisit
