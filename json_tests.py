@@ -36,14 +36,18 @@ def load_schemas(
     """Load schemas from a list of dictionaries."""
     loaded_schemas = []
     for schema_data in schemas_data:
+        print(f"Schema data: {schema_data}")  # Debug print
         if isinstance(schema_data, dict):
+            print(f"Schema data keys: {schema_data.keys()}")  # Debug print
             matching_classes = [
                 cls
                 for cls in schema_classes.values()
                 if set(cls.__fields__.keys()) == set(schema_data.keys())
             ]
+            print(f"Matching classes: {matching_classes}")  # Debug print
             if len(matching_classes) == 1:
                 model_class = matching_classes[0]
+                print(f"Model class: {model_class}")  # Debug print
                 loaded_schemas.append(model_class(**schema_data))
             else:
                 print(f"No matching class found for schema: {schema_data}")
@@ -115,6 +119,8 @@ if __name__ == "__main__":
     }
 
     schemas_data = json.loads(args.schemas)
+    print(f"Schemas data: {schemas_data}")  # Debug print
+    print(f"Schemas data type: {type(schemas_data)}")  # Debug print
     schemas = load_schemas(schema_classes, schemas_data)
 
     stats = {
@@ -127,8 +133,11 @@ if __name__ == "__main__":
 
     try:
         prompts = json.loads(args.prompts)
+        print(f"Prompts: {prompts}")  # Debug print
         objective = args.objective
-        schemas = load_schemas(schema_classes, args.schemas)
+        print(f"Objective: {objective}")  # Debug print
+        schemas = load_schemas(schema_classes, schemas_data)
+        print(f"Loaded schemas: {schemas}")  # Debug print
 
         t_0 = time.perf_counter()
 
