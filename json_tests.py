@@ -31,18 +31,25 @@ def parse_arguments() -> argparse.Namespace:
 
 
 def load_schemas(
-    schema_classes: Dict[str, Type[BaseModel]], schemas_json: str
+    schema_classes: dict[str, Type[BaseModel]], schemas_data: list[dict]
 ) -> list[BaseModel]:
-    """Load schemas from JSON string."""
-    try:
-        schemas_data = json.loads(schemas_json)
-        return [
-            schema_classes[schema_data["type"]](**schema_data)
-            for schema_data in schemas_data
-            if "type" in schema_data and schema_data["type"] in schema_classes
-        ]
-    except (json.JSONDecodeError, KeyError) as e:
-        raise ValueError(f"Invalid schema format: {e}")
+    """Load schemas from a list of dictionaries."""
+    loaded_schemas = []
+    for schema_data in schemas_data:
+        if isinstance(schema_data, dict):
+            matching_classes = [
+                cls
+                for cls in schema_classes.values()
+                if set(cls.__fields__.keys()) == set(schema_data.keys())
+            ]
+            if len(matching_classes) == 1:
+                model_class = matching_classes[0]
+                loaded_schemas.append(model_class(**schema_data))
+            else:
+                print(f"No matching class found for schema: {schema_data}")
+        else:
+            print(f"Invalid schema data type: {type(schema_data)}. Expected dict.")
+    return loaded_schemas
 
 
 def function_call(
@@ -107,9 +114,8 @@ if __name__ == "__main__":
         "SpectralClearingObjective": SpectralClearingObjectiveTemplate,
     }
 
-    schemas = [
-        schema_classes[schema["type"]](**schema) for schema in json.loads(args.schemas)
-    ]
+    schemas_data = json.loads(args.schemas)
+    schemas = load_schemas(schema_classes, schemas_data)
 
     stats = {
         "total_correctness": 0.0,
