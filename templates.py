@@ -1085,8 +1085,8 @@ gt_spectral = [
 
 objective_to_schema = {
     "CatalogMaintenanceObjective": gt_catalog_maintenace,
-    # "PeriodicRevisitObjective": gt_periodic_revisit,
-    # "SearchObjective": gt_search,
-    # "DataEnrichmentObjective": gt_enrichment,
-    # "SpectralClearingObjective": gt_spectral,
+    "PeriodicRevisitObjective": gt_periodic_revisit,
+    "SearchObjective": gt_search,
+    "DataEnrichmentObjective": gt_enrichment,
+    "SpectralClearingObjective": gt_spectral,
 }

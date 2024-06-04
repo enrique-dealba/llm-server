@@ -374,9 +374,41 @@ awq_openhermes_4 = [
 "TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
 "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
 "teknium/OpenHermes-2.5-Mistral-7B",
+
+[
+    None, None, None, # CMO
+    AAA, AAA, None, # PRO
+    AAA, AAA, None, # SO
+    AAA, AAA, None, # DEO
+    AAA, AAA, None # SCO
+]
+
 """
 # Using new JSON schema Ground-truth set
+# GT acc, Obj Acc, Avg time (seconds)
+hermes_pro_1 = [
+    0.6468, 1.0, 82.17, # CMO
+]
 
+gptq_openhermes_1 = [
+    0.3889, 1.0, 13.94, # CMO
+]
+
+awq_openhermes_1 = [
+    0.4008, 1.0, 31.96, # CMO
+]
+
+awq_mistral_1 = [
+    0.6468, 1.0, 4.91, # CMO
+]
+
+gptq_mistral_1 = [
+    0.6548, 1.0, 2.54, # CMO
+]
+
+openhermes_1 = [
+    0.5754, 1.0, 15.50, # CMO
+]
 
 
 
