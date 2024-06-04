@@ -225,7 +225,7 @@ def main():
     for model in models:
         print(f"Running experiments for model: {model}")
 
-        for obj, (prompts, schemas) in zip(schema_prompts, objective_to_schema.items()):
+        for (obj, prompts), (_, schemas) in zip(schema_prompts.items(), objective_to_schema.items()):
             print(f"Running experiments for objective: {obj}")
 
             for i in range(num_experiments):
