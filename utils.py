@@ -838,6 +838,50 @@ def _compare_field_values(output_value: Any, target_value: Any) -> bool:
         )
     else:
         return output_value == target_value
+    
+def calculate_matching_percentage_info(
+    output_model: BaseModel, target_model: BaseModel
+) -> tuple[float, dict[str, int]]:
+    """Calculates percentage of fields that match between two Pydantic BaseModels."""
+    if output_model is None or target_model is None:
+        return 0.0, {}
+
+    output_fields = output_model.__fields__
+    target_fields = target_model.__fields__
+
+    total_fields = len(target_fields)
+    if total_fields == 0:
+        return 0.0, {}
+
+    stats_dict = {}
+    matching_fields = 0
+
+    for field_name in target_fields:
+        if field_name in output_fields:
+            output_value = getattr(output_model, field_name)
+            target_value = getattr(target_model, field_name)
+            if _compare_field_values_info(output_value, target_value):
+                stats_dict[field_name] = 1
+                matching_fields += 1
+            else:
+                stats_dict[field_name] = 0
+        else:
+            stats_dict[field_name] = 0
+
+    return matching_fields / total_fields, stats_dict
+
+
+def _compare_field_values_info(output_value: Any, target_value: Any) -> bool:
+    """Compares the values of two fields for equality."""
+    if isinstance(output_value, BaseModel) and isinstance(target_value, BaseModel):
+        percentage, _ = calculate_matching_percentage_info(output_value, target_value)
+        return percentage == 1.0
+    elif isinstance(output_value, list) and isinstance(target_value, list):
+        return len(output_value) == len(target_value) and all(
+            _compare_field_values(o, t) for o, t in zip(output_value, target_value)
+        )
+    else:
+        return output_value == target_value
 
 
 def model_to_json(model: BaseModel) -> str:

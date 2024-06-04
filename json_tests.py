@@ -14,7 +14,7 @@ from templates import (
     SearchObjectiveTemplate,
     SpectralClearingObjectiveTemplate,
 )
-from utils import calculate_matching_percentage, model_to_json
+from utils import calculate_matching_percentage, calculate_matching_percentage_info, model_to_json
 
 
 def parse_arguments() -> argparse.Namespace:
@@ -70,6 +70,8 @@ def function_call(
     successful_requests = 0.0
     total_requests = 0.0
 
+    field_stats = {}
+
     for _ in range(num_tests):
         for prompt, schema in zip(prompts, schemas):
             try:
@@ -94,7 +96,14 @@ def function_call(
                 # print(" ")
 
 
-                correctness = calculate_matching_percentage(extracted_model, schema)
+                # correctness = calculate_matching_percentage(extracted_model, schema)
+                correctness, stats_dict = calculate_matching_percentage_info(extracted_model, schema)
+
+                # Accumulate field-level stats
+                for field_name, value in stats_dict.items():
+                    if field_name not in field_stats:
+                        field_stats[field_name] = []
+                    field_stats[field_name].append(value)
 
                 t_1 = time.perf_counter()
 
@@ -115,12 +124,17 @@ def function_call(
                 logging.error(f"Error processing prompt: {prompt}. {str(e)}")
                 total_requests += 1
 
+    # Calculate average field-level stats
+    avg_field_stats = {}
+    for field_name, values in field_stats.items():
+        avg_field_stats[field_name] = sum(values) / len(values)
+
     stats["total_correctness"] += total_correctness
     stats["obj_correctness"] += obj_correctness
     stats["total_time"] += total_time
     stats["successful_requests"] += successful_requests
     stats["total_requests"] += total_requests
-    return stats
+    return stats, avg_field_stats
 
 
 if __name__ == "__main__":
@@ -151,7 +165,7 @@ if __name__ == "__main__":
     try:
         t_0 = time.perf_counter()
 
-        stats = function_call(
+        stats, avg_field_stats = function_call(
             stats=stats,
             prompts=prompts,
             objective=objective,
@@ -167,6 +181,10 @@ if __name__ == "__main__":
 
         print(f"Avg GT Correctness: {stats['total_correctness'] / num_requests:.2%}")
         print(f"Avg Objective Correctness: {stats['obj_correctness'] / num_requests:.2%}")
+        # Print the avg_field_stats dictionary
+        print("Average Field-Level Stats:")
+        for field_name, avg_value in avg_field_stats.items():
+            print(f"  {field_name}: {avg_value:.2f}")
         print(f"Avg Time Elapsed Per Response: {stats['total_time'] / num_requests:.2f}")
         print(f"\nTotal Benchmarking Time: {t_1 - t_0}")
 
