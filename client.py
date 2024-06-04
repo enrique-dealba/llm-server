@@ -142,14 +142,14 @@ def send_prompt(prompt: str, client: Client):
                 response = str(response)  # TODO: add try/catch block
 
             response = tp.clean_mistral(response)  # TODO: check DEFAULT_MODEL to choose
-            print(f"\nLLM Response: {response}")
+            # print(f"\nLLM Response: {response}")
 
             # queries = result.get("queries")
             # if queries:
             #     print(f"\nPrevious Queries: {queries}")
 
             tps = tp.measure_performance(t_0, t_1, response)
-            print(f"Tokens per second: {tps} t/s")
+            # print(f"Tokens per second: {tps} t/s")
             return response
 
     except requests.exceptions.RequestException as e:

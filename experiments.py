@@ -352,19 +352,32 @@ awq_openhermes_4 = [
     0.4615, 1.0, 5.83, # SCO
 ]
 
+# """
+# Testing in this order:
+#         "TheBloke/OpenHermes-2.5-Mistral-7B-GPTQ",
+#         "TheBloke/OpenHermes-2.5-Mistral-7B-AWQ",
+#         "teknium/OpenHermes-2.5-Mistral-7B",
+#         "TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
+#         "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
+#         "teknium/OpenHermes-2.5-Mistral-7B",
+#         "TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
+#         "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
+#         "TheBloke/OpenHermes-2.5-Mistral-7B-GPTQ",
+#         "TheBloke/OpenHermes-2.5-Mistral-7B-AWQ",
+# """
+
+# Simple prelim tests for:
 """
-Testing in this order:
-        "TheBloke/OpenHermes-2.5-Mistral-7B-GPTQ",
-        "TheBloke/OpenHermes-2.5-Mistral-7B-AWQ",
-        "teknium/OpenHermes-2.5-Mistral-7B",
-        "TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
-        "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
-        "teknium/OpenHermes-2.5-Mistral-7B",
-        "TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
-        "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
-        "TheBloke/OpenHermes-2.5-Mistral-7B-GPTQ",
-        "TheBloke/OpenHermes-2.5-Mistral-7B-AWQ",
+"NousResearch/Hermes-2-Pro-Mistral-7B",
+"TheBloke/OpenHermes-2.5-Mistral-7B-GPTQ",
+"TheBloke/OpenHermes-2.5-Mistral-7B-AWQ",
+"TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
+"TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
+"teknium/OpenHermes-2.5-Mistral-7B",
 """
+# Using new JSON schema Ground-truth set
+
+
 
 
 ######### BELOW IS PREVIOUS FUNC CALL / TOOL EXPERIMENTS

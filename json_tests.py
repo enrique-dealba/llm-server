@@ -82,16 +82,16 @@ def function_call(
                     total_requests += 1
                     continue
 
-                model_json = model_to_json(extracted_model)
-
-                print(f"\n{pred_obj}: {model_json}")
-                print(" ")
-                print("vs.")
-                print(" ")
-                
-                expected_json = model_to_json(schema)
-                print(f"\n{objective}: {expected_json}")
-                print(" ")
+                # model_json = model_to_json(extracted_model)
+                # print("LLM Prediction:")
+                # print(f"\n{pred_obj}: {model_json}")
+                # print(" ")
+                # print("vs.")
+                # print(" ")
+                # print("Expected Ground Truth:")
+                # expected_json = model_to_json(schema)
+                # print(f"\n{objective}: {expected_json}")
+                # print(" ")
 
 
                 correctness = calculate_matching_percentage(extracted_model, schema)
@@ -107,9 +107,9 @@ def function_call(
                 if pred_obj == objective or objective in pred_obj:
                     obj_correctness += 1
 
-                print(f"% GT Matching Fields: {correctness:.2%}")  # Debug print
-                print(f"Elapsed Time: {elapsed_time} seconds")  # Debug print
-                print("=" * 30)  # Debug print
+                # print(f"% GT Matching Fields: {correctness:.2%}")  # Debug print
+                # print(f"Elapsed Time: {elapsed_time} seconds")  # Debug print
+                # print("=" * 30)  # Debug print
 
             except Exception as e:
                 logging.error(f"Error processing prompt: {prompt}. {str(e)}")
@@ -156,7 +156,7 @@ if __name__ == "__main__":
             prompts=prompts,
             objective=objective,
             schemas=schemas,
-            num_tests=2,
+            num_tests=3,
         )
 
         t_1 = time.perf_counter()
