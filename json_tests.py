@@ -2,7 +2,7 @@ import argparse
 import json
 import logging
 import time
-from typing import Dict
+from typing import Dict, Type
 
 from pydantic import BaseModel
 
@@ -17,9 +17,37 @@ from templates import (
 from utils import calculate_matching_percentage
 
 
+def parse_arguments() -> argparse.Namespace:
+    """Parse command-line arguments."""
+    parser = argparse.ArgumentParser(description="Run JSON tests")
+    parser.add_argument(
+        "--prompts", type=str, required=True, help="JSON string of prompts"
+    )
+    parser.add_argument("--objective", type=str, required=True, help="Objective string")
+    parser.add_argument(
+        "--schemas", type=str, required=True, help="JSON string of schemas"
+    )
+    return parser.parse_args()
+
+
+def load_schemas(
+    schema_classes: Dict[str, Type[BaseModel]], schemas_json: str
+) -> list[BaseModel]:
+    """Load schemas from JSON string."""
+    try:
+        schemas_data = json.loads(schemas_json)
+        return [
+            schema_classes[schema_data["type"]](**schema_data)
+            for schema_data in schemas_data
+            if "type" in schema_data and schema_data["type"] in schema_classes
+        ]
+    except (json.JSONDecodeError, KeyError) as e:
+        raise ValueError(f"Invalid schema format: {e}")
+
+
 def function_call(
     stats: Dict,
-    prompts: list,
+    prompts: list[str],
     objective: str,
     schemas: list[BaseModel],
     num_tests: int = 3,
@@ -37,11 +65,12 @@ def function_call(
         for prompt, schema in zip(prompts, schemas):
             try:
                 t_0 = time.perf_counter()
+
                 response, extracted_model, _, pred_obj = process_prompt(prompt, client)
                 correctness = calculate_matching_percentage(extracted_model, schema)
 
                 t_1 = time.perf_counter()
-
+                
                 if response:
                     elapsed_time = t_1 - t_0
                     total_time += elapsed_time
@@ -61,17 +90,11 @@ def function_call(
     stats["total_time"] += total_time
     stats["successful_requests"] += successful_requests
     stats["total_requests"] += total_requests
-
     return stats
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--prompts", type=str, required=True)
-    parser.add_argument("--objective", type=str, required=True)
-    parser.add_argument("--schemas", type=str, required=True)
-
-    args = parser.parse_args()
+    args = parse_arguments()
 
     prompts = json.loads(args.prompts)
     objective = json.loads(args.objective)
@@ -96,20 +119,34 @@ if __name__ == "__main__":
         "total_requests": 0.0,
     }
 
-    t_0 = time.perf_counter()
+    try:
+        prompts = json.loads(args.prompts)
+        objective = args.objective
+        schemas = load_schemas(schema_classes, args.schemas)
 
-    stats = function_call(
-        stats=stats, prompts=prompts, objective=objective, schemas=schemas, num_tests=2
-    )
+        t_0 = time.perf_counter()
 
+        stats = function_call(
+            stats=stats,
+            prompts=prompts,
+            objective=objective,
+            schemas=schemas,
+            num_tests=2,
+        )
+    t_1 = time.perf_counter()
     t_1 = time.perf_counter()
     total_time = t_1 - t_0
+        t_1 = time.perf_counter()
+    total_time = t_1 - t_0
 
-    num_requests = stats["successful_requests"]
-    if num_requests <= 0:
-        num_requests = 1
+        num_requests = stats["successful_requests"]
+        if num_requests <= 0:
+            num_requests = 1
 
-    print(f"Avg Model Correctness: {stats['total_correctness']/num_requests:.2%}")
-    print(f"Avg Objective Correctness: {stats['obj_correctness']/num_requests:.2%}")
-    print(f"Avg Time Elapsed Per Response: {stats['total_time']/num_requests:.2f}")
-    print(f"\nTotal Benchmarking Time: {total_time}")
+        print(f"Avg Model Correctness: {stats['total_correctness']/num_requests:.2%}")
+        print(f"Avg Objective Correctness: {stats['obj_correctness']/num_requests:.2%}")
+        print(f"Avg Time Elapsed Per Response: {stats['total_time']/num_requests:.2f}")
+        print(f"\nTotal Benchmarking Time: {t_1 - t_0}")
+
+    except ValueError as e:
+        logging.error(f"Error loading schemas: {e}")
