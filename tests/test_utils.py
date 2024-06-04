@@ -1174,6 +1174,16 @@ class RevisitObjective(BaseModel):
     priority: Optional[Union[int, str]] = None
 
 
+class ModifiedRevisitObjective(RevisitObjective):
+    """Modified version of RevisitObjective with some fields removed or modified."""
+
+    target_id_list: Optional[list[str]] = None
+    sensor_name_list: Optional[list[str]] = None
+    data_mode: Optional[str] = None
+    collect_request_type: Optional[str] = None
+    new_field: Optional[str] = None
+
+
 class TestCalculateMatchingPercentage(unittest.TestCase):
     """Testing calculate_matching_percentage function."""
 
@@ -1292,6 +1302,43 @@ class TestCalculateMatchingPercentage(unittest.TestCase):
         self.assertAlmostEqual(
             calculate_matching_percentage(model1, model2), 0.8666, places=2
         )
+
+    def test_different_models_partial_match(self):
+        """Test two different BaseModels with some matching fields."""
+        model1 = RevisitObjective(
+            classification_marking="UNCLASSIFIED",
+            target_id_list=["target1", "target2"],
+            sensor_name_list=["sensor1", "sensor2"],
+            data_mode="DATA_MODE",
+            collect_request_type="REQUEST_TYPE",
+            patience_minutes=10,
+            revisits_per_hour=2.5,
+            hours_to_plan=8,
+            number_of_frames=5,
+            integration_time=1.5,
+            binning=2,
+            objective_name="Objective 1",
+            objective_start_time=datetime(2023, 6, 1, 9, 0),
+            objective_end_time=datetime(2023, 6, 1, 17, 0),
+            priority=1,
+        )
+        model2 = ModifiedRevisitObjective(
+            classification_marking="UNCLASSIFIED",
+            patience_minutes=10,
+            revisits_per_hour=2.5,
+            hours_to_plan=8,
+            number_of_frames=5,
+            integration_time=1.5,
+            binning=2,
+            objective_name="Objective 1",
+            objective_start_time=datetime(2023, 6, 1, 9, 0),
+            objective_end_time=datetime(2023, 6, 1, 17, 0),
+            priority=1,
+            new_field="New Field Value",
+        )
+        matching_percentage = calculate_matching_percentage(model1, model2)
+        self.assertGreater(matching_percentage, 0.0)
+        self.assertLess(matching_percentage, 1.0)
 
 
 if __name__ == "__main__":

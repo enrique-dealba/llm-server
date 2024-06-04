@@ -4,11 +4,25 @@ import logging
 import time
 from typing import Dict
 
+from pydantic import BaseModel
+
 from client import Client, process_prompt
+from templates import (
+    CatalogMaintenanceObjectiveTemplate,
+    DataEnrichmentObjectiveTemplate,
+    PeriodicRevisitObjectiveTemplate,
+    SearchObjectiveTemplate,
+    SpectralClearingObjectiveTemplate,
+)
+from utils import calculate_matching_percentage
 
 
 def function_call(
-    stats: Dict, prompts: list, objective: str, num_tests: int = 3
+    stats: Dict,
+    prompts: list,
+    objective: str,
+    schemas: list[BaseModel],
+    num_tests: int = 3,
 ) -> Dict[str, float]:
     """Runs a series of prompts through the LLM router and benchmarks correctness."""
     client = Client()
@@ -20,10 +34,12 @@ def function_call(
     total_requests = 0.0
 
     for _ in range(num_tests):
-        for prompt in prompts:
+        for prompt, schema in zip(prompts, schemas):
             try:
                 t_0 = time.perf_counter()
-                response, _, correctness, pred_obj = process_prompt(prompt, client)
+                response, extracted_model, _, pred_obj = process_prompt(prompt, client)
+                correctness = calculate_matching_percentage(extracted_model, schema)
+
                 t_1 = time.perf_counter()
 
                 if response:
@@ -53,10 +69,24 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--prompts", type=str, required=True)
     parser.add_argument("--objective", type=str, required=True)
+    parser.add_argument("--schemas", type=str, required=True)
+
     args = parser.parse_args()
 
     prompts = json.loads(args.prompts)
     objective = json.loads(args.objective)
+
+    schema_classes = {
+        "CatalogMaintenanceObjective": CatalogMaintenanceObjectiveTemplate,
+        "PeriodicRevisitObjective": PeriodicRevisitObjectiveTemplate,
+        "SearchObjective": SearchObjectiveTemplate,
+        "DataEnrichmentObjective": DataEnrichmentObjectiveTemplate,
+        "SpectralClearingObjective": SpectralClearingObjectiveTemplate,
+    }
+
+    schemas = [
+        schema_classes[schema["type"]](**schema) for schema in json.loads(args.schemas)
+    ]
 
     stats = {
         "total_correctness": 0.0,
@@ -69,7 +99,7 @@ if __name__ == "__main__":
     t_0 = time.perf_counter()
 
     stats = function_call(
-        stats=stats, prompts=prompts, objective=objective, num_tests=5
+        stats=stats, prompts=prompts, objective=objective, schemas=schemas, num_tests=2
     )
 
     t_1 = time.perf_counter()
