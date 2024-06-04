@@ -4,6 +4,7 @@ import os
 import subprocess
 import time
 
+from datetime import datetime
 from templates import objective_to_schema
 
 logging.basicConfig(
@@ -74,6 +75,12 @@ def log_experiment_results(experiment_number, stats, total_time):
     with open("json_tests_output.log", "a") as log_file:
         log_file.write(log_entry)
 
+class CustomJSONEncoder(json.JSONEncoder):
+    """Converts datetimes to ISO format strings."""
+    def default(self, obj):
+        if isinstance(obj, datetime):
+            return obj.isoformat()
+        return super().default(obj)
 
 def run_tests(prompts, schemas, objective):
     """Runs the tests."""
@@ -92,7 +99,7 @@ def run_tests(prompts, schemas, objective):
                 "python", "json_tests.py",
                 f"--prompts={json.dumps(prompts)}",
                 f"--objective={json.dumps(objective)}",
-                f"--schemas={json.dumps([schema.dict() for schema in schemas])}",
+                f"--schemas={json.dumps([schema.dict() for schema in schemas], cls=CustomJSONEncoder)}",
             ],
             check=True
         )
