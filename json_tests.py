@@ -14,7 +14,7 @@ from templates import (
     SearchObjectiveTemplate,
     SpectralClearingObjectiveTemplate,
 )
-from utils import calculate_matching_percentage
+from utils import calculate_matching_percentage, model_to_json
 
 
 def parse_arguments() -> argparse.Namespace:
@@ -82,6 +82,18 @@ def function_call(
                     total_requests += 1
                     continue
 
+                model_json = model_to_json(extracted_model)
+
+                print(f"\n{pred_obj}: {model_json}")
+                print(" ")
+                print("vs.")
+                print(" ")
+                
+                expected_json = model_to_json(schema)
+                print(f"\n{objective}: {expected_json}")
+                print(" ")
+
+
                 correctness = calculate_matching_percentage(extracted_model, schema)
 
                 t_1 = time.perf_counter()
@@ -96,7 +108,7 @@ def function_call(
                     obj_correctness += 1
 
                 print(f"% GT Matching Fields: {correctness:.2%}")  # Debug print
-                # print(f"Elapsed Time: {elapsed_time} seconds")  # Debug print
+                print(f"Elapsed Time: {elapsed_time} seconds")  # Debug print
                 print("=" * 30)  # Debug print
 
             except Exception as e:

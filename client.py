@@ -81,7 +81,7 @@ def process_prompt(prompt: str, client: Client):
         # t_end = time.perf_counter()
         # print(f"extract_model - time: {t_end - t_start} seconds")
 
-        model_json = model_to_json(extracted_model)
+        # model_json = model_to_json(extracted_model)
 
         # pro_check = PeriodicRevisitObjectiveTemplate(
         #     classification_marking="U",
@@ -110,11 +110,11 @@ def process_prompt(prompt: str, client: Client):
         # USE BELOW DURING DEBUGGING
         # print(f"\nLLM Response: {cleaned_response}")
         # print("=" * 30)
-        print(f"\n{objective}: {model_json}")
+        # print(f"\n{objective}: {model_json}")
         # print(f"% Matching Fields: {correctness:.2%}")
         # tps = tp.measure_performance(t_0, t_1, cleaned_response)
         # print(f"Tokens per second: {tps} t/s")
-        print(f"Elapsed Time: {t_1 - t_0} seconds")
+        # print(f"Elapsed Time: {t_1 - t_0} seconds")
         # print("=" * 30)
 
         return cleaned_response, extracted_model, correctness, objective
