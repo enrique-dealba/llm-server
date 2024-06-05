@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     NUM_RESPONSES: int = 1
     MAX_TOKENS: int = 512
     MAX_SEQ_LEN: int = 16384
-    TEMPERATURE: float = 0.2
+    TEMPERATURE: float = 0.1
     TOP_P: float = 0.95
     API_URL: str = "http://localhost:8888"
 

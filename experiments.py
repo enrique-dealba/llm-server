@@ -483,6 +483,89 @@ openhermes_2 = [
     0.2649, 0.0, 8.00 # SCO
 ]
 
+"""
+Experiments for:
+"TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
+"TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
+"TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
+"TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
+"TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
+"TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
+"TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
+"TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
+
+Config:
+TEMPERATURE: float = 0.2** -- will vary this
+TOP_P: float = 0.95
+USE_AGENT: bool = False -- will vary this
+AWQ_GPU_UTIL: float = 0.60
+GPTQ_GPU_UTIL: float = 0.45
+"""
+
+# Avg GT Correctness, Avg Objective Correctness, Avg Time
+TheBloke_Mistral_7B_Instruct_v0_2_AWQ_1 = [
+    0.6468, 1.0, 4.93, # CMO
+    0.4984, 0.4286, 6.64, # PRO
+    0.8594, 1.0, 4.71, # SO
+    0.7604, 1.0, 4.07, # DEO
+    0.6964, 1.0, 4.66 # SCO
+]
+
+TheBloke_Mistral_7B_Instruct_v0_2_GPTQ_1 = [
+    0.6548, 1.0, 2.53, # CMO
+    0.5965, 0.6316, 3.61, # PRO
+    0.8594, 1.0, 3.01, # SO
+    0.7604, 1.0, 2.70, # DEO
+    0.6964, 1.0, 2.96 # SCO
+]
+
+TheBloke_Mistral_7B_Instruct_v0_2_GPTQ_2 = [
+    0.6548, 1.0, 2.52, # CMO
+    0.5965, 0.6316, 3.59, # PRO
+    0.8594, 1.0, 3.02, # SO
+    0.7604, 1.0, 2.69, # DEO
+    0.6964, 1.0, 2.96 # SCO
+]
+
+TheBloke_Mistral_7B_Instruct_v0_2_AWQ_2 = [
+    0.6468, 1.0, 4.96, # CMO
+    0.5016, 0.4286, 6.25, # PRO
+    0.8594, 1.0, 4.71, # SO
+    0.7604, 1.0, 21.75, # DEO
+    0.6964, 1.0, 4.64 # SCO
+]
+
+TheBloke_Mistral_7B_Instruct_v0_2_AWQ_3 = [
+    0.6468, 1.0, 4.94, # CMO
+    0.5016, 0.4286, 6.07, # PRO
+    0.8594, 1.0, 4.71, # SO
+    0.7604, 1.0, 4.06, # DEO
+    0.6964, 1.0, 4.67 # SCO
+]
+
+TheBloke_Mistral_7B_Instruct_v0_2_GPTQ_3 = [
+    0.6548, 1.0, 2.50, # CMO
+    0.5833, 0.6000, 3.65, # PRO
+    0.8594, 1.0, 3.02, # SO
+    0.7604, 1.0, 2.70, # DEO
+    0.6964, 1.0, 3.01 # SCO
+]
+
+TheBloke_Mistral_7B_Instruct_v0_2_AWQ_4 = [
+    0.6468, 1.0, 4.94, # CMO
+    0.4984, 0.4286, 6.65, # PRO
+    0.8594, 1.0, 4.71, # SO
+    0.7604, 1.0, 4.09, # DEO
+    0.6964, 1.0, 4.66 # SCO
+]
+
+TheBloke_Mistral_7B_Instruct_v0_2_GPTQ_4 = [
+    0.6548, 1.0, 2.53, # CMO
+    0.5965, 0.6316, 3.69, # PRO
+    0.8594, 1.0, 3.03, # SO
+    0.7604, 1.0, 2.70, # DEO
+    0.6964, 1.0, 2.97 # SCO
+]
 
 ######### BELOW IS PREVIOUS FUNC CALL / TOOL EXPERIMENTS
 
