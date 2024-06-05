@@ -1,6 +1,6 @@
 """Objectives Testing."""
 
-# Beef Jerky
+# Just Jerky
 
 # Single examples + descriptions
 # CMO avg correct, PRO avg correct:
