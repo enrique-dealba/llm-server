@@ -11,6 +11,7 @@ from templates import ObjectiveTime
 from utils import (
     calculate_filling_percentage,
     calculate_matching_percentage,
+    calculate_matching_percentage_info,
     clean_json_str,
     combine_jsons,
     combine_models,
@@ -1184,6 +1185,19 @@ class ModifiedRevisitObjective(RevisitObjective):
     new_field: Optional[str] = None
 
 
+class TimeObjective(BaseModel):
+    """Focuses solely on Optional[Union[datetime, str]] fields."""
+
+    objective_start_time: Optional[Union[datetime, str]] = None
+    objective_end_time: Optional[Union[datetime, str]] = None
+
+
+class ListObjective(BaseModel):
+    """Focuses solely on list-based fields."""
+    target_id_list: Optional[list[str]] = None
+    sensor_name_list: Optional[list[str]] = None
+    rso_id_list: Optional[list[str]] = None
+
 class TestCalculateMatchingPercentage(unittest.TestCase):
     """Testing calculate_matching_percentage function."""
 
@@ -1339,6 +1353,122 @@ class TestCalculateMatchingPercentage(unittest.TestCase):
         matching_percentage = calculate_matching_percentage(model1, model2)
         self.assertGreater(matching_percentage, 0.0)
         self.assertLess(matching_percentage, 1.0)
+
+    def test_datetime_fields(self):
+        """Tests two different datetime formats. Should be equal."""
+        model1 = TimeObjective(
+            objective_start_time="2024-05-21T19:20:00.150000+00:00",
+            objective_end_time="2024-05-21T22:30:00.250000+00:00",
+        )
+        model2 = TimeObjective(
+            objective_start_time="2024-05-21 19:20:00.150000+00:00",
+            objective_end_time="2024-05-21 22:30:00.250000+00:00",
+        )
+        self.assertEqual(calculate_matching_percentage(model1, model2), 1.0)
+
+
+class RevisitObjectiveInfo(BaseModel):
+    """Modified version of RevisitObjective with some fields removed or modified."""
+
+    target_id_list: Optional[list[str]] = None
+    sensor_name_list: Optional[list[str]] = None
+    data_mode: Optional[str] = None
+    collect_request_type: Optional[str] = None
+    new_field: Optional[str] = None
+
+
+class TestCalculateMatchingPercentageInfo(unittest.TestCase):
+    """Tests the calculate_matching_percentage_info function."""
+
+    def test_identical_models(self):
+        """Tests identical models."""
+        model1 = RevisitObjectiveInfo(
+            target_id_list=["target1", "target2"],
+            sensor_name_list=["sensor1", "sensor2"],
+            data_mode="mode1",
+            collect_request_type="type1",
+            new_field="value1",
+        )
+        model2 = RevisitObjectiveInfo(
+            target_id_list=["target1", "target2"],
+            sensor_name_list=["sensor1", "sensor2"],
+            data_mode="mode1",
+            collect_request_type="type1",
+            new_field="value1",
+        )
+
+        percentage, field_stats = calculate_matching_percentage_info(model1, model2)
+        self.assertEqual(percentage, 1.0)
+        self.assertEqual(
+            field_stats,
+            {
+                "target_id_list": 1,
+                "sensor_name_list": 1,
+                "data_mode": 1,
+                "collect_request_type": 1,
+                "new_field": 1,
+            },
+        )
+
+    def test_different_models(self):
+        """Tests completely different models."""
+        model1 = RevisitObjectiveInfo(
+            target_id_list=["target1", "target2"],
+            sensor_name_list=["sensor1", "sensor2"],
+            data_mode="mode1",
+            collect_request_type="type1",
+            new_field="value1",
+        )
+        model2 = RevisitObjectiveInfo(
+            target_id_list=["target3", "target4"],
+            sensor_name_list=["sensor3", "sensor4"],
+            data_mode="mode2",
+            collect_request_type="type2",
+            new_field="value2",
+        )
+
+        percentage, field_stats = calculate_matching_percentage_info(model1, model2)
+        self.assertEqual(percentage, 0.0)
+        self.assertEqual(
+            field_stats,
+            {
+                "target_id_list": 0,
+                "sensor_name_list": 0,
+                "data_mode": 0,
+                "collect_request_type": 0,
+                "new_field": 0,
+            },
+        )
+
+    def test_partial_match(self):
+        """Tests partially matching models."""
+        model1 = RevisitObjectiveInfo(
+            target_id_list=["target1", "target2"],
+            sensor_name_list=["sensor1", "sensor2"],
+            data_mode="mode1",
+            collect_request_type="type1",
+            new_field="value1",
+        )
+        model2 = RevisitObjectiveInfo(
+            target_id_list=["target1", "target2"],
+            sensor_name_list=["sensor3", "sensor4"],
+            data_mode="mode1",
+            collect_request_type="type2",
+            new_field="value1",
+        )
+
+        percentage, field_stats = calculate_matching_percentage_info(model1, model2)
+        self.assertEqual(percentage, 0.6)
+        self.assertEqual(
+            field_stats,
+            {
+                "target_id_list": 1,
+                "sensor_name_list": 0,
+                "data_mode": 1,
+                "collect_request_type": 0,
+                "new_field": 1,
+            },
+        )
 
 
 if __name__ == "__main__":

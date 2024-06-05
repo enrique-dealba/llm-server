@@ -805,7 +805,7 @@ def extract_model(
 def calculate_matching_percentage(
     output_model: BaseModel, target_model: BaseModel
 ) -> float:
-    """Calculates percentage of fields that match between two Pydantic BaseModels."""
+    """Calculates percent of fields that match between two Pydantic BaseModels."""
     if output_model is None or target_model is None:
         return 0.0
 
@@ -816,70 +816,111 @@ def calculate_matching_percentage(
     if total_fields == 0:
         return 0.0
 
-    matching_fields = sum(
-        1
-        for field_name in target_fields
-        if field_name in output_fields
-        and _compare_field_values(
-            getattr(output_model, field_name), getattr(target_model, field_name)
-        )
-    )
-
-    return matching_fields / total_fields
-
-
-def _compare_field_values(output_value: Any, target_value: Any) -> bool:
-    """Compares the values of two fields for equality."""
-    if isinstance(output_value, BaseModel) and isinstance(target_value, BaseModel):
-        return calculate_matching_percentage(output_value, target_value) == 1.0
-    elif isinstance(output_value, list) and isinstance(target_value, list):
-        return len(output_value) == len(target_value) and all(
-            _compare_field_values(o, t) for o, t in zip(output_value, target_value)
-        )
-    else:
-        return output_value == target_value
-    
-def calculate_matching_percentage_info(
-    output_model: BaseModel, target_model: BaseModel
-) -> tuple[float, dict[str, int]]:
-    """Calculates percentage of fields that match between two Pydantic BaseModels."""
-    if output_model is None or target_model is None:
-        return 0.0, {}
-
-    output_fields = output_model.__fields__
-    target_fields = target_model.__fields__
-
-    total_fields = len(target_fields)
-    if total_fields == 0:
-        return 0.0, {}
-
-    stats_dict = {}
     matching_fields = 0
-
     for field_name in target_fields:
         if field_name in output_fields:
             output_value = getattr(output_model, field_name)
             target_value = getattr(target_model, field_name)
+            if _compare_field_values(output_value, target_value):
+                matching_fields += 1
+
+    return matching_fields / total_fields
+
+
+def _parse_datetime(value):
+    """Attempts to parse a value to a datetime object."""
+    if isinstance(value, datetime):
+        return value
+    elif isinstance(value, str):
+        try:
+            return datetime.fromisoformat(value.replace(" ", "T"))
+        except ValueError:
+            return None
+    else:
+        return None
+
+
+def _compare_field_values(output_value: Any, target_value: Any) -> bool:
+    """Compares the values of two fields for strict equality."""
+    # Handles BaseModel instances for nested model comparison
+    if isinstance(output_value, BaseModel) and isinstance(target_value, BaseModel):
+        return calculate_matching_percentage(output_value, target_value) == 1.0
+
+    # Handles list types to compare if they have any common element
+    elif isinstance(output_value, list) and isinstance(target_value, list):
+        return bool(set(output_value) & set(target_value))
+
+    # Handles datetime comparisons
+    elif isinstance(output_value, (datetime, str)) and isinstance(
+        target_value, (datetime, str)
+    ):
+        output_datetime = _parse_datetime(output_value)
+        target_datetime = _parse_datetime(target_value)
+        if output_datetime is not None and target_datetime is not None:
+            return output_datetime == target_datetime
+        else:
+            return str(output_value) == str(target_value)
+
+    # Defaults to direct comparison for other types
+    else:
+        return output_value == target_value
+
+
+def calculate_matching_percentage_info(
+    output_model: BaseModel, target_model: BaseModel
+) -> tuple[float, dict[str, int]]:
+    """Calculates the percentage of fields that match between two Pydantic BaseModels."""
+    if output_model is None or target_model is None:
+        return 0.0, {}
+
+    output_fields = output_model.__fields__
+    target_fields = target_model.__fields__
+
+    total_fields = len(target_fields)
+    if total_fields == 0:
+        return 0.0, {}
+
+    matching_fields = 0
+    field_stats = {}
+
+    for field_name, target_field in target_fields.items():
+        if field_name in output_fields:
+            output_value = getattr(output_model, field_name)
+            target_value = getattr(target_model, field_name)
             if _compare_field_values_info(output_value, target_value):
-                stats_dict[field_name] = 1
+                field_stats[field_name] = 1
                 matching_fields += 1
             else:
-                stats_dict[field_name] = 0
+                field_stats[field_name] = 0
         else:
-            stats_dict[field_name] = 0
+            field_stats[field_name] = 0
 
-    return matching_fields / total_fields, stats_dict
+    return matching_fields / total_fields, field_stats
 
 
 def _compare_field_values_info(output_value: Any, target_value: Any) -> bool:
-    """Compares the values of two fields for equality."""
+    """Compares the values of two fields for equality, handling various data types."""
     if isinstance(output_value, BaseModel) and isinstance(target_value, BaseModel):
         percentage, _ = calculate_matching_percentage_info(output_value, target_value)
         return percentage == 1.0
+
     elif isinstance(output_value, list) and isinstance(target_value, list):
-        return len(output_value) == len(target_value) and all(
-            _compare_field_values(o, t) for o, t in zip(output_value, target_value)
+        if len(output_value) != len(target_value):
+            return False
+        return all(
+            _compare_field_values_info(o, t) for o, t in zip(output_value, target_value)
         )
+
+    elif isinstance(output_value, (datetime, str)) and isinstance(
+        target_value, (datetime, str)
+    ):
+        output_datetime = _parse_datetime(output_value)
+        target_datetime = _parse_datetime(target_value)
+        if output_datetime is not None and target_datetime is not None:
+            return output_datetime == target_datetime
+        else:
+            return str(output_value) == str(target_value)
+
     else:
         return output_value == target_value
 
