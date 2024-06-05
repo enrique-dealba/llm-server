@@ -410,6 +410,78 @@ openhermes_1 = [
     0.5754, 1.0, 15.50, # CMO
 ]
 
+# @num_tests=3, USE_AGENT=False, new GT
+gptq_openhermes_2 = [
+    0.3770, 1.0, 13.86, # CMO
+    0.1270, 0.0, 8.41, # PRO
+    0.1771, 0.0, 14.30, # SO
+    0.1354, 0.0, 19.41, # DEO
+    0.2232, 0.0, 10.11 # SCO
+]
+
+awq_openhermes_2 = [
+    0.3968, 1.0, 31.27, # CMO
+    0.2444, 0.2857, 29.26, # PRO
+    0.2031, 0.2083, 27.15, # SO
+    0.2812, 0.3333, 30.53, # DEO
+    0.2976, 0.4167, 29.24 # SCO
+]
+
+# strong -- only issues with start/end time (debug later)
+"""
+*** = most urgent
+fields with issues:
+collect_request_type
+objective_start_time***
+objective_end_time***
+priority
+max_rso_to_observe
+binning**
+target_id_list
+patience_minutes**
+integration_time
+number_of_frames*
+"""
+awq_mistral_2 = [
+    0.6468, 1.0, 4.92, # CMO
+    0.5016, 0.4286, 6.13, # PRO
+    0.8594, 1.0, 4.72, # SO
+    0.7604, 1.0, 4.07, # DEO
+    0.6964, 1.0, 4.66 # SCO
+]
+# very strong
+"""
+*** = most urgent
+target_total_obs***
+objective_start_time***
+objective_end_time***
+priority
+classification_marking**
+max_rso_to_observe
+patience_minutes***
+objective_name (this should be equal to Objective correctness)
+number_of_frames**
+binning***
+integration_time*
+rso_id_list***
+sensor_name_list***
+...
+"""
+gptq_mistral_2 = [
+    0.6548, 1.0, 2.53, # CMO
+    0.6111, 0.6667, 3.79, # PRO
+    0.8594, 1.0, 3.02, # SO
+    0.7604, 1.0, 2.71, # DEO
+    0.6964, 1.0, 2.97 # SCO
+]
+
+openhermes_2 = [
+    0.5794, 1.0, 16.95, # CMO
+    0.1873, 0.0, 9.86, # PRO
+    0.2682, 0.0, 6.56, # SO
+    0.3056, 0.0, 7.56, # DEO
+    0.2649, 0.0, 8.00 # SCO
+]
 
 
 ######### BELOW IS PREVIOUS FUNC CALL / TOOL EXPERIMENTS

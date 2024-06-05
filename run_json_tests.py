@@ -184,20 +184,30 @@ def main():
     }
 
     num_experiments = 1
+    # models = [
+    #     # "NousResearch/Hermes-2-Pro-Mistral-7B",
+    #     "TheBloke/OpenHermes-2.5-Mistral-7B-GPTQ",
+    #     "TheBloke/OpenHermes-2.5-Mistral-7B-AWQ",
+    #     # "teknium/OpenHermes-2.5-Mistral-7B",
+    #     "TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
+    #     "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
+    #     "teknium/OpenHermes-2.5-Mistral-7B",
+    #     # "TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
+    #     # "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
+    #     # "TheBloke/OpenHermes-2.5-Mistral-7B-GPTQ",
+    #     # "TheBloke/OpenHermes-2.5-Mistral-7B-AWQ",
+    #     # "teknium/OpenHermes-2.5-Mistral-7B",
+    #     # "mistralai/Mistral-7B-Instruct-v0.2",
+    # ]
     models = [
-        # "NousResearch/Hermes-2-Pro-Mistral-7B",
-        "TheBloke/OpenHermes-2.5-Mistral-7B-GPTQ",
-        "TheBloke/OpenHermes-2.5-Mistral-7B-AWQ",
-        # "teknium/OpenHermes-2.5-Mistral-7B",
         "TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
         "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
-        "teknium/OpenHermes-2.5-Mistral-7B",
-        # "TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
-        # "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
-        # "TheBloke/OpenHermes-2.5-Mistral-7B-GPTQ",
-        # "TheBloke/OpenHermes-2.5-Mistral-7B-AWQ",
-        # "teknium/OpenHermes-2.5-Mistral-7B",
-        # "mistralai/Mistral-7B-Instruct-v0.2",
+        "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
+        "TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
+        "TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
+        "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
+        "TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
+        "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
     ]
 
     for model in models:

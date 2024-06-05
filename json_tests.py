@@ -179,12 +179,12 @@ if __name__ == "__main__":
         if num_requests <= 0:
             num_requests = 1
 
-        print(f"Avg GT Correctness: {stats['total_correctness'] / num_requests:.2%}")
-        print(f"Avg Objective Correctness: {stats['obj_correctness'] / num_requests:.2%}")
-        # Print the avg_field_stats dictionary
+        # Prints the avg_field_stats dictionary
         print("Average Field-Level Stats:")
         for field_name, avg_value in avg_field_stats.items():
             print(f"  {field_name}: {avg_value:.2f}")
+        print(f"\nAvg GT Correctness: {stats['total_correctness'] / num_requests:.2%}")
+        print(f"Avg Objective Correctness: {stats['obj_correctness'] / num_requests:.2%}")
         print(f"Avg Time Elapsed Per Response: {stats['total_time'] / num_requests:.2f}")
         print(f"\nTotal Benchmarking Time: {t_1 - t_0}")
 
