@@ -1366,6 +1366,8 @@ class TestCalculateMatchingPercentage(unittest.TestCase):
         )
         self.assertEqual(calculate_matching_percentage(model1, model2), 1.0)
 
+    # def test_list_fields(self):
+
 
 class RevisitObjectiveInfo(BaseModel):
     """Modified version of RevisitObjective with some fields removed or modified."""
