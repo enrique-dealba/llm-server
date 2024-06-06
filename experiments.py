@@ -906,6 +906,82 @@ TheBloke_Mistral_7B_Instruct_v0_2_GPTQ_4 = [
     0.9609, 0.9583, 3.20, # SO
     0.9097, 0.9583, 2.84, # DEO
     0.8869, 0.9583, 3.17  # SCO
+], 
+
+# OpenHermes Experiments
+"""
+Config:
+
+TEMPERATURE: float = 0.0
+TOP_P: float = 0.95
+DEFAULT_GPU_UTIL: float = 0.30
+AWQ_GPU_UTIL: float = 0.60 # before: 0.50
+GPTQ_GPU_UTIL: float = 0.45 # before: 0.25
+USE_AGENT: bool = True
+"""
+# Avg GT Correctness, Avg Objective Correctness, Avg Time
+TheBloke_OpenHermes_2_5_Mistral_7B_AWQ = [
+    0.3214, 1.0000, 48.57, # CMO
+    0.1238, 0.4286, 30.61, # PRO 
+    0.2266, 0.2500, 19.35, # SO
+    0.3125, 0.2500, 33.62, # DEO
+    0.2411, 0.3750, 35.72  # SCO
+]
+
+TheBloke_OpenHermes_2_5_Mistral_7B_GPTQ = [
+    0.4167, 1.0000, 16.24, # CMO
+    0.1143, 0.0000, 10.37, # PRO
+    0.1250, 0.0000, 17.24, # SO
+    0.1146, 0.0000, 20.43, # DEO
+    0.2054, 0.0000, 9.02   # SCO
+]
+
+TheBloke_OpenHermes_2_5_Mistral_7B_GPTQ_2 = [
+    0.4048, 1.0000, 16.16, # CMO
+    0.1143, 0.0000, 9.98,  # PRO
+    0.1250, 0.0000, 17.06, # SO
+    0.1354, 0.0000, 18.81, # DEO
+    0.2054, 0.0000, 8.96   # SCO
+]
+
+TheBloke_OpenHermes_2_5_Mistral_7B_AWQ_2 = [
+    0.3333, 1.0000, 48.44, # CMO
+    0.1238, 0.4286, 30.76, # PRO
+    0.2188, 0.2500, 19.51, # SO
+    0.3125, 0.2500, 33.56, # DEO
+    0.2321, 0.3750, 35.63  # SCO
+]
+
+TheBloke_OpenHermes_2_5_Mistral_7B_AWQ_3 = [
+    0.3214, 1.0000, 48.38, # CMO
+    0.1238, 0.4286, 30.61, # PRO
+    0.2188, 0.2500, 19.56, # SO
+    0.3125, 0.2500, 33.44, # DEO
+    0.2500, 0.3750, 35.75  # SCO
+]
+
+TheBloke_OpenHermes_2_5_Mistral_7B_GPTQ_3 = [
+    0.4048, 1.0000, 16.13, # CMO
+    0.1143, 0.0000, 9.89,  # PRO
+    0.1250, 0.0000, 17.80, # SO
+    0.1250, 0.0000, 19.77, # DEO
+    0.1964, 0.0000, 9.75   # SCO
+]
+
+TheBloke_OpenHermes_2_5_Mistral_7B_AWQ_4 = [
+    0.3214, 1.0000, 48.07, # CMO
+    0.1238, 0.4286, 30.58, # PRO
+    0.2188, 0.2500, 19.29, # SO
+    0.3125, 0.2500, 33.49, # DEO
+    0.2321, 0.3750, 35.63  # SCO
+]
+
+TheBloke_OpenHermes_2_5_Mistral_7B_GPTQ_4 = [
+    0.4167, 1.0000, 15.93, # CMO 
+    0.1143, 0.0000, 10.43, # PRO
+    0.1250, 0.0000, 16.74, # SO
+    0.1354, 0.0000, 18.39, # DEO
+    0.1964, 0.0000, 9.28   # SCO
 ]
 
 ######### BELOW IS PREVIOUS FUNC CALL / TOOL EXPERIMENTS
