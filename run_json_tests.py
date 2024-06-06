@@ -202,12 +202,12 @@ def main():
     models = [
         "TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
         "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
-        # "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
-        # "TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
-        # "TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
-        # "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
-        # "TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
-        # "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
+        "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
+        "TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
+        "TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
+        "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
+        "TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
+        "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
     ]
 
     for model in models:

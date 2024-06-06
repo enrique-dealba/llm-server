@@ -745,6 +745,30 @@ TheBloke_Mistral_7B_Instruct_v0_2_GPTQ_4 = [
     0.8393, 1.0000, 3.00  # SCO
 ]
 
+# Sanity Check
+"""
+[
+        "TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
+        "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
+        "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
+        "TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
+        "TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
+        "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
+        "TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
+        "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
+    ]
+
+Config:
+TEMPERATURE: float = 0.1
+TOP_P: float = 0.95
+
+DEFAULT_GPU_UTIL: float = 0.30
+AWQ_GPU_UTIL: float = 0.60 # before: 0.50
+GPTQ_GPU_UTIL: float = 0.45 # before: 0.25
+USE_AGENT: bool = False
+"""
+
+
 
 ######### BELOW IS PREVIOUS FUNC CALL / TOOL EXPERIMENTS
 
