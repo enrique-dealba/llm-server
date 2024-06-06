@@ -199,26 +199,26 @@ def main():
     #     # "teknium/OpenHermes-2.5-Mistral-7B",
     #     # "mistralai/Mistral-7B-Instruct-v0.2",
     # ]
-    # models = [
-    #     "TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
-    #     "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
-    #     "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
-    #     "TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
-    #     "TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
-    #     "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
-    #     "TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
-    #     "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
-    # ]
     models = [
-        "TheBloke/OpenHermes-2.5-Mistral-7B-AWQ",
-        "TheBloke/OpenHermes-2.5-Mistral-7B-GPTQ",
-        "TheBloke/OpenHermes-2.5-Mistral-7B-GPTQ",
-        "TheBloke/OpenHermes-2.5-Mistral-7B-AWQ",
-        "TheBloke/OpenHermes-2.5-Mistral-7B-AWQ",
-        "TheBloke/OpenHermes-2.5-Mistral-7B-GPTQ",
-        "TheBloke/OpenHermes-2.5-Mistral-7B-AWQ",
-        "TheBloke/OpenHermes-2.5-Mistral-7B-GPTQ",
+        "TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
+        "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
+        # "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
+        # "TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
+        # "TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
+        # "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
+        # "TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
+        # "TheBloke/Mistral-7B-Instruct-v0.2-GPTQ",
     ]
+    # models = [
+    #     "TheBloke/OpenHermes-2.5-Mistral-7B-AWQ",
+    #     "TheBloke/OpenHermes-2.5-Mistral-7B-GPTQ",
+    #     "TheBloke/OpenHermes-2.5-Mistral-7B-GPTQ",
+    #     "TheBloke/OpenHermes-2.5-Mistral-7B-AWQ",
+    #     "TheBloke/OpenHermes-2.5-Mistral-7B-AWQ",
+    #     "TheBloke/OpenHermes-2.5-Mistral-7B-GPTQ",
+    #     "TheBloke/OpenHermes-2.5-Mistral-7B-AWQ",
+    #     "TheBloke/OpenHermes-2.5-Mistral-7B-GPTQ",
+    # ]
 
     for model in models:
         print(f"Running experiments for model: {model}")
