@@ -57,14 +57,14 @@ class LLMRouter:
         #             break
         # TODO: add logic to avoid after doing this once already...
         if (response.name and response.name == 'objective') and not self.objective_found:
-            print("OBJECTIVE FOUND!")
+            # print("OBJECTIVE FOUND!")
             response = "objective"
             self.objective_found = True
         elif response.name and response.name == 'extraction':
-            print("EXTRACTION FOUND!")
+            # print("EXTRACTION FOUND!")
             response = self.llm(prompt)
         else:
-            print("WARNING: NEITHER OBJECTIVE NOR EXTRACTION FOUND")
+            # print("WARNING: NEITHER OBJECTIVE NOR EXTRACTION FOUND")
             response = self.llm(prompt)
-        print(f"LLM Router Response: {response}, dtype={type(response)}")
+        # print(f"LLM Router Response: {response}, dtype={type(response)}")
         return response

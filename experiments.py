@@ -759,7 +759,7 @@ TheBloke_Mistral_7B_Instruct_v0_2_GPTQ_4 = [
     ]
 
 Config:
-TEMPERATURE: float = 0.1
+TEMPERATURE: float = 0.0
 TOP_P: float = 0.95
 
 DEFAULT_GPU_UTIL: float = 0.30
@@ -767,6 +767,71 @@ AWQ_GPU_UTIL: float = 0.60 # before: 0.50
 GPTQ_GPU_UTIL: float = 0.45 # before: 0.25
 USE_AGENT: bool = False
 """
+
+# Avg GT Correctness, Avg Objective Correctness, Avg Time
+TheBloke_Mistral_7B_Instruct_v0_2_AWQ = [
+    0.9881, 1.0000, 5.34, # CMO
+    0.7810, 0.5714, 5.47, # PRO 
+    0.9818, 1.0000, 4.70, # SO
+    0.9271, 1.0000, 4.09, # DEO
+    0.9018, 1.0000, 4.56  # SCO
+]
+
+TheBloke_Mistral_7B_Instruct_v0_2_GPTQ = [
+    0.9881, 1.0000, 2.48, # CMO
+    0.7714, 0.5714, 3.60, # PRO
+    0.9844, 1.0000, 3.04, # SO 
+    0.9271, 1.0000, 2.69, # DEO
+    0.9018, 1.0000, 2.91  # SCO
+]
+
+TheBloke_Mistral_7B_Instruct_v0_2_GPTQ_2 = [
+    0.9881, 1.0000, 2.53, # CMO
+    0.7714, 0.5714, 3.62, # PRO
+    0.9844, 1.0000, 3.05, # SO
+    0.9271, 1.0000, 2.68, # DEO
+    0.9018, 1.0000, 2.95  # SCO
+]
+
+TheBloke_Mistral_7B_Instruct_v0_2_AWQ_2 = [
+    0.9881, 1.0000, 5.38, # CMO
+    0.7810, 0.5714, 5.48, # PRO
+    0.9844, 1.0000, 4.73, # SO
+    0.9271, 1.0000, 4.15, # DEO
+    0.9018, 1.0000, 4.59  # SCO
+]
+
+TheBloke_Mistral_7B_Instruct_v0_2_AWQ_3 = [
+    0.9881, 1.0000, 5.40, # CMO
+    0.7810, 0.5714, 5.51, # PRO
+    0.9844, 1.0000, 4.75, # SO
+    0.9271, 1.0000, 4.08, # DEO
+    0.9018, 1.0000, 4.58  # SCO
+]
+
+TheBloke_Mistral_7B_Instruct_v0_2_GPTQ_3 = [
+    0.9881, 1.0000, 2.51, # CMO
+    0.7714, 0.5714, 3.61, # PRO
+    0.9844, 1.0000, 3.02, # SO
+    0.9271, 1.0000, 2.71, # DEO
+    0.9018, 1.0000, 2.93  # SCO
+]
+
+TheBloke_Mistral_7B_Instruct_v0_2_AWQ_4 = [
+    0.9881, 1.0000, 5.39, # CMO
+    0.7810, 0.5714, 5.54, # PRO
+    0.9844, 1.0000, 4.75, # SO
+    0.9271, 1.0000, 4.09, # DEO
+    0.9018, 1.0000, 4.55  # SCO
+]
+
+TheBloke_Mistral_7B_Instruct_v0_2_GPTQ_4 = [
+    0.9881, 1.0000, 2.49, # CMO
+    0.7714, 0.5714, 3.62, # PRO
+    0.9844, 1.0000, 3.05, # SO
+    0.9271, 1.0000, 2.70, # DEO
+    0.9018, 1.0000, 2.93  # SCO
+]
 
 
 
