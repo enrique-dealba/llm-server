@@ -833,7 +833,80 @@ TheBloke_Mistral_7B_Instruct_v0_2_GPTQ_4 = [
     0.9018, 1.0000, 2.93  # SCO
 ]
 
+# Testing USE_AGENT=True effects
+"""
+TEMPERATURE: float = 0.0
+TOP_P: float = 0.95
+DEFAULT_GPU_UTIL: float = 0.30
+AWQ_GPU_UTIL: float = 0.60 # before: 0.50
+GPTQ_GPU_UTIL: float = 0.45 # before: 0.25
+USE_AGENT: bool = True
+"""
 
+# Avg GT Correctness, Avg Objective Correctness, Avg Time
+TheBloke_Mistral_7B_Instruct_v0_2_AWQ = [
+    0.9881, 1.0000, 5.49, # CMO
+    0.7587, 0.5238, 5.70, # PRO
+    0.9609, 0.9583, 4.84, # SO 
+    0.9097, 0.9583, 4.23, # DEO
+    0.8869, 0.9583, 4.77  # SCO
+]
+
+TheBloke_Mistral_7B_Instruct_v0_2_GPTQ = [
+    0.9881, 1.0000, 2.67, # CMO
+    0.7524, 0.5238, 3.73, # PRO
+    0.9609, 0.9583, 3.21, # SO
+    0.9097, 0.9583, 2.84, # DEO
+    0.8869, 0.9583, 3.16  # SCO
+]
+
+TheBloke_Mistral_7B_Instruct_v0_2_GPTQ_2 = [
+    0.9881, 1.0000, 2.62, # CMO
+    0.7524, 0.5238, 3.75, # PRO
+    0.9609, 0.9583, 3.14, # SO
+    0.9097, 0.9583, 2.83, # DEO
+    0.8869, 0.9583, 3.15  # SCO
+]
+
+TheBloke_Mistral_7B_Instruct_v0_2_AWQ_2 = [
+    0.9881, 1.0000, 5.56, # CMO
+    0.7587, 0.5238, 5.71, # PRO
+    0.9609, 0.9583, 4.85, # SO
+    0.9097, 0.9583, 4.24, # DEO
+    0.8869, 0.9583, 4.79  # SCO
+]
+
+TheBloke_Mistral_7B_Instruct_v0_2_AWQ_3 = [
+    0.9881, 1.0000, 5.47, # CMO
+    0.7587, 0.5238, 5.67, # PRO
+    0.9609, 0.9583, 4.86, # SO
+    0.9097, 0.9583, 4.25, # DEO
+    0.8869, 0.9583, 4.75  # SCO
+]
+
+TheBloke_Mistral_7B_Instruct_v0_2_GPTQ_3 = [
+    0.9881, 1.0000, 2.66, # CMO
+    0.7524, 0.5238, 3.75, # PRO
+    0.9609, 0.9583, 3.15, # SO
+    0.9097, 0.9583, 2.85, # DEO
+    0.8869, 0.9583, 3.15  # SCO
+]
+
+TheBloke_Mistral_7B_Instruct_v0_2_AWQ_4 = [
+    0.9881, 1.0000, 5.54, # CMO
+    0.7587, 0.5238, 5.69, # PRO
+    0.9609, 0.9583, 4.85, # SO
+    0.9097, 0.9583, 4.23, # DEO
+    0.8869, 0.9583, 4.74  # SCO
+]
+
+TheBloke_Mistral_7B_Instruct_v0_2_GPTQ_4 = [
+    0.9881, 1.0000, 2.64, # CMO
+    0.7524, 0.5238, 3.74, # PRO
+    0.9609, 0.9583, 3.20, # SO
+    0.9097, 0.9583, 2.84, # DEO
+    0.8869, 0.9583, 3.17  # SCO
+]
 
 ######### BELOW IS PREVIOUS FUNC CALL / TOOL EXPERIMENTS
 

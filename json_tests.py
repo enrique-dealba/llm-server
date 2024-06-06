@@ -170,7 +170,7 @@ if __name__ == "__main__":
             prompts=prompts,
             objective=objective,
             schemas=schemas,
-            num_tests=3,
+            num_tests=1,
         )
 
         t_1 = time.perf_counter()
