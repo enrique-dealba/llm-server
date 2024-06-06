@@ -2,11 +2,12 @@ import argparse
 import json
 import logging
 import time
-from typing import Dict, Type, Optional, Tuple, Any
+from typing import Any, Dict, Optional, Tuple, Type
 
 from pydantic import BaseModel
 
-from client import Client, process_prompt
+from client import Client
+from prompt import PromptProcessor
 from templates import (
     CatalogMaintenanceObjectiveTemplate,
     DataEnrichmentObjectiveTemplate,
@@ -14,7 +15,11 @@ from templates import (
     SearchObjectiveTemplate,
     SpectralClearingObjectiveTemplate,
 )
-from utils import calculate_matching_percentage, calculate_matching_percentage_info, model_to_json
+from utils import (
+    calculate_matching_percentage,
+    calculate_matching_percentage_info,
+    model_to_json,
+)
 
 
 def parse_arguments() -> argparse.Namespace:
@@ -48,9 +53,7 @@ def load_schemas(
             else:
                 print(f"No matching class found for schema: {schema_data}")
         else:
-            print(
-                f"Invalid schema data type: {type(schema_data)}. Expected dict."
-            )
+            print(f"Invalid schema data type: {type(schema_data)}. Expected dict.")
     return loaded_schemas
 
 
@@ -63,6 +66,7 @@ def function_call(
 ) -> Dict[str, float]:
     """Runs a series of prompts through the LLM router and benchmarks correctness."""
     client = Client()
+    processor = PromptProcessor(client)
 
     total_correctness = 0.0
     obj_correctness = 0.0
@@ -77,7 +81,8 @@ def function_call(
             try:
                 t_0 = time.perf_counter()
 
-                response, extracted_model, _, pred_obj = process_prompt(prompt, client)
+                # response, extracted_model, _, pred_obj = process_prompt(prompt, client)
+                response, extracted_model, _, pred_obj = processor.process_skill(prompt)
 
                 if response is None:
                     print(f"Empty response for prompt: {prompt}")
@@ -95,9 +100,10 @@ def function_call(
                 # print(f"\n{objective}: {expected_json}")
                 # print(" ")
 
-
                 # correctness = calculate_matching_percentage(extracted_model, schema)
-                correctness, stats_dict = calculate_matching_percentage_info(extracted_model, schema)
+                correctness, stats_dict = calculate_matching_percentage_info(
+                    extracted_model, schema
+                )
 
                 # Accumulate field-level stats
                 for field_name, value in stats_dict.items():
@@ -184,8 +190,12 @@ if __name__ == "__main__":
         for field_name, avg_value in avg_field_stats.items():
             print(f"  {field_name}: {avg_value:.2f}")
         print(f"\nAvg GT Correctness: {stats['total_correctness'] / num_requests:.2%}")
-        print(f"Avg Objective Correctness: {stats['obj_correctness'] / num_requests:.2%}")
-        print(f"Avg Time Elapsed Per Response: {stats['total_time'] / num_requests:.2f}")
+        print(
+            f"Avg Objective Correctness: {stats['obj_correctness'] / num_requests:.2%}"
+        )
+        print(
+            f"Avg Time Elapsed Per Response: {stats['total_time'] / num_requests:.2f}"
+        )
         print(f"\nTotal Benchmarking Time: {t_1 - t_0}")
 
     except Exception as e:
