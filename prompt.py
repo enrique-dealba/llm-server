@@ -50,14 +50,14 @@ class PromptProcessor:
 
             cleaned_response = tp.clean_mistral(response)
 
-            logging.info(f"\nLLM Response: {cleaned_response}")
-            logging.info("=" * 30)
-            logging.info(f"\n{objective}: {model_json}")
-            logging.info(f"% Matching Fields: {correctness:.2%}")
+            logging.debug(f"\nLLM Response: {cleaned_response}")
+            logging.debug("=" * 30)
+            logging.debug(f"\n{objective}: {model_json}")
+            logging.debug(f"% Matching Fields: {correctness:.2%}")
             tps = tp.measure_performance(start_time, end_time, cleaned_response)
-            logging.info(f"Tokens per second: {tps} t/s")
-            logging.info(f"Elapsed Time: {end_time - start_time} seconds")
-            logging.info("=" * 30)
+            logging.debug(f"Tokens per second: {tps} t/s")
+            logging.debug(f"Elapsed Time: {end_time - start_time} seconds")
+            logging.debug("=" * 30)
 
             return cleaned_response, extracted_model, correctness, objective
 
@@ -85,7 +85,7 @@ class PromptProcessor:
             response = tp.clean_mistral(response)
 
             tps = tp.measure_performance(start_time, end_time, response)
-            logging.info(f"Tokens per second: {tps} t/s")
+            logging.debug(f"Tokens per second: {tps} t/s")
             return response
 
         except (requests.exceptions.RequestException, ValueError) as e:
@@ -107,7 +107,7 @@ def main():
 
         if settings.USE_AGENT:
             check = processor.process_prompt(prompt)
-            logging.info(f"Router: {check}")
+            logging.debug(f"Router: {check}")
             if check == "objective":
                 response, _, _, _ = processor.process_skill(prompt)
         else:
