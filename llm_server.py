@@ -23,16 +23,16 @@ class GenerateRequest(BaseModel):
 
 def get_llm_agent(llm):
     """Returns LLM Agent based on config settings."""
-    if settings.LLM_AGENT == "LLMAgent":
-        return LLMAgent(llm=llm)
+    if settings.LLM_AGENT == "LLMRouter":
+        return LLMRouter(llm=llm)
     elif settings.LLM_AGENT == "MemoryLLM":
         return MemoryLLM(llm=llm)
-    elif settings.LLM_AGENT == "LLMRouter":
-        return LLMRouter(llm=llm)
+    # elif settings.LLM_AGENT == "LLMAgent":
+    #     return LLMAgent(llm=llm)
     else:
         raise ValueError(
             f"Invalid LLM_AGENT value: {settings.LLM_AGENT}. "
-            "Must be one of: 'LLMAgent', 'MemoryLLM', 'LLMRouter'."
+            "Must be one of: 'LLMRouter', 'MemoryLLM', 'LLMAgent'."
         )
 
 
