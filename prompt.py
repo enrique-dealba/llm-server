@@ -32,6 +32,7 @@ class PromptProcessor:
         """Processes the given prompt and returns the response."""
         try:
             start_time = time.perf_counter()
+
             objective = process_objective(prompt, self.client)
             json_strs = process_fields(prompt, objective, self.client)
             list_strs = process_lists(prompt, objective, self.client)
@@ -50,14 +51,14 @@ class PromptProcessor:
 
             cleaned_response = tp.clean_mistral(response)
 
-            print(f"\nLLM Response: {cleaned_response}")
-            print("=" * 30)
-            print(f"\n{objective}: {model_json}")
-            print(f"% Matching Fields: {correctness:.2%}")
-            tps = tp.measure_performance(start_time, end_time, cleaned_response)
-            print(f"Tokens per second: {tps} t/s")
-            print(f"Elapsed Time: {end_time - start_time} seconds")
-            print("=" * 30)
+            # print(f"\nLLM Response: {cleaned_response}")
+            # print("=" * 30)
+            # print(f"\n{objective}: {model_json}")
+            # print(f"% Matching Fields: {correctness:.2%}")
+            # tps = tp.measure_performance(start_time, end_time, cleaned_response)
+            # print(f"Tokens per second: {tps} t/s")
+            # print(f"Elapsed Time: {end_time - start_time} seconds")
+            # print("=" * 30)
 
             return cleaned_response, extracted_model, correctness, objective
 
