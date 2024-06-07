@@ -20,7 +20,7 @@ class Client:
         payload = {"text": processed_prompt}
         try:
             response = requests.post(f"{self.settings.API_URL}/generate", json=payload)
-            response.raise_for_status()
+            # response.raise_for_status()
             return response.json()
         except requests.exceptions.RequestException as e:
             logging.error(f"API request failed: {e}")
