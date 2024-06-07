@@ -123,13 +123,7 @@ pro_examples = [
     2,  # priority
 ]
 
-pro_info = {
-    "prompts": [
-        "Track object 44248 with sensors RME01 and LMNT45, revisiting twice per hour for the next 36 hours using TEST mode, 'S' markings, and set priority to 2. Begin at 2024-05-21 19:20:00.150000+00:00 and end at 2024-05-21 22:30:00.250000+00:00. Use RATE_TRACK_SIDEREAL as the collect request type and operate in LEO orbital regime.",
-        "Track celestial object 21212 with sensors RME33, ABQ42, using REAL mode, revisiting four times per hour, starting execution for a 48-hour plan, marked as 'U//FOUO', with priority set to 1. Begins on 2024-05-21 19:20:00.150000+00:00 and finishes by 2024-05-21 22:30:00.250000+00:00. Employ RATE_TRACK for tracking type and GSO for orbital regime.",
-    ],
-    "example": "PeriodicRevisitObjective",
-    "description": """The PeriodicRevisitObjective class is designed to create a specific observation
+pro_description = """The PeriodicRevisitObjective class is designed to create a specific observation
 objective for a given target, with parameters to configure the observation process
 such as sensor name, data mode, revisit frequency, and duration. Periodic Revisit sets an end time
 for the objective, either based on input or a default of 10 minutes from the current time,
@@ -137,7 +131,15 @@ and includes handling for converting input string times to datetime objects. Rev
 useful in applications that require scheduled monitoring or tracking of specific targets
 (such as celestial objects or satellites) through designated sensors, allowing for controlled
 and periodic observations.
-""",
+"""
+
+pro_info = {
+    "prompts": [
+        "Track object 44248 with sensors RME01 and LMNT45, revisiting twice per hour for the next 36 hours using TEST mode, 'S' markings, and set priority to 2. Begin at 2024-05-21 19:20:00.150000+00:00 and end at 2024-05-21 22:30:00.250000+00:00. Use RATE_TRACK_SIDEREAL as the collect request type and operate in LEO orbital regime.",
+        "Track celestial object 21212 with sensors RME33, ABQ42, using REAL mode, revisiting four times per hour, starting execution for a 48-hour plan, marked as 'U//FOUO', with priority set to 1. Begins on 2024-05-21 19:20:00.150000+00:00 and finishes by 2024-05-21 22:30:00.250000+00:00. Employ RATE_TRACK for tracking type and GSO for orbital regime.",
+    ],
+    "example": "PeriodicRevisitObjective",
+    "description": pro_description,
     "example_fields": pro_examples,
     "base_model": PeriodicRevisitObjective,
     "template": PeriodicRevisitObjectiveTemplate,
