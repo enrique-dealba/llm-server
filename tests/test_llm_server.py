@@ -1,4 +1,4 @@
-"""Note: Run LLM server tests with MemoryLLM."""
+"""Note: Run LLM server tests with 'llm_agent.llm_memory import MemoryLLM'."""
 
 import unittest
 from unittest.mock import MagicMock, patch
