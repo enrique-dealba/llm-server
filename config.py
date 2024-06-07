@@ -21,7 +21,10 @@ class Settings(BaseSettings):
     DEFAULT_GPU_UTIL: float = 0.30
     AWQ_GPU_UTIL: float = 0.60 # before: 0.50
     GPTQ_GPU_UTIL: float = 0.45 # before: 0.25
+
+    # ----- LLM Agent Settings -----
     USE_AGENT: bool = False
+    LLM_AGENT: str = "LLMRouter"  # Default agent
 
     # ----- Hugging Face Hub Settings -----
     HF_HUB_OFFLINE: bool = False

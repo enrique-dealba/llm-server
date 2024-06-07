@@ -1,7 +1,6 @@
 """FastAPI server for handling Large Language Model (LLM) requests."""
 
 import os
-from typing import Optional
 
 from fastapi import Depends, FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
@@ -9,10 +8,9 @@ from langchain.llms import VLLM
 from pydantic import BaseModel
 
 from config import Settings
-
-# from llm_agent.llm_agent import LLMAgent
+from llm_agent.llm_agent import LLMAgent
 from llm_agent.llm_memory import MemoryLLM
-# from llm_agent.llm_router import LLMRouter
+from llm_agent.llm_router import LLMRouter
 
 settings = Settings()
 
@@ -23,10 +21,36 @@ class GenerateRequest(BaseModel):
     text: str
 
 
-def create_llm(
-    quantization: Optional[str] = None, use_agent: Optional[bool] = False
-) -> VLLM:
+def get_llm_agent(llm):
+    """Returns LLM Agent based on config settings."""
+    if settings.LLM_AGENT == "LLMAgent":
+        return LLMAgent(llm=llm)
+    elif settings.LLM_AGENT == "MemoryLLM":
+        return MemoryLLM(llm=llm)
+    elif settings.LLM_AGENT == "LLMRouter":
+        return LLMRouter(llm=llm)
+    else:
+        raise ValueError(
+            f"Invalid LLM_AGENT value: {settings.LLM_AGENT}. "
+            "Must be one of: 'LLMAgent', 'MemoryLLM', 'LLMRouter'."
+        )
+
+
+def get_quantization():
+    """Returns quantization method based on config settings."""
+    quantization = os.environ.get("QUANTIZATION", "None")
+    if "GPTQ" in settings.DEFAULT_MODEL:
+        quantization = "gptq"
+    elif "AWQ" in settings.DEFAULT_MODEL:
+        quantization = "awq"
+    else:
+        quantization = None
+    return quantization
+
+
+def create_llm() -> VLLM:
     """Creates and returns VLLM instance based on current configuration."""
+    quantization = get_quantization()
     if quantization is None:
         gpu_utilization = settings.DEFAULT_GPU_UTIL
         dtype_value = "bfloat16"
@@ -52,23 +76,14 @@ def create_llm(
             },
         )
 
-        if use_agent:
-            return LLMRouter(llm=llm)
+        if settings.USE_AGENT:
+            return get_llm_agent(llm)
         return llm
     except Exception as e:
         raise RuntimeError(f"Failed to initialize LLM: {e}")
 
 
-# Initialize configurations and dependencies
-quantization = os.environ.get("QUANTIZATION", "None")
-if "GPTQ" in settings.DEFAULT_MODEL:
-    quantization = "gptq"
-elif "AWQ" in settings.DEFAULT_MODEL:
-    quantization = "awq"
-else:
-    quantization = None
-
-llm = create_llm(quantization=quantization, use_agent=settings.USE_AGENT)
+llm = create_llm()
 
 app = FastAPI()
 
