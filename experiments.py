@@ -985,7 +985,55 @@ TheBloke_OpenHermes_2_5_Mistral_7B_GPTQ_4 = [
 ]
 
 # Final experiments before stress testing:
+"""
+TEMPERATURE: float = 0.0
+TOP_P: float = 0.95
+# ----- GPU Utilization Settings -----
+DEFAULT_GPU_UTIL: float = 0.30
+AWQ_GPU_UTIL: float = 0.60 # before: 0.50
+GPTQ_GPU_UTIL: float = 0.45 # before: 0.25
+# ----- LLM Agent Settings -----
+USE_AGENT: bool = False
+LLM_AGENT: str = "LLMRouter"  # Default agent
+"""
+# Avg GT Correctness, Avg Objective Correctness, Avg Time
+TheBloke_Mistral_7B_Instruct_v0_2_AWQ = [
+    0.8381, 0.7143, 5.22, # PRO
+    0.9881, 1.0000, 5.33, # CMO
+    0.9844, 1.0000, 4.75, # SO
+    0.9271, 1.0000, 4.09, # DEO
+    0.9018, 1.0000, 4.60  # SCO
+]
 
+TheBloke_Mistral_7B_Instruct_v0_2_GPTQ = [
+    0.9524, 1.0000, 3.58, # PRO 
+    0.9881, 1.0000, 2.49, # CMO
+    0.9844, 1.0000, 3.05, # SO
+    0.9271, 1.0000, 2.68, # DEO
+    0.9018, 1.0000, 2.90  # SCO
+]
+
+TheBloke_Mistral_7B_Instruct_v0_2_GPTQ_2 = [
+    0.9524, 1.0000, 3.55, # PRO
+    0.9881, 1.0000, 2.48, # CMO
+    0.9844, 1.0000, 3.02, # SO 
+    0.9271, 1.0000, 2.68, # DEO
+    0.9018, 1.0000, 2.91  # SCO
+]
+
+TheBloke_Mistral_7B_Instruct_v0_2_AWQ_2 = [
+    0.8381, 0.7143, 5.30, # PRO
+    0.9881, 1.0000, 5.33, # CMO
+    0.9844, 1.0000, 4.72, # SO
+    0.9271, 1.0000, 4.07, # DEO
+    0.9018, 1.0000, 4.60  # SCO
+]
+
+TheBloke_Mistral_7B_Instruct_v0_2_AWQ_3 = [
+    0.8381, 0.7143, 5.23, # PRO
+    0.9881, 1.0000, 5.34, # CMO
+    0.9844, 1.0000, 4.71  # SO
+] # incomplete
 
 ######### BELOW IS PREVIOUS FUNC CALL / TOOL EXPERIMENTS
 
