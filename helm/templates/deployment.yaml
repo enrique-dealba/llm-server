@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: llm-server
+  name: llm-server-v2
   labels:
     {{- include "machina.labels" . | nindent 4 }}
 spec:

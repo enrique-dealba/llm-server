@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: llm-server
+  name: llm-server-v2
   labels:
     {{- include "machina.labels" . | nindent 4 }}
 spec:

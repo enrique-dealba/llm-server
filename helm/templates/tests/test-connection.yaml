@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['llm-server:{{ .Values.service.port }}']
+      args: ['llm-server-v2:{{ .Values.service.port }}']
   restartPolicy: Never

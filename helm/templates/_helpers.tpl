@@ -61,7 +61,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 
 {{- define "machina.llmserver.selectorLabels" -}}
 {{ include "machina.selectorLabels" .}}
-app: llm-server
+app: llm-server-v2
 {{- end }}
 
 

@@ -10,11 +10,11 @@ adminServiceAccount:
   create: false
 
 image:
-  repository:
+  repository: edealba2/llm-server-v2
   # Minikube needs IfNotPresent, but EKS dev env should always pull. Set by helm CLI override.
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "latest"
 
 imagePullSecrets:
   - name: my-registry-secret
@@ -81,7 +81,7 @@ allocatePv: false
 
 components:
   llmserver:
-    image: edealba2/llm-server
+    image: edealba2/llm-server-v2
     tag: latest
     port: 8888
 
@@ -94,8 +94,8 @@ components:
         memory: 16Gi
 
     volume:
-      name: llm-server-volume
-      claimName: llm-server-pvc
+      name: llm-server-v2-volume
+      claimName: llm-server-v2-pvc
       mountPath: /root/.cache/huggingface
       accessMode: ReadWriteOnce
       storage: 64Gi

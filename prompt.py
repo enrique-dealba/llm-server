@@ -53,7 +53,7 @@ class PromptProcessor:
 
             # print(f"\nLLM Response: {cleaned_response}")
             # print("=" * 30)
-            # print(f"\n{objective}: {model_json}")
+            print(f"\n{objective}: {model_json}")
             # print(f"% Matching Fields: {correctness:.2%}")
             # tps = tp.measure_performance(start_time, end_time, cleaned_response)
             # print(f"Tokens per second: {tps} t/s")
