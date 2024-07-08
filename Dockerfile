@@ -1,39 +1,46 @@
-# Use official Python image
-FROM python:3.9-slim-buster
+# Use CUDA base image
+FROM nvidia/cuda:11.8.0-devel-ubuntu22.04
 
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies for llama-cpp-python
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
+    python3.9 \
+    python3-pip \
     build-essential \
     cmake \
+    git \
+    libopenblas-dev \
+    ninja-build \
+    pkg-config \
+    libopencv-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements file and install dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Set environment variables for vLLM version and Python version
+# Set environment variables
 ENV VLLM_VERSION=0.5.1
 ENV PYTHON_VERSION=39
+ENV CUDA_HOME=/usr/local/cuda
+ENV PATH=${CUDA_HOME}/bin:${PATH}
+ENV LD_LIBRARY_PATH=${CUDA_HOME}/lib64:${LD_LIBRARY_PATH}
 
-# Install vLLM with CUDA 11.8
-RUN pip install https://github.com/vllm-project/vllm/releases/download/v${VLLM_VERSION}/vllm-${VLLM_VERSION}+cu118-cp${PYTHON_VERSION}-cp${PYTHON_VERSION}-manylinux1_x86_64.whl
+# Install Python dependencies
+COPY requirements.txt .
+RUN pip3 install --no-cache-dir -r requirements.txt
 
-# Re-install PyTorch with CUDA 11.8
-RUN pip uninstall torch -y && \
-    pip install torch==2.1.2 --index-url https://download.pytorch.org/whl/cu118
+# Install VLLM with CUDA support
+RUN pip3 install vllm==${VLLM_VERSION}
 
-# Re-install xFormers with CUDA 11.8
-RUN pip uninstall xformers -y && \
-    pip install xformers==0.0.23.post1 --index-url https://download.pytorch.org/whl/cu118
+# Install PyTorch with CUDA 11.8 support
+RUN pip3 install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url https://download.pytorch.org/whl/cu118
 
-# Install additional dependencies
-RUN pip install pydantic==2.7.1 pydantic-core==2.18.2 langchain-community==0.2.6
+# Install xformers
+RUN pip3 install xformers==0.0.23.post1 --index-url https://download.pytorch.org/whl/cu118
 
-# Copy .env file and other files
-COPY .env .env
+# Install llama-cpp-python with CUDA support
+RUN CMAKE_ARGS="-DLLAMA_CUBLAS=on" FORCE_CMAKE=1 pip3 install llama-cpp-python==0.2.81
+
+# Copy application files
 COPY . .
 
 # Make sure start.sh is executable
@@ -43,4 +50,4 @@ RUN chmod +x start.sh
 EXPOSE 8888
 
 # Set start-up script as the entry point
-ENTRYPOINT ["sh", "./start.sh"]
+ENTRYPOINT ["./start.sh"]
