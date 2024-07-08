@@ -16,7 +16,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Set environment variables for vLLM version and Python version
 # Prev: ENV VLLM_VERSION=0.2.4
-ENV VLLM_VERSION=0.3.0
+# Prev: ENV VLLM_VERSION=0.3.0
+ENV VLLM_VERSION=0.5.1
 ENV PYTHON_VERSION=39
 
 # Install vLLM with CUDA 11.8
