@@ -1,12 +1,13 @@
 fastapi==0.110.0
-uvicorn==0.28.0
+uvicorn==0.30.1
 python-dotenv==1.0.1
-langchain==0.1.11
+langchain==0.2.0
 langchain-community==0.0.10
-tiktoken==0.6.0
+tiktoken==0.7.0
 pydantic==2.7.1
 pydantic_settings==2.2.1
 skyfield==1.48
 geopy==2.4.1
 semantic-router[local]==0.0.20
 pydantic-core==2.18.2
+vllm-flash-attn==2.5.9
