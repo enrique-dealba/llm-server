@@ -13,7 +13,7 @@ WORKDIR /app
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-    python3.9 \
+    python3.10 \
     python3-pip \
     build-essential \
     cmake \
@@ -27,7 +27,7 @@ RUN apt-get update && apt-get install -y \
 
 # Set environment variables
 ENV VLLM_VERSION=0.5.1
-ENV PYTHON_VERSION=39
+ENV PYTHON_VERSION=310
 ENV CUDA_HOME=/usr/local/cuda
 ENV PATH=${CUDA_HOME}/bin:${PATH}
 ENV LD_LIBRARY_PATH=${CUDA_HOME}/lib64:${LD_LIBRARY_PATH}
@@ -36,8 +36,11 @@ ENV LD_LIBRARY_PATH=${CUDA_HOME}/lib64:${LD_LIBRARY_PATH}
 COPY requirements.txt .
 RUN pip3 install --no-cache-dir -r requirements.txt
 
-# Install VLLM with CUDA support
-RUN pip3 install vllm==${VLLM_VERSION}
+# Install VLLM from source with CUDA support
+RUN git clone https://github.com/vllm-project/vllm.git && \
+    cd vllm && \
+    git checkout v${VLLM_VERSION} && \
+    pip3 install -e .
 
 # Install PyTorch with CUDA 11.8 support
 RUN pip3 install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url https://download.pytorch.org/whl/cu118

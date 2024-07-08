@@ -10,4 +10,3 @@ skyfield==1.48
 geopy==2.4.1
 semantic-router[local]==0.0.20
 pydantic-core==2.18.2
-vllm-flash-attn==2.5.9
