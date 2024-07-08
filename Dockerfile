@@ -1,6 +1,13 @@
 # Use CUDA base image
 FROM nvidia/cuda:11.8.0-devel-ubuntu22.04
 
+# Set noninteractive installation
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Set timezone
+ENV TZ=Etc/UTC
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 # Set working directory
 WORKDIR /app
 
@@ -15,6 +22,7 @@ RUN apt-get update && apt-get install -y \
     ninja-build \
     pkg-config \
     libopencv-dev \
+    tzdata \
     && rm -rf /var/lib/apt/lists/*
 
 # Set environment variables
