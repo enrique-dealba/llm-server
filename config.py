@@ -18,9 +18,9 @@ class Settings(BaseSettings):
     API_URL: str = "http://localhost:8888"
 
     # ----- GPU Utilization Settings -----
-    DEFAULT_GPU_UTIL: float = 0.30
-    AWQ_GPU_UTIL: float = 0.60 # before: 0.50
-    GPTQ_GPU_UTIL: float = 0.45 # before: 0.25
+    DEFAULT_GPU_UTIL: float = 1.00
+    AWQ_GPU_UTIL: float = 1.00 # before: 0.50, 0.60
+    GPTQ_GPU_UTIL: float = 1.00 # before: 0.25, 0.45
 
     # ----- LLM Agent Settings -----
     USE_AGENT: bool = False

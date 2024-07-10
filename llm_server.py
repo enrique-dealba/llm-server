@@ -98,47 +98,6 @@ def create_llm() -> VLLM:
         raise GPUNotAvailableError(f"Failed to initialize LLM: {e}")
 
 
-# llm = create_llm()
-
-# app = FastAPI()
-
-# @app.on_event("startup")
-# async def startup_event():
-#     global llm
-#     if llm is None:
-#         raise RuntimeError("LLM failed to initialize. Cannot start the server.")
-
-
-# def get_llm_instance():
-#     """Function to retrieve the LLM instance."""
-#     return llm
-
-
-# def get_llm():
-#     """Dependency injector for the LLM.
-
-#     Useful for testing the /generate endpoint. Easily swap LLM with a mock or stub
-#     during testing.
-#     """
-#     try:
-#         return get_llm_instance()
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=str(e))
-
-
-# @app.post("/generate")
-# async def generate(request: Request, llm: VLLM = Depends(get_llm)):
-#     """Endpoint to generate text using LLM."""
-#     try:
-#         request_data = await request.json()
-#         query = GenerateRequest(**request_data).text
-#         response = llm(query)
-#         return JSONResponse({"text": response})
-#     except Exception as e:
-#         raise HTTPException(
-#             status_code=400, detail=f"Error processing user request: {e}"
-#         )
-
 try:
     llm = create_llm()
 except GPUNotAvailableError as e:
