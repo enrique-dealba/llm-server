@@ -40,7 +40,7 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 RUN git clone https://github.com/vllm-project/vllm.git && \
     cd vllm && \
     git checkout v${VLLM_VERSION} && \
-    pip3 install -e .
+    CUDA_HOME=/usr/local/cuda pip3 install -e .
 
 # Install PyTorch with CUDA 11.8 support
 RUN pip3 install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url https://download.pytorch.org/whl/cu118
