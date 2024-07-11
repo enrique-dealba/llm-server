@@ -1,4 +1,3 @@
-# Use CUDA base image
 FROM nvidia/cuda:11.8.0-devel-ubuntu22.04
 
 # Set noninteractive installation
@@ -36,17 +35,17 @@ ENV LD_LIBRARY_PATH=${CUDA_HOME}/lib64:${LD_LIBRARY_PATH}
 COPY requirements.txt .
 RUN pip3 install --no-cache-dir -r requirements.txt
 
-# Install VLLM from source with CUDA support
-RUN git clone https://github.com/vllm-project/vllm.git && \
-    cd vllm && \
-    git checkout v${VLLM_VERSION} && \
-    CUDA_HOME=/usr/local/cuda pip3 install -e .
-
 # Install PyTorch with CUDA 11.8 support
 RUN pip3 install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url https://download.pytorch.org/whl/cu118
 
 # Install xformers
 RUN pip3 install xformers==0.0.23.post1 --index-url https://download.pytorch.org/whl/cu118
+
+# Install VLLM from source with CUDA support
+RUN git clone https://github.com/vllm-project/vllm.git && \
+    cd vllm && \
+    git checkout v${VLLM_VERSION} && \
+    CUDA_HOME=/usr/local/cuda pip3 install -e .
 
 # Install llama-cpp-python with CUDA support
 RUN CMAKE_ARGS="-DLLAMA_CUBLAS=on" FORCE_CMAKE=1 pip3 install llama-cpp-python==0.2.81
